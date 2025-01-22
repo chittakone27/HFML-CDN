@@ -1,0 +1,10 @@
+#epi-child-form-container .input-field-container {
+  border-left: 0;
+  padding-left: 0;
+}
+.epi-child-warning {
+  margin: 5px;
+  padding: 10px;
+  border: 2px solid #ffc95e;
+  border-radius: 5px;
+}

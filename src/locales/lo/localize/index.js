@@ -1,0 +1,121 @@
+import buildLocalizeFn from "../../_lib/buildLocalizeFn/index";
+
+const eraValues = {
+  narrow: ["B", "ຄສ"],
+  abbreviated: ["BC", "ຄ.ສ."],
+  wide: ["ປີກ່ອນຄຣິດຕະສັກກະຫຼາດ", "ຄຣິດຕະສັກກະຫຼາດ"]
+};
+
+const quarterValues = {
+  narrow: ["1", "2", "3", "4"],
+  abbreviated: ["Q1", "Q2", "Q3", "Q4"],
+  wide: ["ໄຕມາດທີໜຶ່ງ", "ໄຕມາດທີສອງ", "ໄຕມາດທີສາມ", "ໄຕມາດທີສີ່"]
+};
+
+const dayValues = {
+  narrow: ["ທ.", "ຈ.", "ຄ.", "ພ.", "ພ.ຫ.", "ສຸ.", "ສ."],
+  short: ["ທ.", "ຈ.", "ຄ.", "ພ.", "ພ.ຫ.", "ສຸ.", "ສ."],
+  abbreviated: ["ອ.ທ.", "ຈ.", "ອ.ຄ.", "ພ.", "ພ.ຫ.", "ສຸ.", "ສ."],
+  wide: ["ອາທິດ", "ຈັນ", "ອັງຄານ", "ພຸດ", "ພະຫັດ", "ສຸກ", "ເສົາ"]
+};
+
+const monthValues = {
+  narrow: ["ມ.ກ.", "ກ.ພ.", "ມີ.ນ.", "ມ.ສ.", "ພ.ພ.", "ມິ.ນ.", "ກ.ກ.", "ສ.ຫ.", "ກ.ຍ.", "ຕ.ລ.", "ພ.ຈ.", "ທ.ວ."],
+  abbreviated: ["ມ.ກ.", "ກ.ພ.", "ມີ.ນ", "ມ.ສ.", "ພ.ພ.", "ມິ.ນ.", "ກ.ກ.", "ສ.ຫ.", "ກ.ຍ.", "ຕ.ລ.", "ພ.ຈ.", "ທ.ວ."],
+  wide: ["ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ", "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"]
+};
+
+const dayPeriodValues = {
+  narrow: {
+    am: "ກ່ອນທ່ຽງ",
+    pm: "ຫຼັງທ່ຽງ",
+    midnight: "ທ່ຽງຄືນ",
+    noon: "ທ່ຽງ",
+    morning: "ເຊົ້າ",
+    afternoon: "ບ່າຍ",
+    evening: "ແລງ",
+    night: "ກາງຄືນ"
+  },
+  abbreviated: {
+    am: "ກ່ອນທ່ຽງ",
+    pm: "ຫຼັງທ່ຽງ",
+    midnight: "ທ່ຽງຄືນ",
+    noon: "ທ່ຽງ",
+    morning: "ເຊົ້າ",
+    afternoon: "ບ່າຍ",
+    evening: "ແລງ",
+    night: "ກາງຄືນ"
+  },
+  wide: {
+    am: "ກ່ອນທ່ຽງ",
+    pm: "ຫຼັງທ່ຽງ",
+    midnight: "ທ່ຽງຄືນ",
+    noon: "ທ່ຽງ",
+    morning: "ເຊົ້າ",
+    afternoon: "ບ່າຍ",
+    evening: "ແລງ",
+    night: "ກາງຄືນ"
+  }
+};
+
+const formattingDayPeriodValues = {
+  narrow: {
+    am: "ກ່ອນທ່ຽງ",
+    pm: "ຫຼັງທ່ຽງ",
+    midnight: "ທ່ຽງຄືນ",
+    noon: "ທ່ຽງ",
+    morning: "ຕອນເຊົ້າ",
+    afternoon: "ຕອນບ່າຍ",
+    evening: "ຕອນແລງ",
+    night: "ຕອນກາງຄືນ"
+  },
+  abbreviated: {
+    am: "ກ່ອນທ່ຽງ",
+    pm: "ຫຼັງທ່ຽງ",
+    midnight: "ທ່ຽງຄືນ",
+    noon: "ທ່ຽງ",
+    morning: "ຕອນເຊົ້າ",
+    afternoon: "ຕອນບ່າຍ",
+    evening: "ຕອນແລງ",
+    night: "ຕອນກາງຄືນ"
+  },
+  wide: {
+    am: "ກ່ອນທ່ຽງ",
+    pm: "ຫຼັງທ່ຽງ",
+    midnight: "ທ່ຽງຄືນ",
+    noon: "ທ່ຽງ",
+    morning: "ຕອນເຊົ້າ",
+    afternoon: "ຕອນບ່າຍ",
+    evening: "ຕອນແລງ",
+    night: "ຕອນກາງຄືນ"
+  }
+};
+
+const ordinalNumber = (dirtyNumber, _options) => {
+  return String(dirtyNumber);
+};
+
+const localize = {
+  ordinalNumber,
+
+  era: buildLocalizeFn({ values: eraValues, defaultWidth: "wide" }),
+
+  quarter: buildLocalizeFn({
+    values: quarterValues,
+    defaultWidth: "wide",
+    argumentCallback: (quarter) => quarter - 1
+  }),
+
+  month: buildLocalizeFn({ values: monthValues, defaultWidth: "wide" }),
+
+  day: buildLocalizeFn({ values: dayValues, defaultWidth: "wide" }),
+
+  dayPeriod: buildLocalizeFn({
+    values: dayPeriodValues,
+    defaultWidth: "wide",
+    formattingValues: formattingDayPeriodValues,
+    defaultFormattingWidth: "wide"
+  })
+};
+
+export default localize;

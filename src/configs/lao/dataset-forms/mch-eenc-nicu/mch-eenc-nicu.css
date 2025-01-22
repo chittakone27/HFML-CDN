@@ -1,0 +1,10 @@
+#mch-eenc-nicu-form-container table td,
+#mch-eenc-nicu-form-container table th {
+  border: 1.5px solid #ddd;
+  text-align: center;
+  font-weight: bold;
+}
+
+#mch-eenc-nicu-form-container table td {
+  background-color: #eee;
+}

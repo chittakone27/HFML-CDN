@@ -1,0 +1,23 @@
+.programdataset-selector-container {
+  width: 400px;
+}
+.programdataset-selector-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 5px;
+  padding: 5px;
+}
+.programdataset-selector-item > div:nth-child(1) {
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.programdataset-selector-item > div:nth-child(1) img {
+  width: 100%;
+}
+.programdataset-selector-item > div:nth-child(2) {
+  margin-left: 10px;
+  width: calc(100% - 30px);
+}

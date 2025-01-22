@@ -1,0 +1,54 @@
+.custom-form {
+  padding: 10px;
+  width: 100%;
+}
+
+.custom-form table td,
+.custom-form table th {
+  padding: 5px;
+  font-size: 16px;
+}
+
+.custom-form input:disabled {
+  /* background-color: #cccccc; */
+}
+
+.custom-form table td:has(.data-entry-input-field-container) {
+  padding: 0;
+}
+
+.custom-form input {
+  min-width: 50px;
+}
+
+.custom-form .checkbox .data-entry-input-field-container {
+  padding-left: 0;
+}
+
+.custom-form .checkbox .data-entry-input-field-container {
+  text-align: center;
+}
+
+.custom-form .checkbox .data-entry-input-field-container label {
+  margin: 0;
+}
+
+/* common class */
+.custom-form .flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-form .strong-text {
+  font-weight: bold;
+}
+
+.custom-form .bordered {
+  border: 1px solid rgba(224, 224, 224, 1);
+}
+
+.custom-form .bordered-left {
+  padding-left: 20px;
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}

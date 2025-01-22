@@ -1,0 +1,4210 @@
+<script>
+  // Javascript for total value
+  //     @ James ByungJin Chang
+  // Javascript for display user language
+  //     @ Thai Chuong
+  // Html
+  //     @ Nguyen Tran Do Xuan Thuy
+  // Content
+  //     @Laos national team
+
+  // variable for the calculate total values
+  var _intervalId;
+  var _dataLoaded = false;
+
+  //variable for translation values
+  var _language = "en";
+  var translation = [
+    // Titles
+    {
+      key: "male",
+      value: ["MALE", "ຊາຍ"],
+    },
+    {
+      key: "female",
+      value: ["FEMALE", "ຍິງ"],
+    },
+    {
+      key: "ancDeliveryPNCMortality",
+      value: [
+        "ANC - DELIVERY - PNC - MORTALITY",
+        "ກວດກ່ອນເກີດ - ການເກີດລູກ - ກວດຫຼັງເກີດ - ລາຍງານການຕາຍ",
+      ],
+    },
+    {
+      key: "aANC",
+      value: ["A - ANC", "ກ. ກວດກ່ອນເກີດ"],
+    },
+    {
+      key: "healthFacility",
+      value: ["Health facility", "ສະຖານທີ່ບໍລິການ"],
+    },
+    {
+      key: "outReach",
+      value: ["Outreach", "ນອກສະຖານທີ່ບໍລິການ"],
+    },
+    {
+      key: "total",
+      value: ["Total", "ລວມ"],
+    },
+    {
+      key: "delivery",
+      value: ["B - Delivery", "ຂ. ການເກີດລູກ"],
+    },
+    {
+      key: "cpnc",
+      value: ["C - PNC", "ຄ. ກວດຫຼັງເກີດ"],
+    },
+    {
+      key: "mortality",
+      value: ["D - MORTALITY REPORT", "ງ. ລາຍງານການຕາຍ"],
+    },
+    {
+      key: "familyPlanning",
+      value: ["D - FAMILY PLANNING", "ຈ. ການວາງແຜນຄອບຄົວ"],
+    },
+    {
+      key: "familyPlanning",
+      value: ["D - FAMILY PLANNING", "ຈ. ການວາງແຜນຄອບຄົວ"],
+    },
+    {
+      key: "cbdAndVHV",
+      value: ["CBD and VHV", "CBD ແລະ ອສບ"],
+    },
+    {
+      key: "oldUser",
+      value: ["Old user", "ຜູ້​ໃຊ້ບໍ​ລິ​ການ​ເກົ່າ"],
+    },
+    {
+      key: "newUser",
+      value: ["New user", "​ຜູ້​ໃຊ້ບໍ​ລິ​ການໃໝ່"],
+    },
+    {
+      key: "distributeWastage",
+      value: [
+        "Total number distributed + Wastage",
+        "ຈ.ນ ທີ່ໄດ້ແຈກໄປ + ຈ.ນ ທີ່ເສຍຫາຍ",
+      ],
+    },
+    {
+      key: "eEPI",
+      value: ["E - EPI", "ສ. ວຽກ​ງານສັກຢາກັນພະຍາດ"],
+    },
+    {
+      key: "under12Month",
+      value: ["Under 12 Month", "ລຸ່ມ 12 ເດືອນ"],
+    },
+    {
+      key: "12to59month",
+      value: ["12 month to 59 month", "12 ຫາ 59 ເດືອນ"],
+    },
+    {
+      key: "ReprosuctiveWomen",
+      value: [
+        "Pre reproductive and Reprosuctive Women",
+        "ຊ. ເດັກ​ຍິງ​ກຽມ​ເຂົ້າ​ໄວ​ຈະ​ເລີນ​ພັນ ແລະ ແມ່​ຍິງ​ໄວ​ຈະ​ເລີນ​ພັນ",
+      ],
+    },
+    {
+      key: "fnutrition",
+      value: [
+        "F - GROWTH MONITORING AND NUTRITION",
+        "ຍ. ວຽກ​ງານຕິດ​ຕາມ​ພັດ​ທະ​ນາ​ການ​ເດັກ ​ແລະ ​ໂພ​ຊະ​ນາ​ການ",
+      ],
+    },
+
+    // ANC
+    {
+      key: "firstANCVisitUnder19",
+      value: [
+        "Number of ANC 1 visit among < 19 year pregnant women",
+        "ຈ.ນ ແມ່ຍິງຖືພາ​ທີ່​ໄດ້​ກວດກ່ອນເກີດຄັ້ງທີ່ 1 (ລຸ່ມ 19 ປິ)",
+      ],
+    },
+    {
+      key: "firstANCVisitGreaterEqual19",
+      value: [
+        "Number of ANC 1 visit among >= 19 year pregnant women",
+        "ຈ.ນ ແມ່ຍິງຖືພາ​ທີ່​ໄດ້​ກວດກ່ອນເກີດຄັ້ງທີ່ 1 (19 ປິຂື້ນໄປ)",
+      ],
+    },
+    {
+      key: "fourthANCvisit",
+      value: [
+        "Number of Fourth ANC visit",
+        "ຈ.ນ ແມ່ຍິງຖືພາ​ທີ່​ໄດ້​ກວດກ່ອນເກີດຄັ້ງທີ່ 4",
+      ],
+    },
+    {
+      key: "riskMother1StageHigherHos",
+      value: [
+        "Risk mother first stage identified and refered to higher hospital",
+        "ຈ.ນ ແມ່​ສ່ຽງ​ໄພ​ຂັ້ນ 1 ທີ່ພົບ ແລະ ນໍາສົ່ງໄປໂຮງຫມໍທີ່ມີເງື່ອນໄຂປີ່ນປົວ",
+      ],
+    },
+    {
+      key: "riskMother2StageHigherHos",
+      value: [
+        "Risk mother Second Stage identified and refered to higher hospital",
+        "ຈ.ນ ແມ່​ສ່ຽງ​ໄພ​ຂັ້ນ 2 ທີ່ພົບ ແລະ ນໍາສົ່ງໄປໂຮງຫມໍທີ່ມີເງື່ອນໄຂປີ່ນປົວ",
+      ],
+    },
+    {
+      key: "pregnantWomenTd1",
+      value: [
+        " Number Td1 (Pregnant women received one dose of Td in  this pregnancy)",
+        "ຈ.ນ ແມ່ຍິງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td1 ໃນ​ການ​ຖື​ພາ​ຄັ້ງ​ນີ້ີ້",
+      ],
+    },
+    {
+      key: "pregnantWomenTd2",
+      value: [
+        " Number Td2+ (Pregnant women received two & more dose of Td in  this pregnancy)",
+        "ຈ.ນ ແມ່ຍິງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td2+ ໃນ​ການ​ຖື​ພາ​ຄັ້ງ​ນີ້ີ້",
+      ],
+    },
+    {
+      key: "pregnantWomenTdComplete",
+      value: [
+        "Pregnant Women Completed Td5  (5Dose) in this pregnancy",
+        "ຈ.ນ ແມ່ຍິງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td5 ຄົບ (5 ເຂັມ)",
+      ],
+    },
+    {
+      key: "pregnantWomenReceiveIFA90",
+      value: [
+        "Number of pregnant women received IFA 90 tabets",
+        "ຈ.ນ ​ແມ່ຍິງຖືພາທີ່ໄດ້ຮັບຢາທາດເຫຼັກ 90 ເມັດ",
+      ],
+    },
+    {
+      key: "pregnantWomenANCvisitHIVCounsel",
+      value: [
+        "Number  of pregnant women come for  ANC visit received STI/HIV Counselling",
+        "ຈ.ນ ແມ່ຍິງຖືພາທີ່​ມາ​ກວດກ່ອນເກີດຄັ້ງທີ່ 1 ທີ່ໄດ້ຮັບຄໍາປຶກສາດ້ານ ພຕພ/ເອດສ໌໌",
+      ],
+    },
+    {
+      key: "pregnantWomenANCvisitHIVTest",
+      value: [
+        "Number of Pregnant women received Counselling & Tested for STI/HIV",
+        "ຈ.ນ ແມ່ຍິງຖືພາໄດ້ຮັບຄຳປຶກສາ ແລະ ກວດເລືອດຊອກຫາ ພຕພ/ເອດສ໌",
+      ],
+    },
+    {
+      key: "pregnantWomenANCvisitHIVPos",
+      value: [
+        "Number of  Pregnant women tested HIV positive",
+        "ຈ.ນ ກວດກ່ອນເກີດໄດ້ກວດເອດສ໌ ມີຜົນເລືອດ ບວກ",
+      ],
+    },
+
+    // Delivery
+    {
+      key: "deliveryAtHealthFacility",
+      value: [
+        "Delivery At Health Facility",
+        "ຈ.ນ ການເກີດໃນ​ສະ​ຖານ​ທີ່​ບໍ​ລິ​ການ​ຂອງ​ທ່ານ",
+      ],
+    },
+    {
+      key: "deliveryInOtherHF",
+      value: [
+        "Delivery in other health facility",
+        "ຈ.ນ ການເກີດໃນ​ສະ​ຖານ​ທີ່​ບໍ​ລິ​ການອື່ນໆ",
+      ],
+    },
+    {
+      key: "deliveryHomeSBA",
+      value: [
+        "Number of deliveries at home by SBA",
+        "ຈ.ນ ເກີດລູກຢູ່ບ້ານມີແພດຊ່ວຍ",
+      ],
+    },
+    {
+      key: "deliveryHomeWithoutSBA",
+      value: [
+        "Number of delivery at home without SBA",
+        "ຈ.ນ ເກີດລູກຢູ່ບ້ານບໍ່ມີແພດຊ່ວຍ",
+      ],
+    },
+    {
+      key: "normalDelivery",
+      value: [
+        "Number of normal deliveries (Vaginal delivery)",
+        "ຈ.ນ ເກີດ​ແບບທຳມະຊາດ",
+      ],
+    },
+    {
+      key: "medicalEquipDelivery",
+      value: [
+        "Number deliveries by using medical equipment: Forcept, Vacumm aspiration",
+        "ຈ.ນ ເກີດໂດຍ​ໃຊ້​ເຄື່ອງ​ມື​ຊ່ວຍ",
+      ],
+    },
+    {
+      key: "caesareanSection",
+      value: [" Number of Caesarean sections", "ຈ.ນ ເກີດໂດຍຜ່າຕັດອອກ"],
+    },
+    {
+      key: "delPreEclamsia",
+      value: [
+        " Number of deliveries with Pre-and Eclampsia",
+        "ຈ.ນ ເກີດ​ລູກ ມີ​ການ​ກຽມ​ຊັກ ແລະ ຊັກ​ກະ​ຕຸກ",
+      ],
+    },
+    {
+      key: "pretermDelivery2236w",
+      value: [
+        "Number of Preterm deliveries at 22-36 weeks",
+        "ຈ.ນ ເດັກເກີດກ່ອນກຳນົດ 22-36 ອາທິດ",
+      ],
+    },
+    {
+      key: "stillBirth",
+      value: ["Number of still births", "ຈ.ນ ເດັກຕາຍ​ມາ​ແຕ່​ໃນ​ທ້ອງ"],
+    },
+    {
+      key: "liveBirth",
+      value: ["Total of live births", "ຈ.ນ ເດັກເກີດມີຊີວິດທັງໝົດ"],
+    },
+    {
+      key: "newbornUnderWeight",
+      value: [
+        " Number of under weighed newborn <2500 gr",
+        "ຈ.ນ ເດັກເກີດນ້ຳໜັກຫຼຸດ 2500 ກຣາມ",
+      ],
+    },
+    {
+      key: "motherBreastfeed1Hr",
+      value: [
+        "Number of newborn initiated breastfeeding within the first hour after birth",
+        "ຈ.ນ ​ເດັກ​ໄດ້​ດູດ​ນົມ​ແມ່​ໃນ 1 ຊມ ​ຫຼັງ​ເກີດ",
+      ],
+    },
+    {
+      key: "spontaneusAbortion",
+      value: ["Number of Spontaneus abortions ", "ຈ.ນ ຫຼຸລູກທຳມະຊາດ"],
+    },
+    {
+      key: "inducedAbortion",
+      value: ["Number of Induced abortions ", "ຈ.ນ ຫຼຸລູກແບບບັງຄັບ"],
+    },
+    {
+      key: "ectopicPregnancyRupture",
+      value: [
+        "Number of Ectopic pregnancy ruptured",
+        "ຈ.ນ ​ຖື​ພາ​ລູກນອກ​ພົກ​ແຕກ",
+      ],
+    },
+
+    // PNC
+    {
+      key: "womenReceivePNC07day",
+      value: [
+        "Number women receive PNC within 0-7 days from birth in the month",
+        "ຈ.ນ ກວດຫຼັງເກີດພາຍໃນ 0 - 7 ວັນ",
+      ],
+    },
+    {
+      key: "womenReceivePNC842day",
+      value: [
+        "Number of women receive PNC within 8-42 days from birth in the month",
+        "ຈ.ນ ກວດຫຼັງເກີດໃນ 8 - 42 ວັນ",
+      ],
+    },
+    {
+      key: "totalPNC",
+      value: [
+        "Total number of PNC (person time)",
+        "ຈ.ນ ເທື່ອກວດຫຼັງເກີດທັງໝົດ",
+      ],
+    },
+
+    // Mortality
+    {
+      key: "maternalDeath",
+      value: ["Number of Maternal death", "ຈ.ນ ແມ່ຕາຍ"],
+    },
+    {
+      key: "neoDeath07day",
+      value: ["Neonatal death 0-7 days", "ຈ.ນ ເດັກ 0-7 ວັນ ຕາຍ"],
+    },
+    {
+      key: "neoDeath828day",
+      value: ["Neonatal death 8-28 days", "ຈ.ນ ເດັກ 8-28 ວັນ ຕາຍ"],
+    },
+    {
+      key: "infantDeath111months",
+      value: [
+        "Number of infant death age 1-11 months",
+        "ຈ.ນ ເດັກ 1 ຫາ 11 ເດືອນ ຕາຍ",
+      ],
+    },
+    {
+      key: "infantDeath",
+      value: [
+        "Total number of Infant (under 1 year of age) deaths ",
+        "ລວມຈຳນວນເດັກ ລຸ່ມ 1 ປີ ຕາຍ",
+      ],
+    },
+    {
+      key: "childDeath114y",
+      value: ["Number of child death age 1-4 years", "ຈ.ນ ເດັກ 1 ຫາ 4 ປີ ຕາຍ"],
+    },
+    {
+      key: "under5Mortality",
+      value: ["Total Under 5 Mortality ", "ລວມຈຳນວນເດັກ ລຸ່ມ 5 ປີ ຕາຍ"],
+    },
+
+    // Family Planning
+    {
+      key: "CoupleReceiveCondom",
+      value: [
+        "Number of married couple who received condoms ",
+        "ຈ.ນ ​ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບຖົງຢາງອະນາໄມ",
+      ],
+    },
+    {
+      key: "CoupleReceiveSinglePill",
+      value: [
+        "Number of married couple who received Single Pill",
+        "ຈ.ນ ​ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບຢາຄຸມຊະນິດກິນເມັດດ່ຽວ",
+      ],
+    },
+    {
+      key: "CoupleReceiveMixPill",
+      value: [
+        "Number of married couple who received Combined Pill",
+        "ຈ.ນ ​ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບຢາຄຸມຊະນິດກິນເມັດປະສົມ",
+      ],
+    },
+    {
+      key: "CoupleReceiveDepose",
+      value: [
+        "Number of married couple who received Depose (Injectable)",
+        "ຈ.ນ ​ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບຢາຄຸມຊະນິດສັກ",
+      ],
+    },
+    {
+      key: "CoupleReceiveIUD",
+      value: [
+        "Number of married couple who received IUD",
+        "ຈ.ນ ​ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບການໃສ່ຮ່ວງ",
+      ],
+    },
+    {
+      key: "CoupleReceiveImplant",
+      value: [
+        "Number of married couple who received Implant",
+        "ຈ.ນ ​ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບຢາຄຸມຊະນິດຝັງເຂັມ",
+      ],
+    },
+    {
+      key: "CoupleReceiveEmergencyPill",
+      value: [
+        "Number of married couple who received Emergency pill ",
+        "ຈ.ນ ຄູ່​ແຕ່ງ​ງານ​ທີ່​ໄດ້​ຮັບຢາຄຸມຊະນິດສຸກເສີນ",
+      ],
+    },
+    {
+      key: "femaleSterilization",
+      value: [
+        "Number of Female Sterilization",
+        "​ຈ.ນ ​ແມ່​ຍິງ​ທີ່​ໄດ້​ເຮັດໝັນຍິງ",
+      ],
+    },
+    {
+      key: "maleSterilization",
+      value: [
+        " Number of  Male Sterilization",
+        "ຈ.ນ ​ຜູ້​ຊາຍ​ທີ່​ໄດ້​ເຮັດໝັນຊາຍ",
+      ],
+    },
+    {
+      key: "1244FemaleReceivedIFA",
+      value: [
+        "Number of 12-44 year female received IFA for one pill a week ",
+        "ຈ.ນ ​ແມ່​ຍິງອາ​ຍຸ 12-44 ປີ ທີ່​ໄດ້​ຮັບ​ຢາທາດເຫຼັກເມັດລະອາທິດ",
+      ],
+    },
+
+    // EPI
+    {
+      key: "BCG",
+      value: [
+        "Number of children received BCG vaccine",
+        "ຈ.ນ ເດັກທີ່​ໄດ້ສັກຢາກັນວັນນະໂລກ (BCG)",
+      ],
+    },
+    {
+      key: "HepBD24hr",
+      value: [
+        "Number of children within 24 hours after birth received Hep BD vaccine",
+        "​​ຈ.ນ ​ເດັກອາ​ຍຸໄດ້ 24 ຊົ່ວ​ໂມງຫຼັງ​ເກີດໄດ້​ສັກຢາ​ກັນ​ອັກ​ເສບ​ຕັບ​ບີເຂັມ 0",
+      ],
+    },
+
+    {
+      key: "HepB07day",
+      value: [
+        "Number of children within 7 days of age after birth received Hep B0 vaccine",
+        "​ຈ.ນ ເດັກອາ​ຍຸ 7 ວັນຫລັງ​ເກີດໄດ້​ສັກຢາກັນອັກເສບຕັບບີເຂັມ 0 (HepB0)",
+      ],
+    },
+    {
+      key: "DHH1",
+      value: [
+        "Number of children received DPT-HepB-Hib1 vaccine",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ສັກຢາກັນ DPT-HepB-Hib ເຂັມ 1",
+      ],
+    },
+    {
+      key: "DHH2",
+      value: [
+        " Number of children received DPT-HepB-Hib2 vaccine",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ສັກຢາກັນ DPT-HepB-Hib ເຂັມ 2",
+      ],
+    },
+    {
+      key: "DHH3",
+      value: [
+        "Number of children received DPT-HepB-Hib3 vaccine",
+        "ຈ.ນ ເດັກທີ່​ໄດ້ສັກຢາກັນ DPT-HepB-Hib ເຂັມ 3",
+      ],
+    },
+    {
+      key: "OPV1",
+      value: [
+        "Number of children received OPV1",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ຢອດກັນໂປລິໂອ ຄັ້ງທີ 1 (OPV1)",
+      ],
+    },
+    {
+      key: "OPV2",
+      value: [
+        "Number of children received OPV2",
+        "ຈ.ນ ເດັກທີ່​ໄດ້ຢອດກັນໂປລິໂອ ຄັ້ງທີ 2 (OPV2)",
+      ],
+    },
+    {
+      key: "OPV3",
+      value: [
+        "Number of children received OPV3",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ຢອດກັນໂປລິໂອ ຄັ້ງທີ 3 (OPV3)",
+      ],
+    },
+    {
+      key: "IPV",
+      value: [
+        "Number of children received IPV injection",
+        "ຈ.ນ ເດັກທີ່​ໄດ້​ສັກຢາກັນ IPV",
+      ],
+    },
+    {
+      key: "PVC1",
+      value: [
+        "Number of children received PCV1",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ສັກຢາ​ກັນ PCV ຄັ້ງ​ທີ 1",
+      ],
+    },
+    {
+      key: "PVC2",
+      value: [
+        "Number of children received PCV2",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ສັກ​ຢາ​ກັນ PCV ຄັ້ງ​ທີ 2",
+      ],
+    },
+    {
+      key: "PVC3",
+      value: [
+        "Number of children received PCV3",
+        "ຈ.ນ ເດັກ​ທີ່​ໄດ້ສັກ​ຢາ​ກັນ PCV ຄັ້ງ​ທີ 3",
+      ],
+    },
+    {
+      key: "MeasleRubella",
+      value: [
+        "Number of children received MR and Rubella",
+        "ຈ.ນ ເດັກທີ່​ໄດ້ສັກຢາກັນໝາກແດງ ນ້ອຍ ແລະ ໃຫຍ່ (MR)",
+      ],
+    },
+    {
+      key: "JE",
+      value: [
+        "Number of children 12-23 months of age received JE vaccine",
+        "ຈ.ນ ເດັກ​ 12-23 ເດືອນ ທີ່​ໄດ້ສັກກັນອັກ​ເສບ​ສະ​ໝອງ​ຍີ່​ປຸ່ນ (JE)",
+      ],
+    },
+
+    // Pre reproductive and Reproductive Women
+    {
+      key: "firstHPV914y",
+      value: [
+        "Number of children aged 9-14 received first dose HPV ",
+        "ຈ.ນ ແມ່​ຍິງ ອາ​ຍຸ 9 - 14 ປີ ສັກ​ຢາ​ກັນ HPV ຄັ້ງ​ທີ 1",
+      ],
+    },
+    {
+      key: "secondHPV914y",
+      value: [
+        "Number of children aged 9-14 received second dose HPV",
+        "ຈ.ນ ແມ່​ຍິງ ອາ​ຍຸ 9 - 14 ປີ ສັກ​ຢາ​ກັນ HPV ຄັ້ງ​ທີ 2 ",
+      ],
+    },
+    {
+      key: "womenReceiveTd1",
+      value: [
+        " Number of reproductive women receive Td1 in this month",
+        "ຈ.ນ ແມ່ຍິງໄວຈະເລິນພັນໄດ້ສັກ Td1",
+      ],
+    },
+    {
+      key: "womenCompletedTd",
+      value: [
+        "Number reproductive women completed Td in this month",
+        " ຈ.ນ ແມ່ຍິງໄວຈະເລິນພັນໄດ້ສັກTd ຄົບໃນເດືອນ",
+      ],
+    },
+
+    // Growth monitoring and Nutrition
+    {
+      key: "ChildrenRecHelminthod",
+      value: [
+        "Number of children received deworming tablets (helmithic)",
+        "ຈ.ນ ເດັກອາຍຸ 12-59 ເດືອນ ໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ",
+      ],
+    },
+    {
+      key: "ChildrenRecVitA",
+      value: [
+        "Number of children aged 6-59 months received Vitamin A",
+        "ຈ.ນ ເດັກອາຍຸ 6-59 ເດືອນ ໄດ້ຮັບ ວິຕາມິນ ເອ",
+      ],
+    },
+    {
+      key: "ChildrenGrowthMon",
+      value: [
+        "Number of children under 5 years have growth monitoring",
+        "ຈ.ນ ເດັກລຸ່ມ 5 ປີ ໄດ້ກວດຕິດຕາມພັດ​ທະ​ນາ​ການ",
+      ],
+    },
+    {
+      key: "childrenMeasureMidUpperArm",
+      value: [
+        "Number of children measured for mid-upper arm circumferance (MUAC)",
+        "ຈ.ນ ເດັກທີ່ໄດ້ວັດແທກຮອບແຂນ",
+      ],
+    },
+    {
+      key: "childrenBelowStandardMeasureMidUpperArmRed",
+      value: [
+        "Number of children below standard with mid-upper arm circumferance measurement (red colour)",
+        "ຈ.ນ ເດັກທີ່ໄດ້ວັດແທກຮອບແຂນເປັນສີແດງ",
+      ],
+    },
+    {
+      key: "childrenBelowStandardMeasureMidUpperArmYellow",
+      value: [
+        "Number of children below standard with mid-upper arm circumferance measurement (yellow colour)",
+        "ຈ.ນ ເດັກທີ່ໄດ້ວັດແທກຮອບແຂນເປັນສີເຫລືອງ",
+      ],
+    },
+  ];
+
+  $(document).ready(function () {
+    // display current user language
+    $.get("../api/me", function (json) {
+      _language = json.settings.keyUiLocale;
+      PIS.translate(translation, _language);
+    });
+
+    // Start App for calculate Total values
+    startApp();
+
+    // If preiod is changed, restart the all the settings.
+    $("#selectedPeriodId").change(function () {
+      if (_intervalId !== undefined) {
+        _dataLoaded = false;
+        clearInterval(_intervalId);
+      }
+
+      startApp();
+    });
+  });
+
+  // Class for display user current language
+  PIS = {
+    translate: function (library, _language) {
+      // set default language as English
+      languageOrder = 0;
+      if (_language == "en") {
+        // do nothing
+      } else if (_language == "lo") {
+        languageOrder = 1;
+      } else {
+        // not identified language
+      }
+
+      $.each(library, function (index, entry) {
+        $("." + entry.key).html(entry.value[languageOrder]);
+      });
+    },
+  };
+
+  // -----------------------------------------------------
+  // Functions
+
+  function startApp() {
+    // Note 1.
+    // add group id as 'cfid' in each input tag.
+
+    // Clear all the totals
+    clearTotals();
+
+    _intervalId = undefined;
+    _dataLoaded = false;
+
+    // Note 2. Run interval for detecting data loading
+    _intervalId = setInterval(function () {
+      // Note 3. If any non-empty value is found,
+      //	- Set Section 'KeyUp' calculation event handler
+      //	- calculate total on all sections and stop the interval.
+      if (
+        !_dataLoaded &&
+        $("input[cfid]").filter(checkValue_Input).length > 0
+      ) {
+        _dataLoaded = true;
+
+        setSectionEventsAll();
+
+        sectionTotalCalcAll();
+
+        clearInterval(_intervalId);
+
+        _intervalId = undefined;
+      }
+    }, 500);
+  }
+
+  function checkValue_Input() {
+    return $(this).val().length > 0;
+  }
+
+  function getInputCFIDTags(tagId) {
+    return $("input[cfid='" + tagId + "']");
+  }
+
+  function getIntValue(input) {
+    if (input == "") {
+      return 0;
+    } else {
+      return parseInt(input);
+    }
+  }
+
+  function setSectionEventsAll() {
+    $("input[cfid]").keyup(function () {
+      var cfid_AttrName = $(this).attr("cfid");
+
+      var inputTags = getInputCFIDTags(cfid_AttrName);
+
+      var totalTag = $("#" + cfid_AttrName + "Total");
+
+      totalTag.text(calcData(inputTags));
+    });
+  }
+
+  function sectionTotalCalcAll() {
+    $("td.totalValueRow div").each(function () {
+      var cfid_AttrName = $(this).attr("id").replace("Total", "");
+      var inputTags = getInputCFIDTags(cfid_AttrName);
+
+      $(this).text(calcData(inputTags));
+    });
+  }
+
+  function clearTotals() {
+    $("td.totalValueRow div").each(function () {
+      $(this).text("");
+    });
+  }
+
+  function calcData(inputTag) {
+    var total = 0;
+    inputTag.each(function () {
+      total = getIntValue($(this).val()) + total;
+    });
+
+    return total;
+  }
+</script>
+<style type="text/css">
+  table {
+    width: 100%;
+  }
+  td.tableSeperate {
+    height: 20px;
+    background-color: rgb(255, 255, 255);
+    text-align: right;
+  }
+  td {
+    text-align: center;
+    background-color: rgb(244, 249, 255);
+    padding: 2px;
+  }
+  td.mainTitle {
+    text-align: left;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    background-color: rgb(102, 153, 204);
+  }
+  td.blueTitle {
+    background-color: rgb(153, 204, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.blueContent {
+    background-color: rgb(202, 229, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.orangeTitle {
+    background-color: rgb(255, 204, 0);
+    font-weight: bold;
+  }
+  td.orangeCatgory {
+    background-color: rgb(255, 224, 102);
+    font-weight: bold;
+  }
+  td.orangeContent {
+    background-color: rgb(255, 234, 153);
+  }
+  td.yorkGreenTitle {
+    background-color: rgb(153, 204, 153);
+    font-weight: bold;
+  }
+  td.yorkGreenCatgory {
+    background-color: rgb(183, 219, 183);
+    font-weight: bold;
+  }
+  td.yorkGreenContent {
+    background-color: rgb(224, 239, 224);
+  }
+  td.pinkTitle {
+    background-color: rgb(235, 199, 222);
+    font-weight: bold;
+  }
+  td.pinkCatgory {
+    background-color: rgb(239, 210, 228);
+    font-weight: bold;
+  }
+  td.pinkContent {
+    background-color: rgb(247, 232, 241);
+  }
+  td.brownTitle {
+    background-color: rgb(183, 112, 76);
+    font-weight: bold;
+  }
+  td.brownCatgory {
+    background-color: rgb(204, 153, 127);
+    font-weight: bold;
+  }
+  td.brownContent {
+    background-color: rgb(224, 193, 178);
+  }
+  td.greyField {
+    background-color: rgb(170, 182, 162);
+  }
+  input {
+    width: 5em;
+  }
+  td.totalValueRow {
+    text-align: right;
+    font-weight: bold;
+    background-color: rgb(224, 193, 178);
+  }
+</style>
+<table>
+  <tbody>
+    <tr>
+      <td class="tableSeperate">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="mainTitle">
+        <div class="ancDeliveryPNCMortality">&nbsp;</div>
+      </td>
+    </tr>
+    <!--ANC-->
+    <tr>
+      <td>
+        <table>
+          <tbody>
+            <tr>
+              <td class="blueTitle">
+                <div class="aANC">A-ANC</div>
+              </td>
+              <td class="orangeTitle">
+                <div class="healthFacility">Health Facility</div>
+              </td>
+              <td class="yorkGreenTitle">
+                <div class="outReach">Outreach</div>
+              </td>
+              <td class="brownTitle">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="firstANCVisitUnder19">
+                  Number First ANC visit &lt; 19 year
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="MFfuL7meWJ5-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC 1st visits among pregnant women under 19 years by Health facility/Outreach At Health Facility"
+                  value="[ ANC 1st visits among pregnant women under 19 years by Health facility/Outreach At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="MFfuL7meWJ5-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC 1st visits among pregnant women under 19 years by Health facility/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC 1st visits among pregnant women under 19 years by Health facility/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="firstANCVisitUnder19Total">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="firstANCVisitGreaterEqual19">
+                  Number First ANC visit &ge; 19 year
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="BDCOp88aI91-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC 1st visits among pregnant women at least 19 years by Health facility/Outreach At Health Facility"
+                  value="[ ANC 1st visits among pregnant women at least 19 years by Health facility/Outreach At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="BDCOp88aI91-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC 1st visits among pregnant women at least 19 years by Health facility/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC 1st visits among pregnant women at least 19 years by Health facility/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="firstANCVisitGreaterEqual19Total">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="fourthANCvisit">Number Fourth ANC visit</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="J5E8BkAoIWn-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC 4th Visit by Health facility/Outreach At Health Facility"
+                  value="[ ANC 4th Visit by Health facility/Outreach At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="J5E8BkAoIWn-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC 4th Visit by Health facility/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC 4th Visit by Health facility/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="fourthANCvisitTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="riskMother1StageHigherHos">
+                  Risk mother firt stage identified and refered to higher
+                  hospital
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="CHFkUvXqZuV-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="High Risk Pregnancy level 1 identified and refered to higher hospital At Health Facility"
+                  value="[ High Risk Pregnancy level 1 identified and refered to higher hospital At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="CHFkUvXqZuV-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="High Risk Pregnancy level 1 identified and refered to higher hospital ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ High Risk Pregnancy level 1 identified and refered to higher hospital ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="riskMother1StageHigherHosTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="riskMother2StageHigherHos">
+                  Risk mother Second Stage identified and refered to higher
+                  hospital
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="St3S4FCzicG-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="High Risk Pregnancy level 2 identified and refered to higher hospital At Health Facility"
+                  value="[ High Risk Pregnancy level 2 identified and refered to higher hospital At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="St3S4FCzicG-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="High Risk Pregnancy level 2 identified and refered to higher hospital ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ High Risk Pregnancy level 2 identified and refered to higher hospital ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="riskMother2StageHigherHosTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenTd1">
+                  Number Td1 (Pregnant women received one dose of Td in this
+                  pregnancy)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="tZH5BmEHUun-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC received Td1 in this pregnancy At Health Facility"
+                  value="[ ANC received Td1 in this pregnancy At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="tZH5BmEHUun-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC received Td1 in this pregnancy ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC received Td1 in this pregnancy ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenTd1Total">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenTd2">
+                  Number Td2+ (Pregnant women received two &amp; more dose of Td
+                  in this pregnancy)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pXfELMu5ihJ-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC received Td2+ in this pregnancy At Health Facility"
+                  value="[ ANC received Td2+ in this pregnancy At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="pXfELMu5ihJ-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC received Td2+ in this pregnancy ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC received Td2+ in this pregnancy ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenTd2Total">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenTdComplete">
+                  Pregnant Women Completed Td5 (5Dose) by this pregnancy
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="tZy4uW84fqG-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC completed Td5 in this pregnancy At Health Facility"
+                  value="[ ANC completed Td5 in this pregnancy At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="tZy4uW84fqG-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC completed Td5 in this pregnancy ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC completed Td5 in this pregnancy ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenTdCompleteTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenReceiveIFA90">
+                  Number of pregnant women received IFA 90 tabets
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Q3SDvb99gUE-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="ANC received IFA 90 tablets At Health Facility"
+                  value="[ ANC received IFA 90 tablets At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Q3SDvb99gUE-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="ANC received IFA 90 tablets ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ ANC received IFA 90 tablets ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenReceiveIFA90Total">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenANCvisitHIVCounsel">
+                  Number First ANC visit with HIV Counselling
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="WRYGPGnbcyE-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="ANC received STI/HIV Counselling"
+                  value="[ ANC received STI/HIV Counselling ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenANCvisitHIVCounselTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenANCvisitHIVTest">
+                  Number Pregnant women received Counselling &amp; Tested for
+                  HIV
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="q5ZMwieGJ1N-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="ANC received counselling &amp; tested for STI/HIV"
+                  value="[ ANC received counselling &amp; tested for STI/HIV ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenANCvisitHIVTestTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pregnantWomenANCvisitHIVPos">
+                  Number Pregnant woment HIV positive
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="RYnLUPvo278-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Pregnant tested HIV positive"
+                  value="[ Pregnant tested HIV positive ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="pregnantWomenANCvisitHIVPosTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <!--MCH B DELIVERY -->
+            <tr>
+              <td class="blueTitle">
+                <div class="delivery">B - DELIVERY</div>
+              </td>
+              <td class="orangeTitle">
+                <div class="healthFacility">Health facility</div>
+              </td>
+              <td class="yorkGreenTitle">
+                <div class="outReach">Out reach</div>
+              </td>
+              <td class="brownTitle">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="deliveryAtHealthFacility">
+                  Delivery At Health Facility
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="CyUEAFiwGTS-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="MCH: Deliveries by SBA (HF+Outreach+Outside of country)"
+                  value="[ MCH: Deliveries by SBA (HF+Outreach+Outside of country) ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="deliveryAtFacilityTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="deliveryInOtherHF">
+                  Delivery in other health facility
+                </div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="brownContent">
+                <input
+                  id="BrPq39c8RGO-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Delivery in Other HF"
+                  value="[ Delivery in Other HF ]"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="deliveryHomeSBA">
+                  Number deliveried at home by SBA
+                </div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="yorkGreenContent">
+                <input
+                  id="skWdJmVHpkM-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="MCH: Deliveries at home by SBA"
+                  value="[ MCH: Deliveries at home by SBA ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="deliveryHomeSBATotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="deliveryHomeWithoutSBA">
+                  Number delivery at home without SBA
+                </div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Ryqym3k0Ufc-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Delivery at Home without SBA"
+                  value="[ Delivery at Home without SBA ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="deliveryHomeWithoutSBATotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="normalDelivery">
+                  Number of normal delivery (Vaginal delivery)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="amPLatG4bO9-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Natural Delivery At Health Facility"
+                  value="[ Natural Delivery At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="amPLatG4bO9-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Natural Delivery ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Natural Delivery ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="normalDeliveryTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="medicalEquipDelivery">
+                  Number deliveried by using medical equipment: Forcept, Vacumm
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="K7dF5mpEqyO-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Delivery with equipment"
+                  value="[ Delivery with equipment ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="medicalEquipDeliveryTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="caesareanSection">Number of Caesarean sections</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="di2GiKSQ3wV-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Caesarean delivery"
+                  value="[ Caesarean delivery ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="caesareanSectionTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="delPreEclamsia">
+                  Delivery with Pre-and Eclampsia
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="fPLmoXgFDs7-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Pre/Eclampsia delivery"
+                  value="[ Pre/Eclampsia delivery ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="delPreAclamsiaTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="pretermDelivery2236w">
+                  Number of Preterm delivery 22-36 weeks
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="DLRD2Qoe6qP-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Preterm deliveries at 22-36 wks At Health Facility"
+                  value="[ Preterm deliveries at 22-36 wks At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="DLRD2Qoe6qP-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Preterm deliveries at 22-36 wks ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Preterm deliveries at 22-36 wks ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="pretermDelivery2236wTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="stillBirth">Number of still births</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="PGaxoLVKaCz-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Still birth &gt;=28weeks"
+                  value="[ Still birth &gt;=28weeks ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="stillBirthTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="liveBirth">Number total of live births</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="XnsSXusE1ow-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Live births by HF/Outreach At Health Facility"
+                  value="[ Live births by HF/Outreach At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="XnsSXusE1ow-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Live births by HF/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Live births by HF/Outreach ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="liveBirthTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="newbornUnderWeight">
+                  Number under weight newborn
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="jt385ilkaUd-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Newborns &lt;2500 gr At Health Facility"
+                  value="[ Newborns &lt;2500 gr At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="jt385ilkaUd-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Newborns &lt;2500 gr ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Newborns &lt;2500 gr ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="newbornUnderWeightTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="motherBreastfeed1Hr">
+                  Number of newborns initiated breastfeeding within the first
+                  hour after birth
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="FBUvQe3qNgf-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Newborn breastfeeding within 1 hour At Health Facility"
+                  value="[ Newborn breastfeeding within 1 hour At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="FBUvQe3qNgf-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Newborn breastfeeding within 1 hour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Newborn breastfeeding within 1 hour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="firstHourBreastfeedingTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="spontaneusAbortion">Spontaneus abortions</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="CVl2SqGtDNt-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Spontaneus abortion &lt;28 weeks At Health Facility"
+                  value="[ Spontaneus abortion &lt;28 weeks At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="CVl2SqGtDNt-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Spontaneus abortion &lt;28 weeks ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Spontaneus abortion &lt;28 weeks ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="spontaneusAbortionTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="inducedAbortion">Induced abortions</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="syylGWdLSOR-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Induced abortion"
+                  value="[ Induced abortion ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="inducedAbortionTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="ectopicPregnancyRupture">
+                  Number Ectopic pregnancy raptured
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="eMtjlRvZ3pz-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Ectopic pregnancy ruptured"
+                  value="[ Ectopic pregnancy ruptured ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="ectopicPregnancyRuptureTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <!--c. PNC-->
+            <tr>
+              <td class="blueTitle">
+                <div class="cpnc">C - PNC</div>
+              </td>
+              <td class="orangeTitle">
+                <div class="healthFacility">In health facility</div>
+              </td>
+              <td class="yorkGreenTitle">
+                <div class="outReach">Out reach</div>
+              </td>
+              <td class="brownTitle">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="womenReceivePNC07day">
+                  Number women receive PNC within 0-7 days from birth in the
+                  month
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="fWhUngeGuvn-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Women receive PNC within 1-7 days from birth At Health Facility"
+                  value="[ Women receive PNC within 1-7 days from birth At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="fWhUngeGuvn-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Women receive PNC within 1-7 days from birth ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Women receive PNC within 1-7 days from birth ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="womenReceivePNC07dayTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="womenReceivePNC842day">
+                  Number of women receive PNC within 8-42 days from birth
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Rhz7ffr49yD-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Women receive PNC within 8-42 days from birth At Health Facility"
+                  value="[ Women receive PNC within 8-42 days from birth At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Rhz7ffr49yD-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Women receive PNC within 8-42 days from birth ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Women receive PNC within 8-42 days from birth ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="womenReceivePNC842dayTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="totalPNC">Total number of PNC (person time)</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="zbJoMbBRjLq-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Total PNC (person time) At Health Facility"
+                  value="[ Total PNC (person time) At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="zbJoMbBRjLq-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Total PNC (person time) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Total PNC (person time) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="totalPNCTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <!--Mortality report-->
+            <tr>
+              <td class="blueTitle">
+                <div class="mortality">D - MORTALITY REPORT</div>
+              </td>
+              <td class="orangeTitle">
+                <div class="healthFacility">In health facility</div>
+              </td>
+              <td class="yorkGreenTitle">
+                <div class="outReach">Out reach</div>
+              </td>
+              <td class="brownTitle">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="maternalDeath">Number of Maternal death</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="dJhWRKs0fcq-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Maternal deaths At Health Facility"
+                  value="[ Maternal deaths At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="dJhWRKs0fcq-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Maternal deaths ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Maternal deaths ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="maternalDeathTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="neoDeath07day">
+                  Neonatal death within 0-7 days from birth
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="sISjKc2LEDg-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Death Neonatal 0-7 days At Health Facility"
+                  value="[ Death Neonatal 0-7 days At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="sISjKc2LEDg-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Death Neonatal 0-7 days ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Death Neonatal 0-7 days ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="neoDeath07dayTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="neoDeath828day">
+                  Neonatal death 8-28 days from birth
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="FSLrz90vXKf-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Death Neonatal 8-28 days At Health Facility"
+                  value="[ Death Neonatal 8-28 days At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="FSLrz90vXKf-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Death Neonatal 8-28 days ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Death Neonatal 8-28 days ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="neoDeath828dayTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="infantDeath111months">
+                  Number of infant death age 1-11 months
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="nCl4K1S3efY-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Infant death 1-11 months At Health Facility"
+                  value="[ Infant death 1-11 months At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="nCl4K1S3efY-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Infant death 1-11 months ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Infant death 1-11 months ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="infantDeath111monthsTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="infantDeath">
+                  Total number of Infant (under 1 year of age) deaths
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="cPcvesqWRtH-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Deaths under 1 year (MCH) At Health Facility"
+                  value="[ Deaths under 1 year (MCH) At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="cPcvesqWRtH-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Deaths under 1 year (MCH) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Deaths under 1 year (MCH) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="infantDeathTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="childDeath114y">
+                  Number of child deaths age 1-4 years
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="kyVKK0JcRPJ-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Deaths Child 1-4 years At Health Facility"
+                  value="[ Deaths Child 1-4 years At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="kyVKK0JcRPJ-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Deaths Child 1-4 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Deaths Child 1-4 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="infantDeath114yTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="under5Mortality">Total Under 5 Mortality</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="cwhEsbBe6Zs-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Death under 5 years At Health Facility"
+                  value="[ Death under 5 years At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="cwhEsbBe6Zs-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Death under 5 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Death under 5 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under5MortalityTotal">&nbsp;</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!--FAMILY PLANNING-->
+    <tr>
+      <td class="tableSeperate">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="mainTitle">
+        <div class="familyPlanning">D - FAMILY PLANNING</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tbody>
+            <tr>
+              <td class="blueTitle" rowspan="2">&nbsp;</td>
+              <td class="orangeTitle" colspan="3">
+                <div class="healthFacility">In health facility</div>
+              </td>
+              <td class="yorkGreenTitle" colspan="3">
+                <div class="outReach">Out reach</div>
+              </td>
+              <td class="pinkTitle" colspan="3">
+                <div class="cbdAndVHV">CBD and VHV</div>
+              </td>
+              <td class="brownTitle" colspan="3">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="orangeCatgory">
+                <div class="oldUser">Old user</div>
+              </td>
+              <td class="orangeCatgory">
+                <div class="newUser">New user</div>
+              </td>
+              <td class="orangeCatgory">
+                <div class="distributeWastage">
+                  Total number distributed + wastage
+                </div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="oldUser">Old user</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="newUser">New user</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="distributeWastage">
+                  Total number distributed + wastage
+                </div>
+              </td>
+              <td class="pinkCatgory">
+                <div class="oldUser">Old user</div>
+              </td>
+              <td class="pinkCatgory">
+                <div class="newUser">New user</div>
+              </td>
+              <td class="pinkCatgory">
+                <div class="distributeWastage">
+                  Total number distributed + wastage
+                </div>
+              </td>
+              <td class="brownCatgory">
+                <div class="oldUser">Old user</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="newUser">New user</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="distributeWastage">
+                  Total number distributed + wastage
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveCondom">
+                  Number of married couple who received condoms
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="bM0YZOyAlMr-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Condoms Old users At Health Facility"
+                  value="[ Condoms Old users At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="m2V4dUljQVq-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Condoms New users At Health Facility"
+                  value="[ Condoms New users At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="jIp5LTCcNtK-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Total Condom distributed and wastage At Health Facility"
+                  value="[ Total Condom distributed and wastage At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="bM0YZOyAlMr-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Condoms Old users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Condoms Old users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="m2V4dUljQVq-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Condoms New users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Condoms New users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="jIp5LTCcNtK-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Total Condom distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Total Condom distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="bM0YZOyAlMr-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Condoms Old users CBD and VHV"
+                  value="[ Condoms Old users CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="m2V4dUljQVq-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Condoms New users CBD and VHV"
+                  value="[ Condoms New users CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="jIp5LTCcNtK-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Total Condom distributed and wastage CBD and VHV"
+                  value="[ Total Condom distributed and wastage CBD and VHV ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveCondomTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveCondomTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="condomDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveSinglePill">
+                  Number of married couple who received Single Pill
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="VPbIDh5HeVc-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Single pill Old users At Health Facility"
+                  value="[ Single pill Old users At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="whoq3P3gtyc-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Single pill new users At Health Facility"
+                  value="[ Single pill new users At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="P5XJHbCeYjZ-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Total Single pill distributed and wastage At Health Facility"
+                  value="[ Total Single pill distributed and wastage At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="VPbIDh5HeVc-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Single pill Old users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Single pill Old users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="whoq3P3gtyc-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Single pill new users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Single pill new users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="P5XJHbCeYjZ-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Total Single pill distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Total Single pill distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="VPbIDh5HeVc-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Single pill Old users CBD and VHV"
+                  value="[ Single pill Old users CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="whoq3P3gtyc-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Single pill new users CBD and VHV"
+                  value="[ Single pill new users CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="P5XJHbCeYjZ-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Total Single pill distributed and wastage CBD and VHV"
+                  value="[ Total Single pill distributed and wastage CBD and VHV ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveSinglePillTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveSinglePillTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="SinglePillDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveMixPill">
+                  Number of married couple who received Combined Pill
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="sa8Ep87YPNv-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Combined pill Old user At Health Facility"
+                  value="[ Combined pill Old user At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="kUIvo5is72S-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Combined pill New user At Health Facility"
+                  value="[ Combined pill New user At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="UwHbHit401I-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Total Mix Pill distributed and wastage At Health Facility"
+                  value="[ Total Mix Pill distributed and wastage At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="sa8Ep87YPNv-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Combined pill Old user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Combined pill Old user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="kUIvo5is72S-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Combined pill New user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Combined pill New user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="UwHbHit401I-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Total Mix Pill distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Total Mix Pill distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="sa8Ep87YPNv-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Combined pill Old user CBD and VHV"
+                  value="[ Combined pill Old user CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="kUIvo5is72S-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Combined pill New user CBD and VHV"
+                  value="[ Combined pill New user CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="UwHbHit401I-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Total Mix Pill distributed and wastage CBD and VHV"
+                  value="[ Total Mix Pill distributed and wastage CBD and VHV ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveMixPillTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveMixPillTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="MixPillDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveDepose">
+                  Number of married couple who received Depose (Injectable)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="bx2Imp5Yzuw-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Depose (Injectable) Old users At Health Facility"
+                  value="[ Depose (Injectable) Old users At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="QFWbdLref5O-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Depose (Injectable) New users At Health Facility"
+                  value="[ Depose (Injectable) New users At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="XSoNHLsSVCq-i7WPuiegoQn-val"
+                  name="entryfield"
+                  title="Total Depose (Injectable) distributed and wastage At Health Facility"
+                  value="[ Total Depose (Injectable) distributed and wastage At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="bx2Imp5Yzuw-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Depose (Injectable) Old users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Depose (Injectable) Old users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="QFWbdLref5O-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Depose (Injectable) New users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Depose (Injectable) New users ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="XSoNHLsSVCq-ym41uKo2JHl-val"
+                  name="entryfield"
+                  title="Total Depose (Injectable) distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Total Depose (Injectable) distributed and wastage ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="bx2Imp5Yzuw-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Depose (Injectable) Old users CBD and VHV"
+                  value="[ Depose (Injectable) Old users CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="QFWbdLref5O-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Depose (Injectable) New users CBD and VHV"
+                  value="[ Depose (Injectable) New users CBD and VHV ]"
+                />
+              </td>
+              <td class="pinkContent">
+                <input
+                  id="XSoNHLsSVCq-W0ELtxvwjdA-val"
+                  name="entryfield"
+                  title="Total Depose (Injectable) distributed and wastage CBD and VHV"
+                  value="[ Total Depose (Injectable) distributed and wastage CBD and VHV ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveDeposeTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveDeposeTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="DeposeDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveIUD">
+                  Number of married couple who received IUD
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="OvagmN5kZYp-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="undefined"
+                  value="[ undefined ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="mDRUz90yNBS-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="undefined"
+                  value="[ undefined ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="GdS8rjeT5jm-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Total IUD distributed and wastage at HF"
+                  value="[ Total IUD distributed and wastage at HF ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveIUDTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveIUDTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="IUDDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveImplant">
+                  Number of married couple who received Implant
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="fxxCQH5j7cu-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="undefined"
+                  value="[ undefined ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="kaE666RoSB0-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="undefined"
+                  value="[ undefined ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pFejMr8V1sj-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Total Implant distributed and wastage at HF"
+                  value="[ Total Implant distributed and wastage at HF ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveImplantTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveImplantTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="implantDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="CoupleReceiveEmergencyPill">
+                  Number of married couple who received Emergency pill
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pMsIub38RRC-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="undefined"
+                  value="[ undefined ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="yRcuPIKofP7-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="undefined"
+                  value="[ undefined ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="BQiWHHRpTJk-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Total Emergency pill distributed and wastage at HF"
+                  value="[ Total Emergency pill distributed and wastage at HF ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="oldCoupleReceiveEmergencyPillTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="newCoupleReceiveEmergencyPillTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="emergencyPillDistributeWastageTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="femaleSterilization">
+                  Number of Female Sterilization
+                </div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="orangeContent">
+                <input
+                  id="el62zkAWxUc-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Female Sterilization New user"
+                  value="[ Female Sterilization New user ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="femaleSterilizationTotal">&nbsp;</div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="maleSterilization">
+                  Number of Male Sterilization
+                </div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="orangeContent">
+                <input
+                  id="Itl7pbKRCvw-lmbxvugTvKr-val"
+                  name="entryfield"
+                  title="Male Sterilization New users"
+                  value="[ Male Sterilization New users ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="maleSterilizationTotal">&nbsp;</div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="1244FemaleReceivedIFA">
+                  Number of 12-44 year female received IFA for one pill a week
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="CSWmDcfmDmv-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Female 12-14 years received IFA for 1 pill a week Old user At Health Facility"
+                  value="[ Female 12-14 years received IFA for 1 pill a week Old user At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="AQyADRGOSBJ-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Female 12-14 years received IFA for 1 pill a week New user At Health Facility"
+                  value="[ Female 12-14 years received IFA for 1 pill a week New user At Health Facility ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="zYWfyGpbOu6-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Total IFA for 1 pill a week distributed and wastage to 12-14 year female At Health Facility"
+                  value="[ Total IFA for 1 pill a week distributed and wastage to 12-14 year female At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="CSWmDcfmDmv-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Female 12-14 years received IFA for 1 pill a week Old user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Female 12-14 years received IFA for 1 pill a week Old user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="AQyADRGOSBJ-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Female 12-14 years received IFA for 1 pill a week New user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Female 12-14 years received IFA for 1 pill a week New user ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="zYWfyGpbOu6-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Total IFA for 1 pill a week distributed and wastage to 12-14 year female ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Total IFA for 1 pill a week distributed and wastage to 12-14 year female ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="Old1244FemaleReceivedIFATotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="new1244FemaleReceivedIFATotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="IFADistributed1244FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!--EPI-->
+    <tr>
+      <td class="tableSeperate">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="mainTitle">
+        <div class="eEPI">E - EPI</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tbody>
+            <tr>
+              <td class="blueTitle" rowspan="3">&nbsp;</td>
+              <td class="orangeTitle" colspan="4">
+                <div class="healthFacility">In health facility</div>
+              </td>
+              <td class="yorkGreenTitle" colspan="4">
+                <div class="outReach">Out reach</div>
+              </td>
+              <td class="brownTitle" colspan="4">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="orangeCatgory" colspan="2">
+                <div class="under12Month">&lt; 12 month</div>
+              </td>
+              <td class="orangeCatgory" colspan="2">
+                <div class="12to59month">12-59 months</div>
+              </td>
+              <td class="yorkGreenCatgory" colspan="2">
+                <div class="under12Month">&lt; 12 month</div>
+              </td>
+              <td class="yorkGreenCatgory" colspan="2">
+                <div class="12to59month">12-59 months</div>
+              </td>
+              <td class="brownCatgory" colspan="2">
+                <div class="under12Month">&lt; 12 month</div>
+              </td>
+              <td class="brownCatgory" colspan="2">
+                <div class="12to59month">12-59 months</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="orangeCatgory">
+                <div class="male">Male</div>
+              </td>
+              <td class="orangeCatgory">
+                <div class="female">Female</div>
+              </td>
+              <td class="orangeCatgory">
+                <div class="male">Male</div>
+              </td>
+              <td class="orangeCatgory">
+                <div class="female">Female</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="male">Male</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="female">Female</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="male">Male</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="female">Female</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="male">Male</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="female">Female</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="male">Male</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="female">Female</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="BCG">Number of children received BCG vaccine</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="HjDMApUQGcf-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received BCG vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="HjDMApUQGcf-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received BCG vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="HjDMApUQGcf-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received BCG vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="HjDMApUQGcf-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received BCG vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="HjDMApUQGcf-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="HjDMApUQGcf-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="HjDMApUQGcf-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="HjDMApUQGcf-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received BCG vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mBCGMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mBCGFemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mBCGMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mBCGFemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="HepBD24hr">
+                  Number of children within 24 hours after birth received Hep BD
+                  vaccine
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="yn1HlpkSXVO-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children within 24 hrs after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children within 24 hrs after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="yn1HlpkSXVO-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children within 24 hrs after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children within 24 hrs after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="yorkGreenContent">
+                <input
+                  id="yn1HlpkSXVO-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children within 24 hrs after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children within 24 hrs after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="yn1HlpkSXVO-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children within 24 hrs after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children within 24 hrs after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="under12mHepBDMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mHepBDFemaleTotal">&nbsp;</div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="HepB07day">
+                  Number of children within 7 days of age after birth received
+                  Hep B0 vaccine
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="ascmJUGBy90-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children within 7 days after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children within 7 days after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="ascmJUGBy90-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children within 7 days after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children within 7 days after birth received Hep B0 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="yorkGreenContent">
+                <input
+                  id="ascmJUGBy90-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children within 7 days after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children within 7 days after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="ascmJUGBy90-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children within 7 days after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children within 7 days after birth received Hep B0 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="under12mHepB0MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mHepB0FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="greyField">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="DHH1">
+                  Number of children received DPT-HepB-Hib1 vaccine
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Kv5OWjtPdka-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Kv5OWjtPdka-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Kv5OWjtPdka-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Kv5OWjtPdka-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Kv5OWjtPdka-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Kv5OWjtPdka-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Kv5OWjtPdka-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Kv5OWjtPdka-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received DPT-HepB-Hib 1 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mDHH1MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mDHH1FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mDHH1MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mDHH1FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="DHH2">
+                  Number of children received DPT-HepB-Hib2 vaccine
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Wwetscm6GjH-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Wwetscm6GjH-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Wwetscm6GjH-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Wwetscm6GjH-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Wwetscm6GjH-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Wwetscm6GjH-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Wwetscm6GjH-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Wwetscm6GjH-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received DPT-HepB-Hib 2 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mDHH2MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mDHH2FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mDHH2MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mDHH2FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="DHH3">
+                  Number of children received DPT-HepB-Hib3 vaccine
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="YCRUI2KHJ6S-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="YCRUI2KHJ6S-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="YCRUI2KHJ6S-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="YCRUI2KHJ6S-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="YCRUI2KHJ6S-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="YCRUI2KHJ6S-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="YCRUI2KHJ6S-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="YCRUI2KHJ6S-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received DPT-HepB-Hib 3 vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mDHH3MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mDHH3FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mDHH3MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mDHH3FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="OPV1">Number of children received OPV1</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Ryo3U9yy918-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received OPV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received OPV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Ryo3U9yy918-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received OPV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received OPV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Ryo3U9yy918-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received OPV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received OPV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="Ryo3U9yy918-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received OPV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received OPV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Ryo3U9yy918-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Ryo3U9yy918-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Ryo3U9yy918-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="Ryo3U9yy918-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received OPV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mOPV1MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mOPV1FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mOPV1MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mOPV1FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="OPV2">Number of children received OPV2</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="dnO73itfcFY-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received OPV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received OPV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="dnO73itfcFY-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received OPV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received OPV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="dnO73itfcFY-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received OPV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received OPV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="dnO73itfcFY-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received OPV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received OPV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="dnO73itfcFY-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="dnO73itfcFY-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="dnO73itfcFY-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="dnO73itfcFY-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received OPV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mOPV2MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mOPV2FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mOPV2MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mOPV2FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="OPV3">Number of children received OPV3</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="WwD99ujZ6WT-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received OPV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received OPV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="WwD99ujZ6WT-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received OPV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received OPV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="WwD99ujZ6WT-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received OPV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received OPV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="WwD99ujZ6WT-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received OPV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received OPV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="WwD99ujZ6WT-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="WwD99ujZ6WT-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="WwD99ujZ6WT-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="WwD99ujZ6WT-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received OPV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mOPV3MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mOPV3FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mOPV3MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mOPV3FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="IPV">Number of children received IPV injection</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="MDN5DCyb13Z-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received IPV injection At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received IPV injection At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="MDN5DCyb13Z-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received IPV injection At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received IPV injection At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="MDN5DCyb13Z-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received IPV injection At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received IPV injection At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="MDN5DCyb13Z-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received IPV injection At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received IPV injection At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="MDN5DCyb13Z-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="MDN5DCyb13Z-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="MDN5DCyb13Z-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="MDN5DCyb13Z-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received IPV injection ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mIPVMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mIPVFemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mIPVMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mIPVFemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="PVC1">Number of children received PCV1</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="LEO8quyayBX-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received PCV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received PCV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="LEO8quyayBX-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received PCV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received PCV 1 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="LEO8quyayBX-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received PCV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received PCV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="LEO8quyayBX-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received PCV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received PCV 1 At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="LEO8quyayBX-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="LEO8quyayBX-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="LEO8quyayBX-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="LEO8quyayBX-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received PCV 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mPVC1MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mPVC1FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mPVC1MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mPVC1FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="PVC2">Number of children received PCV2</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="V4nVWHrNwHQ-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received PCV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received PCV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="V4nVWHrNwHQ-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received PCV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received PCV 2 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="V4nVWHrNwHQ-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received PCV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received PCV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="V4nVWHrNwHQ-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received PCV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received PCV 2 At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="V4nVWHrNwHQ-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="V4nVWHrNwHQ-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="V4nVWHrNwHQ-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="V4nVWHrNwHQ-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received PCV 2 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mPVC2MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mPVC2FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mPVC2MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mPVC2FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="PVC3">Number of children received PCV3</div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="GazgjZwryqh-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received PCV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received PCV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="GazgjZwryqh-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received PCV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received PCV 3 At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="GazgjZwryqh-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received PCV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received PCV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="GazgjZwryqh-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received PCV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received PCV 3 At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="GazgjZwryqh-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="GazgjZwryqh-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="GazgjZwryqh-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="GazgjZwryqh-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received PCV 3 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mPVC3MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mPVC3FemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mPVC3MaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mPVC3FemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="MeasleRubella">
+                  Number of children received MR and Rubella
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pJ4m5F1BMFX-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received MR and Rubella At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pJ4m5F1BMFX-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received MR and Rubella At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pJ4m5F1BMFX-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received MR and Rubella At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="pJ4m5F1BMFX-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received MR and Rubella At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="pJ4m5F1BMFX-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="pJ4m5F1BMFX-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="pJ4m5F1BMFX-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="pJ4m5F1BMFX-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children received MR and Rubella ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mMeasleRubellaMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mMeasleRubellaFemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mMeasleRubellaMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mMeasleRubellaFemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="JE">
+                  Number of children 12-23 months of age received JE vaccine
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="VzFAhjUGPKy-JOdSKa74dOt-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children 12-23 months received JE vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="VzFAhjUGPKy-w1Eoicl90Dw-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children 12-23 months received JE vaccine At Health Facility, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="VzFAhjUGPKy-EkQQvjTZ7ud-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children 12-23 months received JE vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="VzFAhjUGPKy-E5JiTJPiDG9-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children 12-23 months received JE vaccine At Health Facility, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="VzFAhjUGPKy-uqCRDO2SwAo-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male"
+                  value="[ Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="VzFAhjUGPKy-RKOgdQGR7Ju-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female"
+                  value="[ Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months, Female ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="VzFAhjUGPKy-TnWpDZgVtTT-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male"
+                  value="[ Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Male ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="VzFAhjUGPKy-RYOsHtyIGkG-val"
+                  name="entryfield"
+                  title="Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female"
+                  value="[ Children 12-23 months received JE vaccine ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months, Female ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mJEMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="under12mJEFemaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mJEMaleTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259mJEFemaleTotal">&nbsp;</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableSeperate">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tbody>
+            <tr>
+              <td class="blueTitle">
+                <div class="ReprosuctiveWomen">
+                  Pre reproductive and Reproductive Women
+                </div>
+              </td>
+              <td class="orangeTitle">
+                <div class="healthFacility">In health facility</div>
+              </td>
+              <td class="yorkGreenTitle">
+                <div class="outReach">Outreach</div>
+              </td>
+              <td class="brownTitle">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="firstHPV914y">
+                  Number of women age 9-14 year old received HPV1
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="FxuIOMfoaAt-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="HPV 1st dose 9-12 years At Health Facility"
+                  value="[ HPV 1st dose 9-12 years At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="FxuIOMfoaAt-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="HPV 1st dose 9-12 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ HPV 1st dose 9-12 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="firstHPV914yTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="secondHPV914y">
+                  Number of women age 9-14 year old received HPV2
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="h9TuPNYziST-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="HPV 2nd dose 9-12 years At Health Facility"
+                  value="[ HPV 2nd dose 9-12 years At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="h9TuPNYziST-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="HPV 2nd dose 9-12 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ HPV 2nd dose 9-12 years ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="secondHPV914yTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="womenReceiveTd1">
+                  Number of reproductive women receive Td1 in this month
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="GQTewVMURsX-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Reproductive women got Td 1 At Health Facility"
+                  value="[ Reproductive women got Td 1 At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="GQTewVMURsX-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Reproductive women got Td 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Reproductive women got Td 1 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="womenReceiveTd1Total">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="womenCompletedTd">
+                  Number reproductive women completed 5 doses of Td in this
+                  month
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="S9piUAv5iYA-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Reproductive women got Td 5 At Health Facility"
+                  value="[ Reproductive women got Td 5 At Health Facility ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="S9piUAv5iYA-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Reproductive women got Td 5 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Reproductive women got Td 5 ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="womenCompletedTdTotal">&nbsp;</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <!--F - GROWTH MONITORING AND NUTRITION-->
+    <tr>
+      <td class="tableSeperate">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="mainTitle">
+        <div class="fnutrition">F - GROWTH MONITORING AND NUTRITION</div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <table>
+          <tbody>
+            <tr>
+              <td class="blueTitle" rowspan="2">&nbsp;</td>
+              <td class="orangeTitle" colspan="2">
+                <div class="healthFacility">In Health facility</div>
+              </td>
+              <td class="yorkGreenTitle" colspan="2">
+                <div class="outReach">Outreach</div>
+              </td>
+              <td class="brownTitle" colspan="2">
+                <div class="total">Total</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="orangeCatgory">
+                <div class="under12Month">&lt; 12 month</div>
+              </td>
+              <td class="orangeCatgory">
+                <div class="12to59month">12-59 month</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="under12Month">&lt; 12 month</div>
+              </td>
+              <td class="yorkGreenCatgory">
+                <div class="12to59month">12-59 month</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="under12Month">&lt; 12 month</div>
+              </td>
+              <td class="brownCatgory">
+                <div class="12to59month">12-59 month</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="ChildrenRecHelminthod">
+                  Number of children received deworming tablet
+                </div>
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="orangeContent">
+                <input
+                  id="WT0nisMw0yl-eFXrDqXA2WQ-val"
+                  name="entryfield"
+                  title="Helmithi 1st Children Deworming tablets 1st round At Health Facility"
+                  value="[ Helmithi 1st Children Deworming tablets 1st round At Health Facility ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="yorkGreenContent">
+                <input
+                  id="WT0nisMw0yl-BaKsAyoQBud-val"
+                  name="entryfield"
+                  title="Helmithi 1st Children Deworming tablets 1st round ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach"
+                  value="[ Helmithi 1st Children Deworming tablets 1st round ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach ]"
+                />
+              </td>
+              <td class="greyField">&nbsp;</td>
+              <td class="totalValueRow">
+                <div id="1259ChildrenRecHelminthodTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="ChildrenRecVitA">
+                  Number of children aged 6-59 months received Vitamin A
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="JRxfNE2n8Ux-xp6YPoDKUe4-val"
+                  name="entryfield"
+                  title="Children 6-59 months received Vitamin A At Health Facility, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children 6-59 months received Vitamin A At Health Facility, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="JRxfNE2n8Ux-jD0Cf8zYYbV-val"
+                  name="entryfield"
+                  title="Children 6-59 months received Vitamin A At Health Facility, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children 6-59 months received Vitamin A At Health Facility, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="JRxfNE2n8Ux-TV90yPZi9iy-val"
+                  name="entryfield"
+                  title="Children 6-59 months received Vitamin A ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children 6-59 months received Vitamin A ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="JRxfNE2n8Ux-myQ7981H7vs-val"
+                  name="entryfield"
+                  title="Children 6-59 months received Vitamin A ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children 6-59 months received Vitamin A ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12ChildrenRecVitATotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259ChildrenRecVitATotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="ChildrenGrowthMon">
+                  Number of children under 5 years have growth monitoring
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="LoRGj1dFh6X-xp6YPoDKUe4-val"
+                  name="entryfield"
+                  title="Under 5 growth monitoring chart updated At Health Facility, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Under 5 growth monitoring chart updated At Health Facility, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="LoRGj1dFh6X-jD0Cf8zYYbV-val"
+                  name="entryfield"
+                  title="Under 5 growth monitoring chart updated At Health Facility, 12-59ເດືອນ | 12-59 months"
+                  value="[ Under 5 growth monitoring chart updated At Health Facility, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="LoRGj1dFh6X-TV90yPZi9iy-val"
+                  name="entryfield"
+                  title="Under 5 growth monitoring chart updated ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Under 5 growth monitoring chart updated ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="LoRGj1dFh6X-myQ7981H7vs-val"
+                  name="entryfield"
+                  title="Under 5 growth monitoring chart updated ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months"
+                  value="[ Under 5 growth monitoring chart updated ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12ChildrenGrowthMonTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259ChildrenGrowthMonTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="childrenMeasureMidUpperArm">
+                  Number of children measured for mid-upper arm circumferance
+                  (MUAC)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="ANMIcle2zLx-xp6YPoDKUe4-val"
+                  name="entryfield"
+                  title="Children measured for mid-upper arm circumferance (MUAC) At Health Facility, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children measured for mid-upper arm circumferance (MUAC) At Health Facility, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="ANMIcle2zLx-jD0Cf8zYYbV-val"
+                  name="entryfield"
+                  title="Children measured for mid-upper arm circumferance (MUAC) At Health Facility, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children measured for mid-upper arm circumferance (MUAC) At Health Facility, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="ANMIcle2zLx-TV90yPZi9iy-val"
+                  name="entryfield"
+                  title="Children measured for mid-upper arm circumferance (MUAC) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children measured for mid-upper arm circumferance (MUAC) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="ANMIcle2zLx-myQ7981H7vs-val"
+                  name="entryfield"
+                  title="Children measured for mid-upper arm circumferance (MUAC) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children measured for mid-upper arm circumferance (MUAC) ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div id="under12childrenMeasureMidUpperArmTotal">&nbsp;</div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259childrenMeasureMidUpperArmTotal">&nbsp;</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="childrenBelowStandardMeasureMidUpperArmRed">
+                  Number of children below standard with mid-upper arm
+                  circumferance measurement (red colour)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="CpObNMjrSLR-xp6YPoDKUe4-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Red colour At Health Facility, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children below standard with MUAC Red colour At Health Facility, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="CpObNMjrSLR-jD0Cf8zYYbV-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Red colour At Health Facility, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children below standard with MUAC Red colour At Health Facility, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="CpObNMjrSLR-TV90yPZi9iy-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Red colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children below standard with MUAC Red colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="CpObNMjrSLR-myQ7981H7vs-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Red colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children below standard with MUAC Red colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div
+                  id="under12childrenBelowStandardMeasureMidUpperArmRedTotal"
+                >
+                  &nbsp;
+                </div>
+              </td>
+              <td class="totalValueRow">
+                <div id="1259childrenBelowStandardMeasureMidUpperArmRedTotal">
+                  &nbsp;
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="blueContent">
+                <div class="childrenBelowStandardMeasureMidUpperArmYellow">
+                  Number of children below standard with mid-upper arm
+                  circumferance measurement (yellow colour)
+                </div>
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="sdWCKbL3IdD-xp6YPoDKUe4-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Yellow colour At Health Facility, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children below standard with MUAC Yellow colour At Health Facility, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="orangeContent">
+                <input
+                  id="sdWCKbL3IdD-jD0Cf8zYYbV-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Yellow colour At Health Facility, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children below standard with MUAC Yellow colour At Health Facility, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="sdWCKbL3IdD-TV90yPZi9iy-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Yellow colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months"
+                  value="[ Children below standard with MUAC Yellow colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, &lt;12 ເດືອນ | &lt;12 months ]"
+                />
+              </td>
+              <td class="yorkGreenContent">
+                <input
+                  id="sdWCKbL3IdD-myQ7981H7vs-val"
+                  name="entryfield"
+                  title="Children below standard with MUAC Yellow colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months"
+                  value="[ Children below standard with MUAC Yellow colour ຈາກໜ່ວຍເຄື່ອນທີ່ Outreach, 12-59ເດືອນ | 12-59 months ]"
+                />
+              </td>
+              <td class="totalValueRow">
+                <div
+                  id="under12childrenBelowStandardMeasureMidUpperArmYellowTotal"
+                >
+                  &nbsp;
+                </div>
+              </td>
+              <td class="totalValueRow">
+                <div
+                  id="1259childrenBelowStandardMeasureMidUpperArmYellowTotal"
+                >
+                  &nbsp;
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <span style="color: #0000ff"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6">ກະລຸນາກົດປຸ່ມ</span></span
+    ></span
+  ><font color="red"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6"> &quot;</span
+      ><strong><span style="background-color: #add8e6">ສຳເລັດແລ້ວ</span></strong
+      ><span style="background-color: #add8e6">&quot; </span></span
+    ></font
+  ><span style="color: #0000ff"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6"
+        >ເມື່ອທ່ານປ້ອນຂໍ້ມູນຄົບຖ້ວນ</span
+      ></span
+    ></span
+  >
+</p>

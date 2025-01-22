@@ -1,0 +1,4607 @@
+<script>
+  var language = "en";
+
+  var translation = [
+    {
+      key: "origin_of_the_patient",
+      value: ["Origin of the Patient", "ຄົນມາຈາກໃສ"],
+    },
+    {
+      key: "from_the_province",
+      value: ["from the province", "ຄົນໃນ ແຂວງ"],
+    },
+    {
+      key: "from_another_province",
+      value: ["from another province", "ຄົນ ຈາກ ແຂວງ ອື່ນ"],
+    },
+    {
+      key: "from_another_country",
+      value: ["from another country", "ຄົນຕ່າງປະ ເທດ"],
+    },
+    {
+      key: "probable_cases",
+      value: ["Probable cases", "ຄົນເຈັບ ອາດເປັນໄຂ້ ຍຸງແຕ່ ບໍໄດ້ ກວດ ເລືອດ"],
+    },
+    {
+      key: "diagnosis",
+      value: ["Diagnosis", "ພາກບົ່ງມະຕິ(ການກວດເລືອດ)"],
+    },
+    {
+      key: "patient_tested",
+      value: ["Patient tested", "ຜົນກວດເລືອດ"],
+    },
+    {
+      key: "total_species",
+      value: ["Total Species", "ຈຳນວນ ລວມທັງໝົດ"],
+    },
+    {
+      key: "RDT",
+      value: ["RDT", "ກວດດ້ວຍເຈ໊ຍຈຸ່ມ"],
+    },
+    {
+      key: "microscopy",
+      value: ["Microscopy", "ກວດດ້ວຍກ້ອງຈຸລະທັດ"],
+    },
+    {
+      key: "RDT_Microscopy",
+      value: ["RDT & Microscopy", "ກວດດ້ວຍກ້ອງຈຸລະທັດ ແລະ ເຈ້ຍຈຸ່ມ"],
+    },
+    {
+      key: "total_tested",
+      value: ["Total Tested", "ຈຳນວນ ກວດ ເລືອດ ທັງໝົດ "],
+    },
+    {
+      key: "total_positive",
+      value: ["Total Positive", "ຈ/ນ ພົບເຊື້ອ"],
+    },
+    {
+      key: "positive",
+      value: ["Positive", "ພົບເຊື້ອ"],
+    },
+    {
+      key: "treatment",
+      value: ["Treatment", "ການປິ່ນປົວ"],
+    },
+    {
+      key: "not_severe_cases",
+      value: ["Not Severe cases", "ຈຳນວນເປັນໄຂ້ຍຸງບໍ່ຮ້າຍແຮງ"],
+    },
+    {
+      key: "treatment_positive_case",
+      value: [
+        "Treatment positive case",
+        "ຢັ້ງຢືນ ແລະ ໄດ້ຮັບການ ປິ່ນປົວດ້ວຍຢາໄຂ້ຍຸງ",
+      ],
+    },
+    {
+      key: "treatment_probable",
+      value: [
+        "Treatment Probable",
+        "ຄົນເຈັບອາດເປັນໄຂ້ ຍຸງແຕ່ ບໍ່ໄດ້ ກວດ ເລືອດ",
+      ],
+    },
+    {
+      key: "not_severe_cases_sleep_in_hospital",
+      value: [
+        "Not Severe cases, sleep in hospital",
+        "ຈ/ນເປັນໄຂ້ຍຸງບໍ່ຮ້າຍແຮງ ນອນໂຮງໝໍໄດ້ຮັບການປິ່ນປົວ",
+      ],
+    },
+    {
+      key: "severe_cases",
+      value: [
+        "Severe cases",
+        "ໄຂ້ຍຸງຮ້າຍແຮງຢັ້ງຢືນ ແລະໄດ້ຮັບການປິ່ນ ປົວດ້ວຍຢາໄຂ້ຍຸງ",
+      ],
+    },
+    {
+      key: "coartem",
+      value: ["Coartem", "(ACT)ໂກອັກແຕັມ"],
+    },
+    {
+      key: "other_drug",
+      value: ["Other drug", "ຢາປີ່ນປົວໄຂ້ຍຸງຊະນິດອື່ນ"],
+    },
+    {
+      key: "artesunate_injectable",
+      value: ["Artesunate Injectable", "ອາກເຕຊູນັດຊະນິດສັກ"],
+    },
+    {
+      key: "quinine",
+      value: ["Quinine", "ກິນິນ (ໃສ່ນ້ຳ ທະເລ)"],
+    },
+    {
+      key: "refer_from_another_place",
+      value: ["Refer from another place", "ຮັບມາຈາກບ່ອນອື່ນ"],
+    },
+    {
+      key: "sent_to_higher_health",
+      value: ["Sent to higher health facility", "ສົ່ງໄປບ່ອນມີ ເງືອນໄຂ"],
+    },
+    {
+      key: "dead_patients_because_of_malaria",
+      value: ["Dead Patients because of malaria", "ຈ/ນ ຕາຍຍ້ອນໄຂ້ຍຸງ"],
+    },
+    {
+      key: "total_test_RDT_by_VHV",
+      value: ["Total test RDT by VHV", "ການກວດເລືອດດ້ວຍ   ອສບ"],
+    },
+    {
+      key: "number_of_patient_tested",
+      value: ["Number of patient tested", "ຈຳນວນກວດ"],
+    },
+    {
+      key: "number_of_patient_positive",
+      value: ["Number of patient positive", "ຈຳນວນພົບເຊື້ອ"],
+    },
+    {
+      key: "number_of_patient_treated",
+      value: ["Number of patient treated", "ຈຳນວນປີ່ນປົວ"],
+    },
+    {
+      key: "OPD",
+      value: ["OPD", "ກວດເຂດນອກ"],
+    },
+    {
+      key: "IPD",
+      value: ["IPD", "ນອນໂຮງຫມໍຍ້ອນໄຂ້ຍຸງຮ້າຍແຮງ"],
+    },
+    {
+      key: "under5",
+      value: ["0-5", "0-5 ປີ"],
+    },
+    {
+      key: "over5",
+      value: [">5", "5 ປີຂື້ນໄປ"],
+    },
+    {
+      key: "Male",
+      value: ["Male", "ຊ"],
+    },
+    {
+      key: "Female",
+      value: ["Female", "ຍ"],
+    },
+    {
+      key: "Pregnant",
+      value: ["Pregnant", "ແມ່ມານ"],
+    },
+    {
+      key: "Total",
+      value: ["Total", "ລວມ"],
+    },
+    {
+      key: "Total_OPD_IPD",
+      value: ["Total (OPD + IPD)", "ລວມ (ເຂດນອກ+ນອນໂຮງຫມໍ)"],
+    },
+  ];
+
+  dhis2.util.on("dhis2.de.event.dataValuesLoaded", function (event, ds) {
+    $("[name=male]").each((index, element) => {
+      //debugger;
+    });
+
+    allTotalFunction();
+    $("[name=male] > td > input").on("change", allTotalFunction);
+    $("[name=female] > td > input").on("change", allTotalFunction);
+    //$("[name=pregnant] > td > input").on("change", allTotalFunction); Turn off by Nof
+
+    $("[name=colTotal_male]").each(function (index, element) {
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      current = $(current).prev().prev().prev();
+      $(current)
+        .children()
+        .eq(index)
+        .children()
+        .eq(0)
+        .on("change", allTotalFunction);
+      $(current)
+        .prev()
+        .prev()
+        .children()
+        .eq(index + 1)
+        .children()
+        .eq(0)
+        .on("change", allTotalFunction);
+    });
+
+    $("[name=colTotal_female]").each(function (index, element) {
+      //debugger;
+
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      current = $(current).prev().prev().prev();
+      $(current)
+        .children()
+        .eq(index)
+        .children()
+        .eq(0)
+        .on("change", allTotalFunction);
+      $(current)
+        .prev()
+        .prev()
+        .children()
+        .eq(index)
+        .children()
+        .eq(0)
+        .on("change", allTotalFunction);
+    });
+
+    //get current user language
+    $.get("../api/me", function (json) {
+      language = json.settings.keyUiLocale;
+      //do translation for current user
+      translate(translation, language);
+    });
+  });
+
+  // ----------------------------------
+
+  function translate(library, language) {
+    languageOrder = 0;
+    if (language == "en") {
+      //do nothing
+    } else if (language == "lo") {
+      languageOrder = 1;
+    } else {
+      //not identified yet
+    }
+    $.each(library, function (index, entry) {
+      $("." + entry.key).html(entry.value[languageOrder]);
+    });
+  }
+
+  const cal_total_row_male = () => {
+    let count = 0;
+    $("[name=male]").each((index, element) => {
+      if (count == 0) {
+        //debugger;
+        $(element).children().children()[18].innerText =
+          testNull($(element).find("input")[5].value) +
+          testNull($(element).find("input")[6].value) +
+          testNull($(element).find("input")[7].value);
+
+        $(element).children().children()[31].innerText =
+          testNull($(element).find("input")[9].value) +
+          testNull($(element).find("input")[10].value) +
+          testNull($(element).find("input")[11].value) +
+          testNull($(element).find("input")[12].value);
+
+        $(element).children().children()[47].innerText =
+          testNull($(element).find("input")[14].value) +
+          testNull($(element).find("input")[15].value) +
+          testNull($(element).find("input")[16].value) +
+          testNull($(element).find("input")[17].value);
+
+        $(element).children().children()[60].innerText =
+          testNull($(element).find("input")[5].value) +
+          testNull($(element).find("input")[9].value) +
+          testNull($(element).find("input")[14].value);
+        $(element).children().children()[61].innerText =
+          testNull($(element).find("input")[6].value) +
+          testNull($(element).find("input")[10].value) +
+          testNull($(element).find("input")[15].value);
+        $(element).children().children()[62].innerText =
+          testNull($(element).find("input")[7].value) +
+          testNull($(element).find("input")[11].value) +
+          testNull($(element).find("input")[16].value);
+        $(element).children().children()[63].innerText =
+          testNull($(element).find("input")[12].value) +
+          testNull($(element).find("input")[17].value);
+        count++;
+      } else {
+        if (count == 1) {
+          $(element).children().children()[17].innerText =
+            testNull($(element).find("input")[5].value) +
+            testNull($(element).find("input")[6].value) +
+            testNull($(element).find("input")[7].value);
+
+          $(element).children().children()[30].innerText =
+            testNull($(element).find("input")[9].value) +
+            testNull($(element).find("input")[10].value) +
+            testNull($(element).find("input")[11].value) +
+            testNull($(element).find("input")[12].value);
+
+          $(element).children().children()[46].innerText =
+            testNull($(element).find("input")[14].value) +
+            testNull($(element).find("input")[15].value) +
+            testNull($(element).find("input")[16].value) +
+            testNull($(element).find("input")[17].value);
+
+          $(element).children().children()[59].innerText =
+            testNull($(element).find("input")[5].value) +
+            testNull($(element).find("input")[9].value) +
+            testNull($(element).find("input")[14].value);
+          $(element).children().children()[60].innerText =
+            testNull($(element).find("input")[6].value) +
+            testNull($(element).find("input")[10].value) +
+            testNull($(element).find("input")[15].value);
+          $(element).children().children()[61].innerText =
+            testNull($(element).find("input")[7].value) +
+            testNull($(element).find("input")[11].value) +
+            testNull($(element).find("input")[16].value);
+          $(element).children().children()[62].innerText =
+            testNull($(element).find("input")[12].value) +
+            testNull($(element).find("input")[17].value);
+          count++;
+        } else {
+          if (count == 2) {
+            $(element).children().children()[15].innerText =
+              testNull($(element).find("input")[4].value) +
+              testNull($(element).find("input")[5].value) +
+              testNull($(element).find("input")[6].value);
+
+            $(element).children().children()[28].innerText =
+              testNull($(element).find("input")[8].value) +
+              testNull($(element).find("input")[9].value) +
+              testNull($(element).find("input")[10].value) +
+              testNull($(element).find("input")[11].value);
+
+            $(element).children().children()[44].innerText =
+              testNull($(element).find("input")[13].value) +
+              testNull($(element).find("input")[14].value) +
+              testNull($(element).find("input")[15].value) +
+              testNull($(element).find("input")[16].value);
+
+            $(element).children().children()[57].innerText =
+              testNull($(element).find("input")[4].value) +
+              testNull($(element).find("input")[8].value) +
+              testNull($(element).find("input")[13].value);
+            $(element).children().children()[58].innerText =
+              testNull($(element).find("input")[5].value) +
+              testNull($(element).find("input")[9].value) +
+              testNull($(element).find("input")[14].value);
+            $(element).children().children()[59].innerText =
+              testNull($(element).find("input")[6].value) +
+              testNull($(element).find("input")[10].value) +
+              testNull($(element).find("input")[15].value);
+            $(element).children().children()[60].innerText =
+              testNull($(element).find("input")[11].value) +
+              testNull($(element).find("input")[16].value);
+            count++;
+          } else {
+            $(element).children().children()[14].innerText =
+              testNull($(element).find("input")[4].value) +
+              testNull($(element).find("input")[5].value) +
+              testNull($(element).find("input")[6].value);
+
+            $(element).children().children()[27].innerText =
+              testNull($(element).find("input")[8].value) +
+              testNull($(element).find("input")[9].value) +
+              testNull($(element).find("input")[10].value) +
+              testNull($(element).find("input")[11].value);
+
+            $(element).children().children()[43].innerText =
+              testNull($(element).find("input")[13].value) +
+              testNull($(element).find("input")[14].value) +
+              testNull($(element).find("input")[15].value) +
+              testNull($(element).find("input")[16].value);
+
+            $(element).children().children()[56].innerText =
+              testNull($(element).find("input")[4].value) +
+              testNull($(element).find("input")[8].value) +
+              testNull($(element).find("input")[13].value);
+            $(element).children().children()[57].innerText =
+              testNull($(element).find("input")[5].value) +
+              testNull($(element).find("input")[9].value) +
+              testNull($(element).find("input")[14].value);
+            $(element).children().children()[58].innerText =
+              testNull($(element).find("input")[6].value) +
+              testNull($(element).find("input")[10].value) +
+              testNull($(element).find("input")[15].value);
+            $(element).children().children()[59].innerText =
+              testNull($(element).find("input")[11].value) +
+              testNull($(element).find("input")[16].value);
+            count++;
+          }
+        }
+      }
+    });
+  };
+
+  const cal_total_row_female = () => {
+    let count = 0;
+    $("[name=female]").each((index, element) => {
+      //debugger;
+      if (count < 2) {
+        $(element).children().children()[16].innerText =
+          testNull($(element).find("input")[5].value) +
+          testNull($(element).find("input")[6].value) +
+          testNull($(element).find("input")[7].value);
+
+        $(element).children().children()[29].innerText =
+          testNull($(element).find("input")[9].value) +
+          testNull($(element).find("input")[10].value) +
+          testNull($(element).find("input")[11].value) +
+          testNull($(element).find("input")[12].value);
+
+        $(element).children().children()[45].innerText =
+          testNull($(element).find("input")[14].value) +
+          testNull($(element).find("input")[15].value) +
+          testNull($(element).find("input")[16].value) +
+          testNull($(element).find("input")[17].value);
+
+        $(element).children().children()[58].innerText =
+          testNull($(element).find("input")[5].value) +
+          testNull($(element).find("input")[9].value) +
+          testNull($(element).find("input")[14].value);
+        $(element).children().children()[59].innerText =
+          testNull($(element).find("input")[6].value) +
+          testNull($(element).find("input")[10].value) +
+          testNull($(element).find("input")[15].value);
+        $(element).children().children()[60].innerText =
+          testNull($(element).find("input")[7].value) +
+          testNull($(element).find("input")[11].value) +
+          testNull($(element).find("input")[16].value);
+        $(element).children().children()[61].innerText =
+          testNull($(element).find("input")[12].value) +
+          testNull($(element).find("input")[17].value);
+        count++;
+      } else {
+        $(element).children().children()[13].innerText =
+          testNull($(element).find("input")[4].value) +
+          testNull($(element).find("input")[5].value) +
+          testNull($(element).find("input")[6].value);
+
+        $(element).children().children()[26].innerText =
+          testNull($(element).find("input")[8].value) +
+          testNull($(element).find("input")[9].value) +
+          testNull($(element).find("input")[10].value) +
+          testNull($(element).find("input")[11].value);
+
+        $(element).children().children()[42].innerText =
+          testNull($(element).find("input")[13].value) +
+          testNull($(element).find("input")[14].value) +
+          testNull($(element).find("input")[15].value) +
+          testNull($(element).find("input")[16].value);
+
+        $(element).children().children()[55].innerText =
+          testNull($(element).find("input")[4].value) +
+          testNull($(element).find("input")[8].value) +
+          testNull($(element).find("input")[13].value);
+        $(element).children().children()[56].innerText =
+          testNull($(element).find("input")[5].value) +
+          testNull($(element).find("input")[9].value) +
+          testNull($(element).find("input")[14].value);
+        $(element).children().children()[57].innerText =
+          testNull($(element).find("input")[6].value) +
+          testNull($(element).find("input")[10].value) +
+          testNull($(element).find("input")[15].value);
+        $(element).children().children()[58].innerText =
+          testNull($(element).find("input")[11].value) +
+          testNull($(element).find("input")[16].value);
+        count++;
+      }
+    });
+  };
+
+  /*
+  const cal_total_row_pregnant = () => {
+      let count = 0;
+      $("[name=pregnant]").each((index, element) => {
+          //debugger;
+          if (count == 0) {
+  
+              $(element).children().children()[16].innerText = testNull($(element).find("input")[5].value) + testNull($(element).find("input")[6].value) + testNull($(element).find("input")[7].value);
+  
+              $(element).children().children()[29].innerText = testNull($(element).find("input")[9].value) + testNull($(element).find("input")[10].value) + testNull($(element).find("input")[11].value) + testNull($(element).find("input")[12].value);
+  
+              $(element).children().children()[45].innerText = testNull($(element).find("input")[14].value) + testNull($(element).find("input")[15].value) + testNull($(element).find("input")[16].value) + testNull($(element).find("input")[17].value);
+  
+              $(element).children().children()[58].innerText = testNull($(element).find("input")[5].value) + testNull($(element).find("input")[9].value) + testNull($(element).find("input")[14].value);
+              $(element).children().children()[59].innerText = testNull($(element).find("input")[6].value) + testNull($(element).find("input")[10].value) + testNull($(element).find("input")[15].value);
+              $(element).children().children()[60].innerText = testNull($(element).find("input")[7].value) + testNull($(element).find("input")[11].value) + testNull($(element).find("input")[16].value);
+              $(element).children().children()[61].innerText = testNull($(element).find("input")[12].value) + testNull($(element).find("input")[17].value);
+              count++;
+          } else {
+  
+              $(element).children().children()[13].innerText = testNull($(element).find("input")[4].value) + testNull($(element).find("input")[5].value) + testNull($(element).find("input")[6].value);
+  
+              $(element).children().children()[26].innerText = testNull($(element).find("input")[8].value) + testNull($(element).find("input")[9].value) + testNull($(element).find("input")[10].value) + testNull($(element).find("input")[11].value);
+  
+              $(element).children().children()[42].innerText = testNull($(element).find("input")[13].value) + testNull($(element).find("input")[14].value) + testNull($(element).find("input")[15].value) + testNull($(element).find("input")[16].value);
+  
+              $(element).children().children()[55].innerText = testNull($(element).find("input")[4].value) + testNull($(element).find("input")[8].value) + testNull($(element).find("input")[13].value);
+              $(element).children().children()[56].innerText = testNull($(element).find("input")[5].value) + testNull($(element).find("input")[9].value) + testNull($(element).find("input")[14].value);
+              $(element).children().children()[57].innerText = testNull($(element).find("input")[6].value) + testNull($(element).find("input")[10].value) + testNull($(element).find("input")[15].value);
+              $(element).children().children()[58].innerText = testNull($(element).find("input")[11].value) + testNull($(element).find("input")[16].value);
+              count++;
+          }
+      });
+  }
+  */ //Turn off by Nof
+
+  const colTotal_male = () => {
+    $("[name=colTotal_male]").each(function (index, element) {
+      //debugger;
+      //debugger;
+      var total = 0;
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      //debugger;
+      current = $(current).prev().prev().prev();
+      total += testNull($(current).children().eq(index).children().eq(0).val());
+      total += testNull(
+        $(current)
+          .prev()
+          .prev()
+          .children()
+          .eq(index + 1)
+          .children()
+          .eq(0)
+          .val()
+      );
+
+      //debugger;
+      $(element).children().text(total);
+      total = 0;
+    });
+  };
+
+  const colTotal_female = () => {
+    $("[name=colTotal_female]").each(function (index, element) {
+      //debugger;
+      //debugger;
+      var total = 0;
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      //debugger;
+      current = $(current).prev().prev().prev();
+      total += testNull($(current).children().eq(index).children().eq(0).val());
+      total += testNull(
+        $(current).prev().prev().children().eq(index).children().eq(0).val()
+      );
+
+      $(element).children().text(total);
+      total = 0;
+    });
+  };
+
+  const colTotalofTotal_female = () => {
+    $("[name=colTotalofTotal_female]").each(function (index, element) {
+      //debugger;
+
+      var total = 0;
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      //debugger;
+      current = $(current).prev().prev().prev();
+      total += testNull(
+        $(current).children().eq(index).children().eq(0).text()
+      );
+      total += testNull(
+        $(current).prev().prev().children().eq(index).children().eq(0).text()
+      );
+
+      $(element).children().text(total);
+      total = 0;
+    });
+  };
+
+  const colTotalofTotal_male = () => {
+    $("[name=colTotalofTotal_male]").each(function (index, element) {
+      //debugger;
+      //debugger;
+      var total = 0;
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      current = $(current).prev().prev().prev();
+      total += testNull(
+        $(current).children().eq(index).children().eq(0).text()
+      );
+      total += testNull(
+        $(current)
+          .prev()
+          .prev()
+          .children()
+          .eq(index + 1)
+          .children()
+          .eq(0)
+          .text()
+      );
+
+      $(element).children().text(total);
+      total = 0;
+    });
+  };
+
+  const colTotalsofMaleandFemale = () => {
+    $("[name=colTotalsofMaleandFemale]").each(function (index, element) {
+      //debugger;
+
+      var total = 0;
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      current = $(current).prev();
+      total += testNull(
+        $(current).children().eq(index).children().eq(0).text()
+      );
+      total += testNull(
+        $(current)
+          .prev()
+          .children()
+          .eq(index + 1)
+          .children()
+          .eq(0)
+          .text()
+      );
+      total += testNull(
+        $(current).prev().prev().children().eq(index).children().eq(0).val()
+      );
+      total += testNull(
+        $(current).prev().prev().children().eq(index).children().eq(0).text()
+      );
+
+      $(element).children().text(total);
+      total = 0;
+    });
+  };
+
+  const calTotalIPDOPD = () => {
+    $("[name=calTotalIPDOPD]").each(function (index, element) {
+      debugger;
+
+      var total = 0;
+      var current = $(element).parent();
+      var index = $(element).index();
+
+      total += testNull($(current).prev().children().eq(index).eq(0).text());
+      total += testNull(
+        $(current)
+          .prev()
+          .prev()
+          .prev()
+          .prev()
+          .prev()
+          .prev()
+          .prev()
+          .prev()
+          .prev()
+          .children()
+          .eq(index)
+          .eq(0)
+          .text()
+      );
+
+      $(element).children().text(total);
+      total = 0;
+    });
+  };
+
+  const allTotalFunction = () => {
+    cal_total_row_male();
+    cal_total_row_female();
+    //   cal_total_row_pregnant(); Turn Off By Nof
+    colTotal_female();
+    colTotal_male();
+    colTotalofTotal_male();
+    colTotalofTotal_female();
+    colTotalsofMaleandFemale();
+    calTotalIPDOPD();
+  };
+
+  const testNull = (value) => {
+    if (value == "" || value == null || isNaN(value) || value == " ") {
+      return 0;
+    } else {
+      return parseInt(value);
+    }
+  };
+</script>
+<style type="text/css">
+  td {
+    text-align: center;
+    padding: 3px !important;
+  }
+
+  td.mainTitle {
+    background-color: rgb(102, 102, 51);
+    color: #ffffff;
+  }
+
+  td.brownHead {
+    background-color: rgb(149, 138, 84);
+    color: #ffffff;
+  }
+
+  td.brownContent {
+    background-color: #c6be98;
+    text-align: center;
+  }
+
+  td.blueHead {
+    background-color: rgb(102, 154, 204);
+    text-align: center;
+  }
+
+  td.lightBlueContent {
+    background-color: rgb(204, 221, 237);
+    text-align: center;
+  }
+
+  td.lightBlueTotal {
+    background-color: #6fb1ee;
+    text-align: center;
+  }
+
+  td.redbrownHead {
+    background-color: #b7704c;
+    text-align: center;
+  }
+
+  td.redBrownContent {
+    background-color: #debeae;
+    text-align: center;
+  }
+
+  td.redBrownTotal {
+    background-color: #c19782;
+    text-align: center;
+  }
+
+  td.pinegladeHead {
+    background-color: #d4d400;
+    text-align: center;
+  }
+
+  td.pinegladeContent {
+    background-color: #e1e15c;
+    text-align: center;
+  }
+
+  td.pinegladeTotal {
+    background-color: #bbbb5a;
+    text-align: center;
+  }
+
+  td.orangeHead {
+    background-color: #ea9000;
+    text-align: center;
+  }
+
+  td.orangeContent {
+    background-color: #ffdaa3;
+    text-align: center;
+  }
+
+  td.orangeTotal {
+    background-color: #ffb13d;
+    text-align: center;
+  }
+
+  td.greenHead {
+    background-color: #518e51;
+    text-align: center;
+  }
+
+  td.yorkGreenContent {
+    background-color: #6bfd6b;
+    text-align: center;
+  }
+
+  td.yorkGreenContent1 {
+    background-color: #dcffdc;
+    text-align: center;
+  }
+
+  td.yorkGreenTotal {
+    background-color: #78bf78;
+    text-align: center;
+  }
+
+  input {
+    width: 3em;
+  }
+
+  td.grey {
+    background-color: rgb(153, 153, 153);
+  }
+
+  td.seperate {
+    border-right-style: solid;
+    border-right: 0px;
+  }
+</style>
+<table border="1px" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td class="mainTitle" colspan="3" rowspan="6">&nbsp;</td>
+      <td align="center" class="blueHead" colspan="3" rowspan="2">
+        <div class="origin_of_the_patient">Origin of the Patient</div>
+      </td>
+      <td align="center" class="blueHead seperate" rowspan="5">
+        <div class="probable_cases">Probable cases</div>
+      </td>
+      <td align="center" class="greenHead" colspan="21">
+        <div class="diagnosis">Diagnosis</div>
+      </td>
+      <td align="center" class="orangeHead" colspan="13">
+        <div class="treatment">Treatment</div>
+      </td>
+      <td align="center" class="pinegladeHead" rowspan="5">
+        <div class="refer_from_another_place">Refer from another place</div>
+      </td>
+      <td align="center" class="pinegladeHead" rowspan="5">
+        <div class="sent_to_higher_health facility">
+          Sent to higher health facility
+        </div>
+      </td>
+      <td align="center" class="pinegladeHead" rowspan="5">
+        <div class="dead_patients_because_of_malaria">
+          Dead Patients because of malaria
+        </div>
+      </td>
+      <td align="center" class="redbrownHead" colspan="3" rowspan="2">
+        <div class="total_test_RDT_by_VHV">Total test RDT by VHV</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="greenHead" colspan="17">
+        <div class="patient_tested">Patient tested</div>
+      </td>
+      <td align="center" class="greenHead" colspan="4">
+        <div class="total_species">Total Species</div>
+      </td>
+      <td align="center" class="orangeHead" colspan="7">
+        <div class="not_severe_cases">Not Severe cases</div>
+      </td>
+      <td align="center" class="orangeHead" colspan="3" rowspan="2">
+        <div class="not_severe_cases_sleep_in_hospital">
+          Not Severe cases, sleep in hospital
+        </div>
+      </td>
+      <td align="center" class="orangeHead" colspan="3" rowspan="2">
+        <div class="severe_cases">Severe cases</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="blueHead" rowspan="3">
+        <div class="from_the_province">from the province</div>
+      </td>
+      <td align="center" class="blueHead" rowspan="3">
+        <div class="from_another_province">from another province</div>
+      </td>
+      <td align="center" class="blueHead" rowspan="3">
+        <div class="from_another_country">from another country</div>
+      </td>
+      <td align="center" class="greenHead" colspan="5">
+        <div class="RDT">RDT</div>
+      </td>
+      <td align="center" class="greenHead" colspan="6">
+        <div class="microscopy">Microscopy</div>
+      </td>
+      <td align="center" class="greenHead" colspan="6">
+        <div class="RDT_Microscopy">RDT &amp; Microscopy</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="3">
+        <div class="Pf">P.f</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="3">
+        <div class="Pv">P.v</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="3">
+        <div class="Mix">Mix</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="3">
+        <div class="Pm">P.m</div>
+      </td>
+      <td align="center" class="orangeHead" colspan="5">
+        <div class="treatment_positive_case">Treatment positive case</div>
+      </td>
+      <td align="center" class="orangeHead" colspan="2">
+        <div class="treatment_probable">Treatment Probable</div>
+      </td>
+      <td align="center" class="redbrownHead" rowspan="3">
+        <div class="number_of_patient_tested">Number of patient tested</div>
+      </td>
+      <td align="center" class="redbrownHead" rowspan="3">
+        <div class="number_of_patient_positive">Number of patient positive</div>
+      </td>
+      <td align="center" class="redbrownHead" rowspan="3">
+        <div class="number_of_patient_treated">Number of patient treated</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="greenHead" rowspan="2">
+        <div class="total_tested">Total Tested</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="2">
+        <div class="total_positive">Total Positive</div>
+      </td>
+      <td align="center" class="greenHead" colspan="3">
+        <div class="positive">Positive</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="2">
+        <div class="total_tested">Total Tested</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="2">
+        <div class="total_positive">Total Positive</div>
+      </td>
+      <td align="center" class="greenHead" colspan="4">
+        <div class="positive">Positive</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="2">
+        <div class="total_tested">Total Tested</div>
+      </td>
+      <td align="center" class="greenHead" rowspan="2">
+        <div class="total_positive">Total Positive</div>
+      </td>
+      <td align="center" class="greenHead" colspan="4">
+        <div class="positive">Positive</div>
+      </td>
+      <td align="center" class="orangeHead" colspan="4">
+        <div class="coartem">Coartem</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="other_drug">Other drug</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="coartem">Coartem</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="other_drug">Other drug</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="coartem">Coartem</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="other_drug">Other drug</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="artesunate_injectable">Artesunate Injectable</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="artesunate_injectable">Artesunate Injectable</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="coartem">Coartem</div>
+      </td>
+      <td align="center" class="orangeHead" rowspan="2">
+        <div class="quinine">Quinine</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="greenHead">
+        <div class="Pf">P.f</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pv">P.v</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Mix">Mix</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pf">P.f</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pv">P.v</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Mix">Mix</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pm">P.m</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pf">P.f</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pv">P.v</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Mix">Mix</div>
+      </td>
+      <td align="center" class="greenHead">
+        <div class="Pm">P.m</div>
+      </td>
+      <td class="orangeHead">
+        <div class="Pf">P.f</div>
+      </td>
+      <td class="orangeHead">
+        <div class="Pv">P.v</div>
+      </td>
+      <td class="orangeHead">
+        <div class="Mix">Mix</div>
+      </td>
+      <td class="orangeHead">
+        <div class="Pm">P.m</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="brownContent">S1</td>
+      <td align="center" class="brownContent">S2</td>
+      <td align="center" class="brownContent">S3</td>
+      <td align="center" class="brownContent">S4</td>
+      <td align="center" class="brownContent">S5</td>
+      <td align="center" class="brownContent">S6</td>
+      <td align="center" class="brownContent">S7</td>
+      <td align="center" class="brownContent">S8</td>
+      <td align="center" class="brownContent">S9</td>
+      <td align="center" class="brownContent">S10</td>
+      <td align="center" class="brownContent">S11</td>
+      <td align="center" class="brownContent">S12</td>
+      <td align="center" class="brownContent">S13</td>
+      <td align="center" class="brownContent">S14</td>
+      <td align="center" class="brownContent">S15</td>
+      <td align="center" class="brownContent">S16</td>
+      <td align="center" class="brownContent">S17</td>
+      <td align="center" class="brownContent">S18</td>
+      <td align="center" class="brownContent">S19</td>
+      <td align="center" class="brownContent">S20</td>
+      <td align="center" class="brownContent">S21</td>
+      <td align="center" class="brownContent">S22</td>
+      <td align="center" class="brownContent">S23</td>
+      <td align="center" class="brownContent">S24</td>
+      <td align="center" class="brownContent">S25</td>
+      <td align="center" class="brownContent">S26</td>
+      <td align="center" class="brownContent">S27</td>
+      <td align="center" class="brownContent">S28</td>
+      <td align="center" class="brownContent">S29</td>
+      <td align="center" class="brownContent">S30</td>
+      <td align="center" class="brownContent">S31</td>
+      <td align="center" class="brownContent">S32</td>
+      <td align="center" class="brownContent">S33</td>
+      <td align="center" class="brownContent">S34</td>
+      <td align="center" class="brownContent">S35</td>
+      <td align="center" class="brownContent">S36</td>
+      <td align="center" class="brownContent">S37</td>
+      <td align="center" class="brownContent">S38</td>
+      <td align="center" class="brownContent">S39</td>
+      <td align="center" class="brownContent">S40</td>
+      <td align="center" class="brownContent">S41</td>
+      <td align="center" class="brownContent">S42</td>
+      <td align="center" class="brownContent">S43</td>
+      <td align="center" class="brownContent">S44</td>
+    </tr>
+    <tr name="male">
+      <td align="center" class="mainTitle" rowspan="8">
+        <div class="OPD"><strong>OPD</strong></div>
+      </td>
+      <td align="center" class="brownHead" rowspan="2">
+        <div class="under5">0-5</div>
+      </td>
+      <td align="center" class="brownHead">
+        <div class="Male">Male</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Patients from this province Under 5, Male, OPD"
+          value="[ MAL: Patients from this province Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Patients from other province Under 5, Male, OPD"
+          value="[ MAL: Patients from other province Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Patients from other country Under 5, Male, OPD"
+          value="[ MAL: Patients from other country Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="yDN8UHiCmGY-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Probable cases Under 5, Male, OPD"
+          value="[ MAL: Probable cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Under 5, Male, OPD"
+          value="[ MAL: RDT tested cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveMaleUnder5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Under 5, Male, OPD"
+          value="[ MAL: RDT tested positive P.f Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Under 5, Male, OPD"
+          value="[ MAL: RDT tested positive P.v Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Under 5, Male, OPD"
+          value="[ MAL: RDT tested positive Mix Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Under 5, Male, OPD"
+          value="[ MAL: Microscopy tested Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveMaleUnder5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Under 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive P.f Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Under 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive P.v Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Under 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive Mix Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Under 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive P.m Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Under 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveMaleUnder5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Under 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Under 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Under 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Under 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfUnder5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvUnder5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixUnder5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmUnder5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="MmP9JbJ8zNI-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment P.f coartem not severe positive cases Under 5, Male, OPD"
+          value="[ MAL: Treatment P.f coartem not severe positive cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="AvvxpN3RUpM-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment P.v coartem not severe positive cases Under 5, Male, OPD"
+          value="[ MAL: Treatment P.v coartem not severe positive cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="xzV3S3lqCh7-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment Mix coartem not severe positive cases Under 5, Male, OPD"
+          value="[ MAL: Treatment Mix coartem not severe positive cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="R3zTqmpGUg3-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment P.m coartem not severe positive cases Under 5, Male, OPD"
+          value="[ MAL: Treatment P.m coartem not severe positive cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="CDIC5YQhNFJ-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe positive cases Under 5, Male, OPD"
+          value="[ MAL: Treatment other drug not severe positive cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="M5Tc1ik5osS-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe probable cases Under 5, Male, OPD"
+          value="[ MAL: Treatment coartem not severe probable cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iOBRAgqKf06-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe probable cases Under 5, Male, OPD"
+          value="[ MAL: Treatment other drug not severe probable cases Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="GHlIY6H1OT6-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe cases sleep in hospital Under 5, Male, OPD"
+          value="[ MAL: Treatment coartem not severe cases sleep in hospital Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="ZiPJS1jGh97-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe cases sleep in hospital Under 5, Male, OPD"
+          value="[ MAL: Treatment other drug not severe cases sleep in hospital Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="IBTI8XaFZUA-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Under 5, Male, OPD"
+          value="[ MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Refer from another place Under 5, Male, OPD"
+          value="[ MAL: Refer from another place Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Under 5, Male, OPD"
+          value="[ MAL: Sent to higher HF Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Under 5, Male, OPD"
+          value="[ MAL: Dead Patients because of malaria Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="TuwBdLns8z3-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Cases tested (At community) Under 5, Male, OPD"
+          value="[ MAL: Cases tested (At community) Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="cheKmOkNPN9-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Cases tested positive (At community) Under 5, Male, OPD"
+          value="[ MAL: Cases tested positive (At community) Under 5, Male, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="MT1929EvalS-uiWzmIVifWi-val"
+          name="entryfield"
+          title="MAL: Cases treated (At community) Under 5, Male, OPD"
+          value="[ MAL: Cases treated (At community) Under 5, Male, OPD ]"
+        />
+      </td>
+    </tr>
+    <tr name="female">
+      <td align="center" class="brownHead">
+        <div class="Female">Female</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Patients from this province Under 5, Female, OPD"
+          value="[ MAL: Patients from this province Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Patients from other province Under 5, Female, OPD"
+          value="[ MAL: Patients from other province Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Patients from other country Under 5, Female, OPD"
+          value="[ MAL: Patients from other country Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="yDN8UHiCmGY-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Probable cases Under 5, Female, OPD"
+          value="[ MAL: Probable cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Under 5, Female, OPD"
+          value="[ MAL: RDT tested cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveFemaleUnder5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Under 5, Female, OPD"
+          value="[ MAL: RDT tested positive P.f Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Under 5, Female, OPD"
+          value="[ MAL: RDT tested positive P.v Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Under 5, Female, OPD"
+          value="[ MAL: RDT tested positive Mix Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Under 5, Female, OPD"
+          value="[ MAL: Microscopy tested Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveFemaleUnder5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Under 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive P.f Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Under 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive P.v Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Under 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive Mix Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Under 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive P.m Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Under 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveFemaleUnder5OPDTotal" totaltype="ffid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Under 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Under 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Under 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Under 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfUnder5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvUnder5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixUnder5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmUnder5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="MmP9JbJ8zNI-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment P.f coartem not severe positive cases Under 5, Female, OPD"
+          value="[ MAL: Treatment P.f coartem not severe positive cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="AvvxpN3RUpM-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment P.v coartem not severe positive cases Under 5, Female, OPD"
+          value="[ MAL: Treatment P.v coartem not severe positive cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="xzV3S3lqCh7-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment Mix coartem not severe positive cases Under 5, Female, OPD"
+          value="[ MAL: Treatment Mix coartem not severe positive cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="R3zTqmpGUg3-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment P.m coartem not severe positive cases Under 5, Female, OPD"
+          value="[ MAL: Treatment P.m coartem not severe positive cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="CDIC5YQhNFJ-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe positive cases Under 5, Female, OPD"
+          value="[ MAL: Treatment other drug not severe positive cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="M5Tc1ik5osS-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe probable cases Under 5, Female, OPD"
+          value="[ MAL: Treatment coartem not severe probable cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iOBRAgqKf06-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe probable cases Under 5, Female, OPD"
+          value="[ MAL: Treatment other drug not severe probable cases Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="GHlIY6H1OT6-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe cases sleep in hospital Under 5, Female, OPD"
+          value="[ MAL: Treatment coartem not severe cases sleep in hospital Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="ZiPJS1jGh97-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe cases sleep in hospital Under 5, Female, OPD"
+          value="[ MAL: Treatment other drug not severe cases sleep in hospital Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="IBTI8XaFZUA-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Under 5, Female, OPD"
+          value="[ MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Refer from another place Under 5, Female, OPD"
+          value="[ MAL: Refer from another place Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Under 5, Female, OPD"
+          value="[ MAL: Sent to higher HF Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Under 5, Female, OPD"
+          value="[ MAL: Dead Patients because of malaria Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="TuwBdLns8z3-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Cases tested (At community) Under 5, Female, OPD"
+          value="[ MAL: Cases tested (At community) Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="cheKmOkNPN9-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Cases tested positive (At community) Under 5, Female, OPD"
+          value="[ MAL: Cases tested positive (At community) Under 5, Female, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="MT1929EvalS-dkYJ9cDhgSG-val"
+          name="entryfield"
+          title="MAL: Cases treated (At community) Under 5, Female, OPD"
+          value="[ MAL: Cases treated (At community) Under 5, Female, OPD ]"
+        />
+      </td>
+    </tr>
+    <tr name="male">
+      <td align="center" class="brownHead" rowspan="2">
+        <div class="over5">&gt;5</div>
+      </td>
+      <td align="center" class="brownHead">
+        <div class="Male">Male</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Patients from this province Over 5, Male, OPD"
+          value="[ MAL: Patients from this province Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Patients from other province Over 5, Male, OPD"
+          value="[ MAL: Patients from other province Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Patients from other country Over 5, Male, OPD"
+          value="[ MAL: Patients from other country Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="yDN8UHiCmGY-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Probable cases Over 5, Male, OPD"
+          value="[ MAL: Probable cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Over 5, Male, OPD"
+          value="[ MAL: RDT tested cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveMaleOver5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Over 5, Male, OPD"
+          value="[ MAL: RDT tested positive P.f Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Over 5, Male, OPD"
+          value="[ MAL: RDT tested positive P.v Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Over 5, Male, OPD"
+          value="[ MAL: RDT tested positive Mix Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Over 5, Male, OPD"
+          value="[ MAL: Microscopy tested Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveMaleOver5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Over 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive P.f Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Over 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive P.v Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Over 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive Mix Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Over 5, Male, OPD"
+          value="[ MAL: Microscopy tested positive P.m Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Over 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveMaleOver5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Over 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Over 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Over 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Over 5, Male, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfOver5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvOver5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixOver5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmOver5MaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="MmP9JbJ8zNI-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment P.f coartem not severe positive cases Over 5, Male, OPD"
+          value="[ MAL: Treatment P.f coartem not severe positive cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="AvvxpN3RUpM-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment P.v coartem not severe positive cases Over 5, Male, OPD"
+          value="[ MAL: Treatment P.v coartem not severe positive cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="xzV3S3lqCh7-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment Mix coartem not severe positive cases Over 5, Male, OPD"
+          value="[ MAL: Treatment Mix coartem not severe positive cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="R3zTqmpGUg3-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment P.m coartem not severe positive cases Over 5, Male, OPD"
+          value="[ MAL: Treatment P.m coartem not severe positive cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="CDIC5YQhNFJ-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe positive cases Over 5, Male, OPD"
+          value="[ MAL: Treatment other drug not severe positive cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="M5Tc1ik5osS-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe probable cases Over 5, Male, OPD"
+          value="[ MAL: Treatment coartem not severe probable cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iOBRAgqKf06-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe probable cases Over 5, Male, OPD"
+          value="[ MAL: Treatment other drug not severe probable cases Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="GHlIY6H1OT6-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe cases sleep in hospital Over 5, Male, OPD"
+          value="[ MAL: Treatment coartem not severe cases sleep in hospital Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="ZiPJS1jGh97-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe cases sleep in hospital Over 5, Male, OPD"
+          value="[ MAL: Treatment other drug not severe cases sleep in hospital Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="IBTI8XaFZUA-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Over 5, Male, OPD"
+          value="[ MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Refer from another place Over 5, Male, OPD"
+          value="[ MAL: Refer from another place Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Over 5, Male, OPD"
+          value="[ MAL: Sent to higher HF Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Over 5, Male, OPD"
+          value="[ MAL: Dead Patients because of malaria Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="TuwBdLns8z3-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Cases tested (At community) Over 5, Male, OPD"
+          value="[ MAL: Cases tested (At community) Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="cheKmOkNPN9-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Cases tested positive (At community) Over 5, Male, OPD"
+          value="[ MAL: Cases tested positive (At community) Over 5, Male, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="MT1929EvalS-RQ9vn3gonzo-val"
+          name="entryfield"
+          title="MAL: Cases treated (At community) Over 5, Male, OPD"
+          value="[ MAL: Cases treated (At community) Over 5, Male, OPD ]"
+        />
+      </td>
+    </tr>
+    <tr name="female">
+      <td align="center" class="brownHead">
+        <div class="Female">Female</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Patients from this province Over 5, Female, OPD"
+          value="[ MAL: Patients from this province Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Patients from other province Over 5, Female, OPD"
+          value="[ MAL: Patients from other province Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Patients from other country Over 5, Female, OPD"
+          value="[ MAL: Patients from other country Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="yDN8UHiCmGY-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Probable cases Over 5, Female, OPD"
+          value="[ MAL: Probable cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Over 5, Female, OPD"
+          value="[ MAL: RDT tested cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveFemaleOver5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Over 5, Female, OPD"
+          value="[ MAL: RDT tested positive P.f Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Over 5, Female, OPD"
+          value="[ MAL: RDT tested positive P.v Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Over 5, Female, OPD"
+          value="[ MAL: RDT tested positive Mix Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Over 5, Female, OPD"
+          value="[ MAL: Microscopy tested Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveFemaleOver5OPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Over 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive P.f Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Over 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive P.v Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Over 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive Mix Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Over 5, Female, OPD"
+          value="[ MAL: Microscopy tested positive P.m Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Over 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveFemaleOver5OPDTotal" totaltype="ffid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Over 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Over 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Over 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Over 5, Female, OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfOver5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvOver5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixOver5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmOver5FemaleOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="MmP9JbJ8zNI-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment P.f coartem not severe positive cases Over 5, Female, OPD"
+          value="[ MAL: Treatment P.f coartem not severe positive cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="AvvxpN3RUpM-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment P.v coartem not severe positive cases Over 5, Female, OPD"
+          value="[ MAL: Treatment P.v coartem not severe positive cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="xzV3S3lqCh7-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment Mix coartem not severe positive cases Over 5, Female, OPD"
+          value="[ MAL: Treatment Mix coartem not severe positive cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="R3zTqmpGUg3-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment P.m coartem not severe positive cases Over 5, Female, OPD"
+          value="[ MAL: Treatment P.m coartem not severe positive cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="CDIC5YQhNFJ-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe positive cases Over 5, Female, OPD"
+          value="[ MAL: Treatment other drug not severe positive cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="M5Tc1ik5osS-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe probable cases Over 5, Female, OPD"
+          value="[ MAL: Treatment coartem not severe probable cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iOBRAgqKf06-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe probable cases Over 5, Female, OPD"
+          value="[ MAL: Treatment other drug not severe probable cases Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="GHlIY6H1OT6-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe cases sleep in hospital Over 5, Female, OPD"
+          value="[ MAL: Treatment coartem not severe cases sleep in hospital Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="ZiPJS1jGh97-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe cases sleep in hospital Over 5, Female, OPD"
+          value="[ MAL: Treatment other drug not severe cases sleep in hospital Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="IBTI8XaFZUA-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Over 5, Female, OPD"
+          value="[ MAL: Treatment Artesunate Injectable not severe cases sleep in hospital Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Refer from another place Over 5, Female, OPD"
+          value="[ MAL: Refer from another place Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Over 5, Female, OPD"
+          value="[ MAL: Sent to higher HF Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Over 5, Female, OPD"
+          value="[ MAL: Dead Patients because of malaria Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="TuwBdLns8z3-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Cases tested (At community) Over 5, Female, OPD"
+          value="[ MAL: Cases tested (At community) Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="cheKmOkNPN9-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Cases tested positive (At community) Over 5, Female, OPD"
+          value="[ MAL: Cases tested positive (At community) Over 5, Female, OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="MT1929EvalS-KmvYxhPl3Az-val"
+          name="entryfield"
+          title="MAL: Cases treated (At community) Over 5, Female, OPD"
+          value="[ MAL: Cases treated (At community) Over 5, Female, OPD ]"
+        />
+      </td>
+    </tr>
+    <tr name="pregnant">
+      <td align="center" class="brownHead" colspan="2">
+        <div class="Pregnant">Pregnant</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="jLyQJNdlrrd-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Patients from this province (Pregnant) OPD"
+          value="[ MAL: Patients from this province (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="sEuwxzBJTr3-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Patients from other province (Pregnant) OPD"
+          value="[ MAL: Patients from other province (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="wN8BRpDiTqh-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Patients from other country (Pregnant) OPD"
+          value="[ MAL: Patients from other country (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="NVGTTWb3x2H-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Probable cases (Pregnant) OPD"
+          value="[ MAL: Probable cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="DguG9uGR1A4-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT tested cases (Pregnant) OPD"
+          value="[ MAL: RDT tested cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositivePregnantOPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Uckrc7jFQjl-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f (Pregnant) OPD"
+          value="[ MAL: RDT tested positive P.f (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ljdwwN0i69V-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v (Pregnant) OPD"
+          value="[ MAL: RDT tested positive P.v (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="tHE1a3ObExA-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix (Pregnant) OPD"
+          value="[ MAL: RDT tested positive Mix (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="MP9kIIvZYZG-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Malaria Microscopy tested (Pregnant) OPD"
+          value="[ MAL: Malaria Microscopy tested (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositivePregnantOPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="cDguWAWk0Y6-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f (Pregnant) OPD"
+          value="[ MAL: Microscopy tested positive P.f (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="s1qcHxvu6t0-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v (Pregnant) OPD"
+          value="[ MAL: Microscopy tested positive P.v (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="YpLmUyG5tV3-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix (Pregnant) OPD"
+          value="[ MAL: Microscopy tested positive Mix (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="aUUuz2HGdu1-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m (Pregnant) OPD"
+          value="[ MAL: Microscopy tested positive P.m (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="xuwBlCluEeo-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested (Pregnant) OPD"
+          value="[ MAL: RDT and Microscopy tested (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositivePregnantOPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="LPkvcfbGbHN-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f (Pregnant) OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="JHbYLgWWHI1-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v (Pregnant) OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="PiYugZmdZUE-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix (Pregnant) OPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="eUbi3N2jcxG-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m (Pregnant) OPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfPregnantOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvPregnantOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixPregnantOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmPregnantOPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="GtJV5dJWFct-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment P.f coartem not severe positive cases (Pregnant) OPD"
+          value="[ MAL: Treatment P.f coartem not severe positive cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="olipH4CuJnx-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment P.v coartem not severe positive cases (Pregnant) OPD"
+          value="[ MAL: Treatment P.v coartem not severe positive cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="hGd3dj4CK2y-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment Mix coartem not severe positive cases (Pregnant) OPD"
+          value="[ MAL: Treatment Mix coartem not severe positive cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="dozNMEWbsZ1-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment P.m coartem not severe positive cases (Pregnant) OPD"
+          value="[ MAL: Treatment P.m coartem not severe positive cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="m3mFUPV9CVp-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe positive cases (Pregnant) OPD"
+          value="[ MAL: Treatment other drug not severe positive cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="bMOcC65M5PI-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe probable cases (Pregnant) OPD"
+          value="[ MAL: Treatment coartem not severe probable cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="Y3QKgDvIUQm-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe probable cases (Pregnant) OPD"
+          value="[ MAL: Treatment other drug not severe probable cases (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="mPpPI9LZG5f-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment coartem not severe cases sleep in hospital (Pregnant) OPD"
+          value="[ MAL: Treatment coartem not severe cases sleep in hospital (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="cdRxQqlSzu1-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment other drug not severe cases sleep in hospital (Pregnant) OPD"
+          value="[ MAL: Treatment other drug not severe cases sleep in hospital (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="MTOPGuuMez2-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable not severe cases sleep in hospital (Pregnant) OPD"
+          value="[ MAL: Treatment Artesunate Injectable not severe cases sleep in hospital (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeContent">
+        <input
+          id="Ox0bcTu6KGG-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Refer from another place (Pregnant) OPD"
+          value="[ MAL: Refer from another place (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="fK857SFFKCS-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF (Pregnant) OPD"
+          value="[ MAL: Sent to higher HF (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="Y7l9wDz7Po3-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria (Pregnant) OPD"
+          value="[ MAL: Dead Patients because of malaria (Pregnant) OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="s9MLJiVCMI6-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Cases tested (Pregnant) (At community) OPD"
+          value="[ MAL: Cases tested (Pregnant) (At community) OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="ukrQkJM1mGi-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Cases tested positive (Pregnant) (At community) OPD"
+          value="[ MAL: Cases tested positive (Pregnant) (At community) OPD ]"
+        />
+      </td>
+      <td class="redBrownContent">
+        <input
+          id="RzslU70HddV-FMzRkxssoAV-val"
+          name="entryfield"
+          title="MAL: Cases treated (Pregnant) (At community) OPD"
+          value="[ MAL: Cases treated (Pregnant) (At community) OPD ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="brownHead" rowspan="3">
+        <div class="Total">Total</div>
+      </td>
+      <td align="center" class="brownHead">
+        <div class="Male">Male</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="PatientFromProvinceMalePatientOPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="FromOtherProvinceMalePatientOPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="FromOtherCountryMalePatientOPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="ProbableMaleTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTTestedMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="RDTPositiveMaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTPfMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTPvMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMixMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicTestedMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="MicPositiveMaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicPfMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicPvMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicMixMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicPmMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicTestedMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="RDTMicPositiveMaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicPfMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicPvMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicMixMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicPmMaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="PfMaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="PvMaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="MixMaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="PmMaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="CoartemPfMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="CoartemPvMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="CoartemMixMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="CoartemPmMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="PkLVcRvhWhzMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="VRCyoWxUWyTMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="vWIHpR1lF4oMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="KTJGgKmSffrMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="N1Qzrm8KEvlMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="eb4KRRogmNVMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeTotal" name="colTotal_male">
+        <div id="NCS2hsAxXodMaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_male">
+        <div id="SECLZi5OURGMaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_male">
+        <div id="WIY1K8R3WD6MaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotal_male">
+        <div id="qYkrGmpUeohMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotal_male">
+        <div id="v0Vda8neFjHMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotal_male">
+        <div id="BatFh8yMWdhMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="brownHead">
+        <div class="Female">Female</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="PatientFromProvinceFemalePatientOPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="FromOtherProvinceFemalePatientOPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="FromOtherCountryFemalePatientOPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="ProbableFemaleTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTTestedFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="RDTPositiveFemaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTPfFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTPvFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMixFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicTestedFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="MicPositiveFemaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicPfFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicPvFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicMixFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicPmFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicTestedFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="RDTMicPositiveFemaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicPfFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicPvFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicMixFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicPmFemaleOPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="PfFemaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="PvFemaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="MixFemaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="PmFemaleOPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="CoartemPfFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="CoartemPvFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="CoartemMixFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="CoartemPmFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="PkLVcRvhWhzFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="VRCyoWxUWyTFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="vWIHpR1lF4oFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="KTJGgKmSffrFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="N1Qzrm8KEvlFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="eb4KRRogmNVFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeTotal" name="colTotal_female">
+        <div id="NCS2hsAxXodFemaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_female">
+        <div id="SECLZi5OURGFemaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_female">
+        <div id="WIY1K8R3WD6FemaleOPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotal_female">
+        <div id="qYkrGmpUeohFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotal_female">
+        <div id="v0Vda8neFjHFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotal_female">
+        <div id="BatFh8yMWdhFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" class="brownHead">
+        <div class="Total">Total</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="PatientFromProvincePatientOPDTotal" totaltype="dfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="FromOtherProvincePatientOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="FromOtherCountryPatientOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="ProbableTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTTestedOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTPositiveOPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTPfOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTPvOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMixOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicTestedOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPositiveOPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPfOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPvOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicMixOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPmOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicTestedOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPositiveOPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPfOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPvOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicMixOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPmOPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="PfOPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="PvOPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MixOPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="PmOPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="CoartemPfTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="CoartemPvTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="CoartemMixTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="CoartemPmTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="PkLVcRvhWhzTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="VRCyoWxUWyTTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="vWIHpR1lF4oTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="KTJGgKmSffrTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="N1Qzrm8KEvlTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="eb4KRRogmNVTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="pinegladeTotal" name="colTotalsofMaleandFemale">
+        <div id="NCS2hsAxXodOPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotalsofMaleandFemale">
+        <div id="SECLZi5OURGOPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotalsofMaleandFemale">
+        <div id="WIY1K8R3WD6OPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotalsofMaleandFemale">
+        <div id="qYkrGmpUeohTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotalsofMaleandFemale">
+        <div id="v0Vda8neFjHTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="redBrownTotal" name="colTotalsofMaleandFemale">
+        <div id="BatFh8yMWdhTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+    </tr>
+    <tr name="male">
+      <td align="center" class="mainTitle" rowspan="8">
+        <div class="IPD"><strong>IPD</strong></div>
+      </td>
+      <td align="center" class="brownHead" rowspan="2">
+        <div class="under5">0-5</div>
+      </td>
+      <td align="center" class="brownHead">
+        <div class="Male">Male</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Patients from this province Under 5, Male, IPD"
+          value="[ MAL: Patients from this province Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Patients from other province Under 5, Male, IPD"
+          value="[ MAL: Patients from other province Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Patients from other country Under 5, Male, IPD"
+          value="[ MAL: Patients from other country Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Under 5, Male, IPD"
+          value="[ MAL: RDT tested cases Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveMaleUnder5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Under 5, Male, IPD"
+          value="[ MAL: RDT tested positive P.f Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Under 5, Male, IPD"
+          value="[ MAL: RDT tested positive P.v Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Under 5, Male, IPD"
+          value="[ MAL: RDT tested positive Mix Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Under 5, Male, IPD"
+          value="[ MAL: Microscopy tested Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveMaleUnder5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Under 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive P.f Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Under 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive P.v Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Under 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive Mix Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Under 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive P.m Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Under 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveMaleUnder5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Under 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Under 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Under 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Under 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfUnder5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvUnder5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixUnder5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmUnder5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeContent">
+        <input
+          id="OrjwXESH8Zi-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable severe cases Under 5, Male, IPD"
+          value="[ MAL: Treatment Artesunate Injectable severe cases Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="d9VBG2HRwds-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Treatment Coartem severe cases Under 5, Male, IPD"
+          value="[ MAL: Treatment Coartem severe cases Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iw5qxhQ2pr1-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Treatment Quinine severe cases Under 5, Male, IPD"
+          value="[ MAL: Treatment Quinine severe cases Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Refer from another place Under 5, Male, IPD"
+          value="[ MAL: Refer from another place Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Under 5, Male, IPD"
+          value="[ MAL: Sent to higher HF Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-ajLJhg5FF8A-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Under 5, Male, IPD"
+          value="[ MAL: Dead Patients because of malaria Under 5, Male, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr name="female">
+      <td align="center" class="brownHead">
+        <div class="Female">Female</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Patients from this province Under 5, Female, IPD"
+          value="[ MAL: Patients from this province Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Patients from other province Under 5, Female, IPD"
+          value="[ MAL: Patients from other province Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Patients from other country Under 5, Female, IPD"
+          value="[ MAL: Patients from other country Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Under 5, Female, IPD"
+          value="[ MAL: RDT tested cases Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveFemaleUnder5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Under 5, Female, IPD"
+          value="[ MAL: RDT tested positive P.f Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Under 5, Female, IPD"
+          value="[ MAL: RDT tested positive P.v Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Under 5, Female, IPD"
+          value="[ MAL: RDT tested positive Mix Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Under 5, Female, IPD"
+          value="[ MAL: Microscopy tested Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveFemaleUnder5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Under 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive P.f Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Under 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive P.v Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Under 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive Mix Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Under 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive P.m Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Under 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveFemaleUnder5IPDTotal" totaltype="ffid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Under 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Under 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Under 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Under 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfUnder5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvUnder5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixUnder5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmUnder5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeContent">
+        <input
+          id="OrjwXESH8Zi-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable severe cases Under 5, Female, IPD"
+          value="[ MAL: Treatment Artesunate Injectable severe cases Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="d9VBG2HRwds-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Treatment Coartem severe cases Under 5, Female, IPD"
+          value="[ MAL: Treatment Coartem severe cases Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iw5qxhQ2pr1-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Treatment Quinine severe cases Under 5, Female, IPD"
+          value="[ MAL: Treatment Quinine severe cases Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Refer from another place Under 5, Female, IPD"
+          value="[ MAL: Refer from another place Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Under 5, Female, IPD"
+          value="[ MAL: Sent to higher HF Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-FbqT6l3aDry-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Under 5, Female, IPD"
+          value="[ MAL: Dead Patients because of malaria Under 5, Female, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr name="male">
+      <td align="center" class="brownHead" rowspan="2">
+        <div class="over5">&gt;5</div>
+      </td>
+      <td align="center" class="brownHead">
+        <div class="Male">Male</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Patients from this province Over 5, Male, IPD"
+          value="[ MAL: Patients from this province Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Patients from other province Over 5, Male, IPD"
+          value="[ MAL: Patients from other province Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Patients from other country Over 5, Male, IPD"
+          value="[ MAL: Patients from other country Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Over 5, Male, IPD"
+          value="[ MAL: RDT tested cases Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveMaleOver5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Over 5, Male, IPD"
+          value="[ MAL: RDT tested positive P.f Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Over 5, Male, IPD"
+          value="[ MAL: RDT tested positive P.v Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Over 5, Male, IPD"
+          value="[ MAL: RDT tested positive Mix Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Over 5, Male, IPD"
+          value="[ MAL: Microscopy tested Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveMaleOver5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Over 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive P.f Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Over 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive P.v Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Over 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive Mix Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Over 5, Male, IPD"
+          value="[ MAL: Microscopy tested positive P.m Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Over 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveMaleOver5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Over 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Over 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Over 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Over 5, Male, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfOver5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvOver5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixOver5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmOver5MaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeContent">
+        <input
+          id="OrjwXESH8Zi-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable severe cases Over 5, Male, IPD"
+          value="[ MAL: Treatment Artesunate Injectable severe cases Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="d9VBG2HRwds-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Treatment Coartem severe cases Over 5, Male, IPD"
+          value="[ MAL: Treatment Coartem severe cases Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iw5qxhQ2pr1-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Treatment Quinine severe cases Over 5, Male, IPD"
+          value="[ MAL: Treatment Quinine severe cases Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Refer from another place Over 5, Male, IPD"
+          value="[ MAL: Refer from another place Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Over 5, Male, IPD"
+          value="[ MAL: Sent to higher HF Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-HxnL5RwG8iI-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Over 5, Male, IPD"
+          value="[ MAL: Dead Patients because of malaria Over 5, Male, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr name="female">
+      <td align="center" class="brownHead">
+        <div class="Female">Female</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="MBh3OAb1Mk0-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Patients from this province Over 5, Female, IPD"
+          value="[ MAL: Patients from this province Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="ShEJIeTC5aq-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Patients from other province Over 5, Female, IPD"
+          value="[ MAL: Patients from other province Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="CUAf00J6ZNK-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Patients from other country Over 5, Female, IPD"
+          value="[ MAL: Patients from other country Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenContent">
+        <input
+          id="nZcX5DIl2Ez-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT tested cases Over 5, Female, IPD"
+          value="[ MAL: RDT tested cases Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositiveFemaleOver5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Jw3Dgi1rDCW-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f Over 5, Female, IPD"
+          value="[ MAL: RDT tested positive P.f Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="flDaFOI3oqP-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v Over 5, Female, IPD"
+          value="[ MAL: RDT tested positive P.v Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="b8i8vDuewIM-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix Over 5, Female, IPD"
+          value="[ MAL: RDT tested positive Mix Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="ys4Y7YtewJ0-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested Over 5, Female, IPD"
+          value="[ MAL: Microscopy tested Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositiveFemaleOver5IPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="dkKg2ztuiOA-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f Over 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive P.f Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="Yby1SUc6Mi9-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v Over 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive P.v Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="b7ov1g6nlKz-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix Over 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive Mix Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="eQYyxR3SXmL-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m Over 5, Female, IPD"
+          value="[ MAL: Microscopy tested positive P.m Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RPEECXwq3u1-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested Over 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositiveFemaleOver5IPDTotal" totaltype="ffid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="hZlmzO0N8RD-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f Over 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ePa2RBfeuV3-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v Over 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mfkMXZ9OOhc-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix Over 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="yiPfeQ8Tt4Y-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m Over 5, Female, IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfOver5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvOver5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixOver5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmOver5FemaleIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeContent">
+        <input
+          id="OrjwXESH8Zi-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable severe cases Over 5, Female, IPD"
+          value="[ MAL: Treatment Artesunate Injectable severe cases Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="d9VBG2HRwds-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Treatment Coartem severe cases Over 5, Female, IPD"
+          value="[ MAL: Treatment Coartem severe cases Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="iw5qxhQ2pr1-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Treatment Quinine severe cases Over 5, Female, IPD"
+          value="[ MAL: Treatment Quinine severe cases Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="hFo3BV2UrUa-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Refer from another place Over 5, Female, IPD"
+          value="[ MAL: Refer from another place Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="FtiagPBMb3t-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF Over 5, Female, IPD"
+          value="[ MAL: Sent to higher HF Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="ryvqfc7TOWr-V1dF2oufGCI-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria Over 5, Female, IPD"
+          value="[ MAL: Dead Patients because of malaria Over 5, Female, IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr name="pregnant">
+      <td align="center" class="brownHead" colspan="2">
+        <div class="Pregnant">Pregnant</div>
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="jLyQJNdlrrd-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Patients from this province (Pregnant) IPD"
+          value="[ MAL: Patients from this province (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="sEuwxzBJTr3-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Patients from other province (Pregnant) IPD"
+          value="[ MAL: Patients from other province (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="lightBlueContent">
+        <input
+          id="wN8BRpDiTqh-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Patients from other country (Pregnant) IPD"
+          value="[ MAL: Patients from other country (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenContent">
+        <input
+          id="DguG9uGR1A4-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT tested cases (Pregnant) IPD"
+          value="[ MAL: RDT tested cases (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTPositivePregnantIPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Uckrc7jFQjl-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.f (Pregnant) IPD"
+          value="[ MAL: RDT tested positive P.f (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ljdwwN0i69V-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive P.v (Pregnant) IPD"
+          value="[ MAL: RDT tested positive P.v (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="tHE1a3ObExA-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT tested positive Mix (Pregnant) IPD"
+          value="[ MAL: RDT tested positive Mix (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="MP9kIIvZYZG-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Malaria Microscopy tested (Pregnant) IPD"
+          value="[ MAL: Malaria Microscopy tested (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MicPositivePregnantIPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="cDguWAWk0Y6-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.f (Pregnant) IPD"
+          value="[ MAL: Microscopy tested positive P.f (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="s1qcHxvu6t0-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.v (Pregnant) IPD"
+          value="[ MAL: Microscopy tested positive P.v (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="YpLmUyG5tV3-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive Mix (Pregnant) IPD"
+          value="[ MAL: Microscopy tested positive Mix (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <input
+          id="aUUuz2HGdu1-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Microscopy tested positive P.m (Pregnant) IPD"
+          value="[ MAL: Microscopy tested positive P.m (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="xuwBlCluEeo-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested (Pregnant) IPD"
+          value="[ MAL: RDT and Microscopy tested (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <div id="RDTMicPositivePregnantIPDTotal" totaltype="ffid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="LPkvcfbGbHN-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.f (Pregnant) IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.f (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="JHbYLgWWHI1-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.v (Pregnant) IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.v (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="PiYugZmdZUE-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive Mix (Pregnant) IPD"
+          value="[ MAL: RDT and Microscopy tested positive Mix (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="eUbi3N2jcxG-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: RDT and Microscopy tested positive P.m (Pregnant) IPD"
+          value="[ MAL: RDT and Microscopy tested positive P.m (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PfPregnantIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PvPregnantIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="MixPregnantIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenContent1">
+        <div id="PmPregnantIPDTotal" totaltype="hfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeContent">
+        <input
+          id="IhGvyrjC54X-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Treatment Artesunate Injectable severe cases (Pregnant) IPD"
+          value="[ MAL: Treatment Artesunate Injectable severe cases (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="gY2v0jhosyr-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Treatment Coartem severe cases (Pregnant) IPD"
+          value="[ MAL: Treatment Coartem severe cases (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="orangeContent">
+        <input
+          id="NHlk8Y7oEbj-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Treatment Quinine severe cases (Pregnant) IPD"
+          value="[ MAL: Treatment Quinine severe cases (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="Ox0bcTu6KGG-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Refer from another place (Pregnant) IPD"
+          value="[ MAL: Refer from another place (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="fK857SFFKCS-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Sent to higher HF (Pregnant) IPD"
+          value="[ MAL: Sent to higher HF (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="pinegladeContent">
+        <input
+          id="Y7l9wDz7Po3-byuNwOEB6zI-val"
+          name="entryfield"
+          title="MAL: Dead Patients because of malaria (Pregnant) IPD"
+          value="[ MAL: Dead Patients because of malaria (Pregnant) IPD ]"
+        />
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" class="brownHead" rowspan="3">
+        <div class="Total">Total</div>
+      </td>
+      <td align="center" class="brownHead">
+        <div class="Male">Male</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="PatientFromProvinceMalePatientIPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="FromOtherProvinceMalePatientIPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_male">
+        <div id="FromOtherCountryMalePatientIPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTTestedMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="RDTPositiveMaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTPfMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTPvMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMixMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicTestedMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="MicPositiveMaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicPfMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicPvMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicMixMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="MicPmMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicTestedMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="RDTMicPositiveMaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicPfMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicPvMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicMixMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_male">
+        <div id="RDTMicPmMaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="PfMaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="PvMaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="MixMaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_male">
+        <div id="PmMaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="e50BeiKX4RrMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="DwM5Fd4DwByMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_male">
+        <div id="cRZObEucp1nMaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_male">
+        <div id="NCS2hsAxXodMaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_male">
+        <div id="SECLZi5OURGMaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_male">
+        <div id="WIY1K8R3WD6MaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" class="brownHead">
+        <div class="Female">Female</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="PatientFromProvinceFemalePatientIPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="FromOtherProvinceFemalePatientIPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotal_female">
+        <div id="FromOtherCountryFemalePatientIPDTotal" totaltype="cfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTTestedFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="RDTPositiveFemaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTPfFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTPvFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMixFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicTestedFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="MicPositiveFemaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicPfFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicPvFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicMixFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="MicPmFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicTestedFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="RDTMicPositiveFemaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicPfFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicPvFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicMixFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotal_female">
+        <div id="RDTMicPmFemaleIPDTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="PfFemaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="PvFemaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="MixFemaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalofTotal_female">
+        <div id="PmFemaleIPDTotal" totaltype="ifid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="e50BeiKX4RrFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="DwM5Fd4DwByFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotal_female">
+        <div id="cRZObEucp1nFemaleTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_female">
+        <div id="NCS2hsAxXodFemaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_female">
+        <div id="SECLZi5OURGFemaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotal_female">
+        <div id="WIY1K8R3WD6FemaleIPDTotal" totaltype="afid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" class="brownHead">
+        <div class="Total">Total</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="PatientFromProvincePatientIPDTotal" totaltype="dfid">
+          &nbsp;
+        </div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="FromOtherProvincePatientIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="lightBlueTotal" name="colTotalsofMaleandFemale">
+        <div id="FromOtherCountryPatientIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTTestedIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTPositiveIPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTPfIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTPvIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMixIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicTestedIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPositiveIPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPfIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPvIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicMixIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MicPmIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicTestedIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPositiveIPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPfIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPvIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicMixIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="RDTMicPmIPDTotal" totaltype="dfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="PfIPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="PvIPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="MixIPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTotal" name="colTotalsofMaleandFemale">
+        <div id="PmIPDTotal" totaltype="jfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="e50BeiKX4RrTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="DwM5Fd4DwByTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="orangeTotal" name="colTotalsofMaleandFemale">
+        <div id="cRZObEucp1nTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotalsofMaleandFemale">
+        <div id="NCS2hsAxXodIPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotalsofMaleandFemale">
+        <div id="SECLZi5OURGIPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="pinegladeTotal" name="colTotalsofMaleandFemale">
+        <div id="WIY1K8R3WD6IPDTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+      <td class="grey">&nbsp;</td>
+    </tr>
+    <tr>
+      <td align="center" class="mainTitle" colspan="3">
+        <div class="Total_OPD_IPD"><strong>Total (OPD + IPD)</strong></div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="PatientFromProvincePatientTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="FromOtherProvincePatientTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="FromOtherCountryPatientTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="1ProbableTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTTestedTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTPositiveTotal" totaltype="gfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTPfTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTPvTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMixTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MicTestedTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MicPositiveTotal" totaltype="gfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MicPfTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MicPvTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MicMixTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MicPmTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMicTestedTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMicPositiveTotal" totaltype="gfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMicPfTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMicPvTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMicMixTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="RDTMicPmTotal" totaltype="efid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="PfTotal" totaltype="kfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="PvTotal" totaltype="kfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="MixTotal" totaltype="kfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="PmTotal" totaltype="kfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="CoartemPfRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="CoartemPvRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="CoartemMixRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="CoartemPmRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="PkLVcRvhWhzRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="VRCyoWxUWyTRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="vWIHpR1lF4oRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="KTJGgKmSffrRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="N1Qzrm8KEvlRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="eb4KRRogmNVRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="e50BeiKX4RrRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="DwM5Fd4DwByRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="cRZObEucp1nRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="NCS2hsAxXodTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="SECLZi5OURGTotal" totaltype="bfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="WIY1K8R3WD6Total" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="qYkrGmpUeohRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="v0Vda8neFjHRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+      <td align="center" class="brownHead" name="calTotalIPDOPD">
+        <div id="BatFh8yMWdhRowTotal" totaltype="cfid">&nbsp;</div>
+      </td>
+    </tr>
+  </tbody>
+</table>

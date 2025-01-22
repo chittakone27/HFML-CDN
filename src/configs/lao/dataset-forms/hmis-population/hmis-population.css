@@ -1,0 +1,6 @@
+#hmis-population-form-container table td,
+#hmis-population-form-container table th {
+  border: 1.5px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}

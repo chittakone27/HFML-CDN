@@ -1,0 +1,6 @@
+#dlip6-v2-form-container table td,
+#dlip6-v2-form-container table th {
+  border: 1.5px solid #808080;
+  font-weight: bold;
+  padding: 15px;
+}

@@ -1,0 +1,33 @@
+.rdp-day_selected {
+  background-color: #0277bd;
+}
+.date-picker-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px;
+}
+.date-selection-container {
+  border: 1px solid #dbdbdb;
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.date-selection-label {
+  width: 100%;
+  text-align: center;
+  padding: 5px;
+  color: #0277bd;
+  font-weight: bold;
+}
+.time-selection-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.time-selection-container > span {
+  font-size: 22px;
+  font-weight: bold;
+}

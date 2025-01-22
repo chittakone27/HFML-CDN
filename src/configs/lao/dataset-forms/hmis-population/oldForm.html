@@ -1,0 +1,281 @@
+<script>
+  // @ Thai Chuong
+
+  //variable for translation values
+  var _language = "en";
+  var translation = [
+    { key: "anualData", value: ["ANUAL DATA", "ANUAL DATA"] },
+    {
+      key: "targetGroup",
+      value: ["Number of targetgroup", "ຈຳນວນກຸ່ມເປົ້າໝາຍ"],
+    },
+    { key: "estimated", value: ["Estimated", "ຄາດຄະເນ"] },
+    { key: "actual", value: ["Actual", "ຕົວຈິງ"] },
+    {
+      key: "totalPregnantWomen",
+      value: ["Total of pregnant women", "ຈຳນວນແມ່ຍິງຖືພາທັງໝົດ"],
+    },
+    {
+      key: "totalLiveBirths",
+      value: ["Number total of live births", "ຈຳນວນເດັກເກີດມີຊີວິດທັງໝົດ"],
+    },
+    {
+      key: "childrenUnder1Survive",
+      value: ["Number of < 1 survive", "ຈຳນວນເດັກ < 1 ປີ  (ຢູ່​ລອດ) ທັງໝົດ"],
+    },
+    {
+      key: "totalChildrenUnder5",
+      value: ["Total number of Under 5", "ຈຳນວນເດັກ < 5 ປີ ທັງໝົດ"],
+    },
+    {
+      key: "women1545TTtarget",
+      value: [
+        "Women age 15-45 years ( TT target group)",
+        "ຈຳນວນແມ່ຍິງອາຍຸ 15 ຫາ 45 ປີ (ເປົ້າໝາຍສັກຢາກັນບາດທະຍັກ)",
+      ],
+    },
+    {
+      key: "women1549FPtarget",
+      value: [
+        "Women age 15-49 years (Family planning target)",
+        "ຈຳນວນແມ່ຍິງອາຍຸ 15 ຫາ 49 ປີ (ເປົ້າໝາຍວາງແຜນຄອບຄົວ)",
+      ],
+    },
+    {
+      key: "totalPopulation",
+      value: ["Total population", "ຈຳນວນປະຊາກອນທັງໝົດ"],
+    },
+  ];
+
+  $(document).ready(function () {
+    // display current user language
+    $.get("../api/me", function (json) {
+      _language = json.settings.keyUiLocale;
+      PIS.translate(translation, _language);
+    });
+  });
+
+  // Class for display user current language
+  PIS = {
+    translate: function (library, _language) {
+      // set default language as English
+      languageOrder = 0;
+      if (_language == "en") {
+        // do nothing
+      } else if (_language == "lo") {
+        languageOrder = 1;
+      } else {
+        // not identified language
+      }
+
+      $.each(library, function (index, entry) {
+        $("#" + entry.key).html(entry.value[languageOrder]);
+      });
+    },
+  };
+</script>
+<style type="text/css">
+  table {
+    width: 100%;
+  }
+
+  td {
+    text-align: center;
+    background-color: rgb(244, 249, 255);
+    padding: 2px;
+  }
+  td.mainTitle {
+    text-align: left;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    background-color: rgb(102, 153, 204);
+  }
+  td.blueTitle {
+    background-color: rgb(153, 204, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.blueContent {
+    background-color: rgb(202, 229, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.orangeTitle {
+    background-color: rgb(255, 204, 0);
+    font-weight: bold;
+  }
+
+  td.orangeContent {
+    background-color: rgb(255, 234, 153);
+  }
+  td.yorkGreenTitle {
+    background-color: rgb(153, 204, 153);
+    font-weight: bold;
+  }
+
+  td.yorkGreenContent {
+    background-color: rgb(224, 239, 224);
+  }
+
+  td.greyField {
+    background-color: rgb(170, 182, 162);
+  }
+  input {
+    width: 5em;
+  }
+</style>
+<table>
+  <tbody>
+    <tr>
+      <td class="mainTitle" colspan="3">
+        <div id="anualData">&nbsp;</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueTitle">
+        <div id="targetGroup">&nbsp;</div>
+      </td>
+      <td class="orangeTitle">
+        <div id="estimated">&nbsp;</div>
+      </td>
+      <td class="yorkGreenTitle">
+        <div id="actual">&nbsp;</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="totalPregnantWomen">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="gf8hIKiGSwQ-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Pregnant women (MCH)"
+          value="[ Estimated Pregnant women (MCH) ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="XolmTdQ2aUy-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Reported pregnant women"
+          value="[ Reported pregnant women ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="totalLiveBirths">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="GPKiwTh3Yt0-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Live births (MCH)"
+          value="[ Estimated Live births (MCH) ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="MYiSssQk57e-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Live births"
+          value="[ Live births ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="childrenUnder1Survive">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="ZxtJnJFDhsa-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Survival under 1 year (MCH)"
+          value="[ Estimated Survival under 1 year (MCH) ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="KKEfK58xvQF-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Children &lt;1 survive"
+          value="[ Children &lt;1 survive ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="totalChildrenUnder5">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="pSvE3t56sLh-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Children under 5 years (MCH)"
+          value="[ Estimated Children under 5 years (MCH) ]"
+        />
+      </td>
+      <td class="greyField">
+        <input
+          id="RwufzVtUAKP-lmbxvugTvKr-val"
+          name="entryfield"
+          title="MCH: Children under 5 (Actual)"
+          value="[ MCH: Children under 5 (Actual) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="women1545TTtarget">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="pg5LD4qP6Vs-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Women 15-45 years (Td target group) (MCH)"
+          value="[ Estimated Women 15-45 years (Td target group) (MCH) ]"
+        />
+      </td>
+      <td class="greyField">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="women1549FPtarget">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="Cv44TaVDRaG-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Women 15-49 years (Family planning target group)"
+          value="[ Estimated Women 15-49 years (Family planning target group) ]"
+        />
+      </td>
+      <td class="greyField">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div id="totalPopulation">&nbsp;</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="l4bbRykkO8a-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Estimated Population (MCH)"
+          value="[ Estimated Population (MCH) ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Ii7rxyBTpFs-lmbxvugTvKr-val"
+          name="entryfield"
+          title="Total Reported Population"
+          value="[ Total Reported Population ]"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>

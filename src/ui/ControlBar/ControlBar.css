@@ -1,0 +1,86 @@
+.controlbar-container {
+  height: 75px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  /* align-items: center; */
+}
+.validation-rule-results-container {
+  width: 100%;
+  padding: 5px;
+  height: 700px;
+}
+.MuiDataGrid-root .MuiDataGrid-cell {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+.control-bar-right-buttons {
+  margin-left: auto;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding: 5px;
+}
+.help-dialog-content-container {
+  width: 100%;
+  height: 900px;
+  position: relative;
+  overflow: hidden;
+}
+.help-dialog-content-home {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: auto;
+}
+.help-content {
+  width: 100%;
+  height: 100%;
+  /* position: absolute; */
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  overflow: auto;
+}
+.help-content iframe {
+  overflow: auto;
+}
+.search-tea-row {
+  display: flex;
+}
+.search-tea-row > div {
+  width: 100%;
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+.search-tea-row > div:nth-child(1) {
+  width: 600px;
+}
+
+.tracker-search-dialog-sections-container {
+}
+.tracker-search-dialog-section {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.tracker-search-dialog-section > div:nth-child(1) {
+  padding: 10px;
+  background-color: #d4d4d4;
+  width: 100%;
+  font-weight: bold;
+}
+.tracker-search-dialog-section > div:nth-child(2) {
+  padding: 10px;
+  border: 1px solid #d4d4d4;
+  width: 100%;
+}

@@ -1,0 +1,13 @@
+#dop-v3-form-container table td,
+#dop-v3-form-container table th {
+  border: 1.5px solid #dddddd;
+  font-weight: bold;
+}
+
+.dop-v3-dialog table,
+.dop-v3-dialog table th,
+.dop-v3-dialog table td {
+  border: 1px solid #e8e8e8;
+  border-collapse: collapse;
+  text-align: center;
+}

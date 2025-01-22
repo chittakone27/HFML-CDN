@@ -1,0 +1,25 @@
+#mch-mnch-dho-v2-form-container table td,
+#mch-mnch-dho-v2-form-container table th {
+  border: 1.5px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}
+
+#nce-delivery-pnc-mortality-wrapper table td:nth-child(1) {
+  background-color: #b3e5fc;
+  padding-left: 10px;
+  text-align: left;
+  width: 40%;
+}
+
+#nce-delivery-pnc-mortality-wrapper table td:nth-child(2) {
+  background-color: #e1f5fe;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 30%;
+}
+
+#nce-delivery-pnc-mortality-wrapper table td:nth-child(3) {
+  background-color: #80d8ff;
+  width: 30%;
+}

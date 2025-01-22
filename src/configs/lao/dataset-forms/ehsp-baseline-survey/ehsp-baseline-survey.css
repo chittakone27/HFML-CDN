@@ -1,0 +1,29 @@
+#ehsp-baseline-survey-form-container button {
+  margin-inline: 10px;
+  border-radius: 5px;
+}
+
+#ehsp-baseline-survey-form-container .cell-header-table {
+  background-color: #90caf9;
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+  border: 1px solid #c0c0c0;
+  height: 100px;
+}
+#ehsp-baseline-survey-form-container .cell-header-table-short {
+  background-color: #90caf9;
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+  border: 1px solid #c0c0c0;
+  height: 50px;
+}
+#ehsp-baseline-survey-form-container .cell-header-table-sub {
+  background-color: #bbdefb;
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+  border: 1px solid #c0c0c0;
+  height: 50px;
+}

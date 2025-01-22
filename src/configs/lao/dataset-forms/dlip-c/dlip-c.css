@@ -1,0 +1,6 @@
+#dlip-c-form-container table td,
+#dlip-c-form-container table th {
+  border: 1.5px solid #fff;
+  font-weight: bold;
+  padding: 15px;
+}

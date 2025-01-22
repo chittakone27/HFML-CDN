@@ -1,0 +1,23 @@
+{
+  "launch_path": "index.html",
+  "default_locale": "en",
+  "activities": {
+    "dhis": {
+      "href": "*"
+    }
+  },
+  "appType": "APP",
+  "name": "icapture",
+  "version": "0.1.1",
+  "description": "icapture",
+  "developer": {
+    "name": "HISPVN Team"
+  },
+  "key": "icv2",
+  "short_name": "icv2",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}

@@ -1,0 +1,8 @@
+.search-item {
+  width: 400px;
+  padding-right: 10px;
+}
+.search-row {
+  display: flex;
+  padding-top: 10px;
+}

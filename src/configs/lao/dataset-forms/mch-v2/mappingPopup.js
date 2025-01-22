@@ -1,0 +1,1024 @@
+export const mappingPopup = {
+  tab1: [
+    //table1
+    [
+      {
+        key: "ANC_1st_visit",
+        value: [
+          "ANC 1st visit",
+          "Health Facility and Outreach",
+          "Number of pregnant women whom received antenatal care for the first time within the reporting period",
+          "Registration book for Antenatal care using ANC 1 column (column 10)",
+          "ຈ.ນ ແມ່ຍິງຖືພາໄດ້ກວດກ່ອນເກີດ ຄັ້ງທີ 1",
+          "ຢູ່ສະຖານທີ່ບໍລິການ ແລະ ເວລາລົງໄປເຄື່ອນທີ່",
+          "ແມ່ນຈຳນວນແມ່ຍິງຖືພາ ທັງໝົດທີ່ໄດ້ມາຮັບການກວດທ້ອງໃນຄັ້ງທຳອິດ (ຄັ້ງທີໜື່ງ) (ໝາຍຄວາມວ່າ ບໍ່ເຄີຍໄປກວດທ້ອງມາກ່ອນສຳລັບການຖືພາຄັ້ງນີ້).",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ປະຈຳວັນສຳລັບການກວດ​ທ້ອງແມ່ຍິງຖືພາ ຫ້ອງມາກວດທ້ອງຄັ້ງທິ 1. (ບທມ 1 ຫ້ອງ 10)",
+          "A1",
+        ],
+      },
+
+      {
+        key: "ANC_4th_visit",
+        value: [
+          "ANC 4th visit",
+          "Health Facility and Outreach",
+          "Number of pregnant women whom received antenatal care for the fourth time within the reporting period with below conditions:<br><br>•	Pregnant women who comes for ANC at least 4 times, each time spaced 1 month; if mother is in risk condition then they come back for ANC 2-3 times in that month we should only count for 1 time and count until 4th time even though they comes for 5-6-7 times.",
+          "Registration book for Antenatal care using ANC 4 column (column 13)",
+          "ຈ.ນ ແມ່ຍິງຖືພາໄດ້ກວດກ່ອນເກີດຄັ້ງທີ 4",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ່)",
+          "ແມ່ນຈຳນວນແມ່ຍິງຖືພາ ທັງໝົດທີ່ໄດ້ມາຮັບການກວດທ້ອງໃນຄັ້ງທີ່ສີ່ (ຄັ້ງທີ 4) ໝາຍຄວາມວ່າ ບໍ່ລວມເອົາການມາກວດທ້ອງຄັ້ງໃດທັງໝົດ ມີແຕ່ຄັ້ງທີ່ 4 ເທົ່ານັ້ນ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ປະຈຳວັນສຳລັບການກວດ​ທ້ອງແມ່ຍິງຖືພາ ຫ້ອງມາກວດທ້ອງຄັ້ງທິ 4. (ບທມ 1 ຫ້ອງ 13)",
+          "A2",
+        ],
+      },
+
+      {
+        key: "Level_1_High_risk_mother_identified_and_referred_to_upper_level_facility",
+        value: [
+          "Level 1 High risk mother identified and referred to upper level facility",
+          "Health Facility and Outreach",
+          "Number of pregnant women with one or more symptom/history below(See the pink book for more information):<br><br>•	First pregnancy (first pregnancy is in level 1risk condition)<br>•	< 18 years old or > 35 years old<br>•	Fourth or > fourth delivery<br>•	History of Delivery with equipment/stillbirth/<br>•	Not gaining weight during this pregnancy<br>•	Pregnancy with more than one fetus<br>•	Mild oedema<br>•	Mild anaemia (Hb<11g/dl or Hct <33%)<br>•	STI infection: discharge, chlamydia, gonorrhoea<br><br>",
+          "Registration book for Antenatal care using Level 1High Risk Mother column (column 15)",
+          "ຈ.ນ ແມ່​ສ່ຽງ​ໄພ​ຂັ້ນ 1 ທີ່ພົບ ແລະ ​ນໍາສົ່ງໄປໂຮງໝໍທີ່ມີເງື່ອນໄຂປີ່ນປົວ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ແມ່ນກໍລະນີ ແມ່ສ່ຽງໄພ ຂັ້ນ 1 ທີ່ກວດພົບແລ້ວ ບໍ່ສາມາດປິ່ນປົວ ໄດ້ ນຳສົ່ງຕໍ່ໄປໂຮງໝໍທີ່ມີເງື່ອນໄຂ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ກວດ​ທ້ອງ ການສ່ຽງ​ໄພ​ຂັ້ນ 1 ຫ້ອງ 17 (ບທມ 1)",
+          "A5",
+        ],
+      },
+
+      {
+        key: "Level_2_High_risk_mother_identified_and_referred_to_upper_level_facility",
+        value: [
+          "Level 2 High risk mother identified and referred to upper level facility",
+          "Health Facility and Outreach",
+          "Number of pregnant women with one or more symptom/history below(See the pink book for more information):<br>•	Weight < 35 Kg			(underweight mother)	<br>•	Height < 145 cm			(stunting mother)	<br>•	Pregnancy with history of previous caesarean/uterus operation<br>•	History of delivery difficulty, hemorrhage, uterus construction<br>•	History of diabetes or heart disease<br>•	Severe oedema					<br>•	Severe anaemia (Hb<7g/dl )	<br>•	STI: Syphilis, HIV.				<br>•	High blood pressure more than 140/90 mmH<br><br>",
+          "Registration book for Antenatal care using Level 2 High Risk Mother column (column 16)",
+          "ຈ.ນ ແມ່​ສ່ຽງ​ໄພ​ຂັ້ນ 2 ທີ່ພົບ ແລະ​ນໍາສົ່ງໄປໂຮງໝໍທີ່ມີເງື່ອນໄຂປີ່ນປົວ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ແມ່ນກໍລະນີ ແມ່ສ່ຽງໄພ ຂັ້ນ 2 ທີ່ກວດພົບແລ້ວ ບໍ່ສາມາດປິ່ນປົວໄດ້ ນຳສົ່ງຕໍ່ໄປໂຮງໝໍທີ່ມີເງື່ອນໄຂ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ກວດ​ທ້ອງ ການສ່ຽງ​ໄພ​ຂັ້ນ 2 ຫ້ອງ 18 (ບທມ 1)",
+          "A6",
+        ],
+      },
+
+      {
+        key: "Td1_Pregnant_women_received_one_dose_of_Td_in_this_pregnancy",
+        value: [
+          "Td1(Pregnant women received one dose of Td in this pregnancy)",
+          "Health Facility and Outreach",
+          "Number of pregnant women that have received one dose of tetanus toxoid during the current pregnancy",
+          "Registration book EPI for women column 11",
+          "ຈໍານວນ ແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td1",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ແມ່ນແມ່ຍິງຖືພາທີ່ໄດ້ຮັບການສັກຢາວັກແຊງ Td ເຂັມທີ 1 ໃນການຖືພາຄັ້ງນີ້",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ການສັກ​ຢາ(ບທມ 5) ຫ້ອງ 11",
+          "E1",
+        ],
+      },
+
+      {
+        key: "Td2_Pregnant_women_received_one_dose_of_Td_in_this_pregnancy",
+        value: [
+          "Td2(Pregnant women received one dose of Td in this pregnancy)",
+          "Health Facility and Outreach",
+          "Number of pregnant women adequately immunized against tetanus, having received at least two doses of tetanus toxoid during the current pregnancy.",
+          "Registration book for EPI for women column 12-15",
+          "ຈໍານວນ ແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td2 ແລະຫລາຍກວ່າ (Td2+)",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ແມ່ນແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td ເຂັມທີ 2 ແລະ ຫລາຍກວ່າ ໃນການຖືພາຄັ້ງນີ້ (Td2 + Td3 + Td4)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ການສັກຢາ ຫ້ອງ 12+13+14",
+          "E2",
+        ],
+      },
+
+      {
+        key: "Pregnant_Women_Completed_Td_before_this_pregnancy",
+        value: [
+          "Pregnant Women Completed Td before this pregnancy",
+          "Health Facility and Outreach",
+          "Number of pregnant women having received 5 doses of tetanus toxoid prior to their current pregnancy.",
+          "Consolidate from the Registration book for Antenatal care using Td1 column (column 17)",
+          "ຈ.ນ ແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td ຄົບກ່ອນການຖືພາຄັ້ງນີ້ (ຄົບ 5 ເຂັມ)",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td ຄົບ (ຄົບຫ້າຄັ້ງ) ກ່ອນການຖືພາຄັ້ງນີ້.<br>ໝາຍເຫດ: ສະເພາະແຕ່ຈໍານວນແມ່ຍິງຖືພາທີ່ໄດ້ຮັບການສັກ Td ຄົບ 5 ຄັ້ງກ່ອນການຖືພາຄັ້ງນີ້.",
+          "ສັງລວມຈາກ ປື້ມບັນທຶກກວດທ້ອງ ສັກ Td ຄົບກ່ອນການຖືພາໃນຄັ້ງນີ້ ຫ້ອງທີ 17",
+          "A7",
+        ],
+      },
+
+      {
+        key: "Pregnant_women_received_IFA_90_tablets",
+        value: [
+          "Pregnant women received IFA 90 tablets",
+          "Health Facility and Outreach",
+          "Number of pregnant women who have received the full dosage of iron-folic acid (90 tablets, 3 doses) supplementation during the current pregnancy.",
+          "Registration book for Antenatal care received iron tablet third round (column: 20)",
+          "ຈ.ນ ແມ່ຍີງຖືພາທີ່ໄດ້ຮັບຢາທາດເຫຼັກ 90 ເມັດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ່)",
+          "ຈຳນວນແມ່ຍີງຖືພາທັງໝົດທີ່ມາກວດທ້ອງ ແລະ ໄດ້ຮັບຢາທາດເຫຼັກຄົບ 90 ເມັດໃນຄັ້ງນີ້ (ໝາຍຄວາມວ່າ: ຖ້າຄັ້ງທີ່1 ໄດ້ 30 ເມັດ, ຄັ້ງທີ່ 2 ໄດ້ 30 ເມັດ, ຄັ້ງທີ່ 3 ໄດ້ 30 ຖືວ່າ ແມ່ຍິງຖືພາຕ້ອງໄດ້ຮັບຢາທາດເຫຼັກລວມທັງໝົດ 90 ເມັດ ຖືວ່າຄັ້ງນີ້ຖືກນັບວ່າຄົບ 90ເມັດ, ຖ້າມາບໍລິການອີກຄັ້ງໃໝ່ໄດ້ຮັບຢາທາດເຫຼັກ ອີກ ກໍບໍ່ຕ້ອງໝາຍເອົາວ່າຄົບ 90 ເມັດ ອີກໃນຄັ້ງນີ້ ເພາະຖືກນັບເອົາເຂົ້າລາຍງານໃນເດືອນຜ່ານມາແລ້ວ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ກວດ​ທ້ອງ ໄດ້ຮັບຢາທາດເຫຼັກຄົບ 90 ເມັດ ຫ້ອງ 22 (ບທມ 1).",
+          "A8",
+        ],
+      },
+
+      {
+        key: "Pregnant_women_come_for_ANC_visit_received_HIV_Counselling",
+        value: [
+          "Pregnant women come for ANC visit received HIV Counselling",
+          "Health Facility",
+          "Number of pregnant women coming for first ANC visit who received HIV counselling in the reporting month.",
+          "Registration book for Antenatal care using Provide HIV Counselling column (column 21)",
+          "ຈ.ນ ແມ່ຍີງຖືພາມາກວດກ່ອນເກີດຄັ້ງທີ່ 1 ໄດ້ຮັບຄຳປຶກສາ ກ່ຽວກັບ ພະຍາດ ພຕພ/ເອດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍີງຖືພາທີ່ມາກວດທ້ອງຄັ້ງທີ 1 ທີ່ໄດ້ຮັບຄຳປຶກສາ ກ່ຽວກັບ ພະຍາດ ພຕພ/ເອດສ໌ (ພະຍາດຕິດຕໍ່ເພດສຳພັນ/ເອດສ໌)<span class='red'>(ບໍ່ລວມເອົາແມ່ຍິງຖືພາມາກວດທ້ອງ ຄັ້ງທີ 2 ຫຼື 3 ຫຼື 4 ຂຶ້ນໄປ)</span>",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ກວດ​ທ້ອງຫ້ອງ ຮັບຄຳປຶກສາ ກ່ຽວກັບ ພຕພ/ເອດສ໌ ຫ້ອງ 23 (ບທມ 1)",
+          "A9",
+        ],
+      },
+
+      {
+        key: "Pregnant_women_received_Counselling_Tested_for_HIV",
+        value: [
+          "Pregnant women received Counselling &amp; Tested for HIV",
+          "Health Facility",
+          "Number of women who were counselled for HIV during antenatal care for their most recent pregnancy, accepted an offer of being tested for HIV test during their first ANC visit and subsequently received their test results.",
+          "Registration book for Antenatal care using Receive HIV test column (column: 23)",
+          "ຈ.ນ ແມ່ຍິງຖືພາມາກວດກ່ອນເກີດໄດ້ຮັບການກວດເລືອດຊອກຫາ ເຊື້ອ ພຕພ/ເອດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງຖືພາ ມາກວດກ່ອນເກີດຄັ້ງທີ 1 ທີ່ໄດ້ຮັບ ກວດເລືອດຊອກຫາ ເຊື້ອພະຍາດ ພຕພ/ເອດສ໌ ບັນທຶກແຕ່ບໍ່ນັບເຂົ້າລາຍງານ (ບໍ່ລວມເອົາແມ່ຍິງຖືພາມາກວດທ້ອງ ຄັ້ງທີ 2 ຫຼື 3 ຫຼື 4 ຂຶ້ນໄປທີ່ໄດ້ກວດເລືອດ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ກວດ​ທ້ອງຫ້ອງກວດເລືອດ ຊອກຫາ ພຕພ/ເອດສ ຫ້ອງ 25 (ບທມ 1)",
+          "A10",
+        ],
+      },
+
+      {
+        key: "Pregnant_women_received_Free_ANC",
+        value: [
+          "Pregnant women received Free ANC",
+          "Health Facility and Outreach",
+          "Number of women who received free MCH ANC services during the pregnancy.",
+          "Registration book for Antenatal care Type of insurance (column 4)",
+          "ຈ.ນເທື່ອ ແມ່ຍິງຖືພາມາກວດກ່ອນເກີດ ບໍ່ໄດ້ເສຍຄ່າ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເທື່ອແມ່ຍິງຖືພາ ມາກວດກ່ອນເກີດທຸກຄັ້ງ ທີ່ໄດ້ໃຊ້ປະກັນສຸຂະ ພາບປະເພດຕ່າງໆ (ລວມມີ: ອປລ, ອປສ, ກສທ, ຄກປສຊ ແລະ ກລບສຄ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກ​ກວດ​ທ້ອງ ຫ້ອງປະເພດປະກັນສຸຂະພາບຫ້ອງ 4 (ບທມ 1)",
+          "A0",
+        ],
+      },
+    ],
+    //table2
+    [
+      {
+        key: "Delivery_at_health_facility",
+        value: [
+          "Delivery at health facility",
+          "Health Facility",
+          "The total number of all supervised births (vaginal, equipment, caesarean, still) that have occurred within the health facility.",
+          "Registration book for Antenatal care by the total number of  3 columns of delivery: column 18 + column 19 + column 20",
+          "ຈຳນວນການເກີດໃນສະຖານທີ່ບໍລິການ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນ​ແມ່ຍິງ​ທີ່ອອກລູກ​ທັງ​ໝົດ​ໃນສະຖານທີ່ບໍລິການ, ຊື່ງປະກອບມີ ເກີດປົກກະຕິ, ເກີດດ້ວຍການຜ່າຕັດອອກ, ເກີດດ້ວຍການໃຊ້ເຄື່ອງມືຊ່ວຍ.",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກ (ຫ້ອງ 20 + 21 + 22) (ບທມ 2)",
+          "B3",
+        ],
+      },
+      {
+        key: "Birth_notification",
+        value: [
+          "Number of birth notification",
+          "",
+          "",
+          "",
+          "ຈຳນວນເດັກທີ່ໄດ້ຮັບໃບແຈ້ງເກີດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ເດັກ​ທີ່​ເກີດ​ໃນ​ສະ​ຖານ​ທີ່​ບໍ​ລິ​ການເທົ່າ​ນັ້ນ​ ທີ່ຈະ​ໄດ້​ຮັບ​ໃບ​ແຈ້ງ​ເກີດ<br/><span class='red'>ກໍ​ລະ​ນີ​ເດັກ​ເກີດ​ຢູ່ນອກ​ສະ​ຖານ​ທີ່​ບໍ​ລິ​ການຈະແມ່ນ​ອຳ​ນາດ​ການ​ປົກ​ຄອງ​ບ້ານ​ອອກໃບ​ແຈ້ງ​ເກີດ​ໃຫ້ເພື່ອ​ໄປ​ຍື່ນ​ຂໍ​ໃບ​ແຈ້ງ​ເກີດ​ນຳ​ກະ​ຊວງ​ພາຍ​ໃນ</span>",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 15 (ບທມ2)",
+          "B2",
+        ],
+      },
+
+      {
+        key: "Deliveries_at_home_by_SBA",
+        value: [
+          "Deliveries at home by SBA",
+          "Health Facility",
+          "Number of delivery at home with assistance by SBA.<br><b>Notice:</b> Skill birth attendant includes: nurse, midwife or doctor only. ",
+          "Registration book for Delivery care column 17",
+          "ຈຳນວນເກີດລູກຢູ່ບ້ານມີແພດຊ່ວຍ",
+          "ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງ ທີ່ເກີດລູກຢູ່ເຮືອນທີ່ມີແພດຊ່ວຍ<br />ໝາຍເຫດ: ແພດທີ່ຊ່ວຍເກີດລູກອາດເປັນ: ພະຍາບານ, ຜະດຸງຄັນ ຫຼື ທ່ານໝໍ ແຕ່ບໍ່ແມ່ນໝໍຕຳແຍ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກ ເກີດປົກກະຕິ ຫ້ອງເກີດຢູ່ບ້ານມີແພດຊ່ວຍຫ້ອງ 19 (ບທມ 2)",
+          "B4",
+        ],
+      },
+
+      {
+        key: "Natural_Delivery_Vaginal_delivery",
+        value: [
+          "Natural Delivery (Vaginal delivery)",
+          "Health Facility and Outreach",
+          "Number of all supervised vaginal live births that have occurred both in a health facility and via outreach.",
+          "Registration book for Delivery care column 17 + column 18",
+          "ຈ.ນ ເກີດແບບທຳມະຊາດ (ເກີດທາງຊ່ອງຄອດ)",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະນອກສະຖານທີ່ບໍລິ ການ(ບໍລິການເຄື່ອນທີ່)",
+          "ຈຳນວນແມ່ຍິງທີ່ເກີດລູກປົກກະຕິ: ເກີດຢູ່ບ້ານມີແພດຊ່ວຍ ແລະເກີດປົກກະຕິຢູ່ສະຖານທີ່ບໍລິການ (ເກີດທາງຊ່ອງຄອດ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການເກີດຫ້ອງ 19 + ຫ້ອງ 20 (ບທມ 2)",
+          "B5",
+        ],
+      },
+
+      {
+        key: "Deliveries_by_using_medical_equipment_Forcep_Vacuum_aspiration",
+        value: [
+          "Deliveries by using medical equipment: Forcep, Vacuum aspiration",
+          "Health Facility",
+          "The total number of all supervised live births via with medical equipment (forceps or vacuum) that have occurred within the health facility.",
+          "Registration book for Delivery care column 19",
+          "ຈ.ນ ເກີດໂດຍ​ໃຊ້​ເຄື່ອງ​ມື​ຊ່ວຍ: Forcep, Vacuum aspiration",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງທີ່ ເກີດລູກໂດຍ​ໃຊ້ເຄື່ອງມືທາງການແພດຊ່ວຍ​ເກີດ (Forceps, Ventouse, Vacuum aspiration).",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງເກີດໂດຍ​ໃຊ້​ເຄື່ອງ​ມື​ຊ່ວຍ ຫ້ອງ 21 (ບທມ 2)",
+          "B6",
+        ],
+      },
+
+      {
+        key: "Caesarean_sections",
+        value: [
+          "Caesarean sections",
+          "Health Facility",
+          "The total number of all supervised live births by caesarean section that occurred within the health facility during the reporting period.",
+          "Registration book for Delivery care column 20",
+          "ຈຳນວນເກີດດດ້ວຍການຜ່າຕັດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງເກີດລູກດ້ວຍການຜ່າຕັດເອົາລູກອອກ (Cesarien)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ ເກີດໂດຍຜ່າຕັດອອກ ຫ້ອງ 22 (ບທມ 2)",
+          "B7",
+        ],
+      },
+
+      {
+        key: "Deliveries_with_Pre_and_Eclampsia",
+        value: [
+          "Deliveries with Pre-and Eclampsia",
+          "Health Facility",
+          "The total number of all supervised births experiencing complications due to pre-eclampsia and eclampsia within the health facility during the reporting period",
+          "Registration book for Delivery care column 21",
+          "ຈຳ​ນວນ​ເກີດ​ລູກ ມີ​ການ​ກຽມ​ຊັກ ແລະ ຊັກ​ກະ​ຕຸກ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງໃນເວລາເກີດລູກ ມີອາການກຽມຊັກ ແລະ ຊັກກະຕຸກ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກ ຫ້ອງ 23 (ບທມ 2)",
+          "B8",
+        ],
+      },
+
+      {
+        key: "Delivery_with_oxytocine_within_one_minute_of_birth",
+        value: [
+          "Delivery with oxytocine within one minute of birth",
+          "Health Facility",
+          "The total number of all supervised live births within the health facility that have received Oxytocine within one minute of birth during the reporting period",
+          "Registration book for Delivery care column 23",
+          "ຈຳນວນເກີດລູກ ທີໄດ້ສັກ  oxytocin ພາຍໃນ 1 ນາທີຫລັງເກີດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງທີ່ໄດ້ຮັບການສັກຢາ ອົກຊີໂຕຊິນ (Oxytocin) ພາຍຫຼັງເກີດລູກພາຍໃນ ໜື່ງນາທີ່ <br /><span class='red'>(ນັບສະເພາະແຕ່ແມ່ຍິງເກີດແບບທຳມະຊາດ ທາງຊ່ອງຄອດ<b>ເທົ່າ​ນັ້ນ ຜ່າ​ຕັດ​ບໍ່​ນັບ​ໃສ່</b>)</span>",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 25 (ບທມ 2)",
+          "B9",
+        ],
+      },
+
+      {
+        key: "Under_weight_newborn_2500_gr",
+        value: [
+          "Under weight newborn &lt;2500 gr",
+          "Health Facility and Outreach",
+          "Number of supervised live births that weigh <2500g both in a health facility and via outreach during the reporting period.",
+          "Registration book for Delivery care column 25",
+          "ຈຳນວນເດັກເກີດນ້ຳໜັກ <2500 gr",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ່)",
+          "ຈຳນວນເດັກເກີດ ທີ່ມີນ້ຳໜັກຫລຸດ 2500 ກຣາມ ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 27 (ບທມ 2)",
+          "B10",
+        ],
+      },
+
+      {
+        key: "Preterm_deliveries_at_22_27_weeks",
+        value: [
+          "Preterm deliveries at 22-27 weeks",
+          "Health Facility",
+          "Number of supervised live births that are preterm between 22-27 weeks of gestation within the health facility during the reporting period.",
+          "Registration book for Delivery care column 27",
+          "ຈຳນວນເກີດກ່ອນເກີດກຳເນີດ 22-27 ອາທິດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ເກີດກ່ອນກຳນົດ 22-27 ອາທິດ (ຈຳນວນເດັກທີ່ເກີດໃນລະຫວ່າງ 22 ຫາ 27 ອາທິດ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 29 (ບທມ 2)",
+          "B11",
+        ],
+      },
+
+      {
+        key: "Preterm_deliveries_at_28_36_weeks",
+        value: [
+          "Preterm deliveries at 28-36 weeks",
+          "Health Facility",
+          "Number of supervised live births that are preterm between 28-36 weeks of gestation within the health facility outreach during the reporting period.",
+          "Registration book for Delivery care column 28",
+          "ຈຳນວນເກີດກ່ອນເກີດກຳເນີດ 28-36 ອາທິດ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ເກີດກ່ອນກຳນົດ 28-36 ອາທິດ (ຈຳນວນເດັກທີ່ເກີດໃນລະຫວ່າງ 28 ຫາ 36 ອາທິດ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 30 (ບທມ 2)",
+          "B12",
+        ],
+      },
+
+      {
+        key: "Still_births_28_weeks",
+        value: [
+          "Still births ( &gt;=28 weeks)",
+          "Health Facility",
+          "Number of still births (>=28 weeks) that have occurred within the health facility during the reporting period. ",
+          "Registration book for Delivery care column 33",
+          "ຈຳນວນເດັກ ຕາຍ​ມາ​ແຕ່​ໃນ​ທ້ອງ(>=28 ອາທິດ)",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ຕາຍກ່ອນເກີດ (ຕາຍມາແຕ່ທ້ອງແມ່) ແມ່ນເດັກໄດ້ 28 ອາທິດ ຂຶ້ນເມືອ ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກ ຕາຍເກີດ  >=28 ອາທິດ ຫ້ອງ 35 (ບທມ 2)",
+          "B13",
+        ],
+      },
+
+      {
+        key: "Total_live_births",
+        value: [
+          "Total live births",
+          "Health Facility and Outreach",
+          "The total number of all live births<br><b>notice:</b> Does not include still births",
+          "Registration book for Delivery care column 34",
+          "ຈຳນວນເກີດມີຊີວິດທັງໝົດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ)",
+          "ລວມຈຳນວນເດັກທີ່ເກີດມີຊີວິດທັງໝົດ (ເກີດປົກກະຕິຢູ່ບ້ານມີແພດຊ່ວຍ, ເກີດປົກກະຕິຢູ່ສະຖານທີ່ບໍລິການ, ເກີດດ້ວຍການໃຊ້ເຄື່ອງມືຊ່ວຍ, ແລະ ເກີດດ້ວຍການຜ່າຕັດອອກ) <br />ໝາຍເຫດ: ບໍ່ນັບຈຳນວນເດັກທີ່ຕາຍກ່ອນເກີດ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ ເກີດມີຊີວິດທັງໝົດ  ຫ້ອງ 36 (ບທມ 2) (ຫ້ອງ36 = ຫ້ອງ 19+20+21+22)",
+          "B14",
+        ],
+      },
+
+      {
+        key: "Newborn_initiated_breastfeeding_within_the_first_hour_after_birth",
+        value: [
+          "Newborn initiated breastfeeding within the first hour after birth",
+          "Health Facility and Outreach",
+          "The total number of all supervised live births that have received breast milk within one hour of birth both in a health facility and via outreach during the reporting period.",
+          "Registration book for Delivery care column 35",
+          "ຈ.ນ ​ເດັກ​ໄດ້​ດູດ​ນົມ​ແມ່​ໃນ 1 ຊມ ​ຫຼັງ​ເກີດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ)",
+          "ຈ.ນ ​ເດັກທີ່​ໄດ້​ດູດ​ນົມ​ແມ່​ພາຍໃນ 1 ຊົ່ວໂມງ ຫຼັງ​ເກີດ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກ ຫ້ອງ 37 (ບທມ 2)",
+          "B15",
+        ],
+      },
+
+      {
+        key: "Spontaneus_abortions_28_weeks",
+        value: [
+          "Spontaneus abortions ( &lt;28 weeks)",
+          "Health Facility and Outreach",
+          "Number of spontaneous abortions (spontaneous, natural loss of the fetus before it is capable of survival outside the uterus up until the 28th week of pregnancy) during the reporting period.<br><b>Notice:</b> Induced abortions  are not included",
+          "Registration book for Delivery care column 38",
+          "ຈຳນວນລຸລູກແບບທຳມະຊາດ (<28 ອາທິດ)",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ)",
+          "ຈຳນວນລຸລູກແບບທຳມະຊາດ (<28 ອາທິດ) (ລຸແບບອຸປະເຫດ, ລຸແບບບັງເອີນ)<br />ໝາຍເຫດ: ບໍ່ນັບການລຸລູກແບບບັງຄັບ ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 38 (ບທມ 2)",
+          "B16",
+        ],
+      },
+
+      {
+        key: "Induced_abortions",
+        value: [
+          "Induced abortions",
+          "Health Facility",
+          "The deliberate termination of pregnancy before the fetus is capable of survival outside the uterus.",
+          "Registration book for Delivery care column 39",
+          "ຈຳນວນລຸລູກແບບບັງຄັບ (<28 ອາທິດ)",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນການລຸລູກແບບບັງຄັບ ຊື່ງແມ່ນການລຸລູກໂດຍການຕັ້ງໃຈ (ດູດ, ກິນຢາ, ຂູດ ແລະ ອື່ນໆ...)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງລຸລູກແບບບັງຄັບ. ຫ້ອງ 39 (ບທມ 2)",
+          "B17",
+        ],
+      },
+
+      {
+        key: "Complicated_Abortions",
+        value: [
+          "Complicated Abortions",
+          "Health Facility",
+          "Number of abortion with complications including bleeding and infection.",
+          "Registration book for Delivery care column 40",
+          "ຈຳນວນລຸລູກມີອາການສົນ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນລຸລູກທີ່ມີອາການສົນເຊັ່ນ: ເລືອດໄຫລ, ຊຶມເຊື້ອ...",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງລຸລູກມີອາການສົນ ຫ້ອງ 40 (ບທມ 2)",
+          "B18",
+        ],
+      },
+
+      {
+        key: "Ectopic_pregnancies_ruptured",
+        value: [
+          "Ectopic pregnancies ruptured",
+          "Health Facility",
+          "Number of ectopic pregnancies which rupture.",
+          "Registration book for Delivery care column 41",
+          "ຈຳ​ນວນ​ຖື​ພາ​ລູກນອກ​ພົກ​ແຕກ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນແມ່ຍິງຖືພາລູກນອກພົກ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 41 (ບທມ 2)",
+          "B19",
+        ],
+      },
+
+      {
+        key: "Pregnant_women_received_Free_delivery",
+        value: [
+          "Pregnant women received Free delivery",
+          "Health Facility",
+          "Number of women which received free MCH delivery services.",
+          "Registration book for delivery Type of insurance (column 5)",
+          "ຈ.ນ ແມ່ຍິງຖືພາ ​ທີ່​ໄດ້​ຮັບ​ການບໍ​ລິ​ການ​ເກີດ ບໍ່​ເສຍຄ່າ",
+          "ໃນສະຖານທີ່ບໍລິການ",
+          "ຈ.ນ ແມ່ຍິງຖືພາ ​ທີ່​ໄດ້​ຮັບ​ການບໍ​ລິ​ການ​ເກີດ ທີ່ໄດ້ໃຊ້ປະກັນສຸຂະພາບປະເພດຕ່າງໆ (ລວມມີ: ອປລ, ອປສ, ກສທ, ຄກປສຊ ແລະ ກລບສຄ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການ​ເກີດ​ລູກຫ້ອງ 5 (ບທມ2)",
+          "B1",
+        ],
+      },
+    ],
+    //table3
+    [
+      {
+        key: "Women_receiving_PNC_within_2_days_from_birth_in_the_month",
+        value: [
+          "Women receiving PNC within 2 days from birth in the month",
+          "Health Facility and Outreach",
+          "Number of mothers who received postpartum care within two days of childbirth both in a health facility and via outreach during the reporting period.",
+          "Registration Book for Postnatal care Column 9 ",
+          "ຈຳນວນແມ່ຍິງກວດຫຼັງເກີດພາຍໃນ  2 ວັນ ຫຼັງເກີດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ່)",
+          "ຈຳນວນແມ່ຍິງທີ່ໄດ້ຮັບການກວດຫຼັງເກີດ (PNC) ພາຍໃນ 2 ວັນຫຼັງເກີດລູກ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການກວດ​ຫລັງ​ເກີດຫ້ອງ 9 (ບທມ 3)",
+          "C1",
+        ],
+      },
+
+      {
+        key: "Women_receiving_PNC_within_3_42_days_from_birth_in_the_month",
+        value: [
+          "Women receiving PNC within 3-42 days from birth in the month",
+          "Health Facility and Outreach",
+          "Number of mothers who received postpartum care within 3 to 42 days of childbirth both in a health facility and via outreach during the reporting period.",
+          "Registration Book for Postnatal care Column 10",
+          "ຈຳນວນແມ່ຍິງກວດຫຼັງເກີດພາຍໃນ  3-42 ວັນຫຼັງເກີດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ)",
+          "ຈຳນວນແມ່ຍິງທີ່ໄດ້ຮັບການກວດຫຼັງເກີດ ພາຍໃນ 3 ຫາ 42 ວັນ ຫຼັງການເກີດລູກ",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການກວດ​ຫລັງ​ເກີດຫ້ອງ ກວດຫຼັງເກີດ3-42 ວັນ ຫລັງເກີດຫ້ອງ 10 (ບທມ 3)",
+          "C2",
+        ],
+      },
+
+      {
+        key: "Women_receiving_IFA_90_tablets",
+        value: [
+          "Women receiving IFA 90 tablets",
+          "Health Facility and Outreach",
+          "Number of women who have received the full dosage of iron-folic acid (90 tablets, 1 dose) supplementation post pregnancy during the reporting period. This number includes :<br />•	Women receiving PNC who didn’t delivery within the same health facility<br />•	Women who came to the facility for EPI<br />•	Women whom received the tablets at the Mobile health unit",
+          "Postnatal care Column 11",
+          "ຈຳນວນແມ່ຍິງຫຼັງເກີດ ທີ່ໄດ້ຮັບຢາທາດເຫຼັກ 90 ເມັດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ)",
+          "ຈຳນວນແມ່ຍິງຫລັງເກີດທີ່ໄດ້ຮັບຢາທາດເຫຼັກ 90 ເມັດ (ຈ່າຍຢາທາດເຫລັກໃຫ້ຄົນເຈັບກ່ອນຄົນເຈັບອອກໂຮງໝໍ ຄັ້ງດ່ຽວ 90 ເມັດ) ຕົວເລກນີ້ ລວມທັງແມ່ຍິງທີມາກວດຫລັງຄອດທີບໍ່ໄດ້ເກີດລູກໃນສະຖານທີບໍລິການຂອງທ່ານ ຫລື ຈຳນວນແມ່ ຫລັງຄອດ ພາຍໃນ 42 ວັນ ທີພາລູກມາສັກ ຢາກັນ ພະຍາດ ແລະ ຈຳນວນແມ່ຫລັງຄອດທີທ່ານຈ່າຍໃຫ້ເວລາລົງເຄືອນທີຖ້າມີໃນເດືອນ.",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການກວດ​ຫລັງ​ເກີດ ຫ້ອງ 11 (ບທມ3)",
+          "C13",
+        ],
+      },
+
+      {
+        key: "Pregnant_women_received_Free_PNC",
+        value: [
+          "Pregnant women received Free PNC",
+          "Health Facility and Outreach",
+          "Number of women which received free MCH PNC services",
+          "Registration Book for Postnatal care Type of insurance (column 4)",
+          "ຈຳນວນເທື່ອແມ່ຍິງໄດ້ຮັບການກວດຫຼັງເກີດບໍ່ເສຍຄ່າ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ (ບໍລິການເຄື່ອນທີ)",
+          "ແມ່ນຈຳນວນເທື່ອແມ່ກວດຫຼັງເກີດ ທີ່ໄດ້ໃຊ້ ປະ​ເພດ​ປະ​ກັນ​ສຸຂະພາບ ປະເພດຕ່າງໆ (ອປລ, ອປສ, ກສທ, ກປຊຊ, ກລບສຄ)",
+          "ສັງລວມຈາກ ປື້​ມບັນທຶກການກວດ​ຫລັງເກີດ ຫ້ອງ 4 (ບທມ 3)",
+          "C0",
+        ],
+      },
+    ],
+    //table4
+    [
+      {
+        key: "Maternal_deaths",
+        value: [
+          "Maternal deaths",
+          "Health facility and community",
+          "Number of women who die from any cause related to or aggravated by pregnancy or its management (excluding accidental or incidental causes) during pregnancy and childbirth or within 42 days of termination of pregnancy, irrespective of the duration and site of the pregnancy both in a health facility and within the community.",
+          "Registration book for Maternal and Child Health column D",
+          "ຈຳນວນແມ່ຕາຍ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນແມ່ຕາຍໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ ທີ່ມີສາເຫດພົວພັນກັບການຖືພາ  ຫຼືພາຍໃນ 42 ວັນຫລັງເກີດ, ໂດຍບໍ່​ຄຳ​ນຶງ​ເຖິງ​ໄລ​ຍະ​ເວ​ລາ ແລະ ຂະ​ໜາດ​ຂອງ​ການ​ຖື​ພາ, ຍ້ອນ​ສາ​ເຫດ​ໃດ​ໜຶ່ງ​ທີ່​ກ່ຽວ​ພັນ​ກັບ ຫຼື ເຮັດ​ໃຫ້​​ມີ​ຄວາມຮ້າຍ​ແຮງ​ຂຶ້ນໂດຍ​ການ​ຖື​ພາ ຫຼື ການ​ຄຸ້ມ​ຄອງ​ການ​ຖື​ພາ <b>ແຕ່ບໍ່​ແມ່ນ​ການ​ຕາຍຍ້ອນອຸ​ບັດ​ເຫດ ຫຼື ໂດຍ​ບັງ​ເອີນ</b>",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານການຕາຍໃນໝູ່ບ້ານ ລວມທັງການຕາຍຂອງແມ່ແລະເດັກຫ້ອງ 8+ 9 + 10 + 11 + 12  (ບທມ 6)ແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4",
+        ],
+      },
+
+      {
+        key: "Neonatal_death_0_7_days",
+        value: [
+          "Neonatal death 0-7 days",
+          "Health facility and community",
+          "Number of deaths occurred among all live births during the first 0-7 days of life during the reporting period.",
+          "Registration book for Maternal and Child Health column D",
+          "ຈຳນວນເດັກຕາຍພາຍໃນ 0-7 ວັນ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນເດັກທີ່ເກີດມາມີຊີວິດ ແລະ ຕາຍພາຍໃນ 0-7 ວັນ<br />ໝາຍເຫດ: ບໍ່ນັບເດັກທີ່ຕາຍໃນແຕ່ທ້ອງແມ່",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4a",
+        ],
+      },
+
+      {
+        key: "Neonatal_death_8_28_days",
+        value: [
+          "Neonatal death 8-28 days",
+          "Health facility and community",
+          "Number of deaths among all live births occurring after the 7th but before the 28th completed day of life during the reporting period.",
+          "Registration book for Maternal and Child Health column D",
+          "ຈຳນວນເດັກຕາຍພາຍໃນ 8-28 ວັນ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນເດັກທີ່ເກີດມາມີຊີວິດ ແຕ່ຕາຍພາຍໃນ 8-28 ວັນ<br />ໝາຍເຫດ: ບໍ່ນັບເດັກທີ່ຕາຍມາແຕ່ທ້ອງແມ່",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4b",
+        ],
+      },
+
+      {
+        key: "Infant_death_age_1_11_months",
+        value: [
+          "Infant death age 1-11 months",
+          "Health facility and community",
+          "Number of infants dying between the age of 1-11 months during the reporting period.",
+          "Registration book for Maternal and Child Health column D ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸ 1-11 ເດີອນຕາຍ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນເດັກທີ່ຕາຍອາຍຸລະຫວ່າງ 1 ເດືອນ ຫາ 11 ເດືອນ(11 ເດືອນ: ໝາຍວ່າ 11 ເດືອນປາຍ, ແຕ່ຍັງບໍ່ທັນເຕັມ 12 ເດືອນ)",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4d",
+        ],
+      },
+
+      {
+        key: "Total_number_of_Infant_under_1_year_of_age_deaths",
+        value: [
+          "Total number of Infant (under 1 year of age) deaths",
+          "Health facility and community",
+          "The total number of all infant deaths, including neonatal deaths (0-7 days), neonatal deaths (8-28 days) and infant deaths (1-11 months) during the reporting period.",
+          "Registration book for Maternal and Child Health column D",
+          "ຈຳນວນເດັກລຸ່ມ 1 ປີຕາຍ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸຕ່ຳກວ່າ 1 ປີຕາຍ ເຊີ່ງໝາຍເຖິ່ງ ຈຳນວນເດັກ ອາຍຸລຸ່ມ < 11 ເດືອນ 29 ຫລື ມັນເທົາກັບຜົນບວກຂອງເດັກຕາຍໃນ 3 ກູ່ມຂ້າງເທິງ (= ເດັກ ອາຍຸ 0-7 ວັນຕາຍ+ ເດັກອາຍຸ 8-28 ວັນຕາຍ+ ເດັກ 1ເດືອນ ຫາ 11 ເດືອນ ຕາຍ )<br /><b>ໝາຍເຫດ: ສຳລັບຂໍ້ມູນນີ້ລະບົບຈະບວກໃຫ້ອັດຕະໂນມັດ ແລະລະບົບຈະບໍ່ອານຸຍາດໃຫ້ມີການປ້ອນຂໍ້ມູນມາຈາກແຂວງເພືອຫລີກການຄວາມຜິດພາດໃນການປ້ອນຂໍ້ມູນ</b>",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4e",
+        ],
+      },
+
+      {
+        key: "Child_death_age_1_4_years",
+        value: [
+          "Child death age 1-4 years",
+          "Health facility and community",
+          "Number of deaths for all children between the age of 1-4 years during the reporting period.",
+          "Registration book for Maternal and Child Health column D",
+          "ຈຳນວນເດັກອາຍຸ 1-4 ປິຕາຍ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸລະຫວ່າງ 1 ຫາ 4 ປີຕາຍ, ຊື່ງມີທັງໃນສະຖານທີ່ບໍລິການ ຫຼື ນອກສະຖານທີ່ບໍລິການ (4 ປີ: ໝາຍວ່າ 4 ປີປາຍ, ແຕ່ຍັງບໍ່ທັນເຕັມ 5 ປີ)",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4f",
+        ],
+      },
+      {
+        key: "Under_5_Deaths",
+        value: [
+          "Under 5 Deaths",
+          "Health facility and community",
+          "The total number of all child deaths, including neonatal deaths (0-7 days), neonatal deaths (8-28 days), infant deaths (1-11 months) and child deaths (1-4 years) during the reporting period.",
+          "Registration book for Maternal and Child Health column D",
+          "ລວມຈຳນວນເດັກ ລຸ່ມ 5 ປີ ຕາຍ (ລວມເອົາ ລຸ່ມ 1 ປີ ແລະ 1-4 ປີ)",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ຊຸມຊົນ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸຕ່ຳກວ່າ 5 ປີຕາຍ, ຊື່ງໝາຍເຖິ່ງ ເດັກຕາຍແຕ່  1 ວັນ ຫາ 4 ປີ 11 ເດືອນ 29 ວັນແຕ່<b>ບໍ່ແມ່ນເດັກຕາຍທີມີອາຍຸໄດ້ເຕັມ 5 ປີ</b>  ຫລື ເທົ່າກັບຜົນບວກຂອງ ຈຳນວນເດັກເສຍຊີວິດ ໃນ 2 ກູ່ມອາຍຸຂ້າງເທິ່ງຄື: ກຸ່ມ ຈຳນວນເດັກລຸ່ມ 1 ປີຕາຍ ແລະ ຈຳນວນເດັກອາຍຸ 1-4 ປິຕາຍ.<br /><b>ໝາຍເຫດ: ສຳລັບຂໍ້ມູນນີ້ລະບົບຈະບວກໃຫ້ອັດຕະໂນມັດ ແລະ ລະບົບຈະ ບໍ່ອານຸຍາດໃຫ້ມີການປ້ອນຂໍ້ມູນມາຈາກແຂວງເພື່ອ ຫລີກລ້ຽງຄວາມຜິດພາດໃນການປ້ອນຂໍ້ມູນ</b>",
+          "ສັງລວມມາ​ຈາກ​ແບບຟອມລາຍງານແມ່ ແລະ ເດັກ ເສຍຊີວິດປະຈຳອາທິດຂອງແຂວງ",
+          "F4g",
+        ],
+      },
+    ],
+  ],
+  tab2: [
+    //table1
+    [
+      {
+        key: "Old_user_number_of_couple",
+        value: [
+          "Old user (number of couple)",
+          "Old user (number of couple)(in facility,outreach,and CBD&VHV)",
+          "The user that ever use FP and continue until present",
+          "Registration book for FP column 8",
+          "ຜູ້ໃຊ້ບໍລິການເກົ່າ",
+          "ຜູ້ມາໃຊ້ບໍລິການເກົ່າ (ສະຖານທີ່ບໍລິການ, ນອກສະຖານທີ່ບໍລິການ, CBD ແລະ ອສບ)",
+          "ຈຳນວນຜູ້ບໍລິການທີ່ເຄີຍໃຊ້ບໍລິການວາງແຜນຄອບຄົວ ແລະ ສືບຕໍ່ມາຮອດເດືອນນີ້.",
+          "ສັງລວມຈາກ ປື້ມບັນທຶກການບໍລິການວາງແຜນຄອບຄົວ ຫ້ອງ ຜູ້ໃຊ້ບໍລິການເກົ່າ",
+        ],
+      },
+      {
+        key: "New_user_number_of_couple",
+        value: [
+          "New user (number of couple)",
+          "New user (number of couple)(in facility,outreach,and CBD&VHV)",
+          "",
+          "",
+          "ຜູ້ໃຊ້ບໍລິການໃໝ່",
+          "ຜູ້ໃຊ້ບໍລິການໃໝ່ (ສະຖານທີ່ບໍລິການ, ນອກສະຖານທີ່ບໍລິການ, CBD ແລະ ອສບ)",
+          "ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ບໍລິການ ການວາງແຜນຄອບຄົວໃໝ່ຂອງເດືອນນີ້ ຫລືຜູ້ມາບໍລິການທີ່ບໍ່ເຄີຍໃຊ້ການວາງແຜນຄອບຄົວໃດມາກ່ອນ (ໃໝ່ໃນເດືອນ, ໃໝ່ໃນປີ)</br>ໝາຍເຫດ: ໃໝ່ແມ່ນຜູ້ທີ່ບໍ່ເຄີຍໃຊ້ການວາງແຜນຄອບຄົວທຸກຊະນິດໃນໄລຍະຜ່ານມາ.",
+          "ສັງລວມຈາກ ປື້ມບັນທຶກການບໍລິການວາງແຜນຄອບຄົວ ຫ້ອງ ຜູ້ໃຊ້ບໍລິການໃໝ່",
+        ],
+      },
+      {
+        key: "Number_of_continue_users",
+        value: [
+          "Number of continue users",
+          "",
+          "",
+          "",
+          "ຜູ້ໃຊ້ບໍລິການສືບ​ຕໍ່",
+          "",
+          "ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ການວາງແຜນຄອບຄົວສືບຕໍ່ ຫຼື ມາກ່ອນ ແລະປະຈຸບັນກໍຍັງສືບຕໍ່ໃຊ້ ຫຼືບໍ່ໃຊ້ (ໃນປີປະຈຸບັນ) ຊຶ່ງອາດຈະມາຮັບການບໍລິການຢູ່ສະຖານທີ່ບໍລິການບ່ອນເກົ່າ ຫຼື ອາດໄປຮັບບໍລິການຢູ່ບ່ອນອື່ນ ຖືວ່າຍັງເປັນຜູ້ສືບຕໍ່ຂອງສະຖານທີ່ບໍລິການນັ້ນ",
+          "ສັງລວມຈາກ ປື້ມບັນທຶກການບໍລິການວາງແຜນຄອບຄົວ ຫ້ອງ ຜູ້ໃຊ້ບໍລິການສືບຕໍ່",
+        ],
+      },
+      {
+        key: "Total_number_distributed",
+        value: [
+          "Total number distributed",
+          "",
+          "",
+          "",
+          "ຈ.ນ ​ທີ່ໄດ້ແຈກຍາຍ",
+          "ຈ.ນ ​ທີ່ໄດ້ແຈກຍາຍ",
+          "ແມ່ນຈຳນວນີ່ໄດ້ແຈກຢາຍໃຫ້ຜູ້ມາໃຊ້ບໍລິການ",
+          "",
+        ],
+      },
+      {
+        key: "Wastage_",
+        value: [
+          "Wastage",
+          "",
+          "",
+          "",
+          "ຈ.ນ ທີ່ເສຍຫາຍ",
+          "ຈ.ນ ທີ່ເສຍຫາຍ",
+          "ແມ່ນຈຳນວນທີ່ໄດ້ເສຍຫາຍ ຫຼື ໝົດອາຍຸການນຳໃຊ້",
+          "",
+        ],
+      },
+    ],
+    //table2
+    [
+      {
+        key: "Condoms_",
+        value: [
+          "Condoms",
+          "",
+          "",
+          "",
+          "ຖົງຢາງອະນາໄມ",
+          "ຖົງຢາງອະນາໄມ",
+          "ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ ຢາຄຸມເມັດດ່ຽວໃນການວາງແຜນຄອບຄົວ",
+          "",
+        ],
+      },
+      {
+        key: "Single_Pill",
+        value: [
+          "Single Pill",
+          "",
+          "",
+          "",
+          "ຢາຄຸມຊະນິດດ່ຽວ",
+          "ຢາຄຸມເມັດດ່ຽວ (ສະຖານທີ່ບໍລິການ, ນອກສະຖານທີ່ບໍລິ ການ, CBD ແລະ ອສບ)",
+          "<b>ຜູ້ໃຊ້ບໍລິການເກົ່າ:</b>ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ ຢາຄຸມເມັດດ່ຽວໃນການວາງແຜນຄອບຄົວ ຫລື ຜູ້ທີ່ເຄີຍໃຊ້ການວາງແຜນຄອບຄົວຊະນິດອື່ນໆມາກ່ອນ ແຕ່ປ່ຽນມາໃຊ້ ຢາຄຸມເມັດດ່ຽວ ຫຼື ໃຊ້ຢາຄຸມເມັດດ່ຽວມາກ່ອນ ແລະ ໃນເດືອນນີ້ກໍຍັງມາຮັບບໍລິການ.</br><b>ຜູ້ໃຊ້ບໍລິການໃໝ່:</b> ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ ຢາຄຸມເມັດດ່ຽວໃນການວາງແຜນຄອບຄົວ ຄັ້ງທຳອິດ ແລະ ບໍ່ເຄີຍໃຊ້ການວາງແຜນຄອບຄົວຊະນິດໃດມາກ່ອນ ແລະ ຫາກໍມາຮັບບໍລິການ </br><b>ໝາຍເຫດ:</b> ຜູ້ບໍລິການທີປ່ຽນວິທິການຄູມກຳເນີດ ບໍ່ແມ່ນຜູ້ບໍລິການໃໝ່ ຕົວຢ່າງ: ຜົວຂອງ ນ. ກ ເຄີຍໃຊ້ຖົງຢາງອະນາໄມໃນການວາງແຜນຄູມກຳເນີດ ມາໄດ້ 1 ປີ ແລ້ວເຊົາຄຸມຍ້ອນເອົາລູກ ພາຍຫຼັງເກີດລູກ ປ່ຽນວິທີ ມາໃຊ້ສັກຢາ ຄູມກຳເນີດແທນ. ກໍລະນີນີ້ ນ. ກ ບໍ່ແມ່ນຜູ້ບໍລິການໃໝ່ (ຖືວ່າເປັນຜູ້ໃຊ້ບໍລິການເກົ່າ ພຽງແຕ່ປ່ຽນວິທີໃໝ່)</br><b>ຜູ້ໃຊ້ບໍລິການສືບຕໍ່:</b>ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ ຢາຄຸມເມັດດ່ຽວໃນການວາງແຜນຄອບຄົວສືບຕໍ່ ແມ່ນຜູ້ໃຊ້ຢາຄຸມເມັດດ່ຽວໃນການວາງແຜນຄອບຄົວມາກ່ອນ ແລະປະຈຸບັນກໍຍັງສືບຕໍ່ໃຊ້ ຫຼືບໍ່ໃຊ້ (ໃນປີປະຈຸບັນ) ຊຶ່ງອາດຈະມາຮັບການບໍລິການຢູ່ສະຖານທີ່ບໍລິການບ່ອນເກົ່າ ຫຼື ອາດໄປຮັບບໍລິການຢູ່ບ່ອນອື່ນ ຖືວ່າຍັງເປັນຜູ້ສືບຕໍ່ຂອງສະຖານທີ່ບໍລິການນັ້ນ<b>ໝາຍເຫດ:</b> ຊຶ່ງສາມາດນັບເອົາຢູ່ຟອມ 01 ຂອງຜູ້ໃຊ້ຢາຄຸມເມັດດ່ຽວ ແລະ ກໍລະນີຕົກເຮ່ຍໃຫ້ເກັບອອກໃນທ້າຍປີ ເທົ່ານັ້ນ ແລະ ເກັບອອກສຳລັບຜູ້ອາຍຸກາຍໄວຈະເລີນພັນ ແລະ ຜູ້ທີ່ຮູ້ເຫດຜົນຊັດເຈນວ່າເຊົາໃຊ້ແລ້ວ",
+          "ສັງລວມຈາກ ປື້ມບັນທຶກການບໍລິການວາງແຜນຄອບຄົວ  ຫ້ອງລວມຈາກຢາຄຸມເມັດດ່ຽວ",
+        ],
+      },
+      {
+        key: "Combined_Pill",
+        value: [
+          "Combined Pill",
+          "",
+          "",
+          "",
+          "ຢາຄຸມຊະນິດປະສົມ",
+          "ຢາຄຸມຊະນິດປະສົມ(ສະຖານທີ່ບໍລິການ, ນອກສະຖານທີ່ບໍລິການ,CBD ແລະ ອສບ)",
+          "<b>ຜູ້ບໍລິການເກົ່າ:</b>ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ ຢາຄຸມເມັດປະສົມ ໃນການວາງແຜນຄອບຄົວ ຫລື ຜູ້ທີເຄີຍໃຊ້ການວາງແຜນຄອບຄົວຊະນິດອື່ນຯມາກ່ອນ  ແລ້ວ ມາໃຊ້ ຢາຄຸມເມັດປະສົມ ໃນເດືອນນີ້.</br><b>ຜູ້ໃຊ້ບໍລິການໃໝ່:</b>ຈຳນວນຜູ້ບໍລິການທີ່ໃຊ້ ຢາຄຸມເມັດປະສົມ ໃນການວາງແຜນຄອບຄົວ ຄັ້ງທຳອິດ ແລະ ບໍ່ເຄີຍໃຊ້ການວາງແຜນຄອບຄົວຊະນິດໃດມາກ່ອນ </br><b>ໝາຍເຫດ:</b> ຜູ້ບໍລິການທີປ່ຽນວິທິການຄູມກຳເນີດ ບໍ່ແມ່ນຜູ້ບໍລິການ ໃໝ່ ຕົວຢ່າງ: ຜົວຂອງ ນ. ກ ເຄີຍໃຊ້ຖົງຢາງອະນາໄມໃນການວາງແຜນຄູມກຳ ເນີດ ມາໄດ້ 2 ປີ ແລ້ວ. ປະຈຸບັນ ແມ່ນຢາກປ່ຽນວິທີ ມາໃຊ້ສັກຢາຄູມກຳ ເນີດແທນ. ກໍລະນີນີ້ ນ. ກ ບໍ່ແມ່ນຜູ້ບໍລິການໃໝ່ (ຖືວ່າເປັນຜູ້ໃຊ້ບໍລິກາເກົາ ພຽງແຕ່ປ່ຽນວິທີໃໝ່)",
+          "ສັງລວມຈາກ ປື້ມບັນທຶກການບໍລິການວາງແຜນຄອບຄົວ  ຫ້ອງລວມຈາກຢາຄຸມຊະນິດປະສົມ",
+        ],
+      },
+      {
+        key: "Depose_Injectable",
+        value: ["Depose (Injectable)", "", "", "", "ຢາຄຸມຊະນິດສັກ", "", "", ""],
+      },
+      { key: "IUD_", value: ["IUD", "", "", "", "ຮ່ວງອະນາໄມ", "", "", ""] },
+      {
+        key: "Implant_",
+        value: ["Implant", "", "", "", "ຢາຝັງຄຸມກຳເນີດ", "", "", ""],
+      },
+      {
+        key: "Emergency_pill",
+        value: ["Emergency pill", "", "", "", "ຢາຄຸມຊະນິດສຸກເສີນ", "", "", ""],
+      },
+      {
+        key: "Female_Sterilization",
+        value: ["Female Sterilization", "", "", "", "ໝັນຍິງ", "", "", ""],
+      },
+      {
+        key: "Male_Sterilization",
+        value: ["Male Sterilization", "", "", "", "ໝັນຊາຍ", "", "", ""],
+      },
+    ],
+  ],
+  tab4: [
+    //table1
+    [
+      {
+        key: "Children_received_deworming_tablets_helmithic_1st_round",
+        value: [
+          "Children received deworming tablets (helmithic) 1st round",
+          "Health Facility and Outreach",
+          "The number of children 12-59 months old who have received their first round of deworming tablets.",
+          "Registration book for child growth monitoring column 25",
+          "ເດັກໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ(helmithic) ຄັ້ງທີ 1",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸລະຫວ່າງ 12 ຫາ 59 ເດືອນ ທີ່ໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ (helmithic) ຄັ້ງທີ 1 (ແມ່ນເອົາຕົວເລກແຈກຢາຍໃນວັນສົ່ງເສີມສຸຂະພາບ ໃນເດືອນ 6 ຂອງ ທຸກໆປີ)",
+          "ສັງລວມຈາກ​ປື້ມ​ບັນ​ທຶກ​ການກວດ​ກາ​ຕິດ​ຕາມພັດ​ທະ​ນາ​ການ​ຂອງ​ເດັກ ລຸ່ມ 5 ປີ ຫ້ອງ 25",
+          "",
+        ],
+      },
+      {
+        key: "Children_received_deworming_tablets_helmithic_2nd_round",
+        value: [
+          "Children received deworming tablets (helmithic) 2nd round",
+          "Health Facility and Outreach",
+          "The number of children 12-59 months old who have received their second round of deworming tablets.",
+          "Registration book for child growth monitoring column 26",
+          "ເດັກໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ(helmithic) ຄັ້ງທີ 2",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸລະຫວ່າງ 12 ຫາ 59 ເດືອນ ທີ່ໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ (helmithic) ຄັ້ງທີ 2 (ແມ່ນເອົາຕົວເລກແຈກຢາຍໃນວັນ​ສົ່ງເສີມສຸຂະພາບ ໃນເດືອນ 12 ຂອງ ທຸກໆປີ)",
+          "ສັງລວມຈາກ​ປື້ມ​ບັນ​ທຶກ​ການກວດ​ກາ​ຕິດ​ຕາມພັດ​ທະ​ນາ​ການ​ຂອງ​ເດັກ ລຸ່ມ 5 ປີ ຫ້ອງ 26",
+          "",
+        ],
+      },
+
+      {
+        key: "Children_aged_6_11_months_received_Vitamin_A",
+        value: [
+          "Children aged 6-11 months received Vitamin A",
+          "Health Facility and Outreach",
+          "Number of child between 6 to 11 months received vitamin A (Is Number of Vitamin A given at the sanitation day in June or December every year. If the child is 6 months before June  of the year then they have to wait for vitamin A given at the sanitation day or if the child is 6 months after June of the year then they have to wait for the vitamin A given at December of the year)",
+          "Registration book for child growth column 23",
+          "ເດັກອາຍຸ 6-11 ເດືອນໄດ້ຮັບ Vitamin A",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸລະຫວ່າງ 6 ຫາ 11 ເດືອນທີ່ໄດ້ຮັບຢາວິຕາມິນເອ (A) (ແມ່ນເອົາຕົວເລກແຈກຢາຍໃນວັນສົ່ງເສີມສຸຂະພາບ ໃນເດືອນ 6 ຫລື 12 ຂອງ ທຸກໆປີ. ຖ້າເດັກອາຍຸໄດ້ 6 ເດືອນ ກ່ອນເດືອນ 6 ຂອງປີ ແມ່ນລໍຖ້າຮັບໃນວັນສົ່ງເສີມສຸຂະພາບ ຫລືຖ້າອາຍຸເດັກ ໄດ້ 6 ເດືອນ ຫລັງເດືອນ 6 ຂອງປີ ແມ່ນໃຫ້ລໍຖ້າຮັບໃນຮອບ ເດືອນ 12 ຂອງປີ)",
+          "ສັງລວມຈາກ​ປື້ມ​ບັນ​ທຶກ​ການກວດ​ກາ​ຕິດ​ຕາມພັດ​ທະ​ນາ​ການ​ຂອງ​ເດັກ ລຸ່ມ 5 ປີ ຫ້ອງ 22",
+          "",
+        ],
+      },
+
+      {
+        key: "Children_aged_12_59_months_received_Vitamin_A_1st_round",
+        value: [
+          "Children aged 12-59 months received Vitamin A 1st round",
+          "Health Facility and Outreach",
+          "Number of child between 12 to 59 months received vitamin first round (same way with given of Anthelmintic )",
+          "Registration book for child growth monitoring column 24",
+          "ເດັກອາຍຸ 12-59 ເດືອນໄດ້ຮັບ Vitamin A ຄັ້ງທີ 1",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸລະຫວ່າງ 12 ຫາ 59 ເດືອນທີ່ໄດ້ຮັບຢາວິຕາມິນເອ (A) ຄັ້ງທີ 1 (ການໃຫ້ແມ່ນແບບດຽວກັບການໃຫ້ ຢາຂ້າແມ່ທ້ອງ)(ໃນເດືອນ 6 ຂອງທຸກທຸກປີ)",
+          "ສັງລວມຈາກ​ປື້ມ​ບັນ​ທຶກ​ການກວດ​ກາ​ຕິດ​ຕາມພັດ​ທະ​ນາ​ການ​ຂອງ​ເດັກ ລຸ່ມ 5 ປີ ຫ້ອງ 23",
+          "",
+        ],
+      },
+
+      {
+        key: "Children_aged_12_59_months_received_Vitamin_A_2nd_round",
+        value: [
+          "Children aged 12-59 months received Vitamin A 2nd round",
+          "Health Facility and Outreach",
+          "Number of child between 12 to 59 months received vitamin second round (same way with given of Anthelmintic )",
+          "Registration book for child growth monitoring column 25",
+          "ເດັກອາຍຸ 12-59 ເດືອນໄດ້ຮັບ Vitamin A ຄັ້ງທີ 2",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸລະຫວ່າງ 12 ຫາ 59 ເດືອນທີ່ໄດ້ຮັບຢາວິຕາມິນເອ (A) ຄັ້ງທີ 2 (ການໃຫ້ແມ່ນແບບດ່ຽວກັບການໃຫ້ ຢາຂ້າແມ່ທ້ອງ)(ໃນເດືອນ 6 ຂອງທຸກທຸກປີ)",
+          "ສັງລວມຈາກ​ປື້ມ​ບັນ​ທຶກ​ການກວດ​ກາ​ຕິດ​ຕາມພັດ​ທະ​ນາ​ການ​ຂອງ​ເດັກ ລຸ່ມ 5 ປີ ຫ້ອງ 24",
+          "",
+        ],
+      },
+
+      {
+        key: "Children_under_5_years_who_recieved_growth_monitoring",
+        value: [
+          "Children under 5 years who recieved growth monitoring",
+          "Health Facility and Outreach",
+          "Number of children that received growth monitoring",
+          "Registration book for child growth monitoring column 1",
+          "ເດັກ ລຸ່ມ 5 ປີ ໄດ້ຮັບການຕິດຕາມການຈະເລີນເຕີບໂຕທັງໝົດ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກທີ່ມີອາຍຸ 0 ຫາ 59 ເດືອນ ທີ່ໄດ້ຮັບການປະ​ເມີນ​ສະ​ພາບ​ໂພ​ຊະ​ນາ​ການ​ຈາກ​ແພດ",
+          "ສັງລວມຈາກ​ປື້ມ​ບັນ​ທຶກ​ການກວດ​ກາ​ຕິດ​ຕາມພັດ​ທະ​ນາ​ການ​ຂອງ​ເດັກ ລຸ່ມ 5 ປີ ຫ້ອງ 27",
+          "",
+        ],
+      },
+      { key: "", value: ["", "", "", "", "", "", "", ""] },
+
+      {
+        key: "DLIP4",
+        value: [
+          "Number of children under 2 years  weight and high measure 4 times and plotted in child growth chart",
+          "Number of children under 2 years  weight and high measure 4 times and plotted in child growth chart",
+          "Number of children under 2 years  weight and high measure 4 times and plotted in child growth chart (P-DLI 4)",
+          "",
+          "ຈ.ນ ເດັກລຸ່ມ 2 ປີທີ່ໄດ້ຊັ່ງນ້ຳໜັກ ແລະ ແທກລວງສູງ 4 ຄັ້ງຕໍ່ປີ",
+          "ຈ.ນ ເດັກລຸ່ມ 2 ປີທີ່ໄດ້ຊັ່ງນ້ຳໜັກ ແລະ ແທກລວງສູງ 4 ຄັ້ງຕໍ່ປີ",
+          "ຈ.ນ ເດັກລຸ່ມ 2 ປີທີ່ໄດ້ຊັ່ງນ້ຳໜັກ ແລະ ແທກລວງສູງ 4 ຄັ້ງຕໍ່ປີ (DLI-P4)",
+          "",
+          "",
+        ],
+      },
+    ],
+    //table2
+    [
+      {
+        key: "Green_High_Age",
+        value: [
+          "Green",
+          "Health Facility and Outreach",
+          "Total number of children under 5 years old who have received growth monitoring with a height / weight result classified as Green.",
+          "Registration book for child growth monitoring column 13",
+          "ສີຂຽວ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ລວງສູງກັບອາຍຸທີ ​ທີ່ຜົນອອກມາເປັນ ສີຂຽວ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 13 (ບທດ 2)",
+          "",
+        ],
+      },
+
+      {
+        key: "Yellow_High_Age",
+        value: [
+          "Yellow",
+          "Health Facility and Outreach",
+          "Total number of children under 5 years old who have received growth monitoring with a height / weight result classified as Yellow.",
+          "Registration book for child growth monitoring column 14",
+          "ສີເຫຼືອງ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ລວງສູງກັບອາຍຸທີ ​ທີ່ຜົນອອກມາເປັນ ສີເຫລືອງ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 14 (ບທດ 2)",
+          "",
+        ],
+      },
+
+      {
+        key: "Red_High_Age",
+        value: [
+          "Red",
+          "Health Facility and Outreach",
+          "Total number of children under 5 years old who have received growth monitoring with a height / weight result classified as Red.",
+          "Registration book for child growth monitoring  column 15",
+          "ສີແດງ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ລວງສູງກັບອາຍຸທີ ​ທີ່ຜົນອອກມາເປັນ ສີແດງ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 15 (ບທດ 2)",
+          "",
+        ],
+      },
+    ],
+    //table3
+    [
+      {
+        key: "Green_Weight_Age",
+        value: [
+          "Green",
+          "Health Facility and Outreach",
+          "Total number of Children under 5 years old who have received growth monitoring with a weight/age result classified as Green.",
+          "Registration book for child growth monitoring column 16",
+          "ສີຂຽວ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ນ້ຳໜັກ ກັບອາຍຸທີ ທີ່ຜົນອອກມາເປັນ ສີຂຽວ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 16 (ບທດ 2)",
+          "",
+        ],
+      },
+
+      {
+        key: "Yellow_Weight_Age",
+        value: [
+          "Yellow",
+          "Health Facility and Outreach",
+          "Total number of Children under 5 years old who have received growth monitoring with a weight/age result classified as Yellow.",
+          "Registration book for child growth monitoring column 17",
+          "ສີເຫຼືອງ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ນ້ຳໜັກ ກັບອາຍຸທີ ທີ່ຜົນອອກມາເປັນ ສີເຫລືອງ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 17 (ບທດ 2)",
+          "",
+        ],
+      },
+
+      {
+        key: "Red_Weight_Age",
+        value: [
+          "Red",
+          "Health Facility and Outreach",
+          "Total number of Children under 5 years old who have received growth monitoring with a weight/age result classified as Red.",
+          "Registration book for child growth monitoring column 18",
+          "ສີແດງ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ນ້ຳໜັກ ກັບອາຍຸທີ ທີ່ຜົນອອກມາເປັນ ສີແດງ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 18 (ບທດ 2)",
+          "",
+        ],
+      },
+    ],
+    //table4
+    [
+      {
+        key: "Green_Weight_High",
+        value: [
+          "Green",
+          "Health Facility and Outreach",
+          "Total number of Children under 5 years old who have received growth monitoring with a weight / height result classified as Green.",
+          "Registration book for child growth monitoring  column 19",
+          "ສີຂຽວ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ນ້ຳໜັກ ກັບ ລວງສູງ ທີ ທີ່ຜົນອອກມາເປັນ ສີຂຽວ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 19 (ບທດ 2)",
+          "",
+        ],
+      },
+
+      {
+        key: "Yellow_Weight_High",
+        value: [
+          "Yellow",
+          "Health Facility and Outreach",
+          "Total number of Children under 5 years old who have received growth monitoring with a weight / height result classified as Yellow.",
+          "Registration book for child growth monitoring  column 20",
+          "ສີເຫຼືອງ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ນ້ຳໜັກ ກັບ ລວງສູງ ທີ ທີ່ຜົນອອກມາເປັນ ສີເຫຼືອງ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 20 (ບທດ 2)",
+          "",
+        ],
+      },
+
+      {
+        key: "Red_Weight_High",
+        value: [
+          "Red",
+          "Health Facility and Outreach",
+          "Total number of Children under 5 years old who have received growth monitoring with a weight / height result classified as Red.",
+          "Registration book for child growth monitoring  column 21",
+          "ສີແດງ",
+          "ໃນສະຖານທີ່ບໍລິການ ແລະ ນອກສະຖານທີ່ບໍລິການ",
+          "ຈຳນວນເດັກອາຍຸ ຕ່ຳກວ່າ 5 ປີ ທັງໝົດທີໄດ້ຕິດຕາມການຈະລີນເຕີບໂຕ ແລະ ພັດທະນາການ ໂດຍສົມທຽບລະຫວ່າງ ນ້ຳໜັກ ກັບ ລວງສູງ ທີ່ຜົນອອກມາເປັນ ສີແດງ",
+          "ສັງລວມຜົນບວກຈາກ ປື້ມບັນທຶກປະຈຳວັນ ສຳລັບ​ການຕິດຕາມພັດທະນາການຂອງເດັກ 1-5ປີ ຫ້ອງ 21 (ບທດ 2)",
+          "",
+        ],
+      },
+    ],
+    //table5
+    [
+      {
+        key: "Weekly_IFA_pills_for_12_44_year_female",
+        value: [
+          "Weekly IFA pills for 12-44 year female",
+          "",
+          "",
+          "",
+          "ແມ່ຍີງ 12-44 ປີ ໄດ້ຮັບທາດເຫຼັກອາທິດລະເມັດ",
+          "",
+          "",
+          "",
+        ],
+      },
+    ],
+  ],
+};

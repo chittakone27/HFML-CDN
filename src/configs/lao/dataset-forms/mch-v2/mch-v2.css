@@ -1,0 +1,40 @@
+/* Table1 */
+#mch-v2-table-1 .header-table-1 {
+  background-color: #7198c8;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+#mch-v2-table-1 .cell-header-table {
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Table2 */
+
+#mch-v2-table-2 .cell-header-table {
+  background-color: #6699cc;
+  color: #fff;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Table4 */
+
+#mch-v2-table-4 .cell-header-table {
+  background-color: #6699cc;
+  color: #fff;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding: 10px;
+}
+#mch-v2-table-4 .cell-header-table-2 {
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding: 10px;
+}

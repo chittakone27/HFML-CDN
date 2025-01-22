@@ -1,0 +1,1541 @@
+<style type="text/css">
+  .bgColor {
+    background-color: #fffdd0;
+    /* background-color:#FFFF8F; */
+  }
+
+  .top {
+    padding: 0px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background-image: linear-gradient(#c0c0c0, #ffffff);
+    top: 0px;
+    left: 5px;
+    right: 5px;
+  }
+
+  /*================top menu - End*/
+  .dhis2Header {
+    color: white;
+    display: inline-block;
+    font-size: 17px;
+    /* cursor: pointer; */
+    text-align: left;
+    outline: none;
+    border: none;
+    border-radius: 0px 0px 3px 3px;
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+    width: 100%;
+    height: 35px;
+    background-image: linear-gradient(#306aa9, #4794bd);
+    box-shadow: 0px 1px 1px 1px #c0c0c0;
+  }
+
+  /*Begining Button*/
+  .button {
+    display: inline-block;
+    font-size: 17px;
+    cursor: pointer;
+    text-align: center;
+    /* outline: none;
+border: none; */
+
+    border-radius: 3px;
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+    width: 180px;
+    height: 30px;
+    background-image: linear-gradient(#c0c0c0, #ffffff);
+    box-shadow: 0px 1px 1px 1px #c0c0c0;
+
+    /* position: absolute; */
+    right: 5px;
+  }
+
+  .button:hover {
+    background-color: #808080;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px 2px #ccd1d1;
+    color: #17202a;
+  }
+
+  .button:active {
+    transform: translateY(1px);
+  }
+
+  /*End button*/
+  .well {
+    width: 100%;
+    min-height: 20px;
+    padding: 9px;
+    margin-bottom: 5px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 1px 1px #c0c0c0;
+  }
+
+  .textStyle {
+    border: grey 1px solid;
+    border-radius: 8px;
+    margin-bottom: 17px;
+    box-shadow: inset 0px 0px 20px #aaaaaa;
+    background-color: #f9f9f9;
+  }
+
+  .bgrColor {
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+    /* background-image: linear-gradient(#C0C0C0, #FFFFFF); */
+    /* background-image: linear-gradient(#121212, #FFFFFF); */
+    background-color: rgb(248, 248, 196);
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+    width: 100%;
+    min-height: 20px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  .laoFont {
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+  }
+
+  .warningMessage {
+    background-color: yellow;
+    font-size: 3em;
+    text-align: center;
+    border-radius: 8px;
+    padding: 15px 15px;
+  }
+
+  /*==============Selection - Satring==============*/
+  .sel {
+    display: inline-block;
+    font-size: 17px;
+    text-align: center;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+    width: 180px;
+    height: 30px;
+
+    background-image: linear-gradient(#c0c0c0, #ffffff);
+    box-shadow: 0px 1px 1px 1px #c0c0c0;
+  }
+
+  .sel:hover {
+    font-weight: bold;
+    box-shadow: 2px 2px 2px 2px #ccd1d1;
+    color: #17202a;
+  }
+
+  /*==============Selection - End==============*/
+
+  /*=============Switch button - Starting==================*/
+  .switch {
+    top: 0;
+    position: relative;
+    display: inline-block;
+    width: 47px;
+    height: 20px;
+  }
+
+  .switch input {
+    opacity: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e74c3c;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    left: 2px;
+    bottom: 1.5px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  input:checked + .slider {
+    background-color: #1e8449;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 30px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+  /*=============Switch button - End==================*/
+
+  /*=============Tooltip - Starting==================*/
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  /*=============Tooltip - End==================*/
+
+  /*=============File input - Starting============*/
+  input[type="file"] {
+    display: none;
+  }
+
+  .custom-file-upload {
+    display: inline-block;
+    font-size: 17px;
+    cursor: pointer;
+    text-align: center;
+    outline: none;
+    background-color: #898c8e;
+    border: none;
+    border-radius: 3px;
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+    width: 200px;
+    height: 30px;
+
+    background-image: linear-gradient(#c0c0c0, #ffffff);
+    box-shadow: 0px 1px 1px 1px #c0c0c0;
+  }
+
+  .custom-file-upload:hover {
+    background-color: #808080;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px 2px #ccd1d1;
+  }
+
+  /*=============File input - End============*/
+
+  /*=============Modal - Starting============*/
+  .overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 50ms;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 450px;
+    height: 300px;
+    position: relative;
+    transition: all 1s ease-in-out;
+  }
+
+  .popup .close {
+    position: absolute;
+    top: -8px;
+    right: 3px;
+    transition: all 200ms;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #bb1a0d;
+  }
+
+  .popup .close:hover {
+    color: #fa1805;
+    font-size: 30px;
+  }
+
+  .popup .content {
+    overflow: auto;
+    width: 450px;
+    height: 300px;
+  }
+
+  @media screen and (max-width: 700px) {
+    .box {
+      width: 70%;
+    }
+
+    .popup {
+      width: 70%;
+    }
+  }
+
+  /*=============Modal - End============*/
+  .helpMe {
+    float: right;
+    cursor: pointer;
+    transition: 0.8s;
+  }
+
+  .helpMe:hover {
+    font-weight: bold;
+    background-color: black;
+    /* background-image: linear-gradient(#C0C0C0, #FFFFFF); */
+    /* background-image: linear-gradient(#306aa9, #4794bd); */
+    color: #ffffff;
+    padding-right: 18px;
+    border-radius: 8px 5px 5px 8px;
+    transition: 0.8s;
+  }
+
+  /*===============Slide===================*/
+
+  .sidenav {
+    width: 0;
+    position: fixed;
+    right: 3%;
+    top: 0%;
+    background-color: #fff;
+    box-shadow: 2px 2px 12px #cccccc;
+    overflow-x: hidden;
+    border-radius: 5px 5px 10px 10px;
+    transition: 0.8s;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 17px;
+    color: #ffffff;
+    display: block;
+    transition: 0.3s;
+  }
+
+  /*@media screen and (max-height: 450px) {
+.sidenav {padding-top: 17px;}
+.sidenav a {font-size: 17px;}
+}*/
+  .sidenav .closebtn {
+    position: absolute;
+    top: -10px;
+    right: 0px;
+    font-size: 17px;
+    height: 40px;
+    color: #f8093d;
+    text-align: left;
+    border-radius: 0px 5px 0px 0px;
+    background-image: linear-gradient(black, #e6e6e6);
+  }
+
+  .closebtn:hover {
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 10px;
+    transition: 0.8s;
+  }
+
+  .navHeader {
+    background-image: linear-gradient(black, #e6e6e6);
+    position: absolute;
+    color: white;
+    width: 95%;
+    height: 30px;
+    border-radius: 5px 0px 0px 0px;
+    padding: 5px;
+  }
+
+  /*==============Drop downlist======================*/
+  .dropbtn {
+    background-image: linear-gradient(#c0c0c0, #ffffff);
+    color: black;
+    font-weight: bold;
+    width: 50px;
+    height: 50px;
+    right: 25px;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    border-radius: 0px 0px 8px 8px;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    z-index: 1;
+  }
+
+  .dropdown-content .list {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }
+
+  /*=============Input style================*/
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  textarea:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+
+  /*==============Notes===============*/
+  .notes {
+    background-image: -webkit-linear-gradient(
+        left,
+        white 10px,
+        transparent 10px
+      ),
+      -webkit-linear-gradient(right, white 10px, transparent 10px),
+      -webkit-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: -moz-linear-gradient(left, white 10px, transparent 10px),
+      -moz-linear-gradient(right, white 10px, transparent 10px),
+      -moz-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: -ms-linear-gradient(left, white 10px, transparent 10px),
+      -ms-linear-gradient(right, white 10px, transparent 10px),
+      -ms-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: -o-linear-gradient(left, white 10px, transparent 10px),
+      -o-linear-gradient(right, white 10px, transparent 10px),
+      -o-linear-gradient(white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-image: linear-gradient(left, white 10px, transparent 10px),
+      linear-gradient(right, white 10px, transparent 10px),
+      linear-gradient(white 30px, #ccc 30px, #ccc 31px, white 31px);
+    background-size: 100% 100%, 100% 100%, 100% 31px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    line-height: 31px;
+    padding: 8px;
+    overflow: auto;
+  }
+
+  .notes:focus {
+    outline: none;
+  }
+
+  /*============confirmed massage===============*/
+
+  /*============help menu=======================*/
+  .dropbtn {
+    background-color: #4caf50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+    border-radius: 10px;
+  }
+
+  /* table header fixed */
+  table {
+    /* width: 500px; */
+    width: 100%;
+    /* table-layout: fixed; */
+    border-collapse: collapse;
+    overflow-x: hidden;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid #ddd;
+
+    /* text-align: center; */
+  }
+
+  /*to fixed tb header*/
+  th,
+  tfoot {
+    /* text-align: left;
+background-image: linear-gradient(#e0e0cd, #FFFFFF, #e0e0cd);
+position: sticky;
+top: 0px; */
+    text-align: left;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    /* background-image: linear-gradient(#C0C0C0, #FFFFFF); */
+    /* background-image: linear-gradient(#6c6767, #9f9a9a); */
+    /* background-image: linear-gradient(#0F3443, #34E89E); */
+    background-image: linear-gradient(#717273, #a7b0b8);
+
+    font-family: "Phetsarath OT", "Saysettha Lao", "Saysettha OT";
+  }
+
+  tr:hover td {
+    background-image: linear-gradient(#dcdcdc, #ffffff, #dcdcdc);
+    /* cursor:pointer;*/
+  }
+
+  .tbTitle {
+    background-color: #dcf5f3;
+    font-weight: bold;
+  }
+
+  hr.stl {
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, #edfafc, #078ff9, #edfafc);
+    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+  }
+
+  .info {
+    background-image: linear-gradient(#717273, #a7b0b8);
+    color: white;
+    text-align: center;
+  }
+</style>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#info_").click(function () {
+      console.log("mmmmm");
+      openNav("helpInfo");
+      // $(".navHeader").empty().append("Mata data");
+    });
+  });
+
+  function closeNav(myID) {
+    document.getElementById(myID).style.width = "0";
+    document.getElementById(myID).style.height = "0%";
+  }
+  function openNav(myID) {
+    document.getElementById(myID).style.width = "860px"; //"75%";
+    document.getElementById(myID).style.height = "460px"; //"35%";
+    //document.getElementById(myID).style.transition = "2s";
+  }
+</script>
+<div class="bgrColor">
+  <!-- <div class="button" id="openInfo">&#x1F6C8; explanatory notes</div></br></br> --><!-- <hr class="stl"> --><!-- <hr class="stl" /> -->
+  <table>
+    <tbody>
+      <tr>
+        <th colspan="6">I. Addmission type:</th>
+      </tr>
+      <tr>
+        <td>Weight (kg)</td>
+        <td colspan="5">
+          <input
+            id="d3iJyrWjNUy-ZLh2iQMt1ZZ-val"
+            name="entryfield"
+            title="FDD: Weight (Kg)"
+            value="[ FDD: Weight (Kg) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>OPD/IPD</td>
+        <td colspan="5">
+          <input
+            id="d3iJyrWjNUy-M0iviZAg2wN-val"
+            name="entryfield"
+            title="FDD: OPD/IPD"
+            value="[ FDD: OPD/IPD ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>is Pregnancy?</td>
+        <td colspan="5">
+          <input
+            id="d3iJyrWjNUy-AzpfZROTF98-val"
+            name="entryfield"
+            title="FDD: Is pregnancy? "
+            value="[ FDD: Is pregnancy?  ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <tbody>
+      <tr>
+        <th colspan="6">II. Detail od adverse Drug Reaction (ADR)</th>
+      </tr>
+      <tr>
+        <td>Date of onest</td>
+        <td colspan="5">
+          <input
+            id="d3iJyrWjNUy-v4cG3aK3JTE-val"
+            name="entryfield"
+            title="FDD: Date of onest"
+            value="[ FDD: Date of onest ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td rowspan="2">Outcome</td>
+        <td>Recovered (date)</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Vb3oIXlaKsW-val"
+            name="entryfield"
+            title="FDD: Recovered"
+            value="[ FDD: Recovered ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-BAlosLouiwb-val"
+            name="entryfield"
+            title="FDD: Recovered date"
+            value="[ FDD: Recovered date ]"
+          />
+        </td>
+        <td>Not yet recovered</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-sc4qhb13Bag-val"
+            name="entryfield"
+            title="FDD: Not yet recovered"
+            value="[ FDD: Not yet recovered ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Fatal (Date of death)</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-zgbblClHD7S-val"
+            name="entryfield"
+            title="FDD: Fatal"
+            value="[ FDD: Fatal ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-yaqZLtzGXXG-val"
+            name="entryfield"
+            title="FDD: Fatal date"
+            value="[ FDD: Fatal date ]"
+          />
+        </td>
+        <td>Unknown</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Qody9KMoaEr-val"
+            name="entryfield"
+            title="FDD: Unknown"
+            value="[ FDD: Unknown ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">Reaction/ event (MedDRA)</td>
+        <td colspan="4">
+          <input
+            id="d3iJyrWjNUy-bCa0xvLA6jN-val"
+            name="entryfield"
+            title="FDD: Reaction / event (MedDRA)"
+            value="[ FDD: Reaction / event (MedDRA) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" rowspan="1">
+          Description of ADR(s)&nbsp;&nbsp;<span
+            id="info_"
+            style="cursor: pointer"
+            >🛈</span
+          >
+        </td>
+        <td colspan="4" rowspan="1">
+          <input
+            id="d3iJyrWjNUy-GbcEf5v66ZS-val"
+            name="entryfield"
+            title="FDD: Description of ADR(s)"
+            value="[ FDD: Description of ADR(s) ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <table class="bgrColor" style="table-layout: fixed; width: 2850px">
+    <tbody>
+      <tr>
+        <th>
+          <p align="center" style="text-align: center">
+            <b><span style="font-size: 10pt">Suspected drug(s)</span></b>
+          </p>
+
+          <p align="center" style="text-align: center">
+            <b
+              ><i
+                ><span style="font-size: 8pt"
+                  ><span style="font-family: 'Times New Roman', serif"
+                    >Please specify brand name if known. For vaccines, please
+                    indicate batch no.</span
+                  ></span
+                ></i
+              ></b
+            >
+          </p>
+        </th>
+        <th style="text-align: center">Batch/lot No</th>
+        <th><b>Dosage</b></th>
+        <th><b>Frequency</b></th>
+        <th><b>Route</b></th>
+        <th>
+          <p align="center" style="text-align: center">
+            <b><span style="font-size: 10pt">Date</span></b>
+          </p>
+
+          <p align="center" style="text-align: center">
+            <b style="font-size: 1em; text-align: left"
+              ><span style="font-size: 10pt"
+                ><span style="font-family: 'Times New Roman', serif"
+                  >started</span
+                ></span
+              ></b
+            >
+          </p>
+        </th>
+        <th>
+          <p align="center" style="text-align: center">
+            <b><span style="font-size: 10pt">Date</span></b>
+          </p>
+
+          <p align="center" style="text-align: center">
+            <b style="font-size: 1em; text-align: left"
+              ><span style="font-size: 10pt"
+                ><span style="font-family: 'Times New Roman', serif"
+                  >stopped</span
+                ></span
+              ></b
+            >
+          </p>
+        </th>
+        <th>
+          <p align="center" style="text-align: center">
+            <b><span style="font-size: 10pt">Indication(s)</span></b>
+          </p>
+
+          <p align="center" style="text-align: center">
+            <b style="font-size: 1em; text-align: left"
+              ><span style="font-size: 10pt"
+                ><span style="font-family: 'Times New Roman', serif"
+                  >for using drug</span
+                ></span
+              ></b
+            >
+          </p>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-OW0HVwTqi1R-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (1)"
+            value="[ FDD: Suspected drug(s) (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-usnhGJYhaQB-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (1)"
+            value="[ FDD: Batch/Lot No (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-LTZFYf9cx2H-val"
+            name="entryfield"
+            title="FDD: Dosage (1)"
+            value="[ FDD: Dosage (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-h1hoQyalNv6-val"
+            name="entryfield"
+            title="FDD: Frequency (1)"
+            value="[ FDD: Frequency (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-hzr0kMCKnr1-val"
+            name="entryfield"
+            title="FDD: Route (1)"
+            value="[ FDD: Route (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-xMTBmkTHFhP-val"
+            name="entryfield"
+            title="FDD: Date Started (1)"
+            value="[ FDD: Date Started (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-jw9JbSq046s-val"
+            name="entryfield"
+            title="FDD: Date Stopped (1)"
+            value="[ FDD: Date Stopped (1) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-FOAltuQMv4B-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (1)"
+            value="[ FDD: Indication(s)  for using drug (1) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-WI3zGA7cwZh-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (2)"
+            value="[ FDD: Suspected drug(s) (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-mJR9SuU7J1N-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (2)"
+            value="[ FDD: Batch/Lot No (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-IEVQSS5bmMH-val"
+            name="entryfield"
+            title="FDD: Dosage (2)"
+            value="[ FDD: Dosage (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-SByDXVMIcQl-val"
+            name="entryfield"
+            title="FDD: Frequency (2)"
+            value="[ FDD: Frequency (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-miOMdUGPZzr-val"
+            name="entryfield"
+            title="FDD: Route (2)"
+            value="[ FDD: Route (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-BPWn8owrGHx-val"
+            name="entryfield"
+            title="FDD: Date Started (2)"
+            value="[ FDD: Date Started (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-uk2fL8n3CIK-val"
+            name="entryfield"
+            title="FDD: Date Stopped (2)"
+            value="[ FDD: Date Stopped (2) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-XEGVzhGSsWz-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (2)"
+            value="[ FDD: Indication(s)  for using drug (2) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-fLS0MswXUZF-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (3)"
+            value="[ FDD: Suspected drug(s) (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-vBXNjwzH0B7-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (3)"
+            value="[ FDD: Batch/Lot No (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-bgyim0kBRLk-val"
+            name="entryfield"
+            title="FDD: Dosage (3)"
+            value="[ FDD: Dosage (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-X6tQkNsmWa0-val"
+            name="entryfield"
+            title="FDD: Frequency (3)"
+            value="[ FDD: Frequency (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-maL7mXzVSvs-val"
+            name="entryfield"
+            title="FDD: Route (3)"
+            value="[ FDD: Route (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-nevupAoMDWx-val"
+            name="entryfield"
+            title="FDD: Date Started (3)"
+            value="[ FDD: Date Started (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-muclWeDNo70-val"
+            name="entryfield"
+            title="FDD: Date Stopped (3)"
+            value="[ FDD: Date Stopped (3) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-IUoqE62DFNh-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (3)"
+            value="[ FDD: Indication(s)  for using drug (3) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th colspan="8">
+          <b
+            >Other drugs
+            <i
+              >(including complementary medicines, consumed at the same time
+              and/or 3 months before</i
+            ></b
+          >
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-v7k7Plj2sat-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (1) - Other"
+            value="[ FDD: Suspected drug(s) (1) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-h1ab2PArpHu-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (1) Other"
+            value="[ FDD: Batch/Lot No (1) Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-L1M6NO9msYc-val"
+            name="entryfield"
+            title="FDD: Dosage (1) - Other"
+            value="[ FDD: Dosage (1) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Z8ATvLwrzAC-val"
+            name="entryfield"
+            title="FDD: Frequency (1) - Other"
+            value="[ FDD: Frequency (1) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Hhx9MtzbnWf-val"
+            name="entryfield"
+            title="FDD: Route (1) - Other"
+            value="[ FDD: Route (1) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-JRKGvCXNxHZ-val"
+            name="entryfield"
+            title="FDD: Date Started (1) - Other"
+            value="[ FDD: Date Started (1) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-ftWd6F8KQba-val"
+            name="entryfield"
+            title="FDD: Date Stopped (1) - other"
+            value="[ FDD: Date Stopped (1) - other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-dejJm0B3sUt-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (1) - Other"
+            value="[ FDD: Indication(s)  for using drug (1) - Other ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-haYRDHyvoFQ-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (2) - Other"
+            value="[ FDD: Suspected drug(s) (2) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-sj8g8PGb6vZ-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (2) Other"
+            value="[ FDD: Batch/Lot No (2) Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-VHbcYnkdkz3-val"
+            name="entryfield"
+            title="FDD: Dosage (2) - Other"
+            value="[ FDD: Dosage (2) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-McJkoE2kJPb-val"
+            name="entryfield"
+            title="FDD: Frequency (2) - Other"
+            value="[ FDD: Frequency (2) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-ChEbfcb8l7y-val"
+            name="entryfield"
+            title="FDD: Route (2) - Other"
+            value="[ FDD: Route (2) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Zw6avtCev1I-val"
+            name="entryfield"
+            title="FDD: Date Started (2) - Other"
+            value="[ FDD: Date Started (2) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-upiEM6kbmn3-val"
+            name="entryfield"
+            title="FDD: Date Stopped (2) - other"
+            value="[ FDD: Date Stopped (2) - other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-EKexlI6OAUk-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (2) - Other"
+            value="[ FDD: Indication(s)  for using drug (2) - Other ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-j0aI76geHMA-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (3) - Other"
+            value="[ FDD: Suspected drug(s) (3) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-H6m6c1WPrwd-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (3) Other"
+            value="[ FDD: Batch/Lot No (3) Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-PuwNvSGa8qi-val"
+            name="entryfield"
+            title="FDD: Dosage (3) - Other"
+            value="[ FDD: Dosage (3) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-pU83gEVhjsu-val"
+            name="entryfield"
+            title="FDD: Frequency (3) - Other"
+            value="[ FDD: Frequency (3) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-cugFLJUed2K-val"
+            name="entryfield"
+            title="FDD: Route (3) - Other"
+            value="[ FDD: Route (3) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-VAlOfVfFWLl-val"
+            name="entryfield"
+            title="FDD: Date Started (3) - Other"
+            value="[ FDD: Date Started (3) - Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-XQ7sYwkgXzu-val"
+            name="entryfield"
+            title="FDD: Date Stopped (3) - other"
+            value="[ FDD: Date Stopped (3) - other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-GYUvl9pCDqf-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (3) - Other"
+            value="[ FDD: Indication(s)  for using drug (3) - Other ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-s8TilBcAJ2I-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (4) other"
+            value="[ FDD: Suspected drug(s) (4) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-NLvyobeBoT8-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (4) Other"
+            value="[ FDD: Batch/Lot No (4) Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-dpvzKbhOkMc-val"
+            name="entryfield"
+            title="FDD: Dosage (4) other"
+            value="[ FDD: Dosage (4) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-LF6fuYzUrUz-val"
+            name="entryfield"
+            title="FDD: Frequency (4) other"
+            value="[ FDD: Frequency (4) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-axGp2F32fAp-val"
+            name="entryfield"
+            title="FDD: Route (4) other"
+            value="[ FDD: Route (4) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-tQWLGvs4ZO3-val"
+            name="entryfield"
+            title="FDD: Date Started (4) other"
+            value="[ FDD: Date Started (4) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-RlHJzwk9r3W-val"
+            name="entryfield"
+            title="FDD: Date Stopped (4) other"
+            value="[ FDD: Date Stopped (4) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-FyQZWQ2Znuk-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (4) other"
+            value="[ FDD: Indication(s)  for using drug (4) other ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            id="d3iJyrWjNUy-h2zYFSpXbLL-val"
+            name="entryfield"
+            title="FDD: Suspected drug(s) (5) other"
+            value="[ FDD: Suspected drug(s) (5) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-HiMVMdPF41K-val"
+            name="entryfield"
+            title="FDD: Batch/Lot No (5) Other"
+            value="[ FDD: Batch/Lot No (5) Other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-NUvgij3gSQW-val"
+            name="entryfield"
+            title="FDD: Dosage (5) other"
+            value="[ FDD: Dosage (5) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-C3Bx5eAdIAB-val"
+            name="entryfield"
+            title="FDD: Frequency (5) other"
+            value="[ FDD: Frequency (5) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-vRBcqsT1exQ-val"
+            name="entryfield"
+            title="FDD: Route (5) other"
+            value="[ FDD: Route (5) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Lhm9TDCeKNU-val"
+            name="entryfield"
+            title="FDD: Date Started (5) other"
+            value="[ FDD: Date Started (5) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-Efxt9EZ5Zmp-val"
+            name="entryfield"
+            title="FDD: Date Stopped (5) other"
+            value="[ FDD: Date Stopped (5) other ]"
+          />
+        </td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-jaB5L3Hpkqr-val"
+            name="entryfield"
+            title="FDD: Indication(s)  for using drug (5) other"
+            value="[ FDD: Indication(s)  for using drug (5) other ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5" rowspan="1">
+          Other relevant information: e.g. medical history, allergies,
+          pregnancy, smoking, alcohol use, rechallenge (if performed). Please
+          enclose any relevant laboratory results.
+        </td>
+        <td colspan="3" rowspan="1">
+          <input
+            id="d3iJyrWjNUy-pNZyg6n7tsc-val"
+            name="entryfield"
+            title="FDD: Other relevant information"
+            value="[ FDD: Other relevant information ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <table>
+    <tbody>
+      <tr>
+        <th colspan="2">III. Management of Adverse Reaction</th>
+      </tr>
+      <tr>
+        <td>Hospitalisation (following the ADR)</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-NefJSP1CTws-val"
+            name="entryfield"
+            title="FDD: Hospitalisation (following the ADR)"
+            value="[ FDD: Hospitalisation (following the ADR) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Do you consider the reaction to be serious?</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-VTwi3Iq2ehZ-val"
+            name="entryfield"
+            title="FDD: Do you consider the reaction to be serious?"
+            value="[ FDD: Do you consider the reaction to be serious? ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Already hospitalized before ADR occurred</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-uPwkH3e1F1M-val"
+            name="entryfield"
+            title="FDD: Already hospitalized before ADR occurred"
+            value="[ FDD: Already hospitalized before ADR occurred ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          if yes, please indicate why the reaction is considered to be serious
+          (please tick all that apply)
+        </td>
+      </tr>
+      <tr>
+        <td>Patient die due to reaction</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-BrHNbTH0UAI-val"
+            name="entryfield"
+            title="FDD: Patient died due to reaction"
+            value="[ FDD: Patient died due to reaction ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Life threatening</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-w6moypTHTyh-val"
+            name="entryfield"
+            title="FDD: Life threatening"
+            value="[ FDD: Life threatening ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Congenital anomaly</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-MFGa2Vl9loi-val"
+            name="entryfield"
+            title="FDD: Congenital anomaly"
+            value="[ FDD: Congenital anomaly ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Involved or prolonged in-patient hospitalization</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-p7KlLiIMCuN-val"
+            name="entryfield"
+            title="FDD: Involved or prolonged in-patient hospitalization"
+            value="[ FDD: Involved or prolonged in-patient hospitalization ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Involved persistent or significant disability or incapacity</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-egVFKdMAFBS-val"
+            name="entryfield"
+            title="FDD: Involved persistent or significant disability or incapacity "
+            value="[ FDD: Involved persistent or significant disability or incapacity  ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">Medically significant. please give detail</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input
+            id="d3iJyrWjNUy-uGQ7oOMRAYF-val"
+            name="entryfield"
+            title="FDD: Medically significant, please give details"
+            value="[ FDD: Medically significant, please give details ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <table>
+    <tbody>
+      <tr>
+        <th colspan="2">IV. Particulars of reportor</th>
+      </tr>
+      <tr>
+        <td>Name and surname</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-nVTQJ9owiVV-val"
+            name="entryfield"
+            title="FDD: Name and Surname (reporter)"
+            value="[ FDD: Name and Surname (reporter) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Position</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-LN622u9POha-val"
+            name="entryfield"
+            title="FDD: Position (reporter)"
+            value="[ FDD: Position (reporter) ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>Tel</td>
+        <td>
+          <input
+            id="d3iJyrWjNUy-X6zFGSios8K-val"
+            name="entryfield"
+            title="FDD: Tel (reporter)"
+            value="[ FDD: Tel (reporter) ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

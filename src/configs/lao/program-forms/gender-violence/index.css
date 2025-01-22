@@ -1,0 +1,9 @@
+#gender-violence td.MuiTableCell-body {
+  padding: 5px;
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+/* #gender-violence .MuiTable-root {
+  border: 1px solid #ccc;
+} */

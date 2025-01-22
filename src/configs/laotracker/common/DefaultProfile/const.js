@@ -1,0 +1,9 @@
+export const IDENTIFICATION_ATTRS = {
+  CVID: "FB3Ro1hJ9ht",
+  CVR_NATIONAL_ID: "lRZGCESE6v2",
+  PASSPORT_NUM: "pjpnF7u5PQj",
+  CVR_SYS_CVID: "corXnplgfQ7",
+  INS_NUM: "ebLsZHyGHYx",
+  FAMILY_BOOK_NUM: "gSImG6wxCkY",
+  LAOS_GREEN_ID: "E0zWSujcGQC"
+};

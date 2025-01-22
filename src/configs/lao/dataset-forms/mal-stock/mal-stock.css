@@ -1,0 +1,10 @@
+#mal-stock-form-container table td,
+#mal-stock-form-container table th {
+  border: 1.5px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}
+
+#monthly-summary-stock-report table td:nth-child(3) {
+  width: 6%;
+}

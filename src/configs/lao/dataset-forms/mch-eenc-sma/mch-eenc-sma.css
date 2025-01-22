@@ -1,0 +1,23 @@
+#mch-eenc-sma-form-container table td,
+#mch-eenc-sma-form-container table th {
+  border: 1.5px solid #ddd;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+}
+
+#mch-eenc-sma-form-container table td {
+  background-color: #eee;
+}
+
+#mch-eenc-sma-form-container table#table-section1 td {
+  width: calc(100% / 3);
+}
+
+#mch-eenc-sma-form-container table#table-section1 td:nth-child(1) {
+  background-color: #bdbdbd;
+}
+
+#mch-eenc-sma-form-container table#table-section2 td {
+  width: calc(100% / 4);
+}

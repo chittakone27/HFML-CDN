@@ -1,0 +1,12 @@
+.imam-section-container {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.imam-section-container > div:nth-child(1) {
+  height: 40px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  background-color: #ededed;
+  padding: 5px;
+}

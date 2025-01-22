@@ -1,0 +1,977 @@
+<style type="text/css">
+  .header1 {
+    background-color: #ddebf7;
+    font-weight: bold;
+  }
+
+  .header2 {
+    background-color: #fff2cc;
+    font-weight: bold;
+  }
+
+  .header3 {
+    background-color: #f7e1f5;
+    font-weight: bold;
+  }
+
+  .Iheader {
+    text-align: center;
+    font-weight: bold;
+    background-color: #c6e0b4;
+  }
+
+  .IIheader {
+    text-align: center;
+    font-weight: bold;
+    background-color: #ffc000;
+  }
+  .IIIheader {
+    text-align: center;
+    font-weight: bold;
+    background-color: #f79bc0;
+  }
+
+  .value {
+    width: 9%;
+  }
+
+  .yellowValue {
+    background-color: yellow;
+    width: 9%;
+  }
+
+  .blueValue {
+    background-color: #ddebf7;
+    width: 9%;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+  }
+
+  input {
+    width: 60px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  td {
+    font-size: 16px !important;
+  }
+</style>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+<p>
+  <button id="fp" onclick='downloadexcel("loadTable","FP")'>
+    Export to Excel
+  </button>
+</p>
+
+<table border="1">
+  <tbody>
+    <tr>
+      <td>No.</td>
+      <td class="header1">Commodity List</td>
+      <td class="header1">Unit</td>
+      <td class="header2">Remaining from last month</td>
+      <td class="header2">Receive</td>
+      <td class="header1">Stock Available</td>
+      <td class="header2">Distribute</td>
+      <td class="header2">Waste</td>
+      <td class="header2">Closing balance of the month</td>
+    </tr>
+    <tr>
+      <td class="Iheader" colspan="9">I. Commodity for MCH Nutrition</td>
+    </tr>
+    <tr name="data">
+      <td>1</td>
+      <td align="left" class="header1">VTMA 100,000 IU&lt; 1 Y</td>
+      <td>ເມັດ/tablet</td>
+      <td class="value" id="Sb9Lf8e5wOd-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="JmhqohorlUf-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: VTMA 100,000 IU under 1 year Received"
+          value="[ DLISTOCK MNCH: VTMA 100,000 IU under 1 year Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="c1">&nbsp;</td>
+      <td class="value">
+        <input
+          id="g94NxfjkibL-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: VTMA 100,000 IU under 1 year Distributed"
+          value="[ DLISTOCK MNCH: VTMA 100,000 IU under 1 year Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="HLs2vEKvpEw-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: VTMA 100,000 IU under 1 year Waste"
+          value="[ DLISTOCK MNCH: VTMA 100,000 IU under 1 year Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="Sb9Lf8e5wOd-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>2</td>
+      <td align="left" class="header1">VTMA 200,000 IU&lt; 5 Y</td>
+      <td>ເມັດ/tablet</td>
+      <td class="value" id="LZuxe4XEwvp-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="MmldHdFefqU-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: VTMA 200,000 IU under 5 years Received"
+          value="[ DLISTOCK MNCH: VTMA 200,000 IU under 5 years Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="c2">&nbsp;</td>
+      <td class="value">
+        <input
+          id="UILgm6PKQ1g-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: VTMA 200,000 IU under 5 years Distributed"
+          value="[ DLISTOCK MNCH: VTMA 200,000 IU under 5 years Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="dJd8NPQ1V1c-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: VTMA 200,000 IU under 5 years Waste"
+          value="[ DLISTOCK MNCH: VTMA 200,000 IU under 5 years Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="LZuxe4XEwvp-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>3</td>
+      <td align="left" class="header1">Mebendazloe 500 mg</td>
+      <td>ເມັດ/tablet</td>
+      <td class="value" id="D5Xc9dCbOKy-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="JTAHDqCVL9W-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Mebendazole 500 mg Received"
+          value="[ DLISTOCK MNCH: Mebendazole 500 mg Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="c3">&nbsp;</td>
+      <td class="value">
+        <input
+          id="mO5O9uqxszv-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Mebendazole 500 mg Distributed"
+          value="[ DLISTOCK MNCH: Mebendazole 500 mg Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="jmBDa8hcHM6-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Mebendazole 500mg Waste"
+          value="[ DLISTOCK MNCH: Mebendazole 500mg Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="D5Xc9dCbOKy-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>4</td>
+      <td align="left" class="header1">Iron Folic Acid 200mg/ Week/tablet</td>
+      <td>ເມັດ/tablet</td>
+      <td class="value" id="sHy2GRAVyQI-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="koNgXJuvCa8-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Iron folic acid 200 mg/week/tablet Received"
+          value="[ DLISTOCK MNCH: Iron folic acid 200 mg/week/tablet Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="c4">&nbsp;</td>
+      <td class="value">
+        <input
+          id="pC4XxUy3QPF-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Iron folic acid 200 mg/week/tablet Distributed"
+          value="[ DLISTOCK MNCH: Iron folic acid 200 mg/week/tablet Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="Ch6pQCcMBY1-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Iron folic acid 200 mg/week/tablet Waste"
+          value="[ DLISTOCK MNCH: Iron folic acid 200 mg/week/tablet Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="sHy2GRAVyQI-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>5</td>
+      <td align="left" class="header1">Iron Folic Acid 30-60mg/Day/tablet</td>
+      <td>ເມັດ/tablet</td>
+      <td class="value" id="Iugv9ytAG1A-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="SZJRblZMttd-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Iron folic acid 30-60 mg/day/tablet Received"
+          value="[ DLISTOCK MNCH: Iron folic acid 30-60 mg/day/tablet Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="c5">&nbsp;</td>
+      <td class="value">
+        <input
+          id="E6k5flp94my-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Iron folic acid 30-60 mg/day/tablet Distributed"
+          value="[ DLISTOCK MNCH: Iron folic acid 30-60 mg/day/tablet Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="I5gEHd3iUXD-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Iron folic acid 30-60 mg/day/tablet Waste"
+          value="[ DLISTOCK MNCH: Iron folic acid 30-60 mg/day/tablet Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="Iugv9ytAG1A-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>6</td>
+      <td align="left" class="header1">Zinc Sulfate 20mg</td>
+      <td>ເມັດ/tablet</td>
+      <td class="value" id="RUngQRP9Zvp-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="heEBqghRfhX-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Zinc sulfate 20mg Received"
+          value="[ DLISTOCK MNCH: Zinc sulfate 20mg Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="c6">&nbsp;</td>
+      <td class="value">
+        <input
+          id="GsoiPJBeF8G-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Zinc sulfate 20mg Distributed"
+          value="[ DLISTOCK MNCH: Zinc sulfate 20mg Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="RHBJojtQjHH-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK MNCH: Zinc sulfate 20mg Waste"
+          value="[ DLISTOCK MNCH: Zinc sulfate 20mg Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="RUngQRP9Zvp-remaining">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="IIheader" colspan="9">II. Commodity for Family Planning</td>
+    </tr>
+    <tr name="data">
+      <td>1</td>
+      <td align="left" class="header2">Birth Control Mini Pills</td>
+      <td>ແຜງ/Blister</td>
+      <td class="value" id="RBXqjU8NXeq-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="JfiaruJWaea-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Mini pills Received"
+          value="[ DLISTOCK FP: BC Mini pills Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f1">&nbsp;</td>
+      <td class="value">
+        <input
+          id="qVLE2XRqdNn-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Mini pills Distributed"
+          value="[ DLISTOCK FP: BC Mini pills Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="rDNvBQyik3P-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Mini pills Waste"
+          value="[ DLISTOCK FP: BC Mini pills Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="RBXqjU8NXeq-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>2</td>
+      <td align="left" class="header2">Birth Control Combined Pills</td>
+      <td>ແຜງ/Blister</td>
+      <td class="value" id="DV2fcPb6yAj-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="h3TaqryXslw-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Combined pills Received"
+          value="[ DLISTOCK FP: BC Combined pills Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f2">&nbsp;</td>
+      <td class="value">
+        <input
+          id="slVGzuQishi-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Combined pills Distributed"
+          value="[ DLISTOCK FP: BC Combined pills Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="s0pz7wfF1a6-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Combined pills Wasted"
+          value="[ DLISTOCK FP: BC Combined pills Wasted ]"
+        />
+      </td>
+      <td class="blueValue" id="DV2fcPb6yAj-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>3</td>
+      <td align="left" class="header2">
+        Birth Control Injectable Contraceptive
+      </td>
+      <td>ຫຼອດ/Ampoule</td>
+      <td class="value" id="TuhmbGURLRS-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="RyJVB0v3V4H-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Injectable contraceptive Received"
+          value="[ DLISTOCK FP: BC Injectable contraceptive Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f3">&nbsp;</td>
+      <td class="value">
+        <input
+          id="gBpQPxwODu5-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Injectable contraceptive Distributed"
+          value="[ DLISTOCK FP: BC Injectable contraceptive Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="A2pwrv7Nfd8-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: BC Injectable contraceptive Waste"
+          value="[ DLISTOCK FP: BC Injectable contraceptive Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="TuhmbGURLRS-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>4</td>
+      <td align="left" class="header2">IUDs</td>
+      <td>ອັນ/Piece</td>
+      <td class="value" id="FTyVgt7JIWB-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="JJfx6LUtkLF-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: IUDs Received"
+          value="[ DLISTOCK FP: IUDs Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f4">&nbsp;</td>
+      <td class="value">
+        <input
+          id="NvSJDq3O2FT-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: IUDs Distributed"
+          value="[ DLISTOCK FP: IUDs Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="x2SV6FV4Bna-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: IUDs Waste"
+          value="[ DLISTOCK FP: IUDs Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="FTyVgt7JIWB-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>5</td>
+      <td align="left" class="header2">Condom</td>
+      <td>ອັນ/Piece</td>
+      <td class="value" id="aF38UcpDV3Y-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="iUY4gIoYeae-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Condom Received"
+          value="[ DLISTOCK FP: Condom Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f5">&nbsp;</td>
+      <td class="value">
+        <input
+          id="xHO0yDbw5wL-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Condom Distributed"
+          value="[ DLISTOCK FP: Condom Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="BoccXrmnE1v-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Condom Waste"
+          value="[ DLISTOCK FP: Condom Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="aF38UcpDV3Y-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>6</td>
+      <td align="left" class="header2">Implant</td>
+      <td>ອັນ/Set</td>
+      <td class="value" id="RLv9VOvCn5p-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="VZVNmOd4mIF-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Implant Received"
+          value="[ DLISTOCK FP: Implant Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f6">&nbsp;</td>
+      <td class="value">
+        <input
+          id="vzUC3RXiXU5-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Implant Distributed"
+          value="[ DLISTOCK FP: Implant Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="mcad3dqtvqi-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Implant Waste"
+          value="[ DLISTOCK FP: Implant Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="RLv9VOvCn5p-remaining">&nbsp;</td>
+    </tr>
+    <tr name="data">
+      <td>7</td>
+      <td align="left" class="header2">Syrince1cc</td>
+      <td>ອັນ/Piece</td>
+      <td class="value" id="VHyzJ0cOEVM-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="ZdfMdrJTxXx-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Syringe Received"
+          value="[ DLISTOCK FP: Syringe Received ]"
+        />
+      </td>
+      <td class="yellowValue" id="f7">&nbsp;</td>
+      <td class="value">
+        <input
+          id="W4iKhP3PySL-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Syringe Distributed"
+          value="[ DLISTOCK FP: Syringe Distributed ]"
+        />
+      </td>
+      <td>
+        <input
+          id="kotISHCDxu8-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: Syrince 1 cc Waste"
+          value="[ DLISTOCK FP: Syrince 1 cc Waste ]"
+        />
+      </td>
+      <td class="blueValue" id="VHyzJ0cOEVM-remaining">&nbsp;</td>
+    </tr>
+    <tr>
+      <td class="IIIheader" colspan="9">III. Pink Book</td>
+    </tr>
+    <tr name="data">
+      <td>1</td>
+      <td align="left" class="header3">Pink Book</td>
+      <td>ຫົວ/Books</td>
+      <td class="value" id="Dq5HalO0ylv-remainingFromLastM">&nbsp;</td>
+      <td class="value">
+        <input
+          id="q3LNMeGKg3n-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: pinkBook recieve "
+          value="[ DLISTOCK FP: pinkBook recieve  ]"
+        />
+      </td>
+      <td class="yellowValue" id="pb">&nbsp;</td>
+      <td class="value">
+        <input
+          id="c3FnIRkhX4G-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: pinkBook distribute"
+          value="[ DLISTOCK FP: pinkBook distribute ]"
+        />
+      </td>
+      <td>
+        <input
+          id="BZDomqSJFPp-lmbxvugTvKr-val"
+          name="entryfield"
+          title="DLISTOCK FP: pinkBook waste"
+          value="[ DLISTOCK FP: pinkBook waste ]"
+        />
+      </td>
+      <td class="blueValue" id="Dq5HalO0ylv-remaining">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<div id="loadTable">
+  <table border="1">
+    <tbody>
+      <tr>
+        <td
+          colspan="9"
+          id="period_month"
+          style="font-weight: bold; text-align: center"
+        >
+          &nbsp;
+        </td>
+      </tr>
+      <tr>
+        <td>No.</td>
+        <td class="header1">Commodity List</td>
+        <td class="header1">Unit</td>
+        <td class="header2">Remaining from last month</td>
+        <td class="header2">Receive</td>
+        <td class="header1">Stock Available</td>
+        <td class="header2">Distribute</td>
+        <td class="header2">Waste</td>
+        <td class="header2">Closing balance of the month</td>
+      </tr>
+      <tr>
+        <td class="Iheader" colspan="9">I. Commodity for MCH Nutrition</td>
+      </tr>
+      <tr name="data">
+        <td>1</td>
+        <td align="left" class="header1">VTMA 100,000 IU&lt; 1 Y</td>
+        <td>tablet</td>
+        <td class="value" id="val11">&nbsp;</td>
+        <td class="value" id="val12">&nbsp;</td>
+        <td class="yellowValue" id="val13">&nbsp;</td>
+        <td class="value" id="val14">&nbsp;</td>
+        <td id="val15">&nbsp;</td>
+        <td class="blueValue" id="val16">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>2</td>
+        <td align="left" class="header1">VTMA 200,000 IU&lt; 5 Y</td>
+        <td>tablet</td>
+        <td class="value" id="val21">&nbsp;</td>
+        <td class="value" id="val22">&nbsp;</td>
+        <td class="yellowValue" id="val23">&nbsp;</td>
+        <td class="value" id="val24">&nbsp;</td>
+        <td id="val25">&nbsp;</td>
+        <td class="blueValue" id="val26">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>3</td>
+        <td align="left" class="header1">Mebendazloe 500 mg</td>
+        <td>tablet</td>
+        <td class="value" id="val31">&nbsp;</td>
+        <td class="value" id="val32">&nbsp;</td>
+        <td class="yellowValue" id="val33">&nbsp;</td>
+        <td class="value" id="val34">&nbsp;</td>
+        <td id="val35">&nbsp;</td>
+        <td class="blueValue" id="val36">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>4</td>
+        <td align="left" class="header1">Iron Folic Acid 200mg/ Week/tablet</td>
+        <td>tablet</td>
+        <td class="value" id="val41">&nbsp;</td>
+        <td class="value" id="val42">&nbsp;</td>
+        <td class="yellowValue" id="val43">&nbsp;</td>
+        <td class="value" id="val44">&nbsp;</td>
+        <td id="val25">&nbsp;</td>
+        <td class="blueValue" id="val46">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>5</td>
+        <td align="left" class="header1">Iron Folic Acid 30-60mg/Day/tablet</td>
+        <td>tablet</td>
+        <td class="value" id="val51">&nbsp;</td>
+        <td class="value" id="val52">&nbsp;</td>
+        <td class="yellowValue" id="val53">&nbsp;</td>
+        <td class="value" id="val54">&nbsp;</td>
+        <td id="val55">&nbsp;</td>
+        <td class="blueValue" id="val56">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>6</td>
+        <td align="left" class="header1">Zinc Sulfate 20mg</td>
+        <td>tablet</td>
+        <td class="value" id="val61">&nbsp;</td>
+        <td class="value" id="val62">&nbsp;</td>
+        <td class="yellowValue" id="val63">&nbsp;</td>
+        <td class="value" id="val64">&nbsp;</td>
+        <td id="val65">&nbsp;</td>
+        <td class="blueValue" id="val66">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="IIheader" colspan="9">II. Commodity for Family Planning</td>
+      </tr>
+      <tr name="data">
+        <td>1</td>
+        <td align="left" class="header2">Birth Control Mini Pills</td>
+        <td>Blister</td>
+        <td class="value" id="fp11">&nbsp;</td>
+        <td class="value" id="fp12">&nbsp;</td>
+        <td class="yellowValue" id="fp13">&nbsp;</td>
+        <td class="value" id="fp14">&nbsp;</td>
+        <td id="fp15">&nbsp;</td>
+        <td class="blueValue" id="fp16">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>2</td>
+        <td align="left" class="header2">Birth Control Combined Pills</td>
+        <td>Blister</td>
+        <td class="value" id="fp21">&nbsp;</td>
+        <td class="value" id="fp22">&nbsp;</td>
+        <td class="yellowValue" id="fp23">&nbsp;</td>
+        <td class="value" id="fp24">&nbsp;</td>
+        <td id="fp25">&nbsp;</td>
+        <td class="blueValue" id="fp26">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>3</td>
+        <td align="left" class="header2">
+          Birth Control Injectable Contraceptive
+        </td>
+        <td>Ampoule</td>
+        <td class="value" id="fp31">&nbsp;</td>
+        <td class="value" id="fp32">&nbsp;</td>
+        <td class="yellowValue" id="fp33">&nbsp;</td>
+        <td class="value" id="fp34">&nbsp;</td>
+        <td id="fp35">&nbsp;</td>
+        <td class="blueValue" id="fp36">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>4</td>
+        <td align="left" class="header2">IUDs</td>
+        <td>Piece</td>
+        <td class="value" id="fp41">&nbsp;</td>
+        <td class="value" id="fp42">&nbsp;</td>
+        <td class="yellowValue" id="fp43">&nbsp;</td>
+        <td class="value" id="fp44">&nbsp;</td>
+        <td id="fp45">&nbsp;</td>
+        <td class="blueValue" id="fp46">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>5</td>
+        <td align="left" class="header2">Condom</td>
+        <td>Piece</td>
+        <td class="value" id="fp51">&nbsp;</td>
+        <td class="value" id="fp52">&nbsp;</td>
+        <td class="yellowValue" id="fp53">&nbsp;</td>
+        <td class="value" id="fp54">&nbsp;</td>
+        <td id="fp55">&nbsp;</td>
+        <td class="blueValue" id="fp56">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>6</td>
+        <td align="left" class="header2">Implant</td>
+        <td>Set</td>
+        <td class="value" id="fp61">&nbsp;</td>
+        <td class="value" id="fp62">&nbsp;</td>
+        <td class="yellowValue" id="fp63">&nbsp;</td>
+        <td class="value" id="fp64">&nbsp;</td>
+        <td id="fp65">&nbsp;</td>
+        <td class="blueValue" id="fp66">&nbsp;</td>
+      </tr>
+      <tr name="data">
+        <td>7</td>
+        <td align="left" class="header2">Syrince1cc</td>
+        <td>Piece</td>
+        <td class="value" id="fp71">&nbsp;</td>
+        <td class="value" id="fp72">&nbsp;</td>
+        <td class="yellowValue" id="fp73">&nbsp;</td>
+        <td class="value" id="fp74">&nbsp;</td>
+        <td id="fp75">&nbsp;</td>
+        <td class="blueValue" id="fp76">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="IIIheader" colspan="9">III. Pink Book</td>
+      </tr>
+      <tr name="data">
+        <td>1</td>
+        <td align="left" class="header3">Pink Book</td>
+        <td>Books</td>
+        <td class="value" id="p1">&nbsp;</td>
+        <td class="value" id="p2">&nbsp;</td>
+        <td class="yellowValue" id="p3">&nbsp;</td>
+        <td class="value" id="p4">&nbsp;</td>
+        <td id="p5">&nbsp;</td>
+        <td class="blueValue" id="p6">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  //selectedPeriodId
+  dhis2.util.on("dhis2.de.event.dataValuesLoaded", function (event, ds, dv) {
+    $("#loadTable").hide();
+    loadRemainningFormLastM();
+    $("[name=data]").each(function () {
+      var tds = $(this).children();
+      var remainingFromLastM = checkNull($(tds).eq(3).html());
+      var receive = checkNull($(tds).eq(4).children().eq(0).val());
+      var stockAvailable = remainingFromLastM + receive;
+      var distribute = checkNull($(tds).eq(6).children().eq(0).val());
+      var waste = checkNull($(tds).eq(7).children().eq(0).val());
+      var remaining = stockAvailable - (distribute + waste);
+      $(tds).eq(5).html(stockAvailable);
+      $(tds).eq(8).html(remaining);
+      var de = $(tds).eq(8).attr("id").split("-")[0];
+      var ou = dhis2.de.currentOrganisationUnitId;
+      var pe = $("#selectedPeriodId").val();
+      var value = remaining;
+      saveRemaining(de, ou, pe, value);
+      // $("#val1").text($("#JmhqohorlUf-lmbxvugTvKr-val").text());
+    });
+
+    $("[name=entryfield]").change(function () {
+      var tds = $(this).parent().parent().children();
+      var remainingFromLastM = checkNull($(tds).eq(3).html());
+      var receive = checkNull($(tds).eq(4).children().eq(0).val());
+      var stockAvailable = remainingFromLastM + receive;
+      var distribute = checkNull($(tds).eq(6).children().eq(0).val());
+      var waste = checkNull($(tds).eq(7).children().eq(0).val());
+      var remaining = stockAvailable - (distribute + waste);
+      $(tds).eq(5).html(stockAvailable);
+      $(tds).eq(8).html(remaining);
+      var de = $(tds).eq(8).attr("id").split("-")[0];
+      var ou = dhis2.de.currentOrganisationUnitId;
+      var pe = $("#selectedPeriodId").val();
+      var value = remaining;
+      saveRemaining(de, ou, pe, value);
+    });
+    //Period
+    var p_t = $("#selectedPeriodId").val();
+    $("#period_month").text(
+      "WB DLI NUT&FP-Sctock in Year: " +
+        p_t.slice(0, 4) +
+        " Month: " +
+        p_t.slice(4, 6)
+    );
+    // Comunity.........
+    $("#val11").text($("#Sb9Lf8e5wOd-remainingFromLastM").text());
+    $("#val12").text($("#JmhqohorlUf-lmbxvugTvKr-val").val());
+    $("#val13").text($("#c1").text());
+    $("#val14").text($("#g94NxfjkibL-lmbxvugTvKr-val").val());
+    $("#val15").text($("#HLs2vEKvpEw-lmbxvugTvKr-val").val());
+    $("#val16").text($("#Sb9Lf8e5wOd-remaining").text());
+    //LZuxe4XEwvp-remainingFromLastM MmldHdFefqU-lmbxvugTvKr-val c2 UILgm6PKQ1g-lmbxvugTvKr-val dJd8NPQ1V1c-lmbxvugTvKr-val LZuxe4XEwvp-remaining
+    $("#val21").text($("#LZuxe4XEwvp-remainingFromLastM").text());
+    $("#val22").text($("#MmldHdFefqU-lmbxvugTvKr-val").val());
+    $("#val23").text($("#c2").text());
+    $("#val24").text($("#UILgm6PKQ1g-lmbxvugTvKr-val").val());
+    $("#val25").text($("#dJd8NPQ1V1c-lmbxvugTvKr-val").val());
+    $("#val26").text($("#LZuxe4XEwvp-remaining").text());
+    //D5Xc9dCbOKy-remainingFromLastM JTAHDqCVL9W-lmbxvugTvKr-val c3 mO5O9uqxszv-lmbxvugTvKr-val jmBDa8hcHM6-lmbxvugTvKr-val D5Xc9dCbOKy-remaining
+    $("#val31").text($("#D5Xc9dCbOKy-remainingFromLastM").text());
+    $("#val32").text($("#JTAHDqCVL9W-lmbxvugTvKr-val").val());
+    $("#val33").text($("#c3").text());
+    $("#val34").text($("#mO5O9uqxszv-lmbxvugTvKr-val").val());
+    $("#val35").text($("#jmBDa8hcHM6-lmbxvugTvKr-val").val());
+    $("#val36").text($("#D5Xc9dCbOKy-remaining").text());
+    //sHy2GRAVyQI-remainingFromLastM koNgXJuvCa8-lmbxvugTvKr-val c4 pC4XxUy3QPF-lmbxvugTvKr-val Ch6pQCcMBY1-lmbxvugTvKr-val sHy2GRAVyQI-remaining
+    $("#val41").text($("#sHy2GRAVyQI-remainingFromLastM").text());
+    $("#val42").text($("#koNgXJuvCa8-lmbxvugTvKr-val").val());
+    $("#val43").text($("#c4").text());
+    $("#val44").text($("#pC4XxUy3QPF-lmbxvugTvKr-val").val());
+    $("#val45").text($("#Ch6pQCcMBY1-lmbxvugTvKr-val").val());
+    $("#val46").text($("#sHy2GRAVyQI-remaining").text());
+    //Iugv9ytAG1A-remainingFromLastM SZJRblZMttd-lmbxvugTvKr-val c5 E6k5flp94my-lmbxvugTvKr-val I5gEHd3iUXD-lmbxvugTvKr-val Iugv9ytAG1A-remaining
+    $("#val51").text($("#Iugv9ytAG1A-remainingFromLastM").text());
+    $("#val52").text($("#SZJRblZMttd-lmbxvugTvKr-val").val());
+    $("#val53").text($("#c5").text());
+    $("#val54").text($("#E6k5flp94my-lmbxvugTvKr-val").val());
+    $("#val55").text($("#I5gEHd3iUXD-lmbxvugTvKr-val").val());
+    $("#val56").text($("#Iugv9ytAG1A-remaining").text());
+    //RUngQRP9Zvp-remainingFromLastM heEBqghRfhX-lmbxvugTvKr-val c6 GsoiPJBeF8G-lmbxvugTvKr-val RHBJojtQjHH-lmbxvugTvKr-val RUngQRP9Zvp-remaining
+    $("#val61").text($("#RUngQRP9Zvp-remainingFromLastM").text());
+    $("#val62").text($("#heEBqghRfhX-lmbxvugTvKr-val").val());
+    $("#val63").text($("#c6").text());
+    $("#val64").text($("#GsoiPJBeF8G-lmbxvugTvKr-val").val());
+    $("#val65").text($("#RHBJojtQjHH-lmbxvugTvKr-val").val());
+    $("#val66").text($("#RUngQRP9Zvp-remaining").text());
+
+    ///////////////////////////Family Planing
+    //RBXqjU8NXeq-remainingFromLastM JfiaruJWaea-lmbxvugTvKr-val f1 qVLE2XRqdNn-lmbxvugTvKr-val rDNvBQyik3P-lmbxvugTvKr-val RBXqjU8NXeq-remaining
+    $("#fp11").text($("#RBXqjU8NXeq-remainingFromLastM").text());
+    $("#fp12").text($("#JfiaruJWaea-lmbxvugTvKr-val").val());
+    $("#fp13").text($("#f1").text());
+    $("#fp14").text($("#qVLE2XRqdNn-lmbxvugTvKr-val").val());
+    $("#fp15").text($("#rDNvBQyik3P-lmbxvugTvKr-val").val());
+    $("#fp16").text($("#RBXqjU8NXeq-remaining").text());
+    //DV2fcPb6yAj-remainingFromLastM h3TaqryXslw-lmbxvugTvKr-val f2 slVGzuQishi-lmbxvugTvKr-val s0pz7wfF1a6-lmbxvugTvKr-val DV2fcPb6yAj-remaining
+    $("#fp21").text($("#DV2fcPb6yAj-remainingFromLastM").text());
+    $("#fp22").text($("#h3TaqryXslw-lmbxvugTvKr-val").val());
+    $("#fp23").text($("#f2").text());
+    $("#fp24").text($("#slVGzuQishi-lmbxvugTvKr-val").val());
+    $("#fp25").text($("#s0pz7wfF1a6-lmbxvugTvKr-val").val());
+    $("#fp26").text($("#DV2fcPb6yAj-remaining").text());
+    //TuhmbGURLRS-remainingFromLastM RyJVB0v3V4H-lmbxvugTvKr-val f3 gBpQPxwODu5-lmbxvugTvKr-val A2pwrv7Nfd8-lmbxvugTvKr-val TuhmbGURLRS-remaining
+    $("#fp31").text($("#TuhmbGURLRS-remainingFromLastM").text());
+    $("#fp32").text($("#RyJVB0v3V4H-lmbxvugTvKr-val").val());
+    $("#fp33").text($("#f3").text());
+    $("#fp34").text($("#gBpQPxwODu5-lmbxvugTvKr-val").val());
+    $("#fp35").text($("#A2pwrv7Nfd8-lmbxvugTvKr-val").val());
+    $("#fp36").text($("#TuhmbGURLRS-remaining").text());
+    //FTyVgt7JIWB-remainingFromLastM JJfx6LUtkLF-lmbxvugTvKr-val f4 NvSJDq3O2FT-lmbxvugTvKr-val x2SV6FV4Bna-lmbxvugTvKr-val FTyVgt7JIWB-remaining
+    $("#fp41").text($("#FTyVgt7JIWB-remainingFromLastM").text());
+    $("#fp42").text($("#JJfx6LUtkLF-lmbxvugTvKr-val").val());
+    $("#fp43").text($("#f4").text());
+    $("#fp44").text($("#NvSJDq3O2FT-lmbxvugTvKr-val").val());
+    $("#fp45").text($("#x2SV6FV4Bna-lmbxvugTvKr-val").val());
+    $("#fp46").text($("#FTyVgt7JIWB-remaining").text());
+    //aF38UcpDV3Y-remainingFromLastM iUY4gIoYeae-lmbxvugTvKr-val f5 xHO0yDbw5wL-lmbxvugTvKr-val BoccXrmnE1v-lmbxvugTvKr-val aF38UcpDV3Y-remaining
+    $("#fp51").text($("#aF38UcpDV3Y-remainingFromLastM").text());
+    $("#fp52").text($("#iUY4gIoYeae-lmbxvugTvKr-val").val());
+    $("#fp53").text($("#f5").text());
+    $("#fp54").text($("#xHO0yDbw5wL-lmbxvugTvKr-val").val());
+    $("#fp55").text($("#BoccXrmnE1v-lmbxvugTvKr-val").val());
+    $("#fp56").text($("#aF38UcpDV3Y-remaining").text());
+    //RLv9VOvCn5p-remainingFromLastM VZVNmOd4mIF-lmbxvugTvKr-val f6 vzUC3RXiXU5-lmbxvugTvKr-val mcad3dqtvqi-lmbxvugTvKr-val RLv9VOvCn5p-remaining
+    $("#fp61").text($("#RLv9VOvCn5p-remainingFromLastM").text());
+    $("#fp62").text($("#VZVNmOd4mIF-lmbxvugTvKr-val").val());
+    $("#fp63").text($("#f6").text());
+    $("#fp64").text($("#vzUC3RXiXU5-lmbxvugTvKr-val").val());
+    $("#fp65").text($("#mcad3dqtvqi-lmbxvugTvKr-val").val());
+    $("#fp66").text($("#RLv9VOvCn5p-remaining").text());
+    //VHyzJ0cOEVM-remainingFromLastM ZdfMdrJTxXx-lmbxvugTvKr-val f7 W4iKhP3PySL-lmbxvugTvKr-val W4iKhP3PySL-lmbxvugTvKr-val VHyzJ0cOEVM-remaining
+    $("#fp71").text($("#VHyzJ0cOEVM-remainingFromLastM").text());
+    $("#fp72").text($("#ZdfMdrJTxXx-lmbxvugTvKr-val").val());
+    $("#fp73").text($("#f7").text());
+    $("#fp74").text($("#W4iKhP3PySL-lmbxvugTvKr-val").val());
+    $("#fp75").text($("#W4iKhP3PySL-lmbxvugTvKr-val").val());
+    $("#fp76").text($("#VHyzJ0cOEVM-remaining").text());
+
+    //////////PinkBook
+    //Dq5HalO0ylv-remainingFromLastM q3LNMeGKg3n-lmbxvugTvKr-val pb c3FnIRkhX4G-lmbxvugTvKr-val BZDomqSJFPp-lmbxvugTvKr-val Dq5HalO0ylv-remaining
+    $("#p1").text($("#Dq5HalO0ylv-remainingFromLastM").text());
+    $("#p2").text($("#q3LNMeGKg3n-lmbxvugTvKr-val").val());
+    $("#p3").text($("#pb").text());
+    $("#p4").text($("#c3FnIRkhX4G-lmbxvugTvKr-val").val());
+    $("#p5").text($("#BZDomqSJFPp-lmbxvugTvKr-val").val());
+    $("#p6").text($("#Dq5HalO0ylv-remaining").text());
+  });
+
+  function checkNull(value) {
+    if (value == "" || value == " " || value == "&nbsp;") {
+      return 0;
+    } else {
+      return parseInt(value);
+    }
+  }
+  function saveRemaining(de, ou, pe, value) {
+    var data = {
+      dataValues: [
+        {
+          dataElement: de,
+          categoryOptionCombo: "lmbxvugTvKr",
+          period: pe,
+          orgUnit: ou,
+          value: value,
+        },
+      ],
+    };
+
+    $.ajax({
+      async: false,
+      type: "POST",
+      url: "../api/dataValueSets",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      success: function (data) {
+        console.log(data.description);
+      },
+      error: function () {},
+      beforeSend: setHeader,
+    });
+
+    function setHeader(xhr) {
+      xhr.setRequestHeader("securityCode", "Foo");
+      xhr.setRequestHeader("passkey", "Bar");
+    }
+  }
+
+  function loadRemainningFormLastM() {
+    var month = parseInt($("#selectedPeriodId").val().slice(4, 6));
+    var year = parseInt($("#selectedPeriodId").val().slice(0, 4));
+    if (month == 1) {
+      month = 12;
+      year -= 1;
+    } else if (month >= 11) {
+      month -= 1;
+    } else {
+      month -= 1;
+      month = "0" + month;
+    }
+    var pe = "" + year + month;
+    var ou = dhis2.de.currentOrganisationUnitId;
+    $.ajax({
+      async: false,
+      type: "GET",
+      url:
+        "../api/dataValueSets.json?dataSet=n612BBRxLPI&period=" +
+        pe +
+        "&orgUnit=" +
+        ou,
+      contentType: "application/json",
+      success: function (json) {
+        if (json.dataValues == null) {
+          $("td[id*=remainingFromLastM]").text("");
+          return;
+        }
+        json.dataValues.forEach(function (thisItem) {
+          $("#" + thisItem.dataElement + "-remainingFromLastM").text(
+            thisItem.value
+          );
+        });
+      },
+      error: function () {},
+      beforeSend: setHeader,
+    });
+
+    function setHeader(xhr) {
+      xhr.setRequestHeader("securityCode", "Foo");
+      xhr.setRequestHeader("passkey", "Bar");
+    }
+  }
+  function downloadexcel() {
+    // $("#JmhqohorlUf-lmbxvugTvKr-val").remove();
+    window.open(
+      "data:application/vnd.ms-excel," +
+        encodeURIComponent($("div[id$=loadTable]").html())
+    );
+  }
+</script>

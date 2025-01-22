@@ -1,0 +1,29 @@
+.tracker-list-filter-dialog-content-container {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: column;
+}
+.tracker-list-filter-dialog-content-container > div {
+  /* width: 50%; */
+  padding-right: 10px;
+  padding-bottom: 10px;
+  /* display: flex; */
+  /* justify-content: flex-end; */
+}
+.tracker-list-filter-dialog-sections-container {
+}
+.tracker-list-filter-dialog-section {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.tracker-list-filter-dialog-section > div:nth-child(1) {
+  padding: 10px;
+  background-color: #d4d4d4;
+  width: 100%;
+  font-weight: bold;
+}
+.tracker-list-filter-dialog-section > div:nth-child(2) {
+  padding: 10px;
+  border: 1px solid #d4d4d4;
+  width: 100%;
+}

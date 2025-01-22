@@ -1,0 +1,61 @@
+.malaria-llin-form-container div.form {
+  width: 100%;
+  padding: 12px;
+}
+
+.malaria-llin-form-container tr {
+  line-height: 140%;
+}
+
+.malaria-llin-form-container .section-box {
+  line-height: 140%;
+  width: 100%;
+  border: 1px solid #c2c2c2;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.malaria-llin-form-container .section-label {
+  color: #585d61;
+  font-size: 14pt;
+  font-weight: bold;
+  text-align: left;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+.malaria-llin-form-container .dhis2-list-table {
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+.malaria-llin-form-container
+  .dhis2-list-table-striped
+  > thead
+  > tr
+  > th:first-child {
+  width: 40%;
+}
+
+.malaria-llin-form-container td {
+  font-size: 10pt;
+  height: 40px;
+  align-content: center;
+}
+
+.malaria-llin-form-container td.label-field {
+  text-align: left;
+  padding-left: 15px;
+  font-size: 16px;
+}
+
+.malaria-llin-form-container td.input-field {
+  text-align: center;
+  padding: 0px 4px 4px 0px;
+}
+
+.malaria-llin-form-container .hidden {
+  display: none;
+}

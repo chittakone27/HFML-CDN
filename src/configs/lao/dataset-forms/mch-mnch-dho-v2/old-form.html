@@ -1,0 +1,2570 @@
+<script>
+  var _intervalId;
+  var _dataLoaded = false;
+  $(document).ready(function () {
+    // Start App for calculate Total values
+    startApp();
+
+    // If preiod is changed, restart the all the settings.
+    $("#selectedPeriodId").change(function () {
+      if (_intervalId !== undefined) {
+        _dataLoaded = false;
+        clearInterval(_intervalId);
+      }
+      startApp();
+    });
+  });
+
+  function startApp() {
+    // Note 1.
+    // add group id as 'cfid' in each input tag.
+
+    // Clear all the totals
+    clearTotals();
+
+    _intervalId = undefined;
+    _dataLoaded = false;
+
+    // Note 2. Run interval for detecting data loading
+    _intervalId = setInterval(function () {
+      // Note 3. If any non-empty value is found,
+      //	- Set Section 'KeyUp' calculation event handler
+      //	- calculate total on all sections and stop the interval.
+
+      if (
+        !_dataLoaded &&
+        $("input[cfid]").filter(checkValue_Input).length > 0
+      ) {
+        _dataLoaded = true;
+
+        setSectionEventsAll();
+
+        sectionTotalCalcAll();
+
+        clearInterval(_intervalId);
+
+        _intervalId = undefined;
+      }
+    }, 500);
+  }
+
+  function checkValue_Input() {
+    return $(this).val().length > 0;
+  }
+
+  function getInputCFIDTags(tagId) {
+    return $("input[cfid='" + tagId + "']");
+  }
+
+  function getIntValue(input) {
+    if (input == "") {
+      return 0;
+    } else {
+      return parseInt(input);
+    }
+  }
+
+  function setSectionEventsAll() {
+    $("input[cfid]").keyup(function () {
+      var cfid_AttrName = $(this).attr("cfid");
+
+      var inputTags = getInputCFIDTags(cfid_AttrName);
+
+      var totalTag = $("#" + cfid_AttrName + "Total");
+
+      totalTag.text(calcData(inputTags));
+    });
+  }
+
+  function sectionTotalCalcAll() {
+    $("td.totalValueRow div").each(function () {
+      var cfid_AttrName = $(this).attr("id").replace("Total", "");
+      var inputTags = getInputCFIDTags(cfid_AttrName);
+
+      $(this).text(calcData(inputTags));
+    });
+  }
+
+  function clearTotals() {
+    $("td.totalValueRow div").each(function () {
+      $(this).text("");
+    });
+  }
+
+  function calcData(inputTag) {
+    var total = 0;
+
+    inputTag.each(function () {
+      total = getIntValue($(this).val()) + total;
+    });
+
+    return total;
+  }
+  //**********The translation - @author GER**************
+  //Begining Translation
+  var language = "en";
+  //Dictionary
+  //{ key : "keyId", value : [ "en","lo" ]},
+  var translation = [
+    //Data elements
+    //ANC-Deliveries-PNC
+    {
+      key: "ANC_1st_visit",
+      value: ["ANC 1st visit", "ຈ.ນ ແມ່ຍິງຖືພາໄດ້ກວດ ກ່ອນເກີດຄັ້ງທີ 1"],
+    },
+    {
+      key: "ANC_4th_visit",
+      value: ["ANC 4th visit", "ຈ.ນ ແມ່ຍິງຖືພາໄດ້ກວດກ່ອນເກີດຄັ້ງທີ 4"],
+    },
+    {
+      key: "Level_1_High_risk_mother_identified_and_referred_to_upper_level_facility",
+      value: [
+        "Level 1 High risk mother identified and referred to upper level facility",
+        "ຈ.ນ ແມ່​ສ່ຽງ​ໄພ​ຂັ້ນ 1 ທີ່ພົບ ແລະ​ນໍາສົ່ງໄປໂຮງໝໍທີ່ມີເງື່ອນໄຂປີ່ນປົວ",
+      ],
+    },
+    {
+      key: "Level_2_High_risk_mother_identified_and_referred_to_upper_level_facility",
+      value: [
+        "Level 2 High risk mother identified and referred to upper level facility",
+        "ຈ.ນ ແມ່​ສ່ຽງ​ໄພ​ຂັ້ນ 2 ທີ່ພົບ ແລະ​ນໍາສົ່ງໄປໂຮງໝໍທີ່ມີເງື່ອນໄຂປີ່ນປົວ",
+      ],
+    },
+    {
+      key: "Td1_Pregnant_women_received_one_dose_of_Td_in_this_pregnancy",
+      value: [
+        "Td1(Pregnant women received one dose of Td in this pregnancy)",
+        "ຈ.ນ ແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td1 ໃນການຖືພາຄັ້ງນີ້",
+      ],
+    },
+    {
+      key: "Td2_Pregnant_women_received_one_dose_of_Td_in_this_pregnancy",
+      value: [
+        "Td2(Pregnant women received one dose of Td in this pregnancy)",
+        "ຈ.ນ ແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td2 ໃນການຖືພາຄັ້ງນີ້",
+      ],
+    },
+    {
+      key: "Pregnant_Women_Completed_Td_before_this_pregnancy",
+      value: [
+        "Pregnant Women Completed Td before this pregnancy",
+        "ຈ.ນ ແມ່ຍີງຖືພາທີ່ໄດ້ສັກວັກແຊງ Td ຄົບກ່ອນການຖືພາຄັ້ງນີ້ (ຄົບ 5 ເຂັມ)",
+      ],
+    },
+    {
+      key: "Pregnant_women_received_IFA_90_tablets",
+      value: [
+        "Pregnant women received IFA 90 tablets",
+        "ຈ.ນ ແມ່ຍີງຖືພາທີ່ໄດ້ຮັບຢາທາດເຫຼັກ 90 ເມັດ",
+      ],
+    },
+    {
+      key: "Pregnant_women_come_for_ANC_visit_received_HIV_Counselling",
+      value: [
+        "Pregnant women come for ANC visit received HIV Counselling",
+        "ຈ.ນ ແມ່ຍີງຖືພາມາກວດກ່ອນເກີດໄດ້ຮັບຄຳປຶກສາ ກ່ຽວກັບ ພະຍາດ ພຕພ/ເອດ",
+      ],
+    },
+    {
+      key: "Pregnant_women_received_Counselling_Tested_for_HIV",
+      value: [
+        "Pregnant women received Counselling &amp; Tested for HIV",
+        "ຈ.ນ ແມ່ຍິງຖືພາມາກວດກ່ອນເກີດໄດ້ຮັບການກວດເລືອດຊອກຫາ ເຊື້ອ ພຕພ/ເອດ",
+      ],
+    },
+    {
+      key: "Pregnant_women_received_Free_ANC",
+      value: [
+        "Pregnant women received Free ANC",
+        "ຈ.ນ ແມ່ຍິງຖືພາແມ່ຍິງຖືພາມາ ​ທີ່​ໄດ້​ຮັບ​ການກວດ​ກ່ອນ​ເກີດ ບໍ່​ເສຍຄ່າ",
+      ],
+    },
+    {
+      key: "Delivery_at_health_facility",
+      value: ["Delivery at health facility", "ຈຳນວນການເກີດໃນສະຖານທີ່ບໍລິການ"],
+    },
+    {
+      key: "Deliveries_at_home_by_SBA",
+      value: ["Deliveries at home by SBA", "ຈຳນວນເກີດລູກຢູ່ບ້ານມີແພດ"],
+    },
+    {
+      key: "Natural_Delivery_Vaginal_delivery",
+      value: [
+        "Natural Delivery (Vaginal delivery)",
+        "ຈ.ນ ເກີດແບບທຳມະຊາດ (ເກີດທາງຊ່ອງຄອດ)",
+      ],
+    },
+    {
+      key: "Deliveries_by_using_medical_equipment_Forcep_Vacuum_aspiration",
+      value: [
+        "Deliveries by using medical equipment: Forcep, Vacuum aspiration",
+        "ຈ.ນ ເກີດໂດຍ​ໃຊ້​ເຄື່ອງ​ມື​ຊ່ວຍ: Forcep, Vacuum aspiration",
+      ],
+    },
+    {
+      key: "Caesarean_sections",
+      value: ["Caesarean sections", "ຈຳນວນເກີດເກີດໂດຍຜ່າຕັດອອກ"],
+    },
+    {
+      key: "Deliveries_with_Pre_and_Eclampsia",
+      value: [
+        "Deliveries with Pre-and Eclampsia",
+        "ຈຳນວນເກີດລູກ ມີພາວະກຽມຊັກ ແລະ ຊັກກະຕຸກ",
+      ],
+    },
+    {
+      key: "Delivery_with_oxytocine_within_one_minute_of_birth",
+      value: [
+        "Delivery with oxytocine within one minute of birth",
+        "ຈຳນວນເກີດລູກ ທີໄດ້ສັກ  oxytocin ພາຍໃນ 1 ນາທີຫລັງເກີດ",
+      ],
+    },
+    {
+      key: "Under_weight_newborn_2500_gr",
+      value: [
+        "Under weight newborn &lt;2500 gr",
+        "ຈຳນວນເດັກເກີດນ້ຳໜັກ    <2500 gr",
+      ],
+    },
+    {
+      key: "Preterm_deliveries_at_22_27_weeks",
+      value: [
+        "Preterm deliveries at 22-27 weeks",
+        "ຈຳນວນເກີດກ່ອນກຳນົດ 22-27 ອາທິດ",
+      ],
+    },
+    {
+      key: "Preterm_deliveries_at_28_36_weeks",
+      value: [
+        "Preterm deliveries at 28-36 weeks",
+        "ຈຳນວນເກີດກ່ອນກຳນົດ 28-36 ອາທິດ",
+      ],
+    },
+    {
+      key: "Still_births_28_weeks",
+      value: [
+        "Still births ( &gt;=28 weeks)",
+        "ຈຳນວນເດັກ ຕາຍມາແຕ່ໃນທ້ອງ(>=28 ອາທິດ)",
+      ],
+    },
+    {
+      key: "Total_live_births",
+      value: ["Total live births", "ຈຳນວນເກີດມີຊີວິດທັງໝົດ"],
+    },
+    {
+      key: "Newborn_initiated_breastfeeding_within_the_first_hour_after_birth",
+      value: [
+        "Newborn initiated breastfeeding within the first hour after birth",
+        "ຈ.ນ ເດັກໄດ້ດູດນົມແມ່ໃນ 1 ຊມຫຼັງເກີດ",
+      ],
+    },
+    {
+      key: "Spontaneus_abortions_28_weeks",
+      value: [
+        "Spontaneus abortions ( &lt;28 weeks)",
+        "ຈຳນວນລຸລູກແບບທຳມະຊາດ (<28 ອາທິດ)",
+      ],
+    },
+    {
+      key: "Induced_abortions",
+      value: ["Induced abortions", "ຈຳນວນລຸລູກແບບບັງ ຄັບ (<28 ອາທິດ)"],
+    },
+    {
+      key: "Complicated_Abortions",
+      value: ["Complicated Abortions", "ຈຳນວນລຸລູກມີອາການສົນ"],
+    },
+    {
+      key: "Ectopic_pregnancies_ruptured",
+      value: ["Ectopic pregnancies ruptured", "ຈຳນວນຖືພາລູກນອກພົກ"],
+    },
+    {
+      key: "Pregnant_women_received_Free_delivery",
+      value: [
+        "Pregnant women received Free delivery",
+        "ຈ.ນ ແມ່ຍິງຖືພາແມ່ຍິງຖືພາມາ ​ທີ່​ໄດ້​ຮັບ​ການບໍ​ລິ​ການ​ເກີດ ບໍ່​ເສັຽ​ຄ່າ",
+      ],
+    },
+    {
+      key: "Women_receiving_PNC_within_2_days_from_birth_in_the_month",
+      value: [
+        "Women receiving PNC within 2 days from birth in the month",
+        "ຈຳນວນແມ່ຍິງກວດຫຼັງເກີດພາຍໃນ  2 ວັນຫຼັງເກີດ",
+      ],
+    },
+    {
+      key: "Women_receiving_PNC_within_3_42_days_from_birth_in_the_month",
+      value: [
+        "Women receiving PNC within 3-42 days from birth in the month",
+        "ຈຳນວນແມ່ຍິງກວດຫຼັງເກີດພາຍໃນ  3-42 ວັນຫຼັງເກີດ",
+      ],
+    },
+    {
+      key: "Women_receiving_IFA_90_tablets",
+      value: [
+        "Women receiving IFA 90 tablets",
+        "ຈຳນວນແມ່ຍິງຫຼັງເກີດທີ່ໄດ້ຮັບຢາທາດເຫຼັກ 90 ເມັດ",
+      ],
+    },
+    {
+      key: "Pregnant_women_received_Free_PNC",
+      value: [
+        "Pregnant women received Free PNC",
+        "ຈ.ນ ແມ່ຍິງຖືພາແມ່ຍິງຖືພາມາ ​ທີ່​ໄດ້​ຮັບ​ການບໍ​ລິ​ການ​ກວດ​ຫລັງ​ເກີດ ບໍ່​ເສຍຄ່າ",
+      ],
+    },
+    { key: "Maternal_deaths", value: ["Maternal deaths", "ຈຳນວນແມ່ຕາຍ"] },
+    {
+      key: "Neonatal_death_0_7_days",
+      value: ["Neonatal death 0-7 days", "ຈຳນວນເດັກ 0-7 ວັນ ຕາຍ"],
+    },
+    {
+      key: "Neonatal_death_8_28_days",
+      value: ["Neonatal death 8-28 days", "ຈຳນວນເດັກ 8-28 ວັນ ຕາຍ"],
+    },
+    {
+      key: "Infant_death_age_1_11_months",
+      value: ["Infant death age 1-11 months", "ຈຳນວນເດັກ 1 ຫາ 11 ເດືອນ ຕາຍ"],
+    },
+    {
+      key: "Total_number_of_Infant_under_1_year_of_age_deaths",
+      value: [
+        "Total number of Infant (under 1 year of age) deaths",
+        "ລວມຈຳນວນເດັກ ລຸ່ມ 1 ປີ ຕາຍ (ລວມເອົາ 3 ກຸ່ມອາຍຸຂ້າງເທິງ)",
+      ],
+    },
+    {
+      key: "Child_death_age_1_4_years",
+      value: ["Child death age 1-4 years", "ຈຳນວນເດັກ 1 ຫາ 4 ປີ ຕາຍ"],
+    },
+    {
+      key: "Under_5_Deaths",
+      value: [
+        "Under 5 Deaths",
+        "ລວມຈຳນວນເດັກ ລຸ່ມ 5 ປີ ຕາຍ (ລວມເອົາ ລຸ່ມ 1 ປີ ແລະ 1-4 ປີ)",
+      ],
+    },
+
+    //FP
+    {
+      key: "Old_user_number_of_couple",
+      value: ["Old user (number of couple)", "ຜູ້ໃຊ້ບໍລິການເກົ່າ"],
+    },
+    {
+      key: "New_user_number_of_couple",
+      value: ["New user (number of couple)", "ຜູ້ໃຊ້ບໍລິການໃໝ່"],
+    },
+    {
+      key: "Number_of_continue_users",
+      value: ["Number of continue users", "ຜູ້ໃຊ້ບໍລິການສືບ​ຕໍ່"],
+    },
+    {
+      key: "Total_number_distributed",
+      value: ["Total number distributed", "ຈ.ນ ​ທີ່ໄດ້ແຈກຍາຍ"],
+    },
+    { key: "Wastage_", value: ["Wastage", "ຈ.ນ ທີ່ເສຍຫາຍ"] },
+    { key: "Condoms_", value: ["Condoms", "ຖົງຢາງອະນາໄມ"] },
+    { key: "Single_Pill", value: ["Single Pill", "ຢາຄຸມຊະນິດດ່ຽວ"] },
+    { key: "Combined_Pill", value: ["Combined Pill", "ຢາຄຸມຊະນິດປະສົມ"] },
+    {
+      key: "Depose_Injectable",
+      value: ["Depose (Injectable)", "ຢາຄຸມຊະນິດສັກ"],
+    },
+    { key: "IUD_", value: ["IUD", "ຮ່ວງອະນາໄມ"] },
+    { key: "Implant_", value: ["Implant", "ຢາຝັງຄຸມກຳເນີດ"] },
+    { key: "Emergency_pill", value: ["Emergency pill", "ຢາຄຸມຊະນິດສຸກເສີນ"] },
+    { key: "Female_Sterilization", value: ["Female Sterilization", "ໝັນຍິງ"] },
+    { key: "Male_Sterilization", value: ["Male Sterilization", "ໝັນຊາຍ"] },
+    { key: "Under_12_months", value: ["Under 12 months", "ລຸ່ມ 12 ເດືອນ"] },
+    {
+      key: "12_months_to_59_months",
+      value: ["12 months to 59 months", "12 ຫາ 59 ເດືອນ"],
+    },
+
+    //EPI
+    { key: "BCG_", value: ["BCG", "ກັນວັນນະໂລກ (BCG)"] },
+    {
+      key: "Hep_B0_vaccine_within_24_hours_after_birth",
+      value: [
+        "Hep B0 vaccine within 24 hours after birth",
+        "Hep B0 ພາຍ​ໃນ 24 ຊົວ​ໂມງ",
+      ],
+    },
+    {
+      key: "Hep_B0_vaccine_within_7_days_of_birth",
+      value: ["Hep B0 vaccine within 7 days of birth", "Hep B0 ພາຍ​ໃນ 7 ວັນ"],
+    },
+    { key: "DPT_HepB_Hib1", value: ["DPT-HepB-Hib1", "DPT-HepB-Hib ເຂັມ 1"] },
+    { key: "DPT_HepB_Hib2", value: ["DPT-HepB-Hib2", "DPT-HepB-Hib ເຂັມ 2"] },
+    { key: "DPT_HepB_Hib3", value: ["DPT-HepB-Hib3", "DPT-HepB-Hib ເຂັມ 3"] },
+    { key: "OPV1_", value: ["OPV1", "OPV ຄັ້ງ 1"] },
+    { key: "OPV2_", value: ["OPV2", "OPV ຄັ້ງ 2"] },
+    { key: "OPV3_", value: ["OPV3", "OPV ຄັ້ງ 3"] },
+    { key: "IPV1_", value: ["IPV1", "IPV ເຂັມ 1"] },
+    { key: "IPV2_", value: ["IPV2", "IPV ເຂັມ 2"] },
+    { key: "IPV3_", value: ["IPV3", "IPV ເຂັມ 3"] },
+    { key: "PCV1_", value: ["PCV1", "PCV ເຂັມ 1"] },
+    { key: "PCV2_", value: ["PCV2", "PCV ເຂັມ 2"] },
+    { key: "PCV3_", value: ["PCV3", "PCV ເຂັມ 3"] },
+    {
+      key: "Japanese_Encephalitis",
+      value: ["Japanese Encephalitis", "ສັກກັນອັກ​ເສບ​ສະ​ໝອງ​ຍີ່​ປຸ່ນ (JE)"],
+    },
+    { key: "Measles_Rubella", value: ["Measles-Rubella", "ໝາກ​ແດງ"] },
+    {
+      key: "Fully_immunized_child_1_dose_BCG_and_measles_3_doses_DPT_HepB_Hib_OPV",
+      value: [
+        "Fully immunized child (1 dose BCG and measles, 3 doses DPT-HepB-Hib, OPV)",
+        "​ເດັກ ລຸ່ມ 1 ປີ ສັກ​ຢາ​ຄົບ (1 does BCG and measles, 3 dose of DPT-HepB-hib, OPV)",
+      ],
+    },
+    {
+      key: "G_Pre_reproductive_and_Reproductive_Women",
+      value: [
+        "G - Pre reproductive and Reproductive Women",
+        "G - Pre reproductive and Reproductive Women",
+      ],
+    },
+    {
+      key: "Children_aged_9_12_months_received_first_dose_HPV",
+      value: [
+        "Children aged 9-12 months received first dose HPV",
+        "ເດັກ​ຍິງ ອາຍຸ 9-12 ປີ ​ໄດ້​ສັກ HPV ​ເຂັ້ມ 1",
+      ],
+    },
+    {
+      key: "Children_aged_9_12_months_received_second_dose_HPV",
+      value: [
+        "Children aged 9-12 months received second dose HPV",
+        "ເດັກ​ຍິງ ອາຍຸ 9-12 ປີ ​ໄດ້​ສັກ HPV ​ເຂັ້ມ 2",
+      ],
+    },
+    {
+      key: "Women_of_reproductive_age_received_Td1_in_this_month",
+      value: [
+        "Women of reproductive age received Td1 in this month",
+        "ແມ່ຍິງ​ໄວ​ຈະ​ເລີ​ນ​ໄດ້​ສັກ Td1 ​ໃນ​ເດືອນ",
+      ],
+    },
+    {
+      key: "Women_of_reproductive_age_received_Td_5_doses_in_this_month",
+      value: [
+        "Women of reproductive age received Td (5 doses) in this month",
+        "​ແມ່ຍິງ​ໄວ​ຈະ​ເລີ​ນ ​ໄດ້​ສັກ Td5 ​ໃນ​ເດືອນ",
+      ],
+    },
+
+    //Nutrition
+    {
+      key: "Children_received_deworming_tablets_helmithic_1st_round",
+      value: [
+        "Children received deworming tablets (helmithic) 1st round",
+        "ເດັກໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ(helmithic) ຄັ້ງທີ 1",
+      ],
+    },
+    {
+      key: "Children_received_deworming_tablets_helmithic_2nd_round",
+      value: [
+        "Children received deworming tablets (helmithic) 2nd round",
+        "ເດັກໄດ້ຮັບຢາຂ້າແມ່ທ້ອງ(helmithic) ຄັ້ງທີ 2",
+      ],
+    },
+    {
+      key: "Children_aged_6_11_months_received_Vitamin_A",
+      value: [
+        "Children aged 6-11 months received Vitamin A",
+        "ເດັກອາຍຸ 6-11 ເດືອນໄດ້ຮັບ Vitamin A",
+      ],
+    },
+    {
+      key: "Children_aged_12_59_months_received_Vitamin_A_1st_round",
+      value: [
+        "Children aged 12-59 months received Vitamin A 1st round",
+        "ເດັກອາຍຸ 12-59 ເດືອນໄດ້ຮັບ Vitamin A ຄັ້ງທີ 1",
+      ],
+    },
+    {
+      key: "Children_aged_12_59_months_received_Vitamin_A_2nd_round",
+      value: [
+        "Children aged 12-59 months received Vitamin A 2nd round",
+        "ເດັກອາຍຸ 12-59 ເດືອນໄດ້ຮັບ Vitamin A ຄັ້ງທີ 2",
+      ],
+    },
+    {
+      key: "Children_under_5_years_who_recieved_growth_monitoring",
+      value: [
+        "Children under 5 years who recieved growth monitoring",
+        "ເດັກ ລຸ່ມ 5 ປີ ໄດ້ຮັບການຕິດຕາມການຈະເລີນເຕີບໂຕທັງໝົດ",
+      ],
+    },
+    { key: "Green_", value: ["Green", "ສີຂຽວ"] },
+    { key: "Yellow_", value: ["Yellow", "ສີເຫຼືອງ"] },
+    { key: "Red_", value: ["Red", "ສີແດງ"] },
+    {
+      key: "Weekly_IFA_pills_for_12_44_year_female",
+      value: [
+        "Weekly IFA pills for 12-44 year female",
+        "ແມ່ຍີງ 12-44 ປີ ໄດ້ຮັບທາດເຫຼັກອາທິດລະເມັດ",
+      ],
+    },
+
+    //Tabs/Secs
+    {
+      key: "ANC_DELIVERY_PNC_MORTALITY",
+      value: [
+        "ANC - DELIVERY - PNC - MORTALITY",
+        "ກວດກ່ອນເກີດ - ເກີດລູກ - ກວດຫຼັງເກີດ - ລາຍງານການຕາຍ",
+      ],
+    },
+    { key: "A_ANC", value: ["A - ANC", "ກ - ກວດກ່ອນເກີດ"] },
+    { key: "B_Delivery", value: ["B - Delivery", "ຂ - ການເກີດລູກ"] },
+    { key: "C_PNC", value: ["C - PNC", "ຄ - ກວດຫຼັງເກີດ"] },
+    {
+      key: "D_MORTALITY_REPORT",
+      value: ["D - MORTALITY REPORT", "ງ - ລາຍງານການຕາຍ"],
+    },
+    {
+      key: "E_Family_Planing",
+      value: ["E - Family Planing", "ຈ - ການວາງແຜນຄອບຄົວ"],
+    },
+    { key: "F_EPI", value: ["F - EPI", "ສ - ວຽກງານສັກຢາກັນພະຍາດ"] },
+    { key: "EPI_", value: ["EPI", "ວຽກງານສັກຢາກັນພະຍາດ"] },
+    { key: "Family_Planing", value: ["Family Planing", "ການວາງແຜນຄອບຄົວ"] },
+    { key: "Nutrition_", value: ["Nutrition", "ໂພຊະນາການ"] },
+    {
+      key: "H_Growth_monitoring_and_nutrition",
+      value: [
+        "H - Growth monitoring and nutrition",
+        "ຊ - ຕິດຕາມການຈະເລີນເຕີບໂຕຂອງເດັກ ແລະ ໂພຊະນາການ",
+      ],
+    },
+    { key: "High_Age", value: ["High/Age", "ລວງສູງ/ອາຍຸ"] },
+    { key: "Weight_Age", value: ["Weight/Age", "ນ້ຳໜັກ/ອາຍຸ"] },
+    { key: "Weight_High", value: ["Weight/High", "ນ້ຳໜັກ/ລວງສູງ"] },
+
+    //Category Option Combo
+    {
+      key: "Health_Facility",
+      value: ["Health Facility", "ຢູ່ສະຖານທີ່ບໍລິການ"],
+    },
+    { key: "Outreach_", value: ["Outreach", "ເວລາລົງໄປເຄື່ອນທີ່"] },
+    { key: "Total_", value: ["Total", "ລວມ"] },
+    {
+      key: "CBD_and_VHV",
+      value: ["CBD and VHV", "ການແຈກຢາຍຢາວາງແຜນຄອບຄົວໃນຊຸມຊົນ (CBD) ແລະ ອສບ"],
+    },
+  ];
+
+  // the javascript functions
+  $(document).ready(function () {
+    // display current user language
+    $.get("../api/me", function (json) {
+      language = json.settings.keyUiLocale;
+      PIS.translate(translation, language);
+    });
+
+    // Start App for calculate Total values
+    startApp();
+
+    // If preiod is changed, restart the all the settings.
+    $("#selectedPeriodId").change(function () {
+      if (_intervalId !== undefined) {
+        _dataLoaded = false;
+        clearInterval(_intervalId);
+      }
+
+      startApp();
+    });
+  });
+
+  // Class for display user current language
+  PIS = {
+    translate: function (library, _language) {
+      // set default language as English
+      languageOrder = 0;
+      if (_language == "en") {
+        // do nothing
+      } else if (_language == "lo") {
+        languageOrder = 1;
+      } else {
+        // not identified language
+      }
+
+      $.each(library, function (index, entry) {
+        $("." + entry.key).html(entry.value[languageOrder]);
+      });
+    },
+  };
+  //End Translation
+  dhis2.util.on("dhis2.de.event.dataValuesLoaded", function (event, ds) {
+    totalFPs();
+    $("[name=totalFP] > td > input").on("change", totalFPs);
+  });
+  function totalFPs() {
+    $("[name=totalFP]").each(function () {
+      $(this).children()[11].children[0].innerText =
+        ConvertToNumber($(this).children()[1].children[0].value) +
+        ConvertToNumber($(this).children()[6].children[0].value);
+      $(this).children()[12].children[0].innerText =
+        ConvertToNumber($(this).children()[2].children[0].value) +
+        ConvertToNumber($(this).children()[7].children[0].value);
+      $(this).children()[13].children[0].innerText =
+        ConvertToNumber($(this).children()[3].children[0].value) +
+        ConvertToNumber($(this).children()[8].children[0].value);
+      $(this).children()[14].children[0].innerText =
+        ConvertToNumber($(this).children()[4].children[0].value) +
+        ConvertToNumber($(this).children()[9].children[0].value);
+      $(this).children()[15].children[0].innerText =
+        ConvertToNumber($(this).children()[5].children[0].value) +
+        ConvertToNumber($(this).children()[10].children[0].value);
+    });
+  }
+
+  function ConvertToNumber(Object) {
+    if (Object == "" || isNaN(Object)) {
+      return 0;
+    } else return parseInt(Object);
+  }
+</script>
+<style type="text/css">
+  td.tableSeperate {
+    height: 20px;
+    background-color: rgb(255, 255, 255);
+    text-align: right;
+  }
+  td {
+    text-align: center;
+    background-color: rgb(244, 249, 255);
+    padding: 2px;
+  }
+  td.mainTitle {
+    text-align: left;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    background-color: rgb(102, 153, 204);
+  }
+  td.blueTitle {
+    background-color: rgb(153, 204, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.blueContent {
+    background-color: rgb(202, 229, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.orangeTitle {
+    background-color: rgb(255, 204, 0);
+    font-weight: bold;
+  }
+  td.orangeCatgory {
+    background-color: rgb(255, 224, 102);
+    font-weight: bold;
+  }
+  td.orangeContent {
+    background-color: rgb(255, 234, 153);
+  }
+  td.yorkGreenTitle {
+    background-color: rgb(153, 204, 153);
+    font-weight: bold;
+  }
+  td.yorkGreenCatgory {
+    background-color: rgb(183, 219, 183);
+    font-weight: bold;
+  }
+  td.yorkGreenContent {
+    background-color: rgb(224, 239, 224);
+  }
+  td.pinkTitle {
+    background-color: rgb(235, 199, 222);
+    font-weight: bold;
+  }
+  td.pinkCatgory {
+    background-color: rgb(239, 210, 228);
+    font-weight: bold;
+  }
+  td.pinkContent {
+    background-color: rgb(247, 232, 241);
+  }
+  td.brownTitle {
+    background-color: rgb(183, 112, 76);
+    font-weight: bold;
+  }
+  td.brownCatgory {
+    background-color: rgb(204, 153, 127);
+    font-weight: bold;
+  }
+  td.brownContent {
+    background-color: rgb(224, 193, 178);
+  }
+  td.greyField {
+    background-color: rgb(170, 182, 162);
+  }
+  input {
+    width: 5em;
+  }
+  td.totalValueRow {
+    text-align: right;
+    font-weight: bold;
+    background-color: rgb(224, 193, 178);
+  }
+</style>
+<div id="tabs">
+  <ul>
+    <li><a class="ANC_DELIVERY_PNC_MORTALITY" href="#Sec1">&nbsp;</a></li>
+    <li><a class="Family_Planing" href="#Sec2">&nbsp;</a></li>
+    <li><a class="EPI_" href="#Sec3">&nbsp;</a></li>
+    <li><a class="Nutrition_" href="#Sec4">&nbsp;</a></li>
+  </ul>
+
+  <div id="Sec1">
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="mainTitle" colspan="3">
+            <div class="ANC_DELIVERY_PNC_MORTALITY">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle" width="55%">
+            <div class="A_ANC">&nbsp;</div>
+          </td>
+          <td class="yorkGreenTitle" width="15%">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="brownTitle" width="15%">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="ANC_1st_visit">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="h8KiBz2888q-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: ANC 1st Visit Outreach"
+              value="[ MCH: ANC 1st Visit Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="anc1Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="ANC_4th_visit">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="J5E8BkAoIWn-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: ANC 4th visits (by HF/Outreach) Outreach"
+              value="[ MCH: ANC 4th visits (by HF/Outreach) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="anc4Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Level_1_High_risk_mother_identified_and_referred_to_upper_level_facility"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="CHFkUvXqZuV-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: High Risk pregnancy level 1 identified and refered to higher hospital Outreach"
+              value="[ MCH: High Risk pregnancy level 1 identified and refered to higher hospital Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="CHFkUvXqZuVTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Level_2_High_risk_mother_identified_and_referred_to_upper_level_facility"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="St3S4FCzicG-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: High risk pregnancy level 2 identified and refered to higher hospital Outreach"
+              value="[ MCH: High risk pregnancy level 2 identified and refered to higher hospital Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="St3S4FCzicGTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Td1_Pregnant_women_received_one_dose_of_Td_in_this_pregnancy"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="tZH5BmEHUun-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: ANC received Td 1 in this pregnancy Outreach"
+              value="[ MCH: ANC received Td 1 in this pregnancy Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="tZH5BmEHUunTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Td2_Pregnant_women_received_one_dose_of_Td_in_this_pregnancy"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="pXfELMu5ihJ-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: ANC received Td 2+ in  this pregnancy Outreach"
+              value="[ MCH: ANC received Td 2+ in  this pregnancy Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="pXfELMu5ihJTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Pregnant_Women_Completed_Td_before_this_pregnancy">
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="tZy4uW84fqG-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: ANC completed Td 5 in this pregnancy Outreach"
+              value="[ MCH: ANC completed Td 5 in this pregnancy Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="tZy4uW84fqGTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Pregnant_women_received_IFA_90_tablets">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="Q3SDvb99gUE-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: ANC received IFA 90 tablets Outreach"
+              value="[ MCH: ANC received IFA 90 tablets Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="Q3SDvb99gUETotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Pregnant_women_come_for_ANC_visit_received_HIV_Counselling"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="WRYGPGnbcyETotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Pregnant_women_received_Counselling_Tested_for_HIV">
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="q5ZMwieGJ1NTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Pregnant_women_received_Free_ANC">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="L2kK7cU9dsa-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Pregnant women received free ANC Outreach"
+              value="[ MCH: Pregnant women received free ANC Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="L2kK7cU9dsaTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle">
+            <div class="B_Delivery">&nbsp;</div>
+          </td>
+          <td class="yorkGreenTitle">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="brownTitle">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Delivery_at_health_facility">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="CyUEAFiwGTSTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Deliveries_at_home_by_SBA">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="skWdJmVHpkM-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MCH: Deliveries at home by SBA"
+              value="[ MCH: Deliveries at home by SBA ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="skWdJmVHpkMTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Natural_Delivery_Vaginal_delivery">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="amPLatG4bO9-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deliveries Natural Outreach"
+              value="[ MCH: Deliveries Natural Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="amPLatG4bO9Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Deliveries_by_using_medical_equipment_Forcep_Vacuum_aspiration"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="K7dF5mpEqyOTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Caesarean_sections">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="di2GiKSQ3wVTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Deliveries_with_Pre_and_Eclampsia">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="fPLmoXgFDs7Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Delivery_with_oxytocine_within_one_minute_of_birth">
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="Jr4C4afqaEkTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Under_weight_newborn_2500_gr">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="jt385ilkaUd-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Newborns under 2500gr Outreach"
+              value="[ MCH: Newborns under 2500gr Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="jt385ilkaUdTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Preterm_deliveries_at_22_27_weeks">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="csY0b4lxaLOTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Preterm_deliveries_at_28_36_weeks">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="igOsIIe56dQTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Still_births_28_weeks">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="PGaxoLVKaCzTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Total_live_births">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="XnsSXusE1ow-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Births Live (by Health facility/Outreach) Outreach"
+              value="[ MCH: Births Live (by Health facility/Outreach) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="XnsSXusE1owTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Newborn_initiated_breastfeeding_within_the_first_hour_after_birth"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="FBUvQe3qNgf-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: New born breastfeeding within 1 hour Outreach"
+              value="[ MCH: New born breastfeeding within 1 hour Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="FBUvQe3qNgfTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Spontaneus_abortions_28_weeks">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="CVl2SqGtDNt-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Spontaneus abortion (under 28 weeks) Outreach"
+              value="[ MCH: Spontaneus abortion (under 28 weeks) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="CVl2SqGtDNtTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Induced_abortions">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="syylGWdLSORTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Complicated_Abortions">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="gpcwb6YCpECTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Ectopic_pregnancies_ruptured">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="totalValueRow">
+            <div align="center" id="eMtjlRvZ3pzTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Pregnant_women_received_Free_delivery">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="HuDeipBbwsg-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Pregnant women received Free delivery Outreach"
+              value="[ MCH: Pregnant women received Free delivery Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="HuDeipBbwsgTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle">
+            <div class="C_PNC">&nbsp;</div>
+          </td>
+          <td class="yorkGreenTitle">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="brownTitle">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Women_receiving_PNC_within_2_days_from_birth_in_the_month"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="tlKnF8fn6oZ-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: PNC within 2 days Outreach"
+              value="[ MCH: PNC within 2 days Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="tlKnF8fn6oZTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Women_receiving_PNC_within_3_42_days_from_birth_in_the_month"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="tdE0ZUlwmyY-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: PNC 3-42 days Outreach"
+              value="[ MCH: PNC 3-42 days Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="tdE0ZUlwmyYTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Women_receiving_IFA_90_tablets">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="lAYCRO8NyOh-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: PNC received IFA 90 tablets  Outreach"
+              value="[ MCH: PNC received IFA 90 tablets  Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="lAYCRO8NyOhTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Pregnant_women_received_Free_PNC">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="zpyx8FFz9S9-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Pregnant women received free PNC Outreach"
+              value="[ MCH: Pregnant women received free PNC Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="zpyx8FFz9S9Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle">
+            <div class="D_MORTALITY_REPORT">&nbsp;</div>
+          </td>
+          <td class="yorkGreenTitle">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="brownTitle">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Maternal_deaths">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="dJhWRKs0fcq-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths Maternal Outreach"
+              value="[ MCH: Deaths Maternal Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="dJhWRKs0fcqTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Neonatal_death_0_7_days">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="sISjKc2LEDg-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths Neonatal (0-7 days) Outreach"
+              value="[ MCH: Deaths Neonatal (0-7 days) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="sISjKc2LEDgTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Neonatal_death_8_28_days">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="FSLrz90vXKf-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths Neonatal (8-28 days) Outreach"
+              value="[ MCH: Deaths Neonatal (8-28 days) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="FSLrz90vXKfTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Infant_death_age_1_11_months">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="nCl4K1S3efY-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths Infant (1-11 months) Outreach"
+              value="[ MCH: Deaths Infant (1-11 months) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="nCl4K1S3efYTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Total_number_of_Infant_under_1_year_of_age_deaths">
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="cPcvesqWRtH-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths (Under 1 year) Outreach"
+              value="[ MCH: Deaths (Under 1 year) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="cPcvesqWRtHTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Child_death_age_1_4_years">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="kyVKK0JcRPJ-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths Child (1-4 years) Outreach"
+              value="[ MCH: Deaths Child (1-4 years) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="kyVKK0JcRPJTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Under_5_Deaths">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="cwhEsbBe6Zs-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH: Deaths (Under 5 years) Outreach"
+              value="[ MCH: Deaths (Under 5 years) Outreach ]"
+            />
+          </td>
+          <td class="totalValueRow">
+            <div align="center" id="cwhEsbBe6ZsTotal">&nbsp;</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="Sec2">
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="mainTitle" colspan="12">
+            <div class="E_Family_Planing">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle" rowspan="2">&nbsp;</td>
+          <td class="yorkGreenTitle" colspan="5">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="pinkTitle" colspan="5">
+            <div class="CBD_and_VHV">&nbsp;</div>
+          </td>
+          <td class="brownTitle" colspan="5">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="yorkGreenCatgory" width="5%">
+            <div class="Old_user_number_of_couple">&nbsp;</div>
+          </td>
+          <td class="yorkGreenCatgory" width="5%">
+            <div class="New_user_number_of_couple">&nbsp;</div>
+          </td>
+          <td class="yorkGreenCatgory" width="5%">
+            <div class="Number_of_continue_users">&nbsp;</div>
+          </td>
+          <td class="yorkGreenCatgory" width="5%">
+            <div class="Total_number_distributed">&nbsp;</div>
+          </td>
+          <td class="yorkGreenCatgory" width="5%">
+            <div class="Wastage_">&nbsp;</div>
+          </td>
+          <td class="pinkCatgory" width="5%">
+            <div class="Old_user_number_of_couple">&nbsp;</div>
+          </td>
+          <td class="pinkCatgory" width="5%">
+            <div class="New_user_number_of_couple">&nbsp;</div>
+          </td>
+          <td class="pinkCatgory" width="5%">
+            <div class="Number_of_continue_users">&nbsp;</div>
+          </td>
+          <td class="pinkCatgory" width="5%">
+            <div class="Total_number_distributed">&nbsp;</div>
+          </td>
+          <td class="pinkCatgory" width="5%">
+            <div class="Wastage_">&nbsp;</div>
+          </td>
+          <td class="brownCatgory" width="5%">
+            <div class="Old_user_number_of_couple">&nbsp;</div>
+          </td>
+          <td class="brownCatgory" width="5%">
+            <div class="New_user_number_of_couple">&nbsp;</div>
+          </td>
+          <td class="brownCatgory" width="5%">
+            <div class="Number_of_continue_users">&nbsp;</div>
+          </td>
+          <td class="brownCatgory" width="5%">
+            <div class="Total_number_distributed">&nbsp;</div>
+          </td>
+          <td class="brownCatgory" width="5%">
+            <div class="Wastage_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr name="totalFP">
+          <td class="blueContent">
+            <div class="Condoms_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="bM0YZOyAlMr-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Condoms Old users Outreach"
+              value="[ FP: Condoms Old users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="m2V4dUljQVq-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Condoms New users Outreach"
+              value="[ FP: Condoms New users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="xCa6R5GJHmZ-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Condoms Continue users Outreach"
+              value="[ FP: Condoms Continue users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="NQ1VY2fZLhp-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Condoms Distributed Outreach"
+              value="[ FP: Condoms Distributed Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="MnAu1CNFhuD-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Condoms Wastage Outreach"
+              value="[ FP: Condoms Wastage Outreach ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="bM0YZOyAlMr-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Condoms Old users CBD and VHV"
+              value="[ FP: Condoms Old users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="m2V4dUljQVq-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Condoms New users CBD and VHV"
+              value="[ FP: Condoms New users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="xCa6R5GJHmZ-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Condoms Continue users CBD and VHV"
+              value="[ FP: Condoms Continue users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="NQ1VY2fZLhp-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Condoms Distributed CBD and VHV"
+              value="[ FP: Condoms Distributed CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="MnAu1CNFhuD-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Condoms Wastage CBD and VHV"
+              value="[ FP: Condoms Wastage CBD and VHV ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="bM0YZOyAlMrTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="m2V4dUljQVqTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="xCa6R5GJHmZTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="NQ1VY2fZLhpTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="MnAu1CNFhuDTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr name="totalFP">
+          <td class="blueContent">
+            <div class="Single_Pill">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="VPbIDh5HeVc-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Single pill Old users Outreach"
+              value="[ FP: Single pill Old users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="whoq3P3gtyc-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Single pill New users Outreach"
+              value="[ FP: Single pill New users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="CSugsclfQYE-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Single pill Continue users Outreach"
+              value="[ FP: Single pill Continue users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="hUhFB4xWcnR-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Single pill Distributed Outreach"
+              value="[ FP: Single pill Distributed Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="Bw5LhLbGlZ2-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Single pill Wastage Outreach"
+              value="[ FP: Single pill Wastage Outreach ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="VPbIDh5HeVc-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Single pill Old users CBD and VHV"
+              value="[ FP: Single pill Old users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="whoq3P3gtyc-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Single pill New users CBD and VHV"
+              value="[ FP: Single pill New users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="CSugsclfQYE-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Single pill Continue users CBD and VHV"
+              value="[ FP: Single pill Continue users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="hUhFB4xWcnR-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Single pill Distributed CBD and VHV"
+              value="[ FP: Single pill Distributed CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="Bw5LhLbGlZ2-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Single pill Wastage CBD and VHV"
+              value="[ FP: Single pill Wastage CBD and VHV ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="VPbIDh5HeVcTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="whoq3P3gtycTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="CSugsclfQYETotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="hUhFB4xWcnRTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="Bw5LhLbGlZ2Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr name="totalFP">
+          <td class="blueContent">
+            <div class="Combined_Pill">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="sa8Ep87YPNv-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Combined pill Old user Outreach"
+              value="[ FP: Combined pill Old user Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="kUIvo5is72S-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Combined pill New user Outreach"
+              value="[ FP: Combined pill New user Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="a6pVsTaYm7v-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Combined pill Continue user Outreach"
+              value="[ FP: Combined pill Continue user Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="MxuZzDqR47u-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Combined pill Distributed Outreach"
+              value="[ FP: Combined pill Distributed Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="tAtyR4Q17E0-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Combined pill Wastage Outreach"
+              value="[ FP: Combined pill Wastage Outreach ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="sa8Ep87YPNv-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Combined pill Old user CBD and VHV"
+              value="[ FP: Combined pill Old user CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="kUIvo5is72S-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Combined pill New user CBD and VHV"
+              value="[ FP: Combined pill New user CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="a6pVsTaYm7v-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Combined pill Continue user CBD and VHV"
+              value="[ FP: Combined pill Continue user CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="MxuZzDqR47u-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Combined pill Distributed CBD and VHV"
+              value="[ FP: Combined pill Distributed CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="tAtyR4Q17E0-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Combined pill Wastage CBD and VHV"
+              value="[ FP: Combined pill Wastage CBD and VHV ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="sa8Ep87YPNvTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="kUIvo5is72STotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="a6pVsTaYm7vTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="MxuZzDqR47uTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="tAtyR4Q17E0Total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr name="totalFP">
+          <td class="blueContent">
+            <div class="Depose_Injectable">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="bx2Imp5Yzuw-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Old users Outreach"
+              value="[ FP: Depose (Injectable) Old users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="QFWbdLref5O-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) New users Outreach"
+              value="[ FP: Depose (Injectable) New users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="ayQp61TleuI-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Continue users Outreach"
+              value="[ FP: Depose (Injectable) Continue users Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="SCytLILeL3R-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Distributed Outreach"
+              value="[ FP: Depose (Injectable) Distributed Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="oRNIpuxO3rx-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Wastage Outreach"
+              value="[ FP: Depose (Injectable) Wastage Outreach ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="bx2Imp5Yzuw-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Old users CBD and VHV"
+              value="[ FP: Depose (Injectable) Old users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="QFWbdLref5O-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) New users CBD and VHV"
+              value="[ FP: Depose (Injectable) New users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="ayQp61TleuI-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Continue users CBD and VHV"
+              value="[ FP: Depose (Injectable) Continue users CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="SCytLILeL3R-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Distributed CBD and VHV"
+              value="[ FP: Depose (Injectable) Distributed CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="oRNIpuxO3rx-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Depose (Injectable) Wastage CBD and VHV"
+              value="[ FP: Depose (Injectable) Wastage CBD and VHV ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="bx2Imp5YzuwTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="QFWbdLref5OTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="ayQp61TleuITotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="SCytLILeL3RTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="oRNIpuxO3rxTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="IUD_">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="OvagmN5kZYpTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="mDRUz90yNBSTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="L4ngJgyyJShTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="v0wAUejW3DYTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="Fc1rIvSQxAATotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Implant_">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="fxxCQH5j7cuTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="kaE666RoSB0Total">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="clpItQMXZfTTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="h9TYImbiQdkTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="fRxPQPP9OBpTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr name="totalFP">
+          <td class="blueContent">
+            <div class="Emergency_pill">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="pMsIub38RRC-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Emergency pill Old user Outreach"
+              value="[ FP: Emergency pill Old user Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="yRcuPIKofP7-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Emergency pill New user Outreach"
+              value="[ FP: Emergency pill New user Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="gqAUUkPKvQQ-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Emergency pill Continue user Outreach"
+              value="[ FP: Emergency pill Continue user Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="IjyThCvfkyd-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Emergency pill Distributed Outreach"
+              value="[ FP: Emergency pill Distributed Outreach ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="rnDH004G59G-ym41uKo2JHl-val"
+              name="entryfield"
+              title="FP: Emergency pill Wastage Outreach"
+              value="[ FP: Emergency pill Wastage Outreach ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="pMsIub38RRC-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Emergency pill Old user CBD and VHV"
+              value="[ FP: Emergency pill Old user CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="yRcuPIKofP7-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Emergency pill New user CBD and VHV"
+              value="[ FP: Emergency pill New user CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="gqAUUkPKvQQ-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Emergency pill Continue user CBD and VHV"
+              value="[ FP: Emergency pill Continue user CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="IjyThCvfkyd-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Emergency pill Distributed CBD and VHV"
+              value="[ FP: Emergency pill Distributed CBD and VHV ]"
+            />
+          </td>
+          <td class="pinkContent">
+            <input
+              id="rnDH004G59G-W0ELtxvwjdA-val"
+              name="entryfield"
+              title="FP: Emergency pill Wastage CBD and VHV"
+              value="[ FP: Emergency pill Wastage CBD and VHV ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="pMsIub38RRCTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="yRcuPIKofP7Total">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="gqAUUkPKvQQTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="IjyThCvfkydTotal">&nbsp;</div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="rnDH004G59GTotal">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Female_Sterilization">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="el62zkAWxUcTotal">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Male_Sterilization">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="Itl7pbKRCvwTotal">&nbsp;</div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+          <td class="greyField">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="Sec3">
+    <div>EPI data elements has been moved to EPI Outreach dataset</div>
+
+    <div>
+      ຫົວຂໍ້ສັກຢາກັນພະຍາດໄດ້ແຍກອອກເປັນແບບຟອມໜຶ່ງອີກຕ່າງຫາກ ຊື່ວ່າ: EPI -
+      ແບບຟອມສັກຢາກັນພະຍາດ
+    </div>
+  </div>
+
+  <div id="Sec4">
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="mainTitle" colspan="5">
+            <div class="H_Growth_monitoring_and_nutrition">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle" rowspan="2">&nbsp;</td>
+          <td class="yorkGreenTitle" colspan="2">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="brownTitle" colspan="2">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="yorkGreenCatgory">
+            <div class="Under_12_months">&nbsp;</div>
+          </td>
+          <td class="yorkGreenCatgory">
+            <div class="12_months_to_59_months">&nbsp;</div>
+          </td>
+          <td class="brownCatgory">
+            <div class="Under_12_months">&nbsp;</div>
+          </td>
+          <td class="brownCatgory">
+            <div class="12_months_to_59_months">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Children_received_deworming_tablets_helmithic_1st_round"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="yorkGreenContent">
+            <input
+              id="WT0nisMw0yl-eFXrDqXA2WQ-val"
+              name="entryfield"
+              title="MCH NU: 1st round Deworming tablets children (Helmithi 1st) At Health Facility"
+              value="[ MCH NU: 1st round Deworming tablets children (Helmithi 1st) At Health Facility ]"
+            />
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="WT0nisMw0yl-eFXrDqXA2WQ-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Children_received_deworming_tablets_helmithic_2nd_round"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="yorkGreenContent">
+            <input
+              id="huihfumqv2F-eFXrDqXA2WQ-val"
+              name="entryfield"
+              title="MCH NU: 2nd round Deworming tablets children (Helmithi 2st) At Health Facility"
+              value="[ MCH NU: 2nd round Deworming tablets children (Helmithi 2st) At Health Facility ]"
+            />
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="huihfumqv2F-eFXrDqXA2WQ-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Children_aged_6_11_months_received_Vitamin_A">
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="QG0RFB0FNAV-eFXrDqXA2WQ-val"
+              name="entryfield"
+              title="MCH NU: Vitamin A 6-11 months At Health Facility"
+              value="[ MCH NU: Vitamin A 6-11 months At Health Facility ]"
+            />
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="QG0RFB0FNAV-eFXrDqXA2WQ-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Children_aged_12_59_months_received_Vitamin_A_1st_round"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="yorkGreenContent">
+            <input
+              id="CU0V0nXneSL-eFXrDqXA2WQ-val"
+              name="entryfield"
+              title="NU: Vitamin A 1st round 12 to 59 months old At Health Facility"
+              value="[ NU: Vitamin A 1st round 12 to 59 months old At Health Facility ]"
+            />
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="CU0V0nXneSL-eFXrDqXA2WQ-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div
+              class="Children_aged_12_59_months_received_Vitamin_A_2nd_round"
+            >
+              &nbsp;
+            </div>
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="yorkGreenContent">
+            <input
+              id="fwIMLRx7aem-eFXrDqXA2WQ-val"
+              name="entryfield"
+              title="MCH NU: Vitamin A 2nd round 12-59 months At Health Facility"
+              value="[ MCH NU: Vitamin A 2nd round 12-59 months At Health Facility ]"
+            />
+          </td>
+          <td class="greyField">&nbsp;</td>
+          <td class="brownContent">
+            <div align="center" id="fwIMLRx7aem-eFXrDqXA2WQ-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Children_under_5_years_who_recieved_growth_monitoring">
+              &nbsp;
+            </div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="LoRGj1dFh6X-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Under 5 years growth monitoring chart updated At Health Facility, &lt;12 months"
+              value="[ MCH NU: Under 5 years growth monitoring chart updated At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="LoRGj1dFh6X-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Under 5 years growth monitoring chart updated At Health Facility, 12-59 months"
+              value="[ MCH NU: Under 5 years growth monitoring chart updated At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="LoRGj1dFh6X-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="LoRGj1dFh6X-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle" height="40">
+            <div class="High_Age">&nbsp;</div>
+          </td>
+          <td class="yorkGreenTitle" colspan="2">
+            <div class="Outreach_">&nbsp;</div>
+          </td>
+          <td class="brownTitle" colspan="2">
+            <div class="Total_">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Green_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="rUWYJuSYz8l-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="NU: Height/Age Green At Health Facility, &lt;12 months"
+              value="[ NU: Height/Age Green At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="rUWYJuSYz8l-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="NU: Height/Age Green At Health Facility, 12-59 months"
+              value="[ NU: Height/Age Green At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="rUWYJuSYz8l-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="rUWYJuSYz8l-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Yellow_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="m3bBTxYt7gk-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Height/Age Yellow At Health Facility, &lt;12 months"
+              value="[ MCH NU: Height/Age Yellow At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="m3bBTxYt7gk-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Height/Age Yellow At Health Facility, 12-59 months"
+              value="[ MCH NU: Height/Age Yellow At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="m3bBTxYt7gk-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="m3bBTxYt7gk-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Red_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="AbVeoBQBMaH-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="NU: Height/Age Red At Health Facility, &lt;12 months"
+              value="[ NU: Height/Age Red At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="AbVeoBQBMaH-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="NU: Height/Age Red At Health Facility, 12-59 months"
+              value="[ NU: Height/Age Red At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="AbVeoBQBMaH-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="AbVeoBQBMaH-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle">
+            <div class="Weight_Age">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">&nbsp;</td>
+          <td class="yorkGreenContent">&nbsp;</td>
+          <td class="brownContent">&nbsp;</td>
+          <td class="brownContent">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Green_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="OXysJyDVZmg-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Weight/Age Green At Health Facility, &lt;12 months"
+              value="[ MCH NU: Weight/Age Green At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="OXysJyDVZmg-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Weight/Age Green At Health Facility, 12-59 months"
+              value="[ MCH NU: Weight/Age Green At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="OXysJyDVZmg-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="OXysJyDVZmg-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Yellow_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="NkkIEskFsmV-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Weight/Age Yellow At Health Facility, &lt;12 months"
+              value="[ MCH NU: Weight/Age Yellow At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="NkkIEskFsmV-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Weight/Age Yellow At Health Facility, 12-59 months"
+              value="[ MCH NU: Weight/Age Yellow At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="NkkIEskFsmV-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="NkkIEskFsmV-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Red_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="EVYbaClmpIU-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="NU: Weight/Age Red At Health Facility, &lt;12 months"
+              value="[ NU: Weight/Age Red At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="EVYbaClmpIU-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="NU: Weight/Age Red At Health Facility, 12-59 months"
+              value="[ NU: Weight/Age Red At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="EVYbaClmpIU-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="EVYbaClmpIU-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle">
+            <div class="Weight_High">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">&nbsp;</td>
+          <td class="yorkGreenContent">&nbsp;</td>
+          <td class="brownContent">&nbsp;</td>
+          <td class="brownContent">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Green_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="JSevlY9b61y-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Weight/Height Green At Health Facility, &lt;12 months"
+              value="[ MCH NU: Weight/Height Green At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="JSevlY9b61y-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Weight/Height Green At Health Facility, 12-59 months"
+              value="[ MCH NU: Weight/Height Green At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="JSevlY9b61y-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="JSevlY9b61y-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Yellow_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="Ix4edqrszwC-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Weight/Height Yellow At Health Facility, &lt;12 months"
+              value="[ MCH NU: Weight/Height Yellow At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="Ix4edqrszwC-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Weight/Height Yellow At Health Facility, 12-59 months"
+              value="[ MCH NU: Weight/Height Yellow At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="Ix4edqrszwC-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="Ix4edqrszwC-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueContent">
+            <div class="Red_">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="lkPUtglo3SP-xp6YPoDKUe4-val"
+              name="entryfield"
+              title="MCH NU: Weight/Height Red At Health Facility, &lt;12 months"
+              value="[ MCH NU: Weight/Height Red At Health Facility, &lt;12 months ]"
+            />
+          </td>
+          <td class="yorkGreenContent">
+            <input
+              id="lkPUtglo3SP-jD0Cf8zYYbV-val"
+              name="entryfield"
+              title="MCH NU: Weight/Height Red At Health Facility, 12-59 months"
+              value="[ MCH NU: Weight/Height Red At Health Facility, 12-59 months ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="lkPUtglo3SP-xp6YPoDKUe4-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="lkPUtglo3SP-jD0Cf8zYYbV-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="blueTitle">
+            <div class="Weekly_IFA_pills_for_12_44_year_female">&nbsp;</div>
+          </td>
+          <td class="yorkGreenContent" colspan="2" rowspan="1">
+            <input
+              id="WAL7FPoeocd-BaKsAyoQBud-val"
+              name="entryfield"
+              title="MCH NU: Female 12-44 years received IFA pills Outreach"
+              value="[ MCH NU: Female 12-44 years received IFA pills Outreach ]"
+            />
+          </td>
+          <td class="brownContent">
+            <div align="center" id="WAL7FPoeocd-eFXrDqXA2WQ-valTotal">
+              &nbsp;
+            </div>
+          </td>
+          <td class="brownContent">
+            <div align="center" id="WAL7FPoeocd-BaKsAyoQBud-valTotal">
+              &nbsp;
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

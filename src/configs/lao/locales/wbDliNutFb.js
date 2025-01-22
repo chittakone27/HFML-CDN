@@ -1,0 +1,31 @@
+const wbDliNutFbLocales = {
+  en: {
+    no: "No.",
+    commodityList: "Commodity List",
+    unit: "Unit",
+    remainingFromLastMonth: "Remaining from last month",
+    receive: "Receive",
+    stockAvailable: "Stock Available",
+    distribute: "Distribute",
+    waste: "Waste",
+    closingBalanceOfTheMonth: "Closing balance of the month",
+    commodityForMchNutrition: "I. Commodity for MCH Nutrition",
+    commodityForFamilyPlanning: "II. Commodity for Family Planning",
+    pinkBook: "III. Pink Book",
+  },
+  lo: {
+    no: "No.",
+    commodityList: "Commodity List",
+    unit: "Unit",
+    remainingFromLastMonth: "Remaining from last month",
+    receive: "Receive",
+    stockAvailable: "Stock Available",
+    distribute: "Distribute",
+    waste: "Waste",
+    closingBalanceOfTheMonth: "Closing balance of the month",
+    commodityForMchNutrition: "I. Commodity for MCH Nutrition",
+    commodityForFamilyPlanning: "II. Commodity for Family Planning",
+    pinkBook: "III. Pink Book",
+  },
+};
+export default wbDliNutFbLocales;

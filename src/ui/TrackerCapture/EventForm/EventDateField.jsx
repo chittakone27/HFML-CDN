@@ -1,0 +1,80 @@
+import { useState, useEffect } from "react";
+import { Input } from "@/ui/common";
+import ErrorDialog from "@/ui/common/ErrorDialog/ErrorDialog";
+import useCurrentEvent from "./useCurrentEvent";
+import _ from "lodash";
+import useTrackerCaptureStore from "@/state/trackerCapture";
+import { shallow } from "zustand/shallow";
+import { event, tracker } from "@/api";
+import { convertDisplayDate } from "@/utils/utils";
+import useSelectionStore from "@/state/selection";
+const { saveEvent } = event;
+const { saveEventDate } = tracker;
+const EventDateField = ({ helpers, disabled, type, minDate, maxDate }) => {
+  const [toBeSaved, setToBeSaved] = useState(false);
+  const [apiError, setApiError] = useState(null);
+  const orgUnit = useSelectionStore((state) => state.orgUnit);
+  const { currentEvent } = useCurrentEvent();
+  const { actions, layout } = useTrackerCaptureStore((state) => ({ actions: state.actions, layout: state.layout }), shallow);
+  const completed = currentEvent.status === "COMPLETED" ? true : false;
+  let currentDisabled = completed || disabled;
+  const { changeEventProperty, setLayout } = actions;
+
+  // if (currentEvent.orgUnit !== orgUnit.id) {
+  //   currentDisabled = true;
+  // }
+
+  const saveCurrentEvent = async () => {
+    if (currentEvent.isDirty) {
+      const eventToBeSaved = { ...currentEvent };
+      setLayout("formLoading", true);
+      const result = await saveEventDate(eventToBeSaved);
+      if (!result.ok) {
+        setApiError({ ...result });
+      } else {
+        if (eventToBeSaved.isNew) {
+          changeEventProperty(eventToBeSaved.event, "isNew", false);
+        }
+        changeEventProperty(eventToBeSaved.event, "isDirty", false);
+        setLayout("formLoading", false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (toBeSaved) {
+      saveCurrentEvent();
+      setToBeSaved(false);
+    }
+  }, [toBeSaved]);
+  return (
+    <div className="input-field-container">
+      <Input
+        helpers={helpers}
+        disabled={currentDisabled}
+        minDate={minDate ? minDate : "1900-01-01"}
+        maxDate={maxDate}
+        valueType="DATE"
+        mandatory={type === "eventDate"}
+        value={currentEvent[type ? type : "eventDate"] ? convertDisplayDate(currentEvent[type ? type : "eventDate"]) : ""}
+        accept={async (value) => {
+          changeEventProperty(currentEvent.event, type, value);
+          if (type === "eventDate" && ["OVERDUE", "SCHEDULE"].includes(currentEvent.status)) {
+            changeEventProperty(currentEvent.event, "status", "ACTIVE");
+          }
+          setToBeSaved(true);
+        }}
+      />
+      {apiError && (
+        <ErrorDialog
+          error={JSON.stringify(apiError)}
+          handleClose={() => {
+            setApiError(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+export default EventDateField;

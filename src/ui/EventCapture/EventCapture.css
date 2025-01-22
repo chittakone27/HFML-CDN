@@ -1,0 +1,8 @@
+.event-capture-container {
+  width: 100%;
+  height: 100%;
+}
+.event-capture-container > div {
+  width: 100%;
+  height: 100%;
+}

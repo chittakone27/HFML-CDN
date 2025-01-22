@@ -1,0 +1,31 @@
+const hpvMonthlyV2Locales = {
+  en: {
+    vaccinationSite: "Vaccination site",
+    age: "Age",
+    HPV1: "HPV 1",
+    HPV2: "HPV 2",
+    schoolGirls: "School girls",
+    outOfSchoolGirls: "Out-of-school girls",
+    school: "School",
+    over15: "Over 15",
+    healthCentre: "Health centre",
+    outreach: "Outreach",
+    total: "Total",
+    under17year: "Under 17 year",
+  },
+  lo: {
+    vaccinationSite: "ຈຸດສັກຢາ",
+    age: "ອາຍຸ",
+    HPV1: "ເຂັມ HPV1",
+    HPV2: "ເຂັມ HPV2",
+    schoolGirls: "ເດັກຍີງໃນໂຮງຮຽນ",
+    outOfSchoolGirls: "ເດັກຍີງນອກໂຮງຮຽນ",
+    school: "ໂຮງຮຽນ",
+    over15: "ຫຼາຍກ່ວາ 15",
+    healthCentre: "ໂຮງໝໍນ້ອຍ",
+    outreach: "ເຄື່ອນທີ່",
+    total: "ລວມ",
+    under17year: "ລຸ່ມ 17 ປີ",
+  },
+};
+export default hpvMonthlyV2Locales;

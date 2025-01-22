@@ -1,0 +1,74 @@
+#malaria-case-v2-form-container .form {
+  width: 100%;
+  padding: 12px;
+  margin-left: -15px;
+}
+
+#malaria-case-v2-form-container tr {
+  line-height: 140%;
+}
+
+#malaria-case-v2-form-container .section-box {
+  line-height: 140%;
+  width: 100%;
+  border: 1px solid #c2c2c2;
+  border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+#malaria-case-v2-form-container .section-label {
+  font-size: 14pt;
+  font-weight: bold;
+  text-align: left;
+  color: #585d61;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+#malaria-case-v2-form-container .vertical-spacing {
+  margin-top: 2px;
+}
+
+#malaria-case-v2-form-container .small-vertical-spacing {
+  margin: 5px;
+}
+
+#malaria-case-v2-form-container .dhis2-list-table {
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+#malaria-case-v2-form-container th {
+  text-align: center;
+  color: #39547d;
+  padding: 3px 0 3px 1px;
+  font-size: 14px;
+  font-weight: bold;
+  border-collapse: collapse;
+  border-bottom: 1px solid #cad5e5;
+  min-height: 28px;
+}
+
+#malaria-case-v2-form-container
+  .dhis2-list-table
+  > thead
+  > tr
+  > th:first-child {
+  width: 60%;
+}
+
+#malaria-case-v2-form-container td {
+  text-align: left;
+}
+
+#malaria-case-v2-form-container td.text input,
+#malaria-case-v2-form-container td.text div,
+#malaria-case-v2-form-container td.text select {
+  width: 194px;
+}
+
+#malaria-case-v2-form-container .hidden {
+  display: none;
+}

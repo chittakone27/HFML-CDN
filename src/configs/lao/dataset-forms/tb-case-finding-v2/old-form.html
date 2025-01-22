@@ -1,0 +1,4412 @@
+<style type="text/css">
+  td.header {
+    text-align: center;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #0066FF;
+  }
+
+  td.input {
+    text-align: center;
+    padding: 5px;
+  }
+
+  input {
+    width: 4em;
+  }
+
+  div.dataElementName {
+    background-color: #0000CC;
+    /*  font-family: "Gill Sans MT";*/
+    font-weight: bold;
+    text-align: left;
+    font-size: 12pt;
+    color: #FFFFFF;
+    padding: 3px;
+  }
+
+  .laoFont14 {
+    font-family: "Phetsarath OT", "Saysetha OT";
+    font-size: 14pt;
+  }
+
+  .laoFont {
+    font-family: "Phetsarath OT", "Saysetha OT";
+    font-size: 12pt;
+  }
+
+  .power1 {
+    position: relative;
+    bottom: 1ex;
+    font-size: 80%;
+  }
+
+  td.rowTitle {
+    font-weight: bold;
+    background-color: #CCCCCC;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+  input {
+    width: 5em;
+    text-align: center;
+  }
+
+  .blocked {
+    background-color: rgb(204, 204, 204);
+  }
+
+  div.total {
+    text-align: center;
+  }
+
+  table.multiTable {
+    border: 0;
+     !important
+  }
+
+  td.colInput {
+    text-align: center;
+    padding: 5px;
+  }
+
+  td.colInput input {
+    width: 15em;
+  }
+</style>
+<style
+  class="darkreader darkreader--sync"
+  media="screen"
+  type="text/css"
+></style>
+<div id="tabs">
+  <ul>
+    <li>
+      <a class="Lab_diagnosis laoFont16" href="#microscopy">Lab diagnosis</a>
+    </li>
+    <li>
+      <a class="GeneXpert_Testing1 laoFont16" href="#genexpert"
+        >GeneXpert Testing</a
+      >
+    </li>
+    <li>
+      <a class="TB_Registered_Cases laoFont16" href="#regCases"
+        >TB Registered Cases</a
+      >
+    </li>
+    <li>
+      <a class="Age_and_Sex_disaggregation laoFont16" href="#ageAndSex"
+        >Age and Sex disaggregation</a
+      >
+    </li>
+    <li>
+      <a class="Cases_registered_by_facility laoFont16" href="#posCases"
+        >Cases registered by facility</a
+      >
+    </li>
+    <li><a class="TB_HIV_cases1 laoFont16" href="#TBHIV">TB/HIV cases</a></li>
+    <li>
+      <a class="tb_hiv_01 laoFont16" href="#tb_hiv_01"
+        >ຈ.1 ຂຶ້ນທະບຽນຈຳນວນຕິດເຊື້ອຮ່ວມ TB/HIV ແລະການໃຫ້ ART</a
+      >
+    </li>
+    <li>
+      <a class="TB_patient_treatment laoFont16" href="#cate"
+        >TB patient treatment</a
+      >
+    </li>
+  </ul>
+
+  <div id="microscopy">
+    <div class="dataElementName Microscopy_Testing laoFont14">&nbsp;</div>
+
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header screened_by" rowspan="2" width="12%">&nbsp;</td>
+          <td class="header Tuber laoFont" rowspan="2" width="8%">Tuber</td>
+          <td class="header HIV laoFont" rowspan="2" width="8%">HIV</td>
+          <td class="header OPDIPD laoFont" rowspan="2" width="8%">OPD/IPD</td>
+          <td class="header Children_Doctor laoFont" rowspan="2" width="8%">
+            Children Doctor
+          </td>
+          <td
+            class="header Clinic_Private_Hospital laoFont"
+            rowspan="2"
+            width="8%"
+          >
+            Clinic/Private Hospital
+          </td>
+          <td class="header Local_Health laoFont" rowspan="2" width="8%">
+            &nbsp;
+          </td>
+          <td class="header Jailed laoFont" rowspan="2" width="8%">&nbsp;</td>
+          <td class="header Community laoFont" colspan="6" width="8%">
+            Community
+          </td>
+          <td class="header Closed_Person laoFont" rowspan="2" width="8%">
+            Closed Person
+          </td>
+          <td class="header Others laoFont" rowspan="2" width="8%">Others</td>
+          <td class="header ACF laoFont" rowspan="2" width="8%">ACF</td>
+          <td class="header Total laoFont" rowspan="2" width="8%">Total</td>
+        </tr>
+        <tr>
+          <td class="center header">HPP</td>
+          <td class="center header">PSI</td>
+          <td class="center header">PEDA</td>
+          <td class="center header">LaoPHA</td>
+          <td class="center header">Laoyouth</td>
+          <td class="center VHV header">VHV</td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont Total_presumptive_TB" colspan="1">
+            Total presumptive TB
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-srmvl44ELKL-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB TB"
+              value="[ TB: Lab diagnosis Presumptive TB TB ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-QOSOHuRCGAf-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB HIV"
+              value="[ TB: Lab diagnosis Presumptive TB HIV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-iRLpzFSIhan-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB OPD/IPD"
+              value="[ TB: Lab diagnosis Presumptive TB OPD/IPD ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-P3rRvLVSh1p-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Children Doctor"
+              value="[ TB: Lab diagnosis Presumptive TB Children Doctor ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-cncWTcouJHy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Clinic/Private Hospital"
+              value="[ TB: Lab diagnosis Presumptive TB Clinic/Private Hospital ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-rPxqIZdvH7I-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Local Health"
+              value="[ TB: Lab diagnosis Presumptive TB Local Health ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-hSzNI9krTJM-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Jailed"
+              value="[ TB: Lab diagnosis Presumptive TB Jailed ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-hVGm58EFKmy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB HPP"
+              value="[ TB: Lab diagnosis Presumptive TB HPP ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-Ki7ZmQYQVfi-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB PSI"
+              value="[ TB: Lab diagnosis Presumptive TB PSI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-uuylW84OwvP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB PEDA"
+              value="[ TB: Lab diagnosis Presumptive TB PEDA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-tfFImjkphvc-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB LaoPHA"
+              value="[ TB: Lab diagnosis Presumptive TB LaoPHA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-gcpampLY3BP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Laoyouth"
+              value="[ TB: Lab diagnosis Presumptive TB Laoyouth ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-B8cLvyj5ZOb-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB VHV"
+              value="[ TB: Lab diagnosis Presumptive TB VHV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-vXNYN0N8Swx-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Closed Person"
+              value="[ TB: Lab diagnosis Presumptive TB Closed Person ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-mFjckULrbYa-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB Others"
+              value="[ TB: Lab diagnosis Presumptive TB Others ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="O9BTmjhggwk-ViKcp6fXevh-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive TB ACF"
+              value="[ TB: Lab diagnosis Presumptive TB ACF ]"
+            />
+          </td>
+          <td align="center">
+            <div class="total">
+              <input
+                dataelementid="O9BTmjhggwk"
+                id="totalO9BTmjhggwk"
+                name="total"
+                readonly="readonly"
+                title="TB: Lab diagnosis Presumptive TB"
+                value="[ TB: Lab diagnosis Presumptive TB ]"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="rowTitle laoFont Presumptive_tested_by_microscopy"
+            colspan="1"
+          >
+            Presumptive tested by microscopy
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-srmvl44ELKL-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy TB"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy TB ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-QOSOHuRCGAf-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy HIV"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy HIV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-iRLpzFSIhan-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy OPD/IPD"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy OPD/IPD ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-P3rRvLVSh1p-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Children Doctor"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Children Doctor ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-cncWTcouJHy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Clinic/Private Hospital"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Clinic/Private Hospital ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-rPxqIZdvH7I-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Local Health"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Local Health ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-hSzNI9krTJM-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Jailed"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Jailed ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-hVGm58EFKmy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy HPP"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy HPP ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-Ki7ZmQYQVfi-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy PSI"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy PSI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-uuylW84OwvP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy PEDA"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy PEDA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-tfFImjkphvc-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy LaoPHA"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy LaoPHA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-gcpampLY3BP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Laoyouth"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Laoyouth ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-B8cLvyj5ZOb-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy VHV"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy VHV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-vXNYN0N8Swx-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Closed Person"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Closed Person ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="kQXyBx4PoSy-mFjckULrbYa-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by microscopy Others"
+              value="[ TB: Lab diagnosis Presumptive tested by microscopy Others ]"
+            />
+          </td>
+          <td class="input blocked">&nbsp;</td>
+          <td align="center">
+            <div class="total">
+              <input
+                dataelementid="kQXyBx4PoSy"
+                id="totalkQXyBx4PoSy"
+                name="total"
+                readonly="readonly"
+                title="TB: Lab diagnosis Presumptive tested by microscopy"
+                value="[ TB: Lab diagnosis Presumptive tested by microscopy ]"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont Smear_Positive" colspan="1">
+            Smear positive
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-srmvl44ELKL-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive TB"
+              value="[ TB: Lab diagnosis Smears positive TB ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-QOSOHuRCGAf-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive HIV"
+              value="[ TB: Lab diagnosis Smears positive HIV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-iRLpzFSIhan-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive OPD/IPD"
+              value="[ TB: Lab diagnosis Smears positive OPD/IPD ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-P3rRvLVSh1p-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Children Doctor"
+              value="[ TB: Lab diagnosis Smears positive Children Doctor ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-cncWTcouJHy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Clinic/Private Hospital"
+              value="[ TB: Lab diagnosis Smears positive Clinic/Private Hospital ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-rPxqIZdvH7I-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Local Health"
+              value="[ TB: Lab diagnosis Smears positive Local Health ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-hSzNI9krTJM-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Jailed"
+              value="[ TB: Lab diagnosis Smears positive Jailed ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-hVGm58EFKmy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive HPP"
+              value="[ TB: Lab diagnosis Smears positive HPP ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-Ki7ZmQYQVfi-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive PSI"
+              value="[ TB: Lab diagnosis Smears positive PSI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-uuylW84OwvP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive PEDA"
+              value="[ TB: Lab diagnosis Smears positive PEDA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-tfFImjkphvc-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive LaoPHA"
+              value="[ TB: Lab diagnosis Smears positive LaoPHA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-gcpampLY3BP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Laoyouth"
+              value="[ TB: Lab diagnosis Smears positive Laoyouth ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-B8cLvyj5ZOb-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive VHV"
+              value="[ TB: Lab diagnosis Smears positive VHV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-vXNYN0N8Swx-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Closed Person"
+              value="[ TB: Lab diagnosis Smears positive Closed Person ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Xope2HgYv5D-mFjckULrbYa-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Smears positive Others"
+              value="[ TB: Lab diagnosis Smears positive Others ]"
+            />
+          </td>
+          <td class="input blocked">&nbsp;</td>
+          <td align="center">
+            <div class="total">
+              <input
+                dataelementid="Xope2HgYv5D"
+                id="totalXope2HgYv5D"
+                name="total"
+                readonly="readonly"
+                title="TB: Lab diagnosis Smears positive"
+                value="[ TB: Lab diagnosis Smears positive ]"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle presumptive_genxpert laoFont" colspan="1">
+            &nbsp;
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-srmvl44ELKL-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert TB"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert TB ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-QOSOHuRCGAf-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert HIV"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert HIV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-iRLpzFSIhan-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert OPD/IPD"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert OPD/IPD ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-P3rRvLVSh1p-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Children Doctor"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Children Doctor ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-cncWTcouJHy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Clinic/Private Hospital"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Clinic/Private Hospital ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-rPxqIZdvH7I-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Local Health"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Local Health ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-hSzNI9krTJM-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Jailed"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Jailed ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-hVGm58EFKmy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert HPP"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert HPP ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-Ki7ZmQYQVfi-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert PSI"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert PSI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-uuylW84OwvP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert PEDA"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert PEDA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-tfFImjkphvc-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert LaoPHA"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert LaoPHA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-gcpampLY3BP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Laoyouth"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Laoyouth ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-B8cLvyj5ZOb-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert VHV"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert VHV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-vXNYN0N8Swx-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Closed Person"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Closed Person ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-mFjckULrbYa-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert Others"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert Others ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Hqraj0OmfHw-ViKcp6fXevh-val"
+              name="entryfield"
+              title="TB: Lab diagnosis Presumptive tested by GeneXpert ACF"
+              value="[ TB: Lab diagnosis Presumptive tested by GeneXpert ACF ]"
+            />
+          </td>
+          <td align="center">
+            <div class="total">
+              <input
+                dataelementid="Hqraj0OmfHw"
+                id="totalHqraj0OmfHw"
+                name="total"
+                readonly="readonly"
+                title="TB: Lab diagnosis Presumptive tested by GeneXpert"
+                value="[ TB: Lab diagnosis Presumptive tested by GeneXpert ]"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont GeneXpert_Positive" colspan="1">
+            GeneXpert Positive
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-srmvl44ELKL-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive TB"
+              value="[ TB: Lab diagnosis GeneXpert Positive TB ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-QOSOHuRCGAf-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive HIV"
+              value="[ TB: Lab diagnosis GeneXpert Positive HIV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-iRLpzFSIhan-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive OPD/IPD"
+              value="[ TB: Lab diagnosis GeneXpert Positive OPD/IPD ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-P3rRvLVSh1p-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Children Doctor"
+              value="[ TB: Lab diagnosis GeneXpert Positive Children Doctor ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-cncWTcouJHy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Clinic/Private Hospital"
+              value="[ TB: Lab diagnosis GeneXpert Positive Clinic/Private Hospital ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-rPxqIZdvH7I-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Local Health"
+              value="[ TB: Lab diagnosis GeneXpert Positive Local Health ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-hSzNI9krTJM-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Jailed"
+              value="[ TB: Lab diagnosis GeneXpert Positive Jailed ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-hVGm58EFKmy-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive HPP"
+              value="[ TB: Lab diagnosis GeneXpert Positive HPP ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-Ki7ZmQYQVfi-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive PSI"
+              value="[ TB: Lab diagnosis GeneXpert Positive PSI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-uuylW84OwvP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive PEDA"
+              value="[ TB: Lab diagnosis GeneXpert Positive PEDA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-tfFImjkphvc-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive LaoPHA"
+              value="[ TB: Lab diagnosis GeneXpert Positive LaoPHA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-gcpampLY3BP-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Laoyouth"
+              value="[ TB: Lab diagnosis GeneXpert Positive Laoyouth ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-B8cLvyj5ZOb-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive VHV"
+              value="[ TB: Lab diagnosis GeneXpert Positive VHV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-vXNYN0N8Swx-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Closed Person"
+              value="[ TB: Lab diagnosis GeneXpert Positive Closed Person ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-mFjckULrbYa-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive Others"
+              value="[ TB: Lab diagnosis GeneXpert Positive Others ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="a073Znqpq9o-ViKcp6fXevh-val"
+              name="entryfield"
+              title="TB: Lab diagnosis GeneXpert Positive ACF"
+              value="[ TB: Lab diagnosis GeneXpert Positive ACF ]"
+            />
+          </td>
+          <td align="center">
+            <div class="total">
+              <input
+                dataelementid="a073Znqpq9o"
+                id="totala073Znqpq9o"
+                name="total"
+                readonly="readonly"
+                title="TB: Lab diagnosis GeneXpert Positive"
+                value="[ TB: Lab diagnosis GeneXpert Positive ]"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="genexpert">
+    <div class="dataElementName GeneXpert_Testing laoFont14">&nbsp;</div>
+    &nbsp;
+
+    <table border="1" cellpadding="3" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header suspected" rowspan="2" width="16%">&nbsp;</td>
+          <td class="header Total_Checked_Case laoFont" rowspan="2" width="12%">
+            Total Checked Case
+          </td>
+          <td class="header Result laoFont" colspan="6">Result</td>
+        </tr>
+        <tr>
+          <td class="header" width="12%">T</td>
+          <td class="header" width="12%">RR</td>
+          <td class="header" width="12%">TI</td>
+          <td class="header" width="12%">N</td>
+          <td class="header" width="12%">I</td>
+          <td class="header" width="12%">TT</td>
+        </tr>
+        <tr>
+          <td class="rowTitle Tuber laoFont">Tuber</td>
+          <td align="center">
+            <div class="total">&nbsp;</div>
+          </td>
+          <td class="input">
+            <input
+              id="mXYcr3mHxyN-eCIZb34KI9i-val"
+              name="entryfield"
+              title="TB: GeneXpert testing TB T"
+              value="[ TB: GeneXpert testing TB T ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="mXYcr3mHxyN-zchVl22y90l-val"
+              name="entryfield"
+              title="TB: GeneXpert testing TB RR"
+              value="[ TB: GeneXpert testing TB RR ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="mXYcr3mHxyN-CpeJurlAxQU-val"
+              name="entryfield"
+              title="TB: GeneXpert testing TB TI"
+              value="[ TB: GeneXpert testing TB TI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="mXYcr3mHxyN-z5i7IcMj0uq-val"
+              name="entryfield"
+              title="TB: GeneXpert testing TB N"
+              value="[ TB: GeneXpert testing TB N ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="mXYcr3mHxyN-L1CfihPJjJa-val"
+              name="entryfield"
+              title="TB: GeneXpert testing TB I"
+              value="[ TB: GeneXpert testing TB I ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="mXYcr3mHxyN-GCh8Kw5Zklo-val"
+              name="entryfield"
+              title="TB: GeneXpert testing TB TT"
+              value="[ TB: GeneXpert testing TB TT ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle Tuber_Anti_Drug laoFont">Tuber Anti-Drug</td>
+          <td align="center">
+            <div class="total">&nbsp;</div>
+          </td>
+          <td class="input">
+            <input
+              id="fSofolK9xSk-eCIZb34KI9i-val"
+              name="entryfield"
+              title="TB: GeneXpert testing Anti-Drug T"
+              value="[ TB: GeneXpert testing Anti-Drug T ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="fSofolK9xSk-zchVl22y90l-val"
+              name="entryfield"
+              title="TB: GeneXpert testing Anti-Drug RR"
+              value="[ TB: GeneXpert testing Anti-Drug RR ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="fSofolK9xSk-CpeJurlAxQU-val"
+              name="entryfield"
+              title="TB: GeneXpert testing Anti-Drug TI"
+              value="[ TB: GeneXpert testing Anti-Drug TI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="fSofolK9xSk-z5i7IcMj0uq-val"
+              name="entryfield"
+              title="TB: GeneXpert testing Anti-Drug N"
+              value="[ TB: GeneXpert testing Anti-Drug N ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="fSofolK9xSk-L1CfihPJjJa-val"
+              name="entryfield"
+              title="TB: GeneXpert testing Anti-Drug I"
+              value="[ TB: GeneXpert testing Anti-Drug I ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="fSofolK9xSk-GCh8Kw5Zklo-val"
+              name="entryfield"
+              title="TB: GeneXpert testing Anti-Drug TT"
+              value="[ TB: GeneXpert testing Anti-Drug TT ]"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="regCases">
+    <div class="dataElementName All_TB_Registered_Cases laoFont14">&nbsp;</div>
+    &nbsp;
+
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header tb_types" width="10%">&nbsp;</td>
+          <td class="header New laoFont" width="10%">New</td>
+          <td class="header Relapsed laoFont" width="10%">Relapsed</td>
+          <td class="header Failed laoFont" width="10%">Failed</td>
+          <td class="header Relapsed_After_Cured laoFont" width="10%">
+            Relapsed After Cured
+          </td>
+          <td class="header Others laoFont" width="10%">Others</td>
+          <td class="header Move_in laoFont" width="10%">Move in</td>
+          <td class="header Total laoFont" width="10%">Total</td>
+        </tr>
+        <tr>
+          <td class="header">&nbsp;</td>
+          <td class="header">111</td>
+          <td class="header">112</td>
+          <td class="header">113</td>
+          <td class="header">114</td>
+          <td class="header">115</td>
+          <td class="header">116</td>
+          <td class="header">117</td>
+        </tr>
+        <tr>
+          <td class="rowTitle">Pb+</td>
+          <td class="input">
+            <input
+              id="D6ZZJ6Qhbl2-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered New Pb+"
+              value="[ TB: Cases registered New Pb+ ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="C3GSXm7kbw5-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Relapsed Pb+"
+              value="[ TB: Cases registered Relapsed Pb+ ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="vBMhjnp2GQ7-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb+ Failure"
+              value="[ TB: Cases registered Pb+ Failure ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="Qdi96o3Pdhx-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb+ Relapse after cured"
+              value="[ TB: Cases registered Pb+ Relapse after cured ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="ntTGL0XZrr5-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb+ Other"
+              value="[ TB: Cases registered Pb+ Other ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="N0k4TsTnZE1-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb+ Move in"
+              value="[ TB: Cases registered Pb+ Move in ]"
+            />
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle">Pb-</td>
+          <td class="input">
+            <input
+              id="vbXYCi3iKZm-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered New Pb-"
+              value="[ TB: Cases registered New Pb- ]"
+            />
+          </td>
+          <td class="center">
+            <input
+              id="izEbukxm8oa-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Relapsed Pb-"
+              value="[ TB: Cases registered Relapsed Pb- ]"
+            />
+          </td>
+          <td class="center">
+            <input
+              id="DCLoTNwSGT8-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb- Failure"
+              value="[ TB: Cases registered Pb- Failure ]"
+            />
+          </td>
+          <td class="center">
+            <input
+              id="Dc51iOEY0Rm-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb- Relapse after cured"
+              value="[ TB: Cases registered Pb- Relapse after cured ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="QpAMzshVzjL-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb- others"
+              value="[ TB: Cases registered Pb- others ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JoCUc64LLdN-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Pb- Move in"
+              value="[ TB: Cases registered Pb- Move in ]"
+            />
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle">EP</td>
+          <td class="input">
+            <input
+              id="oUok8xYQcAq-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered New EP"
+              value="[ TB: Cases registered New EP ]"
+            />
+          </td>
+          <td class="center">
+            <input
+              id="j3AZcMNM3y6-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered Relapsed EP"
+              value="[ TB: Cases registered Relapsed EP ]"
+            />
+          </td>
+          <td class="center">
+            <input
+              id="b1IQfgcfneL-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered EP Failure"
+              value="[ TB: Cases registered EP Failure ]"
+            />
+          </td>
+          <td class="center">
+            <input
+              id="Gc9KGu3ay4B-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered EP Relapse after cured"
+              value="[ TB: Cases registered EP Relapse after cured ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="WndvDT8PPD1-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered EP others"
+              value="[ TB: Cases registered EP others ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="f67juSk1R5M-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases registered EP transfer in"
+              value="[ TB: Cases registered EP transfer in ]"
+            />
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td rowspan="2">&nbsp;</td>
+          <td class="grand_total center" colspan="5">0</td>
+          <td rowspan="2">&nbsp;</td>
+          <td rowspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="total_case_registered center" colspan="5">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="ageAndSex">
+    <div class="dataElementName Age_and_Sex_distribution laoFont14">&nbsp;</div>
+    &nbsp;
+
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header" rowspan="2">&nbsp;</td>
+          <td class="header" rowspan="2" width="4%">&nbsp;</td>
+          <td class="header" colspan="2">0-4</td>
+          <td class="header" colspan="2">5-14</td>
+          <td class="header" colspan="2">15-24</td>
+          <td class="header" colspan="2">25-34</td>
+          <td class="header" colspan="2">35-44</td>
+          <td class="header" colspan="2">45-54</td>
+          <td class="header" colspan="2">55-64</td>
+          <td class="header" colspan="2">65+</td>
+          <td class="header Total laoFont" colspan="3">Total</td>
+        </tr>
+        <tr>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="5%">M</td>
+          <td class="header F laoFont" width="5%">F</td>
+          <td class="header M laoFont" width="4%">M</td>
+          <td class="header F laoFont" width="4%">F</td>
+          <td class="header Total laoFont" width="4%">T</td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ໃໝ່</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-AgafVnOtXKU-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 0-4, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 0-4, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-eu1dtsJlNvJ-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 0-4, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 0-4, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-V8lpbM1LzJx-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 5-14, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 5-14, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-QkFz5Tuyb6F-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 5-14, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 5-14, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-zM8GaAsSbJu-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 15-24, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 15-24, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-XWsYvU3zr5j-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 15-24, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 15-24, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-s6zxoJd0DIT-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 25-34, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 25-34, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-xbieHWHYq0z-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 25-34, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 25-34, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-NMGdsuXzAvs-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 35-44, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 35-44, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-K9NAXxdWuCO-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 35-44, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 35-44, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-X3vtKLEjiMf-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 45-54, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 45-54, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-wHWPjwOaihG-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 45-54, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 45-54, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-mJi5EzVBpyg-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 55-64, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 55-64, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-Xmwhod6AQDH-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 55-64, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 55-64, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Y3Bg0M73Ory-tQMBC03b8YF-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 65+, Male"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 65+, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Y3Bg0M73Ory-pjz3OYB5BKV-val"
+              name="entryfield"
+              title="TB: Cases New Pb+ by Gender &amp; Age 65+, Female"
+              value="[ TB: Cases New Pb+ by Gender &amp; Age 65+, Female ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-AgafVnOtXKU-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 0-4, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 0-4, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-eu1dtsJlNvJ-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 0-4, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 0-4, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-V8lpbM1LzJx-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 5-14, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 5-14, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-QkFz5Tuyb6F-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 5-14, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 5-14, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-zM8GaAsSbJu-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 15-24, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 15-24, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-XWsYvU3zr5j-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 15-24, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 15-24, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-s6zxoJd0DIT-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 25-34, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 25-34, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-xbieHWHYq0z-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 25-34, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 25-34, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-NMGdsuXzAvs-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 35-44, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 35-44, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-K9NAXxdWuCO-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 35-44, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 35-44, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-X3vtKLEjiMf-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 45-54, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 45-54, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-wHWPjwOaihG-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 45-54, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 45-54, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-mJi5EzVBpyg-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 55-64, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 55-64, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-Xmwhod6AQDH-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 55-64, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 55-64, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="Q75wcFKwfOL-tQMBC03b8YF-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 65+, Male"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 65+, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Q75wcFKwfOL-pjz3OYB5BKV-val"
+              name="entryfield"
+              title="TB: Cases New Pb- by Gender &amp; Age 65+, Female"
+              value="[ TB: Cases New Pb- by Gender &amp; Age 65+, Female ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-AgafVnOtXKU-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 0-4, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 0-4, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-eu1dtsJlNvJ-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 0-4, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 0-4, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-V8lpbM1LzJx-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 5-14, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 5-14, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-QkFz5Tuyb6F-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 5-14, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 5-14, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-zM8GaAsSbJu-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 15-24, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 15-24, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-XWsYvU3zr5j-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 15-24, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 15-24, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-s6zxoJd0DIT-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 25-34, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 25-34, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-xbieHWHYq0z-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 25-34, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 25-34, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-NMGdsuXzAvs-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 35-44, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 35-44, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-K9NAXxdWuCO-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 35-44, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 35-44, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-X3vtKLEjiMf-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 45-54, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 45-54, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-wHWPjwOaihG-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 45-54, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 45-54, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-mJi5EzVBpyg-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 55-64, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 55-64, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-Xmwhod6AQDH-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 55-64, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 55-64, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="l5VzphG0LWF-tQMBC03b8YF-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 65+, Male"
+              value="[ TB: Cases New EP by Gender &amp; Age 65+, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="l5VzphG0LWF-pjz3OYB5BKV-val"
+              name="entryfield"
+              title="TB: Cases New EP by Gender &amp; Age 65+, Female"
+              value="[ TB: Cases New EP by Gender &amp; Age 65+, Female ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ກັບຄືນເປັນອີກ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-jSbDsPCZsjT-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 0-4, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 0-4, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-ABaAOKJy9Ku-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 0-4, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 0-4, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-RgtMyk6M9Py-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 5-14, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 5-14, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-dJqseO2SUh0-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 5-14, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 5-14, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-qn5bFSTTeHu-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 15-24, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 15-24, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-gJ2oG1mx3ga-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 15-24, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 15-24, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-XE1ce5wKLS5-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 25-34, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 25-34, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-WW5s2dgIEaY-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 25-34, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 25-34, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-yVvYrCEI94U-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 35-44, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 35-44, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-ZhrNImtXJDv-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 35-44, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 35-44, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-dNj6ZjPNUza-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 45-54, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 45-54, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-miIuEbiyWkd-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 45-54, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 45-54, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-IBbqASbxGT8-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 55-64, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 55-64, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-b9KTZtIHI9a-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 55-64, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 55-64, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-tmkf3c8kdXI-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 65+, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 65+, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-cd0ni0uGrr3-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 65+, Pb+"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 65+, Pb+ ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-gyNlqYC3DOA-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 0-4, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 0-4, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-tEVAoY2gNK8-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 0-4, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 0-4, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-QkSbcZhTfqV-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 5-14, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 5-14, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-jcEG5vKRZdR-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 5-14, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 5-14, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-picijNA6v2t-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 15-24, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 15-24, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-rDQJoWUP72U-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 15-24, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 15-24, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-VRt4IaEi3gR-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 25-34, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 25-34, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-gzsZj6ZaBMm-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 25-34, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 25-34, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-pKmbWbjN65B-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 35-44, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 35-44, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-dtsyPPQw1sQ-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 35-44, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 35-44, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-yXaHp3CfvbB-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 45-54, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 45-54, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-imkuEcIOs9K-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 45-54, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 45-54, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-T3ZXoRrPtBg-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 55-64, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 55-64, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-jkJEnhwCdFQ-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 55-64, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 55-64, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-Vm40vJl0jem-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 65+, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 65+, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-E5z5lRWojUT-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 65+, Pb-"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 65+, Pb- ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-kQ4icyAP053-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 0-4, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 0-4, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-r42jr8gtdGd-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 0-4, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 0-4, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-Qm1kI2EMzyi-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 5-14, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 5-14, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-qWWnb94IABa-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 5-14, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 5-14, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-TUOjEnn60gD-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 15-24, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 15-24, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-oCeB9WhPoZz-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 15-24, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 15-24, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-rwvkUvaM9zl-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 25-34, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 25-34, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-AA8O1rTCbmm-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 25-34, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 25-34, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-cTl8lzeyFgY-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 35-44, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 35-44, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-jnSVwlPIIwP-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 35-44, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 35-44, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-qPcDQSjpfcW-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 45-54, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 45-54, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-lGOuYCgaa2c-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 45-54, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 45-54, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-JuFoHcQvV7a-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 55-64, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 55-64, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-ZsPDL4OOuff-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 55-64, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 55-64, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="SFUay8BcvNU-sAkXCbdgFJx-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Male, 65+, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Male, 65+, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="SFUay8BcvNU-U3Vs3lxj0OH-val"
+              name="entryfield"
+              title="TB: Cases Relapsed by Gender, Age &amp; TB type Female, 65+, EP"
+              value="[ TB: Cases Relapsed by Gender, Age &amp; TB type Female, 65+, EP ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ລົ້ມເຫຼວ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-jSbDsPCZsjT-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 0-4, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 0-4, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-ABaAOKJy9Ku-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 0-4, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 0-4, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-RgtMyk6M9Py-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 5-14, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 5-14, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-dJqseO2SUh0-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 5-14, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 5-14, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-qn5bFSTTeHu-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 15-24, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 15-24, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-gJ2oG1mx3ga-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 15-24, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 15-24, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-XE1ce5wKLS5-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 25-34, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 25-34, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-WW5s2dgIEaY-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 25-34, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 25-34, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-yVvYrCEI94U-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 35-44, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 35-44, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-ZhrNImtXJDv-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 35-44, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 35-44, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-dNj6ZjPNUza-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 45-54, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 45-54, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-miIuEbiyWkd-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 45-54, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 45-54, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-IBbqASbxGT8-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 55-64, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 55-64, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-b9KTZtIHI9a-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 55-64, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 55-64, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-tmkf3c8kdXI-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 65+, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 65+, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-cd0ni0uGrr3-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 65+, Pb+"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 65+, Pb+ ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-gyNlqYC3DOA-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 0-4, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 0-4, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-tEVAoY2gNK8-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 0-4, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 0-4, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-QkSbcZhTfqV-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 5-14, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 5-14, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-jcEG5vKRZdR-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 5-14, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 5-14, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-picijNA6v2t-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 15-24, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 15-24, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-rDQJoWUP72U-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 15-24, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 15-24, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-VRt4IaEi3gR-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 25-34, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 25-34, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-gzsZj6ZaBMm-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 25-34, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 25-34, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-pKmbWbjN65B-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 35-44, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 35-44, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-dtsyPPQw1sQ-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 35-44, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 35-44, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-yXaHp3CfvbB-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 45-54, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 45-54, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-imkuEcIOs9K-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 45-54, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 45-54, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-T3ZXoRrPtBg-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 55-64, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 55-64, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-jkJEnhwCdFQ-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 55-64, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 55-64, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-Vm40vJl0jem-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 65+, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 65+, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-E5z5lRWojUT-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 65+, Pb-"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 65+, Pb- ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-kQ4icyAP053-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 0-4, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 0-4, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-r42jr8gtdGd-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 0-4, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 0-4, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-Qm1kI2EMzyi-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 5-14, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 5-14, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-qWWnb94IABa-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 5-14, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 5-14, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-TUOjEnn60gD-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 15-24, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 15-24, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-oCeB9WhPoZz-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 15-24, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 15-24, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-rwvkUvaM9zl-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 25-34, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 25-34, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-AA8O1rTCbmm-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 25-34, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 25-34, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-cTl8lzeyFgY-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 35-44, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 35-44, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-jnSVwlPIIwP-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 35-44, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 35-44, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-qPcDQSjpfcW-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 45-54, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 45-54, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-lGOuYCgaa2c-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 45-54, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 45-54, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-JuFoHcQvV7a-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 55-64, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 55-64, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-ZsPDL4OOuff-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 55-64, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 55-64, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="pyvPrlhCi2X-sAkXCbdgFJx-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Male, 65+, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Male, 65+, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="pyvPrlhCi2X-U3Vs3lxj0OH-val"
+              name="entryfield"
+              title="TB: Cases Failure by Gender, Age &amp; TB types Female, 65+, EP"
+              value="[ TB: Cases Failure by Gender, Age &amp; TB types Female, 65+, EP ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ກັບມາໃໝ່ຫຼັງຫາຍຕົວ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-jSbDsPCZsjT-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 0-4, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 0-4, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-ABaAOKJy9Ku-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 0-4, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 0-4, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-RgtMyk6M9Py-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 5-14, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 5-14, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-dJqseO2SUh0-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 5-14, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 5-14, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-qn5bFSTTeHu-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 15-24, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 15-24, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-gJ2oG1mx3ga-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 15-24, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 15-24, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-XE1ce5wKLS5-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 25-34, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 25-34, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-WW5s2dgIEaY-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 25-34, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 25-34, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-yVvYrCEI94U-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 35-44, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 35-44, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-ZhrNImtXJDv-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 35-44, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 35-44, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-dNj6ZjPNUza-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 45-54, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 45-54, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-miIuEbiyWkd-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 45-54, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 45-54, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-IBbqASbxGT8-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 55-64, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 55-64, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-b9KTZtIHI9a-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 55-64, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 55-64, Pb+ ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-tmkf3c8kdXI-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 65+, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 65+, Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-cd0ni0uGrr3-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 65+, Pb+"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 65+, Pb+ ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-gyNlqYC3DOA-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 0-4, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 0-4, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-tEVAoY2gNK8-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 0-4, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 0-4, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-QkSbcZhTfqV-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 5-14, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 5-14, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-jcEG5vKRZdR-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 5-14, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 5-14, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-picijNA6v2t-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 15-24, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 15-24, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-rDQJoWUP72U-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 15-24, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 15-24, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-VRt4IaEi3gR-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 25-34, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 25-34, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-gzsZj6ZaBMm-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 25-34, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 25-34, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-pKmbWbjN65B-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 35-44, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 35-44, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-dtsyPPQw1sQ-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 35-44, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 35-44, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-yXaHp3CfvbB-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 45-54, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 45-54, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-imkuEcIOs9K-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 45-54, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 45-54, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-T3ZXoRrPtBg-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 55-64, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 55-64, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-jkJEnhwCdFQ-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 55-64, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 55-64, Pb- ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-Vm40vJl0jem-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 65+, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 65+, Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-E5z5lRWojUT-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 65+, Pb-"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 65+, Pb- ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-kQ4icyAP053-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 0-4, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 0-4, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-r42jr8gtdGd-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 0-4, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 0-4, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-Qm1kI2EMzyi-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 5-14, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 5-14, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-qWWnb94IABa-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 5-14, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 5-14, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-TUOjEnn60gD-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 15-24, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 15-24, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-oCeB9WhPoZz-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 15-24, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 15-24, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-rwvkUvaM9zl-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 25-34, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 25-34, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-AA8O1rTCbmm-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 25-34, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 25-34, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-cTl8lzeyFgY-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 35-44, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 35-44, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-jnSVwlPIIwP-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 35-44, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 35-44, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-qPcDQSjpfcW-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 45-54, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 45-54, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-lGOuYCgaa2c-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 45-54, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 45-54, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-JuFoHcQvV7a-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 55-64, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 55-64, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-ZsPDL4OOuff-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 55-64, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 55-64, EP ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="x6kxj1drGCn-sAkXCbdgFJx-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 65+, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Male, 65+, EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="x6kxj1drGCn-U3Vs3lxj0OH-val"
+              name="entryfield"
+              title="TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 65+, EP"
+              value="[ TB: Cases Return after loss to follow-up by Gender, Age &amp; TB types Female, 65+, EP ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ອື່ນໆ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-AgafVnOtXKU-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 0-4, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 0-4, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-eu1dtsJlNvJ-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 0-4, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 0-4, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-V8lpbM1LzJx-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 5-14, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 5-14, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-QkFz5Tuyb6F-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 5-14, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 5-14, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-zM8GaAsSbJu-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 15-24, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 15-24, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-XWsYvU3zr5j-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 15-24, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 15-24, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-s6zxoJd0DIT-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 25-34, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 25-34, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-xbieHWHYq0z-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 25-34, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 25-34, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-NMGdsuXzAvs-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 35-44, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 35-44, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-K9NAXxdWuCO-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 35-44, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 35-44, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-X3vtKLEjiMf-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 45-54, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 45-54, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-wHWPjwOaihG-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 45-54, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 45-54, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-mJi5EzVBpyg-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 55-64, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 55-64, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-Xmwhod6AQDH-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 55-64, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 55-64, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="ETKg5qvbfPn-tQMBC03b8YF-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 65+, Male"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 65+, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="ETKg5qvbfPn-pjz3OYB5BKV-val"
+              name="entryfield"
+              title="TB: Cases Other Pb+ by Gender &amp; Age 65+, Female"
+              value="[ TB: Cases Other Pb+ by Gender &amp; Age 65+, Female ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-AgafVnOtXKU-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 0-4, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 0-4, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-eu1dtsJlNvJ-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 0-4, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 0-4, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-V8lpbM1LzJx-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 5-14, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 5-14, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-QkFz5Tuyb6F-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 5-14, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 5-14, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-zM8GaAsSbJu-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 15-24, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 15-24, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-XWsYvU3zr5j-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 15-24, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 15-24, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-s6zxoJd0DIT-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 25-34, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 25-34, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-xbieHWHYq0z-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 25-34, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 25-34, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-NMGdsuXzAvs-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 35-44, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 35-44, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-K9NAXxdWuCO-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 35-44, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 35-44, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-X3vtKLEjiMf-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 45-54, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 45-54, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-wHWPjwOaihG-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 45-54, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 45-54, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-mJi5EzVBpyg-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 55-64, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 55-64, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-Xmwhod6AQDH-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 55-64, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 55-64, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="FaG5JQ72KmO-tQMBC03b8YF-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 65+, Male"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 65+, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="FaG5JQ72KmO-pjz3OYB5BKV-val"
+              name="entryfield"
+              title="TB: Cases Other Pb- by Gender &amp; Age 65+, Female"
+              value="[ TB: Cases Other Pb- by Gender &amp; Age 65+, Female ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-AgafVnOtXKU-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 0-4, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 0-4, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-eu1dtsJlNvJ-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 0-4, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 0-4, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-V8lpbM1LzJx-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 5-14, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 5-14, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-QkFz5Tuyb6F-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 5-14, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 5-14, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-zM8GaAsSbJu-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 15-24, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 15-24, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-XWsYvU3zr5j-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 15-24, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 15-24, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-s6zxoJd0DIT-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 25-34, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 25-34, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-xbieHWHYq0z-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 25-34, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 25-34, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-NMGdsuXzAvs-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 35-44, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 35-44, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-K9NAXxdWuCO-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 35-44, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 35-44, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-X3vtKLEjiMf-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 45-54, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 45-54, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-wHWPjwOaihG-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 45-54, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 45-54, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-mJi5EzVBpyg-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 55-64, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 55-64, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-Xmwhod6AQDH-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 55-64, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 55-64, Female ]"
+            />
+          </td>
+          <td class="input-male">
+            <input
+              id="TsLlgQcHdcA-tQMBC03b8YF-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 65+, Male"
+              value="[ TB: Cases Other EP by Gender &amp; Age 65+, Male ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="TsLlgQcHdcA-pjz3OYB5BKV-val"
+              name="entryfield"
+              title="TB: Cases Other EP by Gender &amp; Age 65+, Female"
+              value="[ TB: Cases Other EP by Gender &amp; Age 65+, Female ]"
+            />
+          </td>
+          <td>
+            <div class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total-female">&nbsp;</div>
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="posCases">
+    <div class="dataElementName All_Cases laoFont14">&nbsp;</div>
+    &nbsp;
+
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header" rowspan="2" width="12%">&nbsp;</td>
+          <td class="header Tuber laoFont" rowspan="2" width="8%">Tuber</td>
+          <td class="header HIV laoFont" rowspan="2" width="8%">HIV</td>
+          <td class="header OPDIPD laoFont" rowspan="2" width="8%">OPD/IPD</td>
+          <td class="header Children_Doctor laoFont" rowspan="2" width="8%">
+            Children Doctor
+          </td>
+          <td
+            class="header Clinic_Private_Hospital laoFont"
+            rowspan="2"
+            width="8%"
+          >
+            Clinic/Private Hospital
+          </td>
+          <td class="header Local_Health laoFont" rowspan="2" width="8%">
+            Local Health
+          </td>
+          <td class="header Jailed laoFont" rowspan="2" width="8%">Jailed</td>
+          <td class="header Community laoFont" colspan="6" width="8%">
+            Community
+          </td>
+          <td class="header Closed_Person laoFont" rowspan="2" width="8%">
+            Closed Person
+          </td>
+          <td class="header Others laoFont" rowspan="2" width="8%">Others</td>
+          <td class="header ACF laoFont" rowspan="2" width="8%">ACF</td>
+          <td class="header Total laoFont" rowspan="2" width="8%">Total</td>
+        </tr>
+        <tr>
+          <td class="center header">HPP</td>
+          <td class="center header">PSI</td>
+          <td class="center header">PEDA</td>
+          <td class="center header">LaoPHA</td>
+          <td class="center header">Laoyouth</td>
+          <td class="center VHV header">VHV</td>
+        </tr>
+        <tr>
+          <td class="rowTitle All_Cases1 laoFont">All Cases</td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-srmvl44ELKL-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility TB"
+              value="[ TB: Cases registered by Facility TB ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-QOSOHuRCGAf-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility HIV"
+              value="[ TB: Cases registered by Facility HIV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-iRLpzFSIhan-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility OPD/IPD"
+              value="[ TB: Cases registered by Facility OPD/IPD ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-P3rRvLVSh1p-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Children Doctor"
+              value="[ TB: Cases registered by Facility Children Doctor ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-cncWTcouJHy-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Clinic/Private Hospital"
+              value="[ TB: Cases registered by Facility Clinic/Private Hospital ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-rPxqIZdvH7I-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Local Health"
+              value="[ TB: Cases registered by Facility Local Health ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-hSzNI9krTJM-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Jailed"
+              value="[ TB: Cases registered by Facility Jailed ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-hVGm58EFKmy-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility HPP"
+              value="[ TB: Cases registered by Facility HPP ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-Ki7ZmQYQVfi-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility PSI"
+              value="[ TB: Cases registered by Facility PSI ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-uuylW84OwvP-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility PEDA"
+              value="[ TB: Cases registered by Facility PEDA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-tfFImjkphvc-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility LaoPHA"
+              value="[ TB: Cases registered by Facility LaoPHA ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-gcpampLY3BP-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Laoyouth"
+              value="[ TB: Cases registered by Facility Laoyouth ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-B8cLvyj5ZOb-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility VHV"
+              value="[ TB: Cases registered by Facility VHV ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-vXNYN0N8Swx-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Closed Person"
+              value="[ TB: Cases registered by Facility Closed Person ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-mFjckULrbYa-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility Others"
+              value="[ TB: Cases registered by Facility Others ]"
+            />
+          </td>
+          <td class="input">
+            <input
+              id="JRSEpFRmLcl-ViKcp6fXevh-val"
+              name="entryfield"
+              title="TB: Cases registered by Facility ACF"
+              value="[ TB: Cases registered by Facility ACF ]"
+            />
+          </td>
+          <td>
+            <div class="total">&nbsp;</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="TBHIV">
+    <div class="dataElementName TB_HIV_cases laoFont14">&nbsp;</div>
+    &nbsp;
+
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header total_screen_for_hiv" rowspan="2">&nbsp;</td>
+          <td class="header Before_testing_HIV laoFont" colspan="2">
+            Before testing HIV
+          </td>
+          <td class="header After_testing_HIV laoFont" colspan="2">
+            After testing HIV
+          </td>
+          <td class="header Total laoFont" colspan="2">Total</td>
+          <td class="header cpt" rowspan="2" width="12%">CPT</td>
+        </tr>
+        <tr>
+          <td class="header Negative laoFont" width="12%">Negative</td>
+          <td class="header Positive laoFont" width="12%">Positive</td>
+          <td class="header Negative laoFont" width="12%">Negative</td>
+          <td class="header Positive laoFont" width="12%">Positive</td>
+          <td class="header Negative laoFont" width="12%">Negative</td>
+          <td class="header Positive laoFont" width="12%">Positive</td>
+        </tr>
+        <tr>
+          <td class="rowTitle TB_Cases laoFont">TB Cases</td>
+          <!-- reuser class input-male for negative, input-female for positive -->
+          <td align="center" class="input-male">
+            <input
+              id="vyR1CsU1BuE-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases HIV- before testing HIV"
+              value="[ TB: Cases HIV- before testing HIV ]"
+            />
+          </td>
+          <td align="center" class="input-female">
+            <input
+              id="HOYM2uCqW8F-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases HIV+ before testing HIV"
+              value="[ TB: Cases HIV+ before testing HIV ]"
+            />
+          </td>
+          <td align="center" class="input-male">
+            <input
+              id="QbxU9kqyBQg-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases HIV- after testing HIV"
+              value="[ TB: Cases HIV- after testing HIV ]"
+            />
+          </td>
+          <td align="center" class="input-female">
+            <input
+              id="rwMvv66Vdy3-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Cases HIV+ after testing HIV"
+              value="[ TB: Cases HIV+ after testing HIV ]"
+            />
+          </td>
+          <!-- reuser class total-male for negative, total-female for positive -->
+          <td>
+            <div align="center" class="total-male">&nbsp;</div>
+          </td>
+          <td>
+            <div align="center" class="total-female">&nbsp;</div>
+          </td>
+          <td align="center" class="input">
+            <input
+              id="UWFFsZQu2AM-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: CPT"
+              value="[ TB: CPT ]"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="tb_hiv_01">
+    <div class="dataElementName tb_hiv_01 laoFont14">
+      ຈ.1 ຂຶ້ນທະບຽນຈຳນວນຕິດເຊື້ອຮ່ວມ TB/HIV ແລະການໃຫ້ ART
+    </div>
+
+    <table border="1" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          <td class="header" colspan="2">&nbsp;</td>
+          <td class="header">ຂຶ້ນທະບຽນ</td>
+          <td class="header">ໄດ້ຮັບ ART</td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ໃໝ່</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="uLTx5PGOz6f-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV New Pb+ Registered"
+              value="[ TB: Treatment TB/HIV New Pb+ Registered ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="hJg2lJvnvFg-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV New Pb+ on ART"
+              value="[ TB: Treatment TB/HIV New Pb+ on ART ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-female">
+            <input
+              id="i5SiGO0dQNo-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV New Pb- Registered"
+              value="[ TB: Treatment TB/HIV New Pb- Registered ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="fZw7PiiYRa4-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV New Pb- on ART"
+              value="[ TB: Treatment TB/HIV New Pb- on ART ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-female">
+            <input
+              id="w7ZTCWYQi9C-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV New EP Registered"
+              value="[ TB: Treatment TB/HIV New EP Registered ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="z58z3fje76F-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV New EP on ART"
+              value="[ TB: Treatment TB/HIV New EP on ART ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ກັບຄືນເປັນອີກ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="r6PkPbLMp43-iKGbK3dtjnc-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Relapsed Registered by TB types Pb+"
+              value="[ TB: Treatment TB/HIV Relapsed Registered by TB types Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="xjqEWKWom2r-iKGbK3dtjnc-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Relapsed on ART by TB types Pb+"
+              value="[ TB: Treatment TB/HIV Relapsed on ART by TB types Pb+ ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-female">
+            <input
+              id="r6PkPbLMp43-NFEIpwf4uMk-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Relapsed Registered by TB types Pb-"
+              value="[ TB: Treatment TB/HIV Relapsed Registered by TB types Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="xjqEWKWom2r-NFEIpwf4uMk-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Relapsed on ART by TB types Pb-"
+              value="[ TB: Treatment TB/HIV Relapsed on ART by TB types Pb- ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-female">
+            <input
+              id="r6PkPbLMp43-KiIF4CTr8ko-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Relapsed Registered by TB types EP"
+              value="[ TB: Treatment TB/HIV Relapsed Registered by TB types EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="xjqEWKWom2r-KiIF4CTr8ko-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Relapsed on ART by TB types EP"
+              value="[ TB: Treatment TB/HIV Relapsed on ART by TB types EP ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ລົ້ມເຫຼວ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="a2l9gmP6yeL-iKGbK3dtjnc-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Failure Registered by TB types Pb+"
+              value="[ TB: Treatment TB/HIV Failure Registered by TB types Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="jp4r1h7ko33-iKGbK3dtjnc-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Failure on ART by TB types Pb+"
+              value="[ TB: Treatment TB/HIV Failure on ART by TB types Pb+ ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-female">
+            <input
+              id="a2l9gmP6yeL-NFEIpwf4uMk-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Failure Registered by TB types Pb-"
+              value="[ TB: Treatment TB/HIV Failure Registered by TB types Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="jp4r1h7ko33-NFEIpwf4uMk-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Failure on ART by TB types Pb-"
+              value="[ TB: Treatment TB/HIV Failure on ART by TB types Pb- ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-female">
+            <input
+              id="a2l9gmP6yeL-KiIF4CTr8ko-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Failure Registered by TB types EP"
+              value="[ TB: Treatment TB/HIV Failure Registered by TB types EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="jp4r1h7ko33-KiIF4CTr8ko-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Failure on ART by TB types EP"
+              value="[ TB: Treatment TB/HIV Failure on ART by TB types EP ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ກັບມາໃໝ່ຫຼັງຫາຍຕົວ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-male">
+            <input
+              id="UQepjKLDzmn-iKGbK3dtjnc-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Return after lost Registered by TB types Pb+"
+              value="[ TB: Treatment TB/HIV Return after lost Registered by TB types Pb+ ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="xL41988GdI7-iKGbK3dtjnc-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Return after lost on ART by TB types Pb+"
+              value="[ TB: Treatment TB/HIV Return after lost on ART by TB types Pb+ ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-female">
+            <input
+              id="UQepjKLDzmn-NFEIpwf4uMk-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Return after lost Registered by TB types Pb-"
+              value="[ TB: Treatment TB/HIV Return after lost Registered by TB types Pb- ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="xL41988GdI7-NFEIpwf4uMk-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Return after lost on ART by TB types Pb-"
+              value="[ TB: Treatment TB/HIV Return after lost on ART by TB types Pb- ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-female">
+            <input
+              id="UQepjKLDzmn-KiIF4CTr8ko-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Return after lost Registered by TB types EP"
+              value="[ TB: Treatment TB/HIV Return after lost Registered by TB types EP ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="xL41988GdI7-KiIF4CTr8ko-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Return after lost on ART by TB types EP"
+              value="[ TB: Treatment TB/HIV Return after lost on ART by TB types EP ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle" rowspan="3">ອື່ນໆ</td>
+          <td class="rowTitle laoFont">Pb+</td>
+          <td class="input-female">
+            <input
+              id="mbQdFNIjWiH-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Other Pb+ Registered"
+              value="[ TB: Treatment TB/HIV Other Pb+ Registered ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="E6CvXA241cV-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Other Pb+ on ART"
+              value="[ TB: Treatment TB/HIV Other Pb+ on ART ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">Pb-</td>
+          <td class="input-female">
+            <input
+              id="yiRXK47C3fX-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Other Pb- Registered"
+              value="[ TB: Treatment TB/HIV Other Pb- Registered ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="Rd9y6739RdG-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Other Pb- on ART"
+              value="[ TB: Treatment TB/HIV Other Pb- on ART ]"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="rowTitle laoFont">EP</td>
+          <td class="input-female">
+            <input
+              id="CBX1WkTqvnu-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Other EP Registered"
+              value="[ TB: Treatment TB/HIV Other EP Registered ]"
+            />
+          </td>
+          <td class="input-female">
+            <input
+              id="fZhMxLNmAQ8-lmbxvugTvKr-val"
+              name="entryfield"
+              title="TB: Treatment TB/HIV Other EP on ART"
+              value="[ TB: Treatment TB/HIV Other EP on ART ]"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div id="cate">
+    <div class="dataElementName TB_patient_categories laoFont14">&nbsp;</div>
+    &nbsp;
+
+    <table cellspacing="0" class="multiTable" width="80%">
+      <tbody>
+        <tr>
+          <td width="40%">
+            <table border="1" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                  <td class="rowTitle" width="50%">Cat I</td>
+                  <td class="input" width="50%">
+                    <input
+                      id="lcbE0bGOBM1-lmbxvugTvKr-val"
+                      name="entryfield"
+                      title="TB: Cases Category I"
+                      value="[ TB: Cases Category I ]"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="rowTitle">Cat C</td>
+                  <td class="input">
+                    <input
+                      id="CL7LFJlgutY-lmbxvugTvKr-val"
+                      name="entryfield"
+                      title="TB: Cases Category C"
+                      value="[ TB: Cases Category C ]"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>&nbsp;</td>
+          <td valign="top" width="40%">
+            <table border="1" cellspacing="0" width="100%">
+              <tbody>
+                <tr>
+                  <td class="rowTitle" rowspan="2" width="30%">IPT</td>
+                  <td class="rowTitle Children laoFont" width="30%">
+                    Children
+                  </td>
+                  <td class="input" width="40%">
+                    <input
+                      id="wWVhOfv8Oru-lmbxvugTvKr-val"
+                      name="entryfield"
+                      title="TB: IPT Children"
+                      value="[ TB: IPT Children ]"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="rowTitle">PLHIV</td>
+                  <td class="input">
+                    <input
+                      id="hGG3gpo5uKF-lmbxvugTvKr-val"
+                      name="entryfield"
+                      title="TB: IPT PLHIV"
+                      value="[ TB: IPT PLHIV ]"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+  var language = "en";
+  //Dictionary
+  //{ key : "keyId", value : [ "en", "lo" ]},
+  var translation = [
+    {
+      key: "Lab_diagnosis",
+      value: [
+        "Microscopy",
+        "ກໍລະນີສົງໄສທີ່ໄດ້ກວດຂີ້ກະເທີ່ໂດຍກົງດ້ວຍກ້ອງຈຸລະທັດ/GeneXpert",
+      ],
+    },
+    {
+      key: "Microscopy_Testing",
+      value: ["Diagnosed by lab", "ກ. ການກວດບົ່ງມະຕິຂອງຫ້ອງວິເຄາະ"],
+    },
+    {
+      key: "screened_by",
+      value: ["Screened by", "ກັ່ນຕອງໂດຍ/ຈາກ"],
+    },
+    {
+      key: "Tuber",
+      value: ["TB unit", "ວັນນະໂຣກ"],
+    },
+    {
+      key: "HIV",
+      value: ["HIV unit", "ເອດສ໌"],
+    },
+    {
+      key: "Children_Doctor",
+      value: ["MCH", "ແພດປິ່ນປົວເດັກນ້ອຍ"],
+    },
+    {
+      key: "Clinic_Private_Hospital",
+      value: ["PPM", "ຄຼີນິກ/ໂຮງຫມໍເອກະຊົນ"],
+    },
+    {
+      key: "Local_Health",
+      value: ["Health Center", "ສຸກສາລາ"],
+    },
+    {
+      key: "Jailed",
+      value: ["Prison", "ຄຸມຂັງ"],
+    },
+    {
+      key: "Community",
+      value: ["Community", "ຊຸມຊົນ"],
+    },
+    {
+      key: "Closed_Person",
+      value: ["Contact", "ບຸກຄົນໃກ້ຊິດ"],
+    },
+    {
+      key: "VHV",
+      value: ["VHV", "ອສບ"],
+    },
+    {
+      key: "Others",
+      value: ["Other", "ອື່ນໆ"],
+    },
+    {
+      key: "Total",
+      value: ["Total", "ລວມ"],
+    },
+    {
+      key: "All_checked_Case",
+      value: ["Total presumptive TB", "ລວມກໍລະນີກວດທັງຫມົດ"],
+    },
+    {
+      key: "Smear_Positive",
+      value: ["smear positive", "ພົບເຊື້ອບວກ"],
+    },
+    {
+      key: "GeneXpert_Testing1",
+      value: ["GeneXpert", "ກວດດ້ວຍ GeneXpert<span class='power1'>(2)</span>"],
+    },
+    {
+      key: "GeneXpert_Testing",
+      value: [
+        "Patient examined by GeneXpert",
+        "ກວດດ້ວຍ GeneXpert <span class='power1'>(2)</span>",
+      ],
+    },
+    {
+      key: "Total_Checked_Case",
+      value: ["Total examined", "ລວມກໍລະນີທີ່ໄດ້ກວດທັງຫມົດ"],
+    },
+    {
+      key: "suspected",
+      value: ["Presumptive", "ກໍລະນີສົງໄສ"],
+    },
+    {
+      key: "Result",
+      value: ["GeneXpert tested result", "ຜົນກວດ"],
+    },
+    {
+      key: "Tuber",
+      value: ["TB", "ວັນນະໂຣກ"],
+    },
+    {
+      key: "Tuber_Anti_Drug",
+      value: ["MDR-TB", "ວັນນະໂຣກດື້ຢາ"],
+    },
+    {
+      key: "presumptive_genxpert",
+      value: [
+        "Presumptive tested by GeneXpert",
+        "​ສົງ​ໄສວັນ​ນະ​ໂຣກ ກວດ​ໂດຍ GeneXpert",
+      ],
+    },
+    {
+      key: "Total_presumptive_TB",
+      value: ["Total presumptive TB", "ຈຳ​ນວນ​ລວມວັນ​ນະ​ໂຣກສົງ​ໄສ​ທັງ​ໝົດ"],
+    },
+    {
+      key: "Presumptive_tested_by_microscopy",
+      value: [
+        "Presumptive tested by microscopy",
+        "​ສົງ​ໄສວັນ​ນະ​ໂຣກກວດ​ໂດຍກົງດ້ວຍກ້ອງ​ຈຸ​ລະ​ທັດ",
+      ],
+    },
+    {
+      key: "GeneXpert_Positive",
+      value: ["GeneXpert Positive", "​ຜົນ​ກວດ​ Xpert ທີ່ຍັ້ງຢືນວາເປັນວັນນະໂລກ"],
+    },
+    {
+      key: "TB_Registered_Cases",
+      value: [
+        "TB Registered Cases",
+        "ກໍລະນີວັນນະໂຣກທັງໝົດທີ່ໄດ້ຂື້ນທະບຽນໃນໄຕຼມາດ<span class='power1'>(3)</span>",
+      ],
+    },
+    {
+      key: "All_TB_Registered_Cases",
+      value: [
+        "Quarterly report on cases registered",
+        "ຂ. ກໍລະນີວັນນະໂຣກທັງຫມົດທີ່ໄດ້ຂຶ້ນທະບຽນໃນໄຕຼມາດ <span class='power1'>(2)</span>",
+      ],
+    },
+    {
+      key: "tb_types",
+      value: ["Type of TB", "ປະເພດວັນນະໂຣກ"],
+    },
+    {
+      key: "New",
+      value: ["New Case", "ກໍລະນີໃຫມ່"],
+    },
+    {
+      key: "Relapsed",
+      value: ["Relapse", "ກັບຄືນເປັນອີກ"],
+    },
+    {
+      key: "Failed",
+      value: ["Failure", "ລົ້ມເຫຼວ"],
+    },
+    {
+      key: "Relapsed_After_Cured",
+      value: ["Return after loss to follow up", "	ກັບມາໃຫມ່ຫຼັງຫາຍຕົວ"],
+    },
+    {
+      key: "Others",
+      value: ["Other", "ອື່ນໆ"],
+    },
+    {
+      key: "ACF",
+      value: ["ACF", "ການຊອກຄົ້ນກໍລະນີກັບທີ່"],
+    },
+    {
+      key: "Move_in",
+      value: ["Transfer in", "ຍ້າຍເຂົ້າ"],
+    },
+    {
+      key: "Age_and_Sex_disaggregation",
+      value: [
+        "Age and Sex disaggregation",
+        "ການແຈກຢາຍກໍລະນີວັນນະໂຣກໃໝ່ ແລະກັບຄືນເປັນອີກອີງຕາມອາຍຸ ແລະເພດ",
+      ],
+    },
+    {
+      key: "Age_and_Sex_distribution",
+      value: [
+        "Age and sex distribution of new and relaspe cases",
+        "ຄ. ການແຈກຢາຍກໍລະນີວັນນະໂຣກໃຫມ່ ແລະ ກັບຄືນເປັນອີກອີງຕາມອາຍຸ ແລະ ເພດ",
+      ],
+    },
+    {
+      key: "M",
+      value: ["M", "ຊ"],
+    },
+    {
+      key: "F",
+      value: ["F", "ຍ"],
+    },
+    {
+      key: "Cases_registered_by_facility",
+      value: [
+        "Cases registered by facility",
+        "ຈຸທໍາອິດທີ່ກັ່ນຕອງຄົນເຈັບວັນນະໂຣກ (ກໍລະນີວັນນະໂຣກທັງໝົດທີ່ໄດ້ຂື້ນທະບຽນໃນໄຕຼມາດ)",
+      ],
+    },
+    {
+      key: "All_Cases1",
+      value: ["All_Cases", "ກໍລະນີວັນທັງໝົດ"],
+    },
+    {
+      key: "All_Cases",
+      value: [
+        "Identification of TB cases by/through (all TB cases register in the quarter)",
+        "ງ. ຈຸດທໍາອິດທີ່ກັ່ນຕອງຄົນເຈັບວັນນະໂຣກ (ກໍລະນີວັນນະໂຣກທັງຫມົດທີ່ໄດ້ຂຶ້ນທະບຽນໃນໄຕຼມາດ)",
+      ],
+    },
+    {
+      key: "total_case_registered",
+      value: [
+        "Total TB cases registered in this quarter",
+        "ລວມກໍລະນີວັນນະໂຣກທັງໝົດທີ່ຂຶ້ນທະບຽນໃນໄຕຣມາດ = (111+112+113+114+115)",
+      ],
+    },
+    {
+      key: "TB_HIV_cases1",
+      value: [
+        "TB/HIV cases",
+        "ກິດຈະກໍາ TB/HIV (ກໍລະນີວັນນະໂຣກທັງໝົດທີ່ໄດ້ຂື້ນທະບຽນໃນໄຕຼມາດ)",
+      ],
+    },
+    {
+      key: "TB_HIV_cases",
+      value: [
+        "TB/HIV collaborative activities (all TB cases register in the quarter)",
+        "ຈ. ກິດຈະກໍາ TB/HIV (ກໍລະນີວັນນະໂຣກທັງຫມົດທີ່ໄດ້ຂຶ້ນທະບຽນໃນໄຕຼມາດ)",
+      ],
+    },
+    {
+      key: "total_screen_for_hiv",
+      value: [
+        "Total TB screened for HIV",
+        "ກໍລະນີທັງໝົດທີ່ໄດ້ກວດຫາການຕິດເຊື້ອ",
+      ],
+    },
+    {
+      key: "Before_testing_HIV",
+      value: ["Tested before TB diagnosis", "ກວດກ່ອນບົ່ງມະຕິວັນນະໂຣກ"],
+    },
+    {
+      key: "After_testing_HIV",
+      value: ["Tested after TB diagnosis", "ກວດຫຼັງບົ່ງມະຕິວັນນະໂຣກ"],
+    },
+    {
+      key: "Negative",
+      value: ["Negative", "ລົບ"],
+    },
+    {
+      key: "Positive",
+      value: ["Positive", "ບວກ"],
+    },
+    {
+      key: "TB_Cases",
+      value: ["TB Cases", "ກໍລະນີວັນນະໂຣກ"],
+    },
+    {
+      key: "cpt",
+      value: ["CPT", "ຈຳນວນທີ່ໄດ້ຮັບ CPT"],
+    },
+    {
+      key: "TB_patient_treatment",
+      value: [
+        "TB patient treatment",
+        "ການໃຫ້ການປິ່ນປົວໂດຍອີງຕາມລະບອບການປິ່ນປົວສໍາລັບຄົນເຈັບວັນນະໂຣກທັງໝົດ",
+      ],
+    },
+    {
+      key: "TB_patient_categories",
+      value: [
+        "Treatment prescription according to treatment regimen for all patients",
+        "ສ. ການໃຫ້ການປິ່ນປົວໂດຍອີງຕາມລະບອບການປິ່ນປົວສໍາລັບຄົນເຈັບວັນນະໂຣກທັງຫມົດ",
+      ],
+    },
+    {
+      key: "Children",
+      value: ["Children", "ເດັກນ້ອຍ"],
+    },
+  ];
+
+  var PIS = {
+    translate: function translate(library, language) {
+      //default as English
+      var languageOrder = 0;
+      if (language == "en") {
+        //do nothing
+      } else if (language == "lo") {
+        languageOrder = 1;
+      } else {
+        //not identified yet
+      }
+      $.each(library, function (index, entry) {
+        $("." + entry.key).html(entry.value[languageOrder]);
+      });
+    },
+  };
+
+  var getIntValue = function getIntValue(input) {
+    if (input == "") {
+      return 0;
+    } else {
+      return parseInt(input);
+    }
+  };
+
+  var setSectionEventsAll = function setSectionEventsAll() {
+    $("input").keyup(function () {
+      var trTag = $(this).parent().parent();
+      var inputs = trTag.find("input");
+      trTag.find("div.total").text(calcData(inputs));
+    });
+    $(".input-male, .input-female").keyup(function () {
+      var trTag = $(this).parent();
+      var inputsMale = trTag.find(".input-male");
+      var inputsFemale = trTag.find(".input-female");
+      trTag.find("div.total-male").text(calcData(inputsMale));
+      trTag.find("div.total-female").text(calcData(inputsFemale));
+    });
+  };
+
+  var sectionTotalCalcAll = function sectionTotalCalcAll() {
+    var ctrlTags = $("div.total");
+    var maleTags = $("div.total-male");
+    var femaleTags = $("div.total-female");
+    ctrlTags.each(function () {
+      var trTag = $(this).parent().parent();
+      var inputs = trTag.find("input");
+      $(this).text(calcData(inputs));
+    });
+    maleTags.each(function () {
+      var trTag = $(this).parent().parent();
+      var inputs = trTag.find(".input-male");
+      $(this).text(calcData(inputs));
+    });
+    femaleTags.each(function () {
+      var trTag = $(this).parent().parent();
+      var inputs = trTag.find(".input-female");
+      $(this).text(calcData(inputs));
+    });
+  };
+
+  var clearTotals = function clearTotals() {
+    $("div.total").text("");
+    $("div.total-male").text("");
+    $("div.total-female").text("");
+  };
+
+  var calcData = function calcData(inputTag) {
+    var total = 0;
+
+    inputTag.each(function () {
+      if ($(this).children().length > 0) {
+        total = getIntValue($($(this).children()[0]).val()) + total;
+      } else total = getIntValue($(this).val()) + total;
+    });
+
+    calGrandTotal();
+
+    return total;
+  };
+
+  var calGrandTotal = function calGrandTotal() {
+    var c111 =
+      getIntValue($("#D6ZZJ6Qhbl2-lmbxvugTvKr-val").val()) +
+      getIntValue($("#vbXYCi3iKZm-lmbxvugTvKr-val").val()) +
+      getIntValue($("#oUok8xYQcAq-lmbxvugTvKr-val").val());
+    var c112 =
+      getIntValue($("#C3GSXm7kbw5-lmbxvugTvKr-val").val()) +
+      getIntValue($("#izEbukxm8oa-lmbxvugTvKr-val").val()) +
+      getIntValue($("#j3AZcMNM3y6-lmbxvugTvKr-val").val());
+    var c113 =
+      getIntValue($("#vBMhjnp2GQ7-lmbxvugTvKr-val").val()) +
+      getIntValue($("#DCLoTNwSGT8-lmbxvugTvKr-val").val()) +
+      getIntValue($("#b1IQfgcfneL-lmbxvugTvKr-val").val());
+    var c114 =
+      getIntValue($("#Qdi96o3Pdhx-lmbxvugTvKr-val").val()) +
+      getIntValue($("#Dc51iOEY0Rm-lmbxvugTvKr-val").val()) +
+      getIntValue($("#Gc9KGu3ay4B-lmbxvugTvKr-val").val());
+    var c115 =
+      getIntValue($("#ntTGL0XZrr5-lmbxvugTvKr-val").val()) +
+      getIntValue($("#QpAMzshVzjL-lmbxvugTvKr-val").val()) +
+      getIntValue($("#WndvDT8PPD1-lmbxvugTvKr-val").val());
+
+    var total = c111 + c112 + c113 + c114 + c115;
+
+    $(".grand_total").text(total);
+  };
+
+  dhis2.util.on("dhis2.de.event.formReady", function (event, ds) {
+    //get current user language
+    $.get("../api/me", function (json) {
+      language = json.settings.keyUiLocale;
+      //do translation for current user
+      PIS.translate(translation, language);
+    });
+    setSectionEventsAll();
+  });
+
+  dhis2.util.on("dhis2.de.event.dataValuesLoaded", function (event, ds) {
+    clearTotals();
+    sectionTotalCalcAll();
+  });
+</script>

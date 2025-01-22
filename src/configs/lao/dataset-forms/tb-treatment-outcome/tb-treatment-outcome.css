@@ -1,0 +1,12 @@
+#tb-treatment-outcome-form-container table td,
+#tb-treatment-outcome-form-container table th {
+  border: 1px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}
+
+#tb-treatment-outcome-form-container .power1 {
+  position: relative;
+  bottom: 1ex;
+  font-size: 80%;
+}

@@ -1,0 +1,13 @@
+#tb-ptbe-by-genexpert-monthly-import-form-container table td,
+#tb-ptbe-by-genexpert-monthly-import-form-container table th {
+  border: 1.5px solid #aaa;
+  font-weight: bold;
+}
+
+#tb-ptbe-by-genexpert-monthly-import-form-container table tr:hover {
+  background-color: #fff;
+}
+
+#tb-ptbe-by-genexpert-monthly-import-form-container input {
+  background-color: #ccc;
+}

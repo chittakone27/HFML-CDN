@@ -1,0 +1,23 @@
+#epi-stock-form-container {
+  height: fit-content;
+  background-color: aliceblue;
+  border-collapse: collapse;
+  border-radius: 0.8em;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+#tableRow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#table2 {
+  width: 30%;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+#table2 th {
+  height: 50px;
+}

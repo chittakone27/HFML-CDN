@@ -1,0 +1,1455 @@
+<script>
+  var language = "en";
+  //Dictionary
+  //{ key : "keyId", value : [ "en","lo" ]},
+  var translation = [
+    {
+      key: "form_title",
+      value: [
+        "REPORT ON ACTIVITIES AND MORBIDITY - OUTPATIENT",
+        "ລາຍງານກ່ຽວກັບກິດຈະກໍາແລະຄວາມບໍ່ສະບາຍ - ຄົນເຈັບເຂດນອກ",
+      ],
+    },
+    { key: "UNDER_5_YEARS", value: ["UNDER 5 YEARS (<5)", "ລຸ່ມ 5 ປີ"] },
+    { key: "5_YEARS_OVER", value: ["5 YEARS OVER (≥5)", "5 ປີ ຫຼື ສູງກວ່າ"] },
+    {
+      key: "Diarrhea_with_blood",
+      value: ["Diarrhea with blood", "ຖອກທ້ອງມີເລືອດປົນ"],
+    },
+    {
+      key: "Diarrhea_no_blood_no_severe_dehydration",
+      value: [
+        "Diarrhea, no blood, no severe dehydration",
+        "ຖອກທ້ອງບໍ່ມີເລືອດປົນ ຂາດນ້ຳເບົາບາງ",
+      ],
+    },
+    {
+      key: "Diarrhea_severe_dehydration",
+      value: ["Diarrhea severe dehydration", "ຖອກທ້ອງຂາດນ້ຳຮ້າຍແຮງ"],
+    },
+    { key: "Common_cold", value: ["Common cold", "ເປັນຫວັດ ຫຼື ໄຂ້ຫວັດ"] },
+    {
+      key: "Pneumo_bronchitis",
+      value: ["Pneumo-bronchitis", "ຫຼອດປອດ ຫຼື ປອດອັກເສບ"],
+    },
+    {
+      key: "Severe_pneumo_bronchitis",
+      value: ["Severe pneumo-bronchitis", "ປອດອັກເສບຮຸນແຮງ"],
+    },
+    {
+      key: "Probable_malaria_no_test",
+      value: ["Probable malaria, no test", "ສົງໄສໄຂ້ຍຸງ"],
+    },
+    {
+      key: "Pfalciparum_tested_positive_confirmed_Pf",
+      value: [
+        "P.falciparum tested positive = confirmed P.f.",
+        "ໄຂ້ຍຸງເຊື້ອຟານຊີປາຣອມ",
+      ],
+    },
+    {
+      key: "non_P_falcip_tested_positive",
+      value: [
+        "non- P. falcip. tested positive",
+        "ໄຂ້ຍຸງບໍ່ແມ່ນເຊື້ອຟານຊີປາຣອມ ",
+      ],
+    },
+    {
+      key: "Malaria_tested_negative",
+      value: ["Malaria tested negative", "ໄຂ້ຍຸງບໍ່ພົບເຊື້ອ"],
+    },
+    { key: "Dengue_fever", value: ["Dengue fever", "ໄຂ້ຍຸງລາຍ"] },
+    { key: "Measles", value: ["Measles", "ໝາກແດງ "] },
+    {
+      key: "Genital_discharge_syndrome",
+      value: ["Genital discharge syndrome", "ໂລກໜອງຍ້ອຍ "],
+    },
+    {
+      key: "Genital_ulcer_syndrome",
+      value: ["Genital ulcer syndrome", "ບາດແຜອະໄວຍະວະເພດ"],
+    },
+    {
+      key: "Helminthes_parasites",
+      value: ["Helminthes parasites", "ກາຝາກໜອນ "],
+    },
+    {
+      key: "All_other_infections",
+      value: ["All other infections", "ພະຍາດຕິດຕໍ່ອື່ນໆ"],
+    },
+    {
+      key: "PATHOLOGY_PER_PHYSIOLOGICAL_SYSTEM",
+      value: [
+        "PATHOLOGY PER PHYSIOLOGICAL SYSTEM",
+        "PATHOLOGY PER PHYSIOLOGICAL SYSTEM",
+      ],
+    },
+    { key: "Diabetes", value: ["Diabetes", "ເບົາຫວານ"] },
+    {
+      key: "Other_endocrine_pathology",
+      value: ["Other endocrine pathology", "ພະຍາດຕ່ອມພາຍໃນອື່ນໆ"],
+    },
+    { key: "Malnutrition", value: ["Malnutrition", "ຂາດອາຫານ"] },
+    { key: "Anemia", value: ["Anemia", "ເລືອກຈາງ"] },
+    {
+      key: "Other_blood_disease",
+      value: ["Other blood disease", "ພະຍາດເລືອກອື່ນໆ"],
+    },
+    { key: "Cancer", value: ["Cancer", "ມະເລັງ"] },
+    { key: "Epilepsy", value: ["Epilepsy", "ບ້າໝູ"] },
+    {
+      key: "Nervous_system_non_psych",
+      value: ["Nervous system-non-psych.", "ພະຍາດລະບົບປະສາດ ແຕ່ບໍ່ແມ່ນໂລກຈິດ"],
+    },
+    { key: "Psychiatric", value: ["Psychiatric", "ໂລກຈິດ"] },
+    {
+      key: "Tonsillitis_pharyngitits",
+      value: ["Tonsillitis, pharyngitits", "ຮູຄໍຫຼືອາມີດານອັກເສບ"],
+    },
+    { key: "Otitis", value: ["Otitis", "ຫູອັກເສບ"] },
+    {
+      key: "Ear_nose_throat",
+      value: ["Ear, nose, throat", "ພະຍາດຫູ, ດັງ, ຄໍ, ອື່ນໆ"],
+    },
+    { key: "Ophthalmology", value: ["Ophthalmology", "ພະຍາດຕາ"] },
+    { key: "Hypertension", value: ["Hypertension", "ຄວາມດັນເລືອດສູງ"] },
+    {
+      key: "Other_circulatory_and_heart",
+      value: [
+        "Other circulatory and heart",
+        "ພະຍາດອື່ນຂອງຫົວໃຈ ແລະ ເສັ້ນເລືອດ",
+      ],
+    },
+    { key: "Asthma", value: ["Asthma", "ເປັນຫືດ"] },
+    {
+      key: "All_other_respiratory",
+      value: ["All other respiratory", "ພະຍາດອື່ນຂອງລະບົບຫາຍໃຈ"],
+    },
+    { key: "Digestive_system", value: ["Digestive system", "ພະຍາດລະບົບລະລາຍ"] },
+    { key: "Skin_disorders", value: ["Skin disorders", "ພະຍາດຜິວໜັງ"] },
+    {
+      key: "Musculo_skeletal_system",
+      value: ["Musculo-skeletal system", "ພະຍາດລະບົບກ້າມຊີ້ນ ແລະ ກະດູກ"],
+    },
+    {
+      key: "Gyneco_Obstetrics",
+      value: ["Gyneco-Obstetrics", "ພະຍາດຍິງ-ປະສູດ"],
+    },
+    { key: "Urology", value: ["Urology", "ພະຍາດລະບົບຖ່າຍເທ"] },
+    {
+      key: "Road_traffic_injury",
+      value: ["Road traffic injury", "ອຸປະຕິເຫດທ້ອງຖະໜົນ"],
+    },
+    { key: "Trauma_all_other", value: ["Trauma, all other", "ກະທົບອື່ນໆ"] },
+    { key: "Dental", value: ["Dental", "ພະຍາດແຂ້ວ"] },
+    {
+      key: "Small_surgery_dressing",
+      value: ["Small surgery / dressing", "ຜ່າຕັດນ້ອຍ ແລະ ປ່ຽນບາດ"],
+    },
+    {
+      key: "All_OTHER_OPD_cases",
+      value: ["All OTHER OPD cases", "ພະຍາດສາຍເຫດອື່ນໆ"],
+    },
+    {
+      key: "OTHER_OPD_SERVICES",
+      value: ["OTHER OPD SERVICES", "OTHER OPD SERVICES"],
+    },
+    {
+      key: "Medical_check_up",
+      value: ["Medical check up", "ຈຳນວນເທື່ອກວດຢັ້ງຢືນສຸຂະພາບ"],
+    },
+    {
+      key: "Old_case_follow_up_visit",
+      value: ["Old case (follow up visit)", "ຈຳນວນກໍລະນີເກົ່າທັງໝົດ"],
+    },
+    {
+      key: "Cases_treated_in_outreach",
+      value: ["Cases treated in outreach", "ຈຳນວນເທື່ອກວດ ແລະ ປິ່ນປົວຕາມບ້ານ"],
+    },
+    {
+      key: "CHRONIC_DISEASE_REGISTER",
+      value: ["CHRONIC DISEASE REGISTER", "CHRONIC DISEASE REGISTER"],
+    },
+    {
+      key: "Total_cases_of_leprosy_detected",
+      value: ["Total cases of leprosy detected", "ຈຳນວນຄົນເຈັບຂີ້ທູດທັງໝົດ"],
+    },
+    {
+      key: "New_cases_of_leprosy_detected",
+      value: ["New cases of leprosy detected", "ຄົນເຈັບຂີ້ທູດພົບໃໝ່"],
+    },
+    {
+      key: "First_followup_for_leprosy_in_the_year",
+      value: [
+        "First followup for leprosy in the year",
+        "ຈຳນວນຄົນເຈັບຂີ້ທູດສືບຕໍ່ປົວຄັ້ງແລກໃນປີ",
+      ],
+    },
+    {
+      key: "Cumulative_leprosy_cases_detected_in_the_year",
+      value: [
+        "Cumulative leprosy cases detected in the year",
+        "ຄົນເຈັບຂີ້ທູດສະສົມໃນປີຮອດເດືອນນິີີ້",
+      ],
+    },
+    {
+      key: "Leprosy_cases_cured",
+      value: ["Leprosy cases cured", "ຈຳນວນຂີ້ທູດປີ່ນປົວດີ"],
+    },
+    {
+      key: "Total_cases_of_TB_detected",
+      value: ["Total cases of TB detected", "ຈຳນວນ​ຄົນເຈັບວັນນະໂລກ​ທີ່​ພົບ"],
+    },
+    {
+      key: "New_cases_of_TB_detected",
+      value: ["New cases of TB detected", "ຈຳນວນຄົນເຈັບວັນນະໂລກພົບໃນເດືອນນີ້"],
+    },
+    {
+      key: "First_followup_for_TB_in_the_year",
+      value: [
+        "First followup for TB in the year",
+        "ຈຳນວນຄົນເຈັບວັນນະໂລກສືບຕໍ່ປົວຄັ້ງແລກໃນປີ",
+      ],
+    },
+    {
+      key: "Cumulative_TB_cases_detected_in_the_year",
+      value: [
+        "Cumulative TB cases detected in the year",
+        "ຈຳນວນຄົນເຈັບວັນນະໂລກສະສົມໃນປີຮອດເດືອນນີ້",
+      ],
+    },
+    {
+      key: "TB_cases_cured",
+      value: ["TB cases cured", "ວັນນະໂລກປົວດີໃນເດືອນ"],
+    },
+  ];
+
+  jQuery(document).ready(function () {
+    //get current user language
+    $.get("../api/me", function (json) {
+      language = json.settings.keyUiLocale;
+      //do translation for current user
+      PIS.translate(translation, language);
+    });
+  });
+
+  // Put your javascript functions here
+  PIS = {
+    translate: function (library, language) {
+      //default as English
+      languageOrder = 0;
+      if (language == "en") {
+        //do nothing
+      } else if (language == "lo") {
+        languageOrder = 1;
+      } else {
+        //not identified yet
+      }
+      $.each(library, function (index, entry) {
+        $("." + entry.key).html(entry.value[languageOrder]);
+      });
+    },
+  };
+</script>
+<style type="text/css">
+  table {
+    width: 60%;
+  }
+  td {
+    text-align: center;
+    background-color: rgb(244, 249, 255);
+    padding: 5px;
+  }
+  td.mainTitle {
+    text-align: left;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    background-color: rgb(102, 153, 204);
+  }
+  td.blueTitle {
+    background-color: rgb(153, 204, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.blueContent {
+    background-color: rgb(202, 229, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.orangeTitle {
+    background-color: rgb(255, 204, 0);
+    font-weight: bold;
+  }
+  td.orangeContent {
+    background-color: rgb(255, 234, 153);
+  }
+  td.yorkGreenTitle {
+    background-color: rgb(153, 204, 153);
+    font-weight: bold;
+  }
+  td.yorkGreenContent {
+    background-color: rgb(224, 239, 224);
+  }
+  td.pinkTitle {
+    background-color: rgb(235, 199, 222);
+    font-weight: bold;
+  }
+  td.pinkContent {
+    background-color: rgb(247, 232, 241);
+  }
+  input {
+    width: 5em;
+  }
+</style>
+<table cols="8">
+  <tbody>
+    <tr>
+      <td class="mainTitle" colspan="3">
+        <div class="form_title">
+          REPORT ON ACTIVITIES AND MORBIDITY - OUTPATIENT
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueTitle">&nbsp;</td>
+      <td class="orangeTitle">
+        <div class="UNDER_5_YEARS">UNDER_5_YEARS</div>
+      </td>
+      <td class="yorkGreenTitle">
+        <div class="5_YEARS_OVER">5_YEARS_OVER</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Diarrhea_with_blood">Diarrhea_with_blood</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="AzVkJg0zhFj-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Diarrhea with blood OPD, Under 5"
+          value="[ OPDIPD Diarrhea with blood OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="AzVkJg0zhFj-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Diarrhea with blood OPD, Over 5"
+          value="[ OPDIPD Diarrhea with blood OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Diarrhea_no_blood_no_severe_dehydration">
+          Diarrhea_no_blood_no_severe_dehydration
+        </div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="dT0DkpdpoB3-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Diarrhea, no blood, no severe dehydration OPD, Under 5"
+          value="[ OPDIPD Diarrhea, no blood, no severe dehydration OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="dT0DkpdpoB3-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Diarrhea, no blood, no severe dehydration OPD, Over 5"
+          value="[ OPDIPD Diarrhea, no blood, no severe dehydration OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Diarrhea_severe_dehydration">
+          Diarrhea_severe_dehydration
+        </div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="PnzHWoa8wHA-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Diarrhea severe dehydration OPD, Under 5"
+          value="[ OPDIPD Diarrhea severe dehydration OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="PnzHWoa8wHA-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Diarrhea severe dehydration OPD, Over 5"
+          value="[ OPDIPD Diarrhea severe dehydration OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Common_cold">Common_cold</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="LePldn7CAfG-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Common cold OPD, Under 5"
+          value="[ OPDIPD Common cold OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="LePldn7CAfG-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Common cold OPD, Over 5"
+          value="[ OPDIPD Common cold OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Pneumo_bronchitis">Pneumo_bronchitis</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="DHzKgskGAJ6-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Pneumo-bronchitis OPD, Under 5"
+          value="[ OPDIPD Pneumo-bronchitis OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="DHzKgskGAJ6-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Pneumo-bronchitis OPD, Over 5"
+          value="[ OPDIPD Pneumo-bronchitis OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Severe_pneumo_bronchitis">Severe_pneumo_bronchitis</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="HAfqLuKZPoI-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Severe pneumo-bronchitis OPD, Under 5"
+          value="[ OPDIPD Severe pneumo-bronchitis OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="HAfqLuKZPoI-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Severe pneumo-bronchitis OPD, Over 5"
+          value="[ OPDIPD Severe pneumo-bronchitis OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Probable_malaria_no_test">Probable_malaria_no_test</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="wWWNiBpIiiO-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Probable malaria, no test OPD, Under 5"
+          value="[ OPDIPD Probable malaria, no test OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="wWWNiBpIiiO-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Probable malaria, no test OPD, Over 5"
+          value="[ OPDIPD Probable malaria, no test OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Pfalciparum_tested_positive_confirmed_Pf">
+          Pfalciparum_tested_positive_confirmed_Pf
+        </div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="lFYq0lyy7uV-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD P.falciparum tested positive confirmed OPD, Under 5"
+          value="[ OPDIPD P.falciparum tested positive confirmed OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="lFYq0lyy7uV-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD P.falciparum tested positive confirmed OPD, Over 5"
+          value="[ OPDIPD P.falciparum tested positive confirmed OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="non_P_falcip_tested_positive">
+          non_P_falcip_tested_positive
+        </div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="fYIJajmvmij-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Non P.falciparum tested positive OPD, Under 5"
+          value="[ OPDIPD Non P.falciparum tested positive OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="fYIJajmvmij-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Non P.falciparum tested positive OPD, Over 5"
+          value="[ OPDIPD Non P.falciparum tested positive OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Malaria_tested_negative">Malaria_tested_negative</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="pIPHDwUuN8N-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Malaria tested negative OPD, Under 5"
+          value="[ OPDIPD Malaria tested negative OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="pIPHDwUuN8N-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Malaria tested negative OPD, Over 5"
+          value="[ OPDIPD Malaria tested negative OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Dengue_fever">Dengue_fever</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="xvqMi64ckc6-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Dengue fever OPD, Under 5"
+          value="[ OPDIPD Dengue fever OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="xvqMi64ckc6-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Dengue fever OPD, Over 5"
+          value="[ OPDIPD Dengue fever OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Measles">Measles</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="uwIexNSvz1i-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Measles OPD, Under 5"
+          value="[ OPDIPD Measles OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="uwIexNSvz1i-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Measles OPD, Over 5"
+          value="[ OPDIPD Measles OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Genital_discharge_syndrome">Genital_discharge_syndrome</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="dxjyybG0h4A-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Genital discharge syndrome OPD, Under 5"
+          value="[ OPDIPD Genital discharge syndrome OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="dxjyybG0h4A-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Genital discharge syndrome OPD, Over 5"
+          value="[ OPDIPD Genital discharge syndrome OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Genital_ulcer_syndrome">Genital_ulcer_syndrome</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="cIaGJZi6GV5-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Genital ulcer syndrome OPD, Under 5"
+          value="[ OPDIPD Genital ulcer syndrome OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="cIaGJZi6GV5-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Genital ulcer syndrome OPD, Over 5"
+          value="[ OPDIPD Genital ulcer syndrome OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Helminthes_parasites">Helminthes_parasites</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="RQtrDHeIYrw-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Helminthes parasites OPD, Under 5"
+          value="[ OPDIPD Helminthes parasites OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="RQtrDHeIYrw-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Helminthes parasites OPD, Over 5"
+          value="[ OPDIPD Helminthes parasites OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="All_other_infections">All_other_infections</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="dSo8mRjnuey-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD All other infections OPD, Under 5"
+          value="[ OPDIPD All other infections OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="dSo8mRjnuey-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD All other infections OPD, Over 5"
+          value="[ OPDIPD All other infections OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueTitle" colspan="3">
+        <div class="PATHOLOGY_PER_PHYSIOLOGICAL_SYSTEM">
+          PATHOLOGY_PER_PHYSIOLOGICAL_SYSTEM
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Diabetes">Diabetes</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="pdxOaZx1hAw-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Diabetes OPD, Under 5"
+          value="[ OPDIPD Diabetes OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="pdxOaZx1hAw-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Diabetes OPD, Over 5"
+          value="[ OPDIPD Diabetes OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Other_endocrine_pathology">Other_endocrine_pathology</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="qzIh6vLNjrc-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Other endocrine pathology OPD, Under 5"
+          value="[ OPDIPD Other endocrine pathology OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="qzIh6vLNjrc-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Other endocrine pathology OPD, Over 5"
+          value="[ OPDIPD Other endocrine pathology OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Malnutrition">Malnutrition</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="ay65OeApAC9-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Malnutrition OPD, Under 5"
+          value="[ OPDIPD Malnutrition OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="ay65OeApAC9-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Malnutrition OPD, Over 5"
+          value="[ OPDIPD Malnutrition OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Anemia">Anemia</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="Ucz92jZMacM-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Anemia OPD, Under 5"
+          value="[ OPDIPD Anemia OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Ucz92jZMacM-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Anemia OPD, Over 5"
+          value="[ OPDIPD Anemia OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Other_blood_disease">Other_blood_disease</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="O2s6cAiARbj-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Other blood disease OPD, Under 5"
+          value="[ OPDIPD Other blood disease OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="O2s6cAiARbj-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Other blood disease OPD, Over 5"
+          value="[ OPDIPD Other blood disease OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Cancer">Cancer</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="IoL1Sbtw8dB-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Cancer OPD, Under 5"
+          value="[ OPDIPD Cancer OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="IoL1Sbtw8dB-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Cancer OPD, Over 5"
+          value="[ OPDIPD Cancer OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Epilepsy">Epilepsy</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="Yj0W9WzwksV-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Epilepsy OPD, Under 5"
+          value="[ OPDIPD Epilepsy OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Yj0W9WzwksV-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Epilepsy OPD, Over 5"
+          value="[ OPDIPD Epilepsy OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Nervous_system_non_psych">Nervous_system_non_psych</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="FO3n01gNJex-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Nervous system-non-psych OPD, Under 5"
+          value="[ OPDIPD Nervous system-non-psych OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="FO3n01gNJex-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Nervous system-non-psych OPD, Over 5"
+          value="[ OPDIPD Nervous system-non-psych OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Psychiatric">Psychiatric</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="lWLZUToYGvn-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Psychiatric OPD, Under 5"
+          value="[ OPDIPD Psychiatric OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="lWLZUToYGvn-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Psychiatric OPD, Over 5"
+          value="[ OPDIPD Psychiatric OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Tonsillitis_pharyngitits">Tonsillitis_pharyngitits</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="dyuUvupfqIu-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Tonsillitis, pharyngitits OPD, Under 5"
+          value="[ OPDIPD Tonsillitis, pharyngitits OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="dyuUvupfqIu-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Tonsillitis, pharyngitits OPD, Over 5"
+          value="[ OPDIPD Tonsillitis, pharyngitits OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Otitis">Otitis</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="HWONN4n92L3-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Otitis OPD, Under 5"
+          value="[ OPDIPD Otitis OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="HWONN4n92L3-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Otitis OPD, Over 5"
+          value="[ OPDIPD Otitis OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Ear_nose_throat">Ear_nose_throat</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="BKoq4l4b5Fp-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Ear, nose, throat OPD, Under 5"
+          value="[ OPDIPD Ear, nose, throat OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="BKoq4l4b5Fp-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Ear, nose, throat OPD, Over 5"
+          value="[ OPDIPD Ear, nose, throat OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Ophthalmology">Ophthalmology</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="QPNK7HQRwAK-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Ophthalmology OPD, Under 5"
+          value="[ OPDIPD Ophthalmology OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="QPNK7HQRwAK-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Ophthalmology OPD, Over 5"
+          value="[ OPDIPD Ophthalmology OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Hypertension">Hypertension</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="mPsacODvwgS-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Hypertension OPD, Under 5"
+          value="[ OPDIPD Hypertension OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="mPsacODvwgS-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Hypertension OPD, Over 5"
+          value="[ OPDIPD Hypertension OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Other_circulatory_and_heart">
+          Other_circulatory_and_heart
+        </div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="pGm3Idy0NcZ-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Other circulatory and heart OPD, Under 5"
+          value="[ OPDIPD Other circulatory and heart OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="pGm3Idy0NcZ-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Other circulatory and heart OPD, Over 5"
+          value="[ OPDIPD Other circulatory and heart OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Asthma">Asthma</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="VBvJrb7iBwQ-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Asthma OPD, Under 5"
+          value="[ OPDIPD Asthma OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="VBvJrb7iBwQ-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Asthma OPD, Over 5"
+          value="[ OPDIPD Asthma OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="All_other_respiratory">All_other_respiratory</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="PcMVRSv17wV-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD All other respiratory OPD, Under 5"
+          value="[ OPDIPD All other respiratory OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="PcMVRSv17wV-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD All other respiratory OPD, Over 5"
+          value="[ OPDIPD All other respiratory OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Digestive_system">Digestive_system</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="DwxTM5SvvSj-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Digestive system OPD, Under 5"
+          value="[ OPDIPD Digestive system OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="DwxTM5SvvSj-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Digestive system OPD, Over 5"
+          value="[ OPDIPD Digestive system OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Skin_disorders">Skin_disorders</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="NJvs4yB0lPH-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Skin disorders OPD, Under 5"
+          value="[ OPDIPD Skin disorders OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="NJvs4yB0lPH-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Skin disorders OPD, Over 5"
+          value="[ OPDIPD Skin disorders OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Musculo_skeletal_system">Musculo_skeletal_system</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="Ze4P80oDLoA-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Musculo Skeletal system OPD, Under 5"
+          value="[ OPDIPD Musculo Skeletal system OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="Ze4P80oDLoA-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Musculo Skeletal system OPD, Over 5"
+          value="[ OPDIPD Musculo Skeletal system OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Gyneco_Obstetrics">Gyneco_Obstetrics</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="TsoRAkXRAd7-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Gyneco Obstetrics OPD, Under 5"
+          value="[ OPDIPD Gyneco Obstetrics OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="TsoRAkXRAd7-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Gyneco Obstetrics OPD, Over 5"
+          value="[ OPDIPD Gyneco Obstetrics OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Urology">Urology</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="UJrIwBzkhLD-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Urology OPD, Under 5"
+          value="[ OPDIPD Urology OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="UJrIwBzkhLD-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Urology OPD, Over 5"
+          value="[ OPDIPD Urology OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Road_traffic_injury">Road_traffic_injury</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="jvlkSD9dil9-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Road traffic injury OPD, Under 5"
+          value="[ OPDIPD Road traffic injury OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="jvlkSD9dil9-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Road traffic injury OPD, Over 5"
+          value="[ OPDIPD Road traffic injury OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Trauma_all_other">Trauma_all_other</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="vrkQBDFqQwq-gCyXvjm9ZzW-val"
+          name="entryfield"
+          title="OPDIPD Trauma, all other OPD, Under 5"
+          value="[ OPDIPD Trauma, all other OPD, Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="vrkQBDFqQwq-hpM66RmHpMk-val"
+          name="entryfield"
+          title="OPDIPD Trauma, all other OPD, Over 5"
+          value="[ OPDIPD Trauma, all other OPD, Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Dental">Dental</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="lXQeZm6DgUa-gBDp3EFLYCQ-val"
+          name="entryfield"
+          title="OPD Dental Under 5"
+          value="[ OPD Dental Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="lXQeZm6DgUa-RV8yOoAIbql-val"
+          name="entryfield"
+          title="OPD Dental Over 5"
+          value="[ OPD Dental Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Small_surgery_dressing">Small_surgery_dressing</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="LEqlu8m9yyS-gBDp3EFLYCQ-val"
+          name="entryfield"
+          title="OPD Small surgery / dressing Under 5"
+          value="[ OPD Small surgery / dressing Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="LEqlu8m9yyS-RV8yOoAIbql-val"
+          name="entryfield"
+          title="OPD Small surgery / dressing Over 5"
+          value="[ OPD Small surgery / dressing Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="All_OTHER_OPD_cases">All_OTHER_OPD_cases</div>
+      </td>
+      <td class="orangeContent">
+        <input
+          id="UWuUP5ScxsE-gBDp3EFLYCQ-val"
+          name="entryfield"
+          title="OPD All other OPD cases Under 5"
+          value="[ OPD All other OPD cases Under 5 ]"
+        />
+      </td>
+      <td class="yorkGreenContent">
+        <input
+          id="UWuUP5ScxsE-RV8yOoAIbql-val"
+          name="entryfield"
+          title="OPD All other OPD cases Over 5"
+          value="[ OPD All other OPD cases Over 5 ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueTitle" colspan="3">
+        <div class="OTHER_OPD_SERVICES">OTHER_OPD_SERVICES</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Medical_check_up">Medical_check_up</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="jC2t5y8lqbh-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Check-up / certificate"
+          value="[ OPD Check-up / certificate ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Old_case_follow_up_visit">Old_case_follow_up_visit</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="fkWBO1MTysS-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Old case (follow up visit)"
+          value="[ OPD Old case (follow up visit) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Cases_treated_in_outreach">Cases_treated_in_outreach</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="SAHyqOOomyW-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD People treated in outreach activities"
+          value="[ OPD People treated in outreach activities ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueTitle" colspan="3">
+        <div class="CHRONIC_DISEASE_REGISTER">CHRONIC_DISEASE_REGISTER</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Total_cases_of_leprosy_detected">
+          Total_cases_of_leprosy_detected
+        </div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="tcZAjVmvNxj-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Total cases of leprosy detected"
+          value="[ OPD Total cases of leprosy detected ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="New_cases_of_leprosy_detected">
+          New_cases_of_leprosy_detected
+        </div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="IpRjFeKBCA7-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD New cases of leprosy detected"
+          value="[ OPD New cases of leprosy detected ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="First_followup_for_leprosy_in_the_year">
+          First_followup_for_leprosy_in_the_year
+        </div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="GTVC6qAqiZX-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD First Leprosy followed"
+          value="[ OPD First Leprosy followed ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Cumulative_leprosy_cases_detected_in_the_year">
+          Cumulative_leprosy_cases_detected_in_the_year
+        </div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="dcbXklGkiLW-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Cumulative leprosy cases detected"
+          value="[ OPD Cumulative leprosy cases detected ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Leprosy_cases_cured">Leprosy_cases_cured</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="hCCtkLAxJiN-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Leprosy cases cured"
+          value="[ OPD Leprosy cases cured ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Total_cases_of_TB_detected">Total_cases_of_TB_detected</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="kA06W2V7Zmg-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Total patients screened for TB"
+          value="[ OPD Total patients screened for TB ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="New_cases_of_TB_detected">New_cases_of_TB_detected</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="LFTFUR7szbu-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD New cases of TB detected"
+          value="[ OPD New cases of TB detected ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="First_followup_for_TB_in_the_year">
+          First_followup_for_TB_in_the_year
+        </div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="pLfYTDUq1Si-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD First TB followed"
+          value="[ OPD First TB followed ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="Cumulative_TB_cases_detected_in_the_year">
+          Cumulative_TB_cases_detected_in_the_year
+        </div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="OJnDWJj5VIY-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD Cumulative TB cases detected"
+          value="[ OPD Cumulative TB cases detected ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">
+        <div class="TB_cases_cured">TB_cases_cured</div>
+      </td>
+      <td class="pinkContent" colspan="2">
+        <input
+          id="F4221hL4iq5-lmbxvugTvKr-val"
+          name="entryfield"
+          title="OPD TB cases cured"
+          value="[ OPD TB cases cured ]"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <span style="color: #0000ff"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6">ກະລຸນາກົດປຸ່ມ</span></span
+    ></span
+  ><font color="red"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6"> &quot;</span
+      ><strong><span style="background-color: #add8e6">ສຳເລັດແລ້ວ</span></strong
+      ><span style="background-color: #add8e6">&quot; </span></span
+    ></font
+  ><span style="color: #0000ff"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6"
+        >ເມື່ອທ່ານປ້ອນຂໍ້ມູນຄົບຖ້ວນ</span
+      ></span
+    ></span
+  >
+</p>

@@ -1,0 +1,632 @@
+<link
+  crossorigin="anonymous"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  rel="stylesheet"
+/>
+<style type="text/css">
+  .my-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+  .my-table td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  .table.my-table th {
+    vertical-align: middle;
+    text-align: center;
+    font-size: 15px;
+    color: white;
+  }
+  tr.bottom-border td {
+    border-bottom: 1pt solid black;
+  }
+  /* Title CSS */
+  .title {
+    color: white;
+  }
+  .title.sub1 {
+    width: 15%;
+  }
+  .title.sub2 {
+    width: 15%;
+  }
+  .title.vaccin {
+    background-color: #33691e;
+    width: 17%;
+  }
+  .title.age {
+    width: 8%;
+    background-color: #0277bd;
+  }
+  .title.hpv1 {
+    background-color: #ef5350;
+  }
+  .title.hpv1.sub1 {
+    background-color: #e57373;
+    color: black;
+  }
+  .title.hpv1.sub2 {
+    background-color: #ef9a9a;
+    color: black;
+  }
+  .title.hpv2 {
+    background-color: #43a047;
+  }
+  .title.hpv2.sub1 {
+    background-color: #66bb6a;
+    color: black;
+  }
+  .title.hpv2.sub2 {
+    background-color: #81c784;
+    color: black;
+  }
+  .row-title {
+    font-weight: bold;
+    font-size: 17px;
+    background-color: #558b2f;
+    color: white;
+  }
+  .row-title.age-ele {
+    background-color: #4fc3f7;
+    color: black;
+  }
+  .total-field.title {
+    background-color: #006064;
+    color: white;
+  }
+
+  /* Table body CSS */
+  td.gray-field {
+    background-color: #dddddd;
+  }
+  .hpv1.type-1 {
+    background-color: #ffcdd2;
+  }
+  .hpv1.type-2 {
+    background-color: #ffebee;
+  }
+  .hpv2.type-1 {
+    background-color: #c8e6c9;
+  }
+  .hpv2.type-2 {
+    background-color: #e8f5e9;
+  }
+  .total-field {
+    font-weight: bold;
+  }
+  /* .my-table tr {
+    height: 50px;
+  } */
+</style>
+<div class="table-responsive">
+  <table class="table my-table table-bordered">
+    <thead>
+      <tr>
+        <th class="title vaccin" rowspan="2" translation="">
+          Vaccination site
+        </th>
+        <th class="title age" rowspan="2" translation="">Age</th>
+        <th class="title hpv1" colspan="2" translation="">HPV 1</th>
+        <th class="title hpv2" colspan="2" translation="">HPV 2</th>
+      </tr>
+      <tr>
+        <th class="title hpv1 sub1" translation="">School girls</th>
+        <th class="title hpv1 sub2" translation="">Out-of-school girls</th>
+        <th class="title hpv2 sub1" translation="">School girls</th>
+        <th class="title hpv2 sub2" translation="">Out-of-school girls</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="row-title" rowspan="7" translation="">School</td>
+        <td class="row-title age-ele">10</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-o8SFeAuUdqE-val"
+            name="entryfield"
+            title="HPV 1 10, In-School, At School"
+            value="[ HPV 1 10, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-QAYXg6o3AEa-val"
+            name="entryfield"
+            title="HPV 1 10, Out-of-School, At School"
+            value="[ HPV 1 10, Out-of-School, At School ]"
+          />
+        </td>
+        <td class="gray-field">&nbsp;</td>
+        <td class="gray-field">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">11</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-bQMwVCFD7RI-val"
+            name="entryfield"
+            title="HPV 1 11, In-School, At School"
+            value="[ HPV 1 11, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-HCH4PI2ZK5H-val"
+            name="entryfield"
+            title="HPV 1 11, Out-of-School, At School"
+            value="[ HPV 1 11, Out-of-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-bQMwVCFD7RI-val"
+            name="entryfield"
+            title="HPV 2 11, In-School, At School"
+            value="[ HPV 2 11, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-HCH4PI2ZK5H-val"
+            name="entryfield"
+            title="HPV 2 11, Out-of-School, At School"
+            value="[ HPV 2 11, Out-of-School, At School ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">12</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-DRUevfUOtzf-val"
+            name="entryfield"
+            title="HPV 1 12, In-School, At School"
+            value="[ HPV 1 12, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-buT5931rCRZ-val"
+            name="entryfield"
+            title="HPV 1 12, Out-of-School, At School"
+            value="[ HPV 1 12, Out-of-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-DRUevfUOtzf-val"
+            name="entryfield"
+            title="HPV 2 12, In-School, At School"
+            value="[ HPV 2 12, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-buT5931rCRZ-val"
+            name="entryfield"
+            title="HPV 2 12, Out-of-School, At School"
+            value="[ HPV 2 12, Out-of-School, At School ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">13</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-pDviRORNCzE-val"
+            name="entryfield"
+            title="HPV 1 13, In-School, At School"
+            value="[ HPV 1 13, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-bfi10ZXYZlB-val"
+            name="entryfield"
+            title="HPV 1 13, Out-of-School, At School"
+            value="[ HPV 1 13, Out-of-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-pDviRORNCzE-val"
+            name="entryfield"
+            title="HPV 2 13, In-School, At School"
+            value="[ HPV 2 13, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-bfi10ZXYZlB-val"
+            name="entryfield"
+            title="HPV 2 13, Out-of-School, At School"
+            value="[ HPV 2 13, Out-of-School, At School ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">14</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-Ta4CTqU627c-val"
+            name="entryfield"
+            title="HPV 1 14, In-School, At School"
+            value="[ HPV 1 14, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-G9hO3sma7FD-val"
+            name="entryfield"
+            title="HPV 1 14, Out-of-School, At School"
+            value="[ HPV 1 14, Out-of-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-Ta4CTqU627c-val"
+            name="entryfield"
+            title="HPV 2 14, In-School, At School"
+            value="[ HPV 2 14, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-G9hO3sma7FD-val"
+            name="entryfield"
+            title="HPV 2 14, Out-of-School, At School"
+            value="[ HPV 2 14, Out-of-School, At School ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">15</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-dWY7RRGZ8kh-val"
+            name="entryfield"
+            title="HPV 1 15, In-School, At School"
+            value="[ HPV 1 15, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-jEUVmOyFKsi-val"
+            name="entryfield"
+            title="HPV 1 15, Out-of-School, At School"
+            value="[ HPV 1 15, Out-of-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-dWY7RRGZ8kh-val"
+            name="entryfield"
+            title="HPV 2 15, In-School, At School"
+            value="[ HPV 2 15, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-jEUVmOyFKsi-val"
+            name="entryfield"
+            title="HPV 2 15, Out-of-School, At School"
+            value="[ HPV 2 15, Out-of-School, At School ]"
+          />
+        </td>
+      </tr>
+      <tr class="bottom-border">
+        <td class="row-title age-ele" translation="">Over 15</td>
+        <td class="gray-field">&nbsp;</td>
+        <td class="gray-field">&nbsp;</td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-ptlNmHyNtHs-val"
+            name="entryfield"
+            title="HPV 2 15+, In-School, At School"
+            value="[ HPV 2 15+, In-School, At School ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-bCFbUnNh9w3-val"
+            name="entryfield"
+            title="HPV 2 15+, Out-of-School, At School"
+            value="[ HPV 2 15+, Out-of-School, At School ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title" rowspan="7" translation="">Health centre</td>
+        <td class="row-title age-ele">10</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-E7x187QRJcy-val"
+            name="entryfield"
+            title="HPV 1 10, In-School, Health Centre"
+            value="[ HPV 1 10, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-zTbbf6D61zP-val"
+            name="entryfield"
+            title="HPV 1 10, Out-of-School, Health Centre"
+            value="[ HPV 1 10, Out-of-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-1">&nbsp;</td>
+        <td class="hpv2 type-2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">11</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-Y0ojtDYIswL-val"
+            name="entryfield"
+            title="HPV 1 11, In-School, Health Centre"
+            value="[ HPV 1 11, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-zjPFNiqdUDn-val"
+            name="entryfield"
+            title="HPV 1 11, Out-of-School, Health Centre"
+            value="[ HPV 1 11, Out-of-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-Y0ojtDYIswL-val"
+            name="entryfield"
+            title="HPV 2 11, In-School, Health Centre"
+            value="[ HPV 2 11, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-zjPFNiqdUDn-val"
+            name="entryfield"
+            title="HPV 2 11, Out-of-School, Health Centre"
+            value="[ HPV 2 11, Out-of-School, Health Centre ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">12</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-HHAPWHjH2jl-val"
+            name="entryfield"
+            title="HPV 1 12, In-School, Health Centre"
+            value="[ HPV 1 12, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-dk7A1GdQJZb-val"
+            name="entryfield"
+            title="HPV 1 12, Out-of-School, Health Centre"
+            value="[ HPV 1 12, Out-of-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-HHAPWHjH2jl-val"
+            name="entryfield"
+            title="HPV 2 12, In-School, Health Centre"
+            value="[ HPV 2 12, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-dk7A1GdQJZb-val"
+            name="entryfield"
+            title="HPV 2 12, Out-of-School, Health Centre"
+            value="[ HPV 2 12, Out-of-School, Health Centre ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">13</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-oBvk20QR8Ku-val"
+            name="entryfield"
+            title="HPV 1 13, In-School, Health Centre"
+            value="[ HPV 1 13, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-yD5MOTjJGQh-val"
+            name="entryfield"
+            title="HPV 1 13, Out-of-School, Health Centre"
+            value="[ HPV 1 13, Out-of-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-oBvk20QR8Ku-val"
+            name="entryfield"
+            title="HPV 2 13, In-School, Health Centre"
+            value="[ HPV 2 13, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-yD5MOTjJGQh-val"
+            name="entryfield"
+            title="HPV 2 13, Out-of-School, Health Centre"
+            value="[ HPV 2 13, Out-of-School, Health Centre ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">14</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-nJPr5TpxMRH-val"
+            name="entryfield"
+            title="HPV 1 14, In-School, Health Centre"
+            value="[ HPV 1 14, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-LpsndI6YY7B-val"
+            name="entryfield"
+            title="HPV 1 14, Out-of-School, Health Centre"
+            value="[ HPV 1 14, Out-of-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-nJPr5TpxMRH-val"
+            name="entryfield"
+            title="HPV 2 14, In-School, Health Centre"
+            value="[ HPV 2 14, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-LpsndI6YY7B-val"
+            name="entryfield"
+            title="HPV 2 14, Out-of-School, Health Centre"
+            value="[ HPV 2 14, Out-of-School, Health Centre ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="row-title age-ele">15</td>
+        <td class="hpv1 type-1">
+          <input
+            id="rT73tSTcugV-NDFXr3rbNr4-val"
+            name="entryfield"
+            title="HPV 1 15, In-School, Health Centre"
+            value="[ HPV 1 15, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="rT73tSTcugV-In5c9PQc9k2-val"
+            name="entryfield"
+            title="HPV 1 15, Out-of-School, Health Centre"
+            value="[ HPV 1 15, Out-of-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-NDFXr3rbNr4-val"
+            name="entryfield"
+            title="HPV 2 15, In-School, Health Centre"
+            value="[ HPV 2 15, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-In5c9PQc9k2-val"
+            name="entryfield"
+            title="HPV 2 15, Out-of-School, Health Centre"
+            value="[ HPV 2 15, Out-of-School, Health Centre ]"
+          />
+        </td>
+      </tr>
+      <tr class="bottom-border">
+        <td class="row-title age-ele" translation="">Over 15</td>
+        <td class="gray-field">&nbsp;</td>
+        <td class="gray-field">&nbsp;</td>
+        <td class="hpv2 type-1">
+          <input
+            id="h22EnXE9H21-HWG6TrbwK6H-val"
+            name="entryfield"
+            title="HPV 2 15+, In-School, Health Centre"
+            value="[ HPV 2 15+, In-School, Health Centre ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="h22EnXE9H21-rY3GahVITAL-val"
+            name="entryfield"
+            title="HPV 2 15+, Out-of-School, Health Centre"
+            value="[ HPV 2 15+, Out-of-School, Health Centre ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="total-field title" translation="">Total</td>
+        <td class="gray-field">&nbsp;</td>
+        <td class="hpv1 type-1">
+          <input
+            id="indicatorypPDyh4Bs1q"
+            indicatorid="ypPDyh4Bs1q"
+            name="indicator"
+            readonly="readonly"
+            title="HPV 1 for in-school girls"
+            value="[ HPV 1 for in-school girls ]"
+          />
+        </td>
+        <td class="hpv1 type-2">
+          <input
+            id="indicatorZTssxk3VTJw"
+            indicatorid="ZTssxk3VTJw"
+            name="indicator"
+            readonly="readonly"
+            title="HPV 1 for out-of-school girls"
+            value="[ HPV 1 for out-of-school girls ]"
+          />
+        </td>
+        <td class="hpv2 type-1">
+          <input
+            id="indicatorPQNjgS01ukt"
+            indicatorid="PQNjgS01ukt"
+            name="indicator"
+            readonly="readonly"
+            title="HPV 2 for in-school girls"
+            value="[ HPV 2 for in-school girls ]"
+          />
+        </td>
+        <td class="hpv2 type-2">
+          <input
+            id="indicatorPhnk58Y2Kc8"
+            indicatorid="Phnk58Y2Kc8"
+            name="indicator"
+            readonly="readonly"
+            title="HPV 2 for ut-of-school girls"
+            value="[ HPV 2 for ut-of-school girls ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<script>
+  // translation added by Yongjoon Park
+  var translation = {
+    "Vaccination site": "ຈຸດສັກຢາ",
+    Age: "ອາຍຸ",
+    "HPV 1": "ເຂັມ HPV1",
+    "HPV 2": "ເຂັມ HPV2",
+    "School girls": "ເດັກຍີງໃນໂຮງຮຽນ",
+    "Out-of-school girls": "ເດັກຍີງນອກໂຮງຮຽນ",
+    School: "ໂຮງຮຽນ",
+    "Over 15": "ຫຼາຍກ່ວາ 15",
+    "Health centre": "ໂຮງໝໍນ້ອຍ (HC)",
+    Total: "ລວມ",
+  };
+
+  dhis2.util.on("dhis2.de.event.formReady", function (event, ds) {
+    $.get("../api/me", (result) => {
+      var locale = result.settings.keyUiLocale;
+      if (locale === "lo") {
+        $("[translation]").each((index, td) => {
+          var content = $(td).html();
+          $(td).html(translation[content]);
+        });
+      }
+    });
+  });
+</script>

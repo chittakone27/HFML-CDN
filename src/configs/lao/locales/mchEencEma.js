@@ -1,0 +1,33 @@
+const mchEencEmaLocales = {
+  en: {
+    externalInterview: "ການສຳພາດແມ່ຫຼັງເກີດລູກ:",
+    externalChartReview: "ການສຳພາດແມ່ຫຼັງເກີດລູກ:",
+    observationOfDelivery: "ສັງເກດກໍລະນີເກີດລູກ:",
+    observationOfEnvironmentalHygiene: "ອະນາໄມຂອງສິ່ງແວດລ້ອມ:",
+    medicinesAndSupplies: "ການສະໜອງຢາ ແລະ ອຸປະກອນ:",
+    hospitalPolicies: "ນະໂຍບາຍຂອງໂຮງໝໍ:",
+    pendingIssues: "ຂໍ້ຄົງຄ້າງທີ່ຍັງບໍ່ໄດ້ຮັບການແກ້ໄຂ:",
+    externalInterviewsDefault: "ການສຳພາດແມ່:",
+    externalChartReviewDefault: "ທົບທວນເອກະສານ:",
+    observationOfDeliveryDefault: "ສັງເກດກໍລະນີເກີດລູກ:",
+    observationOfEnvironmentalHygieneDefault: "ອະນາໄມຂອງສິ່ງແວດລ້ອມ:",
+    medicinesAndSuppliesDefault: "ການສະໜອງຢາ ແລະ ອຸປະກອນ:",
+    hospitalPoliciesDefault: "ນະໂຍບາຍຂອງໂຮງໝໍ:",
+  },
+  lo: {
+    externalInterview: "ການສຳພາດແມ່ຫຼັງເກີດລູກ:",
+    externalChartReview: "ການສຳພາດແມ່ຫຼັງເກີດລູກ:",
+    observationOfDelivery: "ສັງເກດກໍລະນີເກີດລູກ:",
+    observationOfEnvironmentalHygiene: "ອະນາໄມຂອງສິ່ງແວດລ້ອມ:",
+    medicinesAndSupplies: "ການສະໜອງຢາ ແລະ ອຸປະກອນ:",
+    hospitalPolicies: "ນະໂຍບາຍຂອງໂຮງໝໍ:",
+    pendingIssues: "ຂໍ້ຄົງຄ້າງທີ່ຍັງບໍ່ໄດ້ຮັບການແກ້ໄຂ:",
+    externalInterviewsDefault: "ການສຳພາດແມ່:",
+    externalChartReviewDefault: "ທົບທວນເອກະສານ:",
+    observationOfDeliveryDefault: "ສັງເກດກໍລະນີເກີດລູກ:",
+    observationOfEnvironmentalHygieneDefault: "ອະນາໄມຂອງສິ່ງແວດລ້ອມ:",
+    medicinesAndSuppliesDefault: "ການສະໜອງຢາ ແລະ ອຸປະກອນ:",
+    hospitalPoliciesDefault: "ນະໂຍບາຍຂອງໂຮງໝໍ:",
+  },
+};
+export default mchEencEmaLocales;

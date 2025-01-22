@@ -1,0 +1,50 @@
+.eir-form {
+  padding: 10px 0;
+}
+
+.eir-form table td,
+.eir-form table th {
+  padding: 6px 10px;
+}
+
+.eir-form table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* .eir-form table td:not(:has(input), :has(span)) {
+  background-color: #ccc;
+} */
+
+.eir-form .field-container,
+.eir-form .bordered-left {
+  padding-left: 16px;
+  border-left: 1px solid #e0e0e0;
+  min-width: 350px;
+}
+
+.eir-form .field-container .MuiCheckbox-root {
+  padding: 8px;
+}
+
+.eir-form table td:nth-child(1) {
+  width: 300px;
+}
+
+.eir-form#profile-form {
+  padding: 0;
+}
+
+.eir-form#profile-form table td:nth-child(1),
+.eir-form#schedule-dialog table td:nth-child(1) {
+  width: 180px;
+}
+
+.eir-form#profile-form.registration table td:nth-child(1) {
+  width: 350px;
+}
+
+.eir-form .Mui-disabled input,
+.eir-form .MuiInputBase-root.Mui-disabled {
+  background-color: #eee;
+  border-radius: 4px;
+}

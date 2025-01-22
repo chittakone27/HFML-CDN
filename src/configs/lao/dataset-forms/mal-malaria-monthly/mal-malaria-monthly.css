@@ -1,0 +1,6 @@
+#mal-malaria-monthly-form-container table td,
+#mal-malaria-monthly-form-container table th {
+  border: 1.5px solid #000;
+  text-align: center;
+  font-weight: bold;
+}

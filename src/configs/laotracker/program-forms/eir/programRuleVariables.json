@@ -1,0 +1,730 @@
+{
+  "variables": [
+    {
+      "name": "BCG",
+      "id": "UbkRfcmUQ46",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: BCG",
+        "id": "G9kw7qj1duL"
+      }
+    },
+    {
+      "name": "DTP-HepB-Hib1",
+      "id": "YCULGpoHIHO",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 1",
+        "id": "UFRm7xWmxSA"
+      }
+    },
+    {
+      "name": "DTP-HepB-Hib2",
+      "id": "Xm0a3xMyGlZ",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 2",
+        "id": "aiFYpVd6Vle"
+      }
+    },
+    {
+      "name": "DTP-HepB-Hib3",
+      "id": "Tbq6dAL5f6L",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 3",
+        "id": "Ln2xC7zuEpr"
+      }
+    },
+    {
+      "name": "Date of Birth",
+      "id": "PXJ5jsBnCVK",
+      "programRuleVariableSourceType": "TEI_ATTRIBUTE",
+      "trackedEntityAttribute": {
+        "name": "Date of birth",
+        "id": "tQeFLjYbqzv"
+      }
+    },
+    {
+      "name": "HepB0 24 hrs",
+      "id": "r1dMRnxUpTZ",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: HB0 <24hrs",
+        "id": "O8drIFUt4j8"
+      }
+    },
+    {
+      "name": "HepB0 7 days",
+      "id": "rxT6ut4rwjX",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: HepB0 <7 days",
+        "id": "qyJMInEjWtJ"
+      }
+    },
+    {
+      "name": "ageMonth",
+      "id": "PWhTFhzjOmF",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Age (months)",
+        "id": "MV1yoC7BfnG"
+      }
+    },
+    {
+      "name": "ageWeek",
+      "id": "jiGI3yohlh3",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Age (weeks)",
+        "id": "DxOqZZgVQhF"
+      }
+    },
+    {
+      "name": "attendantAtBirth",
+      "id": "qwu26us81eM",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Attendant at birth",
+        "id": "qjcqRVWCIqa"
+      }
+    },
+    {
+      "name": "bcg",
+      "id": "L2CxsZ5xsKx",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: BCG",
+        "id": "G9kw7qj1duL"
+      }
+    },
+    {
+      "name": "bcgprev",
+      "id": "iHYy1ertiFC",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: BCG",
+        "id": "G9kw7qj1duL"
+      }
+    },
+    {
+      "name": "birthType",
+      "id": "Qsxb58IHK10",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Birth type",
+        "id": "tdpNqNEblcw"
+      }
+    },
+    {
+      "name": "birthWeight",
+      "id": "SWqVIh0MeXx",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Birth weight (grams)",
+        "id": "P1fhF8iYjm7"
+      }
+    },
+    {
+      "name": "date_service_given",
+      "id": "A3Je2VeOWKi",
+      "programRuleVariableSourceType": "DATAELEMENT_NEWEST_EVENT_PROGRAM_STAGE",
+      "dataElement": {
+        "name": "Date of services given (Program Rule)",
+        "id": "sQlHdonQbFY"
+      }
+    },
+    {
+      "name": "deworming1year",
+      "id": "MNP4Y9auMjd",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "Deworming after 1 year",
+        "id": "VUn6z5bss2H"
+      }
+    },
+    {
+      "name": "dpt1",
+      "id": "UZimxJcGz9v",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 1",
+        "id": "UFRm7xWmxSA"
+      }
+    },
+    {
+      "name": "dpt1prev",
+      "id": "ZSFEZFcqH7Z",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 1",
+        "id": "UFRm7xWmxSA"
+      }
+    },
+    {
+      "name": "dpt2",
+      "id": "NQuKznnnQEl",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 2",
+        "id": "aiFYpVd6Vle"
+      }
+    },
+    {
+      "name": "dpt2prev",
+      "id": "eEduTLMM6oO",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 2",
+        "id": "aiFYpVd6Vle"
+      }
+    },
+    {
+      "name": "dpt3prev",
+      "id": "OvkeRH3OCpQ",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Penta 3",
+        "id": "Ln2xC7zuEpr"
+      }
+    },
+    {
+      "name": "facilityOfBirth",
+      "id": "sZVjDXSd6Cn",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Facility of birth",
+        "id": "O2aFWsqAvWr"
+      }
+    },
+    {
+      "name": "fullImunization",
+      "id": "SfjZuoq7rs2",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Full immunization (FIC)",
+        "id": "qrZ2UmofOdm"
+      }
+    },
+    {
+      "name": "fullImunizationprev",
+      "id": "uwoteGZGtTg",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: Full immunization (FIC)",
+        "id": "qrZ2UmofOdm"
+      }
+    },
+    {
+      "name": "gestationalAge",
+      "id": "uVsyyeA7TKh",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Gestational week",
+        "id": "YesvM1AYsNy"
+      }
+    },
+    {
+      "name": "hbo",
+      "id": "ryLDULvP1DI",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: HepB0 <7 days",
+        "id": "qyJMInEjWtJ"
+      }
+    },
+    {
+      "name": "hbo24hrs",
+      "id": "SU5ndprhoyZ",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: HB0 <24hrs",
+        "id": "O8drIFUt4j8"
+      }
+    },
+    {
+      "name": "hbo24hrsprev",
+      "id": "Vig9t0AtaPH",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: HB0 <24hrs",
+        "id": "O8drIFUt4j8"
+      }
+    },
+    {
+      "name": "hboprev",
+      "id": "IYlC67kK6DU",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: HepB0 <7 days",
+        "id": "qyJMInEjWtJ"
+      }
+    },
+    {
+      "name": "height",
+      "id": "ce2cSgTrLoX",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Height (cm)",
+        "id": "xvE2z6W3wYh"
+      }
+    },
+    {
+      "name": "ipv1",
+      "id": "sUVIggJIw9o",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: IPV 1",
+        "id": "wQNvIFAlWdA"
+      }
+    },
+    {
+      "name": "ipv1prev",
+      "id": "Y7ySVotelz8",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: IPV 1",
+        "id": "wQNvIFAlWdA"
+      }
+    },
+    {
+      "name": "ipv2",
+      "id": "hKwZAgtVqp8",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: IPV 2",
+        "id": "yEMXv73bX9g"
+      }
+    },
+    {
+      "name": "ipv2prev",
+      "id": "VVoXHl7Pzhp",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: IPV 2",
+        "id": "yEMXv73bX9g"
+      }
+    },
+    {
+      "name": "ipv3",
+      "id": "KEVTUcxn0JW",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: IPV 3",
+        "id": "iuJuFQqTSMt"
+      }
+    },
+    {
+      "name": "ipv3prev",
+      "id": "nGNJFN3j3Di",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: IPV 3",
+        "id": "iuJuFQqTSMt"
+      }
+    },
+    {
+      "name": "jev",
+      "id": "i622R7WoZ96",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: JEV",
+        "id": "E4YaV9wahBu"
+      }
+    },
+    {
+      "name": "jevprev",
+      "id": "fssLCliRyCz",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: JEV",
+        "id": "E4YaV9wahBu"
+      }
+    },
+    {
+      "name": "mcv1",
+      "id": "u27AX9IsTqW",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: MR1 9-11m (MCV 1)",
+        "id": "EdCjK8sy4WH"
+      }
+    },
+    {
+      "name": "mcv1prev",
+      "id": "jKfbs2l9Km6",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: MR1 9-11m (MCV 1)",
+        "id": "EdCjK8sy4WH"
+      }
+    },
+    {
+      "name": "mcv2",
+      "id": "ScMBI8CyNPd",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: MR2 12-18m (MCV 2)",
+        "id": "n6rveUjp5h1"
+      }
+    },
+    {
+      "name": "mcv2prev",
+      "id": "S25ZbyyjNrt",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: MR2 12-18m (MCV 2)",
+        "id": "n6rveUjp5h1"
+      }
+    },
+    {
+      "name": "measles1prev",
+      "id": "VFVLiOyQ7q6",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: MR1 9-11m (MCV 1)",
+        "id": "EdCjK8sy4WH"
+      }
+    },
+    {
+      "name": "measles2prev",
+      "id": "n82Y413lVMR",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: MR2 12-18m (MCV 2)",
+        "id": "n6rveUjp5h1"
+      }
+    },
+    {
+      "name": "modeOfDelivery",
+      "id": "uqCibktMTIe",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EIR Mode of delivery",
+        "id": "VO7tbWG3hxu"
+      }
+    },
+    {
+      "name": "muac",
+      "id": "oU40qBxW7CY",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "MUAC (cm)",
+        "id": "fwerjuyn3QC"
+      }
+    },
+    {
+      "name": "opv1",
+      "id": "Q3Cve9Q1Yoj",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: OPV 1",
+        "id": "TFIM3NzVlzn"
+      }
+    },
+    {
+      "name": "opv1prev",
+      "id": "lXge6m0MwCy",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: OPV 1",
+        "id": "TFIM3NzVlzn"
+      }
+    },
+    {
+      "name": "opv2",
+      "id": "KHy9GkaSkyq",
+      "programRuleVariableSourceType": "DATAELEMENT_CURRENT_EVENT",
+      "dataElement": {
+        "name": "EPI Child: OPV 2",
+        "id": "eb5xGUCIGw3"
+      }
+    },
+    {
+      "name": "opv2prev",
+      "id": "M5xmGlzLSut",
+      "programRuleVariableSourceType": "DATAELEMENT_PREVIOUS_EVENT",
+      "dataElement": {
+        "name": "EPI Child: OPV 2",
+        "id": "eb5xGUCIGw3"
+      }
+    }
+  ],
+  "immunization": [
+    [
+      {
+        "dataElement": {
+          "name": "EPI Child: BCG",
+          "id": "G9kw7qj1duL"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 1",
+          "id": "UFRm7xWmxSA"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 2",
+          "id": "aiFYpVd6Vle"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 3",
+          "id": "Ln2xC7zuEpr"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: HB0 <24hrs",
+          "id": "O8drIFUt4j8"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: HepB0 <7 days",
+          "id": "qyJMInEjWtJ"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EIR Age (months)",
+          "id": "MV1yoC7BfnG"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EIR Age (weeks)",
+          "id": "DxOqZZgVQhF"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: BCG",
+          "id": "G9kw7qj1duL"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: BCG",
+          "id": "G9kw7qj1duL"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 1",
+          "id": "UFRm7xWmxSA"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 1",
+          "id": "UFRm7xWmxSA"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 2",
+          "id": "aiFYpVd6Vle"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 2",
+          "id": "aiFYpVd6Vle"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Penta 3",
+          "id": "Ln2xC7zuEpr"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Full immunization (FIC)",
+          "id": "qrZ2UmofOdm"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: Full immunization (FIC)",
+          "id": "qrZ2UmofOdm"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: HepB0 <7 days",
+          "id": "qyJMInEjWtJ"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: HB0 <24hrs",
+          "id": "O8drIFUt4j8"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: HB0 <24hrs",
+          "id": "O8drIFUt4j8"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: HepB0 <7 days",
+          "id": "qyJMInEjWtJ"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: IPV 1",
+          "id": "wQNvIFAlWdA"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: IPV 1",
+          "id": "wQNvIFAlWdA"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: IPV 2",
+          "id": "yEMXv73bX9g"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: IPV 2",
+          "id": "yEMXv73bX9g"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: IPV 3",
+          "id": "iuJuFQqTSMt"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: IPV 3",
+          "id": "iuJuFQqTSMt"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: JEV",
+          "id": "E4YaV9wahBu"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: JEV",
+          "id": "E4YaV9wahBu"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: MR1 9-11m (MCV 1)",
+          "id": "EdCjK8sy4WH"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: MR1 9-11m (MCV 1)",
+          "id": "EdCjK8sy4WH"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: MR2 12-18m (MCV 2)",
+          "id": "n6rveUjp5h1"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: MR2 12-18m (MCV 2)",
+          "id": "n6rveUjp5h1"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: MR1 9-11m (MCV 1)",
+          "id": "EdCjK8sy4WH"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: MR2 12-18m (MCV 2)",
+          "id": "n6rveUjp5h1"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: OPV 1",
+          "id": "TFIM3NzVlzn"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: OPV 1",
+          "id": "TFIM3NzVlzn"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: OPV 2",
+          "id": "eb5xGUCIGw3"
+        }
+      },
+      {
+        "dataElement": {
+          "name": "EPI Child: OPV 2",
+          "id": "eb5xGUCIGw3"
+        }
+      }
+    ]
+  ],
+  "birthDetails": [
+    {
+      "dataElement": {
+        "name": "EIR Attendant at birth",
+        "id": "qjcqRVWCIqa"
+      }
+    },
+    {
+      "dataElement": {
+        "name": "EIR Birth type",
+        "id": "tdpNqNEblcw"
+      }
+    },
+    {
+      "dataElement": {
+        "name": "EIR Birth weight (grams)",
+        "id": "P1fhF8iYjm7"
+      }
+    },
+    {
+      "dataElement": {
+        "name": "EIR Facility of birth",
+        "id": "O2aFWsqAvWr"
+      }
+    },
+    {
+      "dataElement": {
+        "name": "EIR Gestational week",
+        "id": "YesvM1AYsNy"
+      }
+    },
+    {
+      "dataElement": {
+        "name": "EIR Mode of delivery",
+        "id": "VO7tbWG3hxu"
+      }
+    }
+  ]
+}

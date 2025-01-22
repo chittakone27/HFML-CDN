@@ -1,0 +1,32 @@
+.ancpnc-anc-container {
+  width: 100%;
+}
+.ancpnc-section-container {
+  /* padding: 5px; */
+  border: 2px solid #c7c7c7;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+.ancpnc-section-container > div:nth-child(1) {
+  padding: 10px 5px 10px 5px;
+  border-bottom: 1px solid #c7c7c7;
+  font-weight: bold;
+  background-color: #e3e3e3;
+}
+
+.ancpnc-section-row {
+  padding: 8px;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #e3e3e3;
+}
+
+.ancpnc-section-row > div:nth-child(1) {
+  width: 500px;
+  display: flex;
+  align-items: center;
+}
+
+.ancpnc-section-row > div:nth-child(2) {
+  width: calc(100% - 500px);
+}

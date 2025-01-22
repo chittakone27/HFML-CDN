@@ -1,0 +1,56 @@
+.delivery-registry-profile-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.delivery-registry-profile-field-row {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.delivery-registry-profile-field-row > div:nth-child(1) {
+  width: 250px;
+  font-weight: normal !important;
+  height: 100%;
+}
+.delivery-registry-profile-field-row > div:nth-child(2) {
+  width: 400px;
+  padding-left: 20px;
+}
+.delivery-registry-profile-footer {
+  height: 50px;
+  border-top: 2px solid #26a69a;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+.not-client-health-id-row {
+  overflow: auto;
+  height: calc(100% - 96px);
+}
+
+.ident-section-container {
+  border: 1px solid #a0a0a0;
+  margin: 15px;
+  border-radius: 5px;
+}
+
+.ident-section-container .ident-title {
+  background-color: #a0a0a0;
+  color: #fff;
+  font-weight: 500;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.ident-section-container .ident-inputs-container {
+  padding: 0 5px 0 5px;
+}
+
+.ident-caution {
+  color: #0277bd;
+  font-weight: bold;
+  font-size: 14px;
+}

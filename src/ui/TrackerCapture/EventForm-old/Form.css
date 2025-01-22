@@ -1,0 +1,32 @@
+.tracker-stage-form-container {
+  height: 100%;
+}
+
+.tracker-stage-form-container > div:nth-child(1) {
+  padding: 5px;
+  height: calc(100% - 50px);
+  overflow: auto;
+}
+.tracker-stage-form-container > div:nth-child(2) {
+  border-top: 2px solid #e0e0e0;
+  padding: 5px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.tracker-stage-form-container > div:nth-child(2) > div:last-child {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+.tracker-stage-form-saving {
+  background-color: #fff4e5;
+  color: #663c00;
+}
+.tracker-stage-form-saved {
+  background-color: #edf7ed;
+  color: #1e6420;
+}

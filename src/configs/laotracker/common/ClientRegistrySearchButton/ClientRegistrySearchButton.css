@@ -1,0 +1,39 @@
+.crsb-container {
+  /* align-self: flex-end; */
+  /* padding-bottom: 5px; */
+  /* padding-left: 5px; */
+  display: flex;
+}
+.crsb-dialog-content-container {
+  padding: 24px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.search-result-dialog-content-container {
+  padding: 24px;
+  width: 100%;
+  height: 600px;
+  overflow: auto;
+}
+.crsb-dialog-content-container > div {
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.crsb-dialog-content-container > div > div {
+  padding-right: 5px;
+  padding-bottom: 5px;
+  width: 400px;
+}
+.crsb-popover-content-container {
+  padding: 20px;
+}
+.client-information-container {
+  width: 80%;
+}
+.client-information-row {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}

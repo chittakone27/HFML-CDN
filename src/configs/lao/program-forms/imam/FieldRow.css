@@ -1,0 +1,52 @@
+.field-row-container {
+  display: flex;
+  align-items: stretch;
+  padding-block: 10px;
+  border-top: 1px solid #e4e3e2;
+}
+.imam-profile-container .field-row-container > div:nth-child(1) {
+  width: 150px !important;
+}
+
+.imam-profile-container .field-row-container > div:nth-child(2) {
+  width: calc(100% - 150px) !important;
+}
+
+.field-row-container > div:nth-child(1) {
+  padding: 5px;
+  width: 250px;
+  /* width: 20%; */
+  border-right: 1px solid #e4e3e2;
+  display: flex;
+  align-items: center;
+}
+.field-row-container > div:nth-child(2) {
+  padding-left: 20px;
+  padding-right: 5px;
+  width: calc(100% - 250px);
+  /* width: 500px; */
+}
+.field-row-container:last-child {
+  border-bottom: 1px solid #e4e3e2;
+}
+
+.field-row-checkbox-container {
+  display: flex;
+  align-items: stretch;
+  /* border: 1px solid #e4e3e2; */
+  border-bottom: 0;
+}
+.field-row-checkbox-container > div:nth-child(1) {
+  display: flex;
+  align-items: center;
+}
+
+.field-row-checkbox-container > div:nth-child(2) {
+  padding: 8px;
+}
+
+.field-row-checklist-container {
+  padding: 20px;
+  border: 1px solid #e4e3e2;
+  border-bottom: 0;
+}

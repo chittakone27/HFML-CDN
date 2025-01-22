@@ -1,0 +1,27 @@
+#ncle-weekly-form-container table {
+  border-collapse: collapse;
+  max-width: 1200px;
+  min-width: 1000px;
+}
+
+#ncle-weekly-form-container table td:nth-child(1) {
+  width: 5%;
+}
+
+#ncle-weekly-form-container table td:nth-child(2) {
+  width: 30%;
+}
+
+#ncle-weekly-form-container table td:nth-child(3) {
+  width: 30%;
+}
+
+#ncle-weekly-form-container table tr:nth-child(1) td {
+  font-weight: bold;
+  height: 50px;
+}
+
+#ncle-weekly-form-container table td,
+#ncle-weekly-form-container table th {
+  border: 1.5px solid #ddd;
+}

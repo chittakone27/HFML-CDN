@@ -1,0 +1,81 @@
+.custom-form {
+  padding: 10px;
+  width: 100%;
+}
+
+.custom-form table td,
+.custom-form table th {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.custom-form table tr:hover {
+  background: #fbf8e9;
+  -o-transition: all 0.1s ease-in-out;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  -ms-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+.custom-form .bordered {
+  border: 1px solid rgba(224, 224, 224, 1);
+}
+
+.custom-form .bordered-left {
+  padding-left: 20px;
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+.custom-form .padding-left {
+  padding-left: 20px;
+}
+
+.custom-form .input-field-container {
+  padding-left: 20px;
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+.custom-form .checkbox .input-field-container {
+  padding-left: 0;
+}
+
+.custom-form .reset-border .input-field-container {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.custom-form .reset-border {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.custom-form .flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-form .checkbox .input-field-container {
+  text-align: center;
+}
+
+.custom-form .checkbox .input-field-container label {
+  margin: 0;
+}
+
+.custom-form .strong-text {
+  font-weight: bold;
+}
+
+/* epi-child */
+/* epi-woman */
+.custom-form#epi-child-form-container td.label,
+.custom-form#epi-woman-form-container td.label {
+  background-color: #b5ffb8;
+}
+
+.custom-form#epi-child-form-container #epi-child-section-2 td,
+.custom-form#epi-woman-form-container #epi-woman-section-2 td {
+  width: 12.5%;
+}

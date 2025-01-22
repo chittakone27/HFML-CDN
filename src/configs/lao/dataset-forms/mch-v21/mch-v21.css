@@ -1,0 +1,57 @@
+/* Table1 */
+
+#mch-v21-table-1 .cell-header-table {
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Table2 */
+#mch-v21-table-2-1 {
+  width: 30%;
+}
+
+#mch-v21-table-2-1 .cell-header-table {
+  background-color: #ffe066;
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding: 10px;
+}
+
+/* Table3 */
+#mch-v21-table-3 .cell-header-table {
+  background-color: #57bcff;
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding-block: 10px;
+  height: 15px;
+}
+#mch-v21-table-3 .cell-header-table-2 {
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding-block: 10px;
+  height: 15px;
+}
+
+/* Table4 */
+
+#mch-v21-table-4 .cell-header-table {
+  background-color: #57bcff;
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  text-align: center;
+  height: 15px;
+  padding-block: 10px;
+}
+#mch-v21-table-4 .cell-header-table-2 {
+  color: #000;
+  border: 1px solid #c0c0c0;
+  font-weight: bold;
+  padding-block: 10px;
+  height: 15px;
+}

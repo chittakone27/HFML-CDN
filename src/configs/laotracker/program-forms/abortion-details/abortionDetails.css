@@ -1,0 +1,46 @@
+.abortion-details-form {
+  padding: 10px 0;
+}
+
+.abortion-details-form table td,
+.abortion-details-form table th {
+  padding: 6px 10px;
+}
+
+.abortion-details-form table tr:last-child td {
+  border-bottom: 1;
+}
+
+.abortion-details-form .field-container,
+.abortion-details-form .bordered-left {
+  padding-left: 16px;
+  border-left: 1px solid #e0e0e0;
+  min-width: 350px;
+}
+
+.abortion-details-form .field-container .MuiCheckbox-root {
+  padding: 8px;
+}
+
+.abortion-details-form table td:nth-child(1) {
+  width: 300px;
+}
+
+.abortion-details-form#profile-form {
+  padding: 0;
+}
+
+.abortion-details-form#profile-form table td:nth-child(1),
+.abortion-details-form#schedule-dialog table td:nth-child(1) {
+  width: 180px;
+}
+
+.abortion-details-form#profile-form.registration table td:nth-child(1) {
+  width: 350px;
+}
+
+.abortion-details-form .Mui-disabled input,
+.abortion-details-form .MuiInputBase-root.Mui-disabled {
+  background-color: #eee;
+  border-radius: 4px;
+}

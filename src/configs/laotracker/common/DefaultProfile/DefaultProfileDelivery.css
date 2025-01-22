@@ -1,0 +1,40 @@
+.delivery-registry-profile-container {
+  height: 100%;
+  width: 100%;
+}
+.delivery-registry-profile-title {
+  background-color: #26a69a;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+.delivery-registry-profile-content {
+  height: calc(100% - 98px);
+  overflow: auto;
+  width: 100%;
+}
+.delivery-registry-profile-field-row {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.delivery-registry-profile-field-row > div:nth-child(1) {
+  width: 250px;
+  font-weight: normal !important;
+  height: 100%;
+}
+.delivery-registry-profile-field-row > div:nth-child(2) {
+  width: 400px;
+  padding-left: 20px;
+}
+.delivery-registry-profile-footer {
+  height: 50px;
+  border-top: 2px solid #26a69a;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}

@@ -1,0 +1,10 @@
+#hmis-ipd-v2-table {
+  height: fit-content;
+  border-collapse: collapse;
+  border-radius: 0.8em;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+#hmis-ipd-v2-form-container td {
+  border: 1.5px solid #fff;
+}

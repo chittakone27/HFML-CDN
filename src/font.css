@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Roboto:ital,wght@1,100&display=swap");
+
+@font-face {
+  font-family: "SFPro";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/SF-Pro-Display-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "SFPro";
+  font-style: italic;
+  font-weight: normal;
+  src: url("./assets/fonts/SF-Pro-Display-RegularItalic.otf") format("opentype");
+}
+@font-face {
+  font-family: "SFPro";
+  font-style: normal;
+  font-weight: bold;
+  src: url("./assets/fonts/SF-Pro-Display-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "SFPro";
+  font-style: italic;
+  font-weight: bold;
+  src: url("./assets/fonts/SF-Pro-Display-BoldItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Phetsarath";
+  font-style: normal;
+  font-weight: normal;
+  unicode-range: U+0E80-0EFF;
+  src: url("./assets/fonts/Phetsarath-OT.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Khmer";
+  font-style: normal;
+  font-weight: normal;
+  unicode-range: U+1780-17FF;
+  src: url("./assets/fonts/Khmer-Regular.ttf") format("truetype");
+}

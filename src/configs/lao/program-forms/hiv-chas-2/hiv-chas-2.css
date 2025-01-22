@@ -1,0 +1,11 @@
+#hiv-chas-2-form-container table td {
+  border: 1px solid #bbb;
+}
+
+#hiv-chas-2-form-container table td:nth-of-type(1) {
+  background-color: #b2ebf2;
+}
+
+#hiv-chas-2-form-container table td:nth-of-type(2) {
+  background-color: #e0f7fa;
+}

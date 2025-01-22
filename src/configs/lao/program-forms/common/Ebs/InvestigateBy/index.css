@@ -1,0 +1,16 @@
+.ebs-multi-options-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.ebs-multi-opt div.input-field-container {
+  border-left: 0px solid #ccc !important;
+  padding-left: 0px;
+}
+
+.ebs-multi-opt {
+  display: flex;
+  align-items: center;
+}

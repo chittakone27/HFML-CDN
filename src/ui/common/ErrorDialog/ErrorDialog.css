@@ -1,0 +1,19 @@
+.error-dialog-content-container {
+  padding: 20px;
+  width: 100%;
+  height: 600px;
+  overflow: auto;
+}
+.error-dialog-title {
+  height: 130px;
+}
+.error-description-container {
+  width: 100%;
+  height: calc(100% - 130px);
+  overflow: auto;
+  padding: 20px;
+  width: 100%;
+  word-break: break-all;
+  font-family: "Courier New", monospace !important;
+  background-color: #f1f1f1;
+}

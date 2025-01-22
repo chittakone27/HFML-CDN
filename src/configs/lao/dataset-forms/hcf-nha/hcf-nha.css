@@ -1,0 +1,21 @@
+#hcf-nha-table-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#hcf-nha-table-container {
+  width: 45%;
+  height: fit-content;
+  border-collapse: collapse;
+  border-radius: 0.8em;
+  overflow: hidden;
+}
+#hcf-nha-table-container th {
+  background-color: #0d47a1;
+  color: #fff;
+  font-weight: bold;
+}
+#hcf-nha-table-container td,
+#hcf-nha-table-container th {
+  border: 1.5px solid #ddd;
+}

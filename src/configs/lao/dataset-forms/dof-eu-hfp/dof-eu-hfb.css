@@ -1,0 +1,6 @@
+#dof-eu-hfb-form-container table td,
+#dof-eu-hfb-form-container table th {
+  border: 1.5px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}

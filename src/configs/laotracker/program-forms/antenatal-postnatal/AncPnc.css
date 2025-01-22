@@ -1,0 +1,76 @@
+.ancpnc-anc-container {
+  width: 100%;
+}
+.ancpnc-section-container {
+  /* padding: 5px; */
+  border: 2px solid #c7c7c7;
+  margin-top: 5px;
+  border-radius: 5px;
+}
+.ancpnc-section-container > div:nth-child(1) {
+  padding: 10px 5px 10px 5px;
+  border-bottom: 1px solid #c7c7c7;
+  font-weight: bold;
+  background-color: #e3e3e3;
+}
+.ancpnc-section-row {
+  padding: 8px;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #e3e3e3;
+}
+.ancpnc-section-row > div:nth-child(1) {
+  width: 500px;
+  display: flex;
+  align-items: center;
+}
+.ancpnc-section-row > div:nth-child(2) {
+  width: calc(100% - 500px);
+}
+
+.antenatal-postnatal-form {
+  padding: 10px 0;
+}
+
+.antenatal-postnatal-form table td,
+.antenatal-postnatal-form table th {
+  padding: 6px 10px;
+}
+
+.antenatal-postnatal-form table tr:last-child td {
+  border-bottom: 1;
+}
+
+.antenatal-postnatal-form .field-container,
+.antenatal-postnatal-form .bordered-left {
+  padding-left: 16px;
+  border-left: 1px solid #e0e0e0;
+  min-width: 350px;
+}
+
+.antenatal-postnatal-form .field-container .MuiCheckbox-root {
+  padding: 8px;
+}
+
+.antenatal-postnatal-form table td:nth-child(1) {
+  width: 300px;
+}
+
+.antenatal-postnatal-form#profile-form {
+  padding: 0;
+}
+
+.antenatal-postnatal-form#profile-form table td:nth-child(1),
+.antenatal-postnatal-form#schedule-dialog table td:nth-child(1) {
+  width: 180px;
+}
+
+.antenatal-postnatal-form#profile-form.registration table td:nth-child(1) {
+  width: 350px;
+}
+
+.antenatal-postnatal-form .Mui-disabled input,
+.antenatal-postnatal-form .MuiInputBase-root.Mui-disabled {
+  background-color: #eee;
+  border-radius: 4px;
+}

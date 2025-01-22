@@ -1,0 +1,6 @@
+#hpv-monthly-form-container table td,
+#hpv-monthly-form-container table th {
+  border: 1.5px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}

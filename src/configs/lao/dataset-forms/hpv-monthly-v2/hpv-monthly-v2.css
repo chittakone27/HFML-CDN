@@ -1,0 +1,95 @@
+#hpv-monthly-form-container table {
+  border-collapse: collapse;
+}
+
+#hpv-monthly-form-container table td,
+#hpv-monthly-form-container table th {
+  border: 1px solid #fff;
+  text-align: center;
+  font-weight: bold;
+}
+
+#hpv-monthly-form-container .my-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+#hpv-monthly-form-container .my-table td {
+  vertical-align: middle;
+  text-align: center;
+}
+#hpv-monthly-form-container .table.my-table th {
+  vertical-align: middle;
+  text-align: center;
+  font-size: 18px;
+}
+#hpv-monthly-form-container tr.bottom-border td {
+  border-bottom: 3pt solid black;
+}
+#hpv-monthly-form-container .title.sub1 {
+  width: 15%;
+}
+#hpv-monthly-form-container .title.sub2 {
+  width: 15%;
+}
+#hpv-monthly-form-container .title.vaccin {
+  background-color: #4db6ac;
+  width: 17%;
+}
+#hpv-monthly-form-container .title.age {
+  width: 8%;
+  background-color: #90caf9;
+}
+#hpv-monthly-form-container .title.hpv1 {
+  background-color: #ef9a9a;
+}
+#hpv-monthly-form-container .title.hpv1.sub1 {
+  background-color: #ffcdd2;
+  color: black;
+}
+#hpv-monthly-form-container .title.hpv1.sub2 {
+  background-color: #ffebee;
+  color: black;
+}
+#hpv-monthly-form-container .title.hpv2 {
+  background-color: #a5d6a7;
+}
+#hpv-monthly-form-container .title.hpv2.sub1 {
+  background-color: #c8e6c9;
+  color: black;
+}
+#hpv-monthly-form-container .title.hpv2.sub2 {
+  background-color: #e8f5e9;
+  color: black;
+}
+#hpv-monthly-form-container .row-title {
+  font-weight: bold;
+  background-color: #80cbc4;
+}
+#hpv-monthly-form-container .row-title.age-ele {
+  background-color: #bbdefb;
+  color: black;
+}
+#hpv-monthly-form-container .total-field.title {
+  background-color: #80cbc4;
+}
+
+/* Table body CSS */
+#hpv-monthly-form-container td.gray-field {
+  background-color: #e0e0e0;
+}
+#hpv-monthly-form-container .hpv1.type-1 {
+  background-color: #ffcdd2;
+}
+#hpv-monthly-form-container .hpv1.type-2 {
+  background-color: #ffebee;
+}
+#hpv-monthly-form-container .hpv2.type-1 {
+  background-color: #c8e6c9;
+}
+#hpv-monthly-form-container .hpv2.type-2 {
+  background-color: #e8f5e9;
+}
+#hpv-monthly-form-container .total-field {
+  font-weight: bold;
+}

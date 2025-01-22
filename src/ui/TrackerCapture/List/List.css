@@ -1,0 +1,26 @@
+.tracker-list-pagination-toolbar {
+  padding: 5px;
+  display: flex;
+  width: 100%;
+}
+.tracker-list-container {
+  width: 100%;
+  height: 100%;
+}
+.tracker-list-container th {
+  font-weight: bold !important;
+}
+.tracker-list-table-container {
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow: auto;
+}
+.tracker-list-pagination-container {
+  padding: 10px;
+  border-top: 2px solid rgb(44, 102, 147);
+  height: 50px;
+  width: 100%;
+}
+.tracker-list-pagination-container .root-input {
+  overflow: hidden !important;
+}

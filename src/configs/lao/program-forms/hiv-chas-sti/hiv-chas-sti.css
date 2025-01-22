@@ -1,0 +1,63 @@
+.custom-form#hiv-chas-sti-form-container .input-field-container {
+  border-left: 0;
+  padding-left: 0;
+}
+
+#hiv-chas-sti-form-container td.blueHead {
+  background-color: rgb(102, 154, 204);
+  background-color: #90caf9;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#hiv-chas-sti-form-container td.greenHead {
+  background-color: rgb(153, 204, 153);
+  background-color: #a5d6a7;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#hiv-chas-sti-form-container td.orangeHead {
+  background-color: rgb(255, 166, 24);
+  background-color: #ffcc80;
+  text-align: center;
+}
+
+#hiv-chas-sti-form-container td.orangeSub {
+  background-color: rgb(255, 166, 24);
+  background-color: #ffcc80;
+  text-align: right;
+}
+
+#hiv-chas-sti-form-container td.redbrownHead {
+  background-color: #b7704c;
+  background-color: #debeae;
+  text-align: center;
+}
+
+#hiv-chas-sti-form-container td.lightBlueContent {
+  background-color: rgb(204, 221, 237);
+  text-align: center;
+}
+
+#hiv-chas-sti-form-container td.yorkGreenContent {
+  background-color: rgb(224, 239, 224);
+  text-align: center;
+}
+
+#hiv-chas-sti-form-container td.orangeContent {
+  background-color: rgb(255, 218, 163);
+  text-align: center;
+}
+
+#hiv-chas-sti-form-container td.redBrownContent {
+  background-color: #bcaaa4;
+  text-align: center;
+}
+
+#hiv-chas-sti-form-container td {
+  border: 1px solid #666;
+  padding: 5px;
+}

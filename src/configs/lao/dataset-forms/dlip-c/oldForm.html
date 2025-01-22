@@ -1,0 +1,828 @@
+<script>
+  var language = "en";
+  //Dictionary
+  //{ key : "keyId", value : [ "en","lo" ]},
+  var translation = [
+    { key: "form_title", value: ["From 2", "ແບບຟອມ 2"] },
+    { key: "No", value: ["No", "ລ/ດ"] },
+    { key: "Lists", value: ["Lists", "ລາຍການ"] },
+    { key: "Unit", value: ["Unit", "ຫົວໜ່ວຍ"] },
+    { key: "30_day_Stock", value: ["30 day Stock", "ຈໍານວນພຽງພໍສໍາລັບ 30 ມື້"] }
+  ];
+
+  jQuery(document).ready(function () {
+    //get current user language
+    $.get("../api/me", function (json) {
+      language = json.settings.keyUiLocale;
+      //do translation for current user
+      PIS.translate(translation, language);
+    });
+  });
+
+  // Put your javascript functions here
+  PIS = {
+    translate: function (library, language) {
+      //default as English
+      languageOrder = 0;
+      if (language == "en") {
+        //do nothing
+      } else if (language == "lo") {
+        languageOrder = 1;
+      } else {
+        //not identified yet
+      }
+      $.each(library, function (index, entry) {
+        $("." + entry.key).html(entry.value[languageOrder]);
+      });
+    }
+  };
+</script>
+<style type="text/css">
+  table {
+    width: 60%;
+  }
+  td {
+    text-align: center;
+    background-color: rgb(244, 249, 255);
+    padding: 5px;
+  }
+  td.mainTitle {
+    text-align: left;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    background-color: rgb(102, 153, 204);
+  }
+  td.blueTitle {
+    background-color: rgb(153, 204, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.blueContent {
+    background-color: rgb(202, 229, 255);
+    font-weight: bold;
+    text-align: left;
+  }
+  td.orangeTitle {
+    background-color: rgb(255, 204, 0);
+    font-weight: bold;
+  }
+  td.orangeContent {
+    background-color: rgb(255, 234, 153);
+  }
+  td.yorkGreenTitle {
+    background-color: rgb(153, 204, 153);
+    font-weight: bold;
+  }
+  td.yorkGreenContent {
+    background-color: rgb(224, 239, 224);
+  }
+  td.pinkTitle {
+    background-color: rgb(235, 199, 222);
+    font-weight: bold;
+  }
+  td.pinkContent {
+    background-color: rgb(247, 232, 241);
+  }
+  input {
+    width: 5em;
+  }
+</style>
+<table cols="7" width="5000px">
+  <tbody>
+    <tr>
+      <td class="mainTitle" colspan="7">
+        <div class="form_title">From 2</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="yorkGreenTitle">
+        <div class="No">No</div>
+      </td>
+      <!--<td colspan="1" rowspan="2" width="15%" class="header">ແຂວງ</td>-->
+      <td class="yorkGreenTitle">
+        &nbsp;
+        <div class="Lists">List</div>
+      </td>
+      <td class="yorkGreenTitle">
+        <div class="Unit">Unit</div>
+      </td>
+      <td class="yorkGreenTitle">
+        <div class="30_day_Stock">30 day Stock</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">01</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Alcohol 70%, 90%</div>
+      </td>
+      <td class="blueContent">Mililiter</td>
+      <td class="yorkGreenContent">
+        <input
+          id="sHusvowDgTW-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Alcohol 70%, 90% (Stock)"
+          value="[ C-DLI: Alcohol 70%, 90% (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">02</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Aluminium hydroxide tablet 500mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="LrKSvCNHgxi-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Aluminium hydroxide tablet 500mg (Stock)"
+          value="[ C-DLI: Aluminium hydroxide tablet 500mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">03</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Amoxicillin capsule 250mg, 500mg (Anhydrous)</div>
+      </td>
+      <td class="blueContent">Capsule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="TxVrK3otB1N-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Amoxicillin capsule 250mg, 500mg (Anhydrous) (Stock)"
+          value="[ C-DLI: Amoxicillin capsule 250mg, 500mg (Anhydrous) (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">04</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Amoxicillin Syrup 125mg/5ml, 250mg/5ml</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="gWx0k7ARymt-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Amoxicillin Syrum 125mg/5ml, 250mg/ml (Stock)"
+          value="[ C-DLI: Amoxicillin Syrum 125mg/5ml, 250mg/ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">05</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Ampicillin capsule 250mg, 500mg</div>
+      </td>
+      <td class="blueContent">Capsule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="mztW41O5Nnw-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Ampicillin capsule 250mg, 500mg (Stock)"
+          value="[ C-DLI: Ampicillin capsule 250mg, 500mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">06</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Ampicillin Syrup 125mg/5ml, 250mg/5ml</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="ER17g8kJFu5-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Ampicillin Syrup 125mg/5ml, 250mg/ml (Stock)"
+          value="[ C-DLI: Ampicillin Syrup 125mg/5ml, 250mg/ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">07</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Artemether + Lumefantrine tablet 20mg + 120mg</div>
+      </td>
+      <td class="blueContent">Blister</td>
+      <td class="yorkGreenContent">
+        <input
+          id="fgzk23x9Sgx-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Artemether + Lumefantrine tablet 20mg + 120mg (Stock)"
+          value="[ C-DLI: Artemether + Lumefantrine tablet 20mg + 120mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">08</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Ascorbic acid (Vitamine C) tablet 50mg, 100mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="YsKOZwEyB3q-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Ascorbic acid (Vitamin C) tablet 50mg, 100mg (Stock)"
+          value="[ C-DLI: Ascorbic acid (Vitamin C) tablet 50mg, 100mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">09</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">BCG vaccine</div>
+      </td>
+      <td class="blueContent">Dose</td>
+      <td class="yorkGreenContent">
+        <input id="gHORjGwYukU-lmbxvugTvKr-val" name="entryfield" title="C-DLI: BCG vaccine (Stock)" value="[ C-DLI: BCG vaccine (Stock) ]" />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">10</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Chloramphenicol Eye drops 0.5%</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="dLnTf3rFHtQ-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Chloramphenicol Eye drops 0.5% (Stock)"
+          value="[ C-DLI: Chloramphenicol Eye drops 0.5% (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">11</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Chlorpheniramine syrup 2mg/5ml</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="OIrgYMjYuUw-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Chlorpheniramine syrup 2mg/5ml (Stock)"
+          value="[ C-DLI: Chlorpheniramine syrup 2mg/5ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">12</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Chlorpheniramine tablet 4mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="P1VB7etquKJ-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Chlorpheniramine tablet 4mg (Stock)"
+          value="[ C-DLI: Chlorpheniramine tablet 4mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">13</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Cimetidine tablet 200mg, 400mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="OFWGxQvV2yN-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Cimetidine tablet 200mg, 400mg (Stock)"
+          value="[ C-DLI: Cimetidine tablet 200mg, 400mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">14</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Co-Trimoxazole (Sulfamethoxazole + Trimethoprim) suspension 200mg + 40mg/5 ml</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="hRqYqzbtchh-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Co-Trimoxazole (Sulfamethoxazole + Trimethoprim) suspension 200mg + 40mg/5 ml (Stock)"
+          value="[ C-DLI: Co-Trimoxazole (Sulfamethoxazole + Trimethoprim) suspension 200mg + 40mg/5 ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">15</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Co-Trimoxazole (Sulfamethoxazole + Trimethoprim) tablet 400mg + 80mg,</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="Ug56NTdGUXo-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Co-Trimoxazole (Sulfamethoxazole + Trimethoprim) tablet 400mg + 80mg (Stock)"
+          value="[ C-DLI: Co-Trimoxazole (Sulfamethoxazole + Trimethoprim) tablet 400mg + 80mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">16</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Diclofenac sodium tablet 50mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="vNEcYUjDwgp-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Diclofenac sodium tablet 50mg (Stock)"
+          value="[ C-DLI: Diclofenac sodium tablet 50mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">17</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Enalapril tablet 5mg, 20mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="al5ka2DFeDF-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Enalapril tablet 5mg, 20mg (Stock)"
+          value="[ C-DLI: Enalapril tablet 5mg, 20mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">18</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Ferrous sulfate + folic acid tablet 200mg + 0.4mg,</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="LUrkL4Og2Qn-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Ferrous sulfate + folic acid tablet 200mg + 0.4mg (Stock)"
+          value="[ C-DLI: Ferrous sulfate + folic acid tablet 200mg + 0.4mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">19</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Glucose Injectable solution 5% in 500-1000ml</div>
+      </td>
+      <td class="blueContent">Bag</td>
+      <td class="yorkGreenContent">
+        <input
+          id="gGfE4rqNY7x-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Glucose Injectable solution 5% in 500-1000ml (Stock)"
+          value="[ C-DLI: Glucose Injectable solution 5% in 500-1000ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">20</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Hyoscine (Scopolamine) tablet 10mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="DooV4HF3vTC-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Hyoscine (Scopolamine) tablet 10mg (Stock)"
+          value="[ C-DLI: Hyoscine (Scopolamine) tablet 10mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">21</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Mebendazole tablet 500mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="X3UYB8TIkcE-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Mebendazole tablet 500mg (Stock)"
+          value="[ C-DLI: Mebendazole tablet 500mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">22</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Omeprazol tablet 10mg, 20mg</div>
+      </td>
+      <td class="blueContent">Capsule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="F1WDf9lJSNG-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Omeprazol tablet 10mg, 20mg (Stock)"
+          value="[ C-DLI: Omeprazol tablet 10mg, 20mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">23</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Oral rehydration salt Powder for dilution</div>
+      </td>
+      <td class="blueContent">Sack</td>
+      <td class="yorkGreenContent">
+        <input
+          id="hG48zCUUor1-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Oral rehydration salt Powder for dilution (Stock)"
+          value="[ C-DLI: Oral rehydration salt Powder for dilution (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">24</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Oxytocin Injection 10 IU in 1ml</div>
+      </td>
+      <td class="blueContent">Ampoule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="lSnvQYh3UBB-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Oxytocin Injection 10 IU in 1ml (Stock)"
+          value="[ C-DLI: Oxytocin Injection 10 IU in 1ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">25</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Paracetamol tablet 500mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="pcrZcb0juWN-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Paracetamol tablet 500mg (Stock)"
+          value="[ C-DLI: Paracetamol tablet 500mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">26</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Paracetamol injection 300mg/2ml</div>
+      </td>
+      <td class="blueContent">Ampoule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="yFOwLbcfqFh-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Paracetamol injection 300mg/2ml (Stock)"
+          value="[ C-DLI: Paracetamol injection 300mg/2ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">27</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Paracetamol syrup 120mg /5ml</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="M9V8K4YHirX-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Paracetamol syrup 120mg/5ml (Stock)"
+          value="[ C-DLI: Paracetamol syrup 120mg/5ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">28</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">
+          Penta (DPT-Hep B-Hib vaccine ( Diphteria, Tetanus, whole-cell Pertussis(DTP), Hepatitis B and Haemophilus influenza type B))
+        </div>
+      </td>
+      <td class="blueContent">Dose</td>
+      <td class="yorkGreenContent">
+        <input
+          id="vHvTP9JKFOl-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Penta (DPT-Hep B-Hib vaccine ( Diphteria, Tetanus, whole-cell Pertussis(DTP), Hepatitis B and Haemophilus influenza type B)) (Stock)"
+          value="[ C-DLI: Penta (DPT-Hep B-Hib vaccine ( Diphteria, Tetanus, whole-cell Pertussis(DTP), Hepatitis B and Haemophilus influenza type B)) (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">29</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Phenoxymethylpenicillin (Penicillin V) tablet 400.000 IU</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="X3JfCtWTzsJ-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Phenoxymethylpenicillin (Penicillin V) tablet 400.000 IU (Stock)"
+          value="[ C-DLI: Phenoxymethylpenicillin (Penicillin V) tablet 400.000 IU (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">30</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Phytomenadione (Vitamine K1) injection 1mg/ml</div>
+      </td>
+      <td class="blueContent">Ampoule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="JPJr6kNruGM-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Phytomenadione (Vitamin K1) injection 1mg/ml (Stock)"
+          value="[ C-DLI: Phytomenadione (Vitamin K1) injection 1mg/ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">31</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Polyvidone iodine Solution 10%</div>
+      </td>
+      <td class="blueContent">Bottle</td>
+      <td class="yorkGreenContent">
+        <input
+          id="aEjs8FhqV3W-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Polyvidone iodine Solution 10% (Stock)"
+          value="[ C-DLI: Polyvidone iodine Solution 10% (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">32</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Primaquine 7.5mg/15mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="CjDbbZxfYXZ-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Primaquine 7.5mg/15mg (Stock)"
+          value="[ C-DLI: Primaquine 7.5mg/15mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">33</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Retinol (Vitamine A) Soft capsule 100,000 IU</div>
+      </td>
+      <td class="blueContent">Soft capsule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="m1ttbbT9Z2f-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Retinol (Vitamin A) Soft capsule 100,000 IU (Stock)"
+          value="[ C-DLI: Retinol (Vitamin A) Soft capsule 100,000 IU (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">34</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Retinol (Vitamine A) Soft capsule 200,000 IU</div>
+      </td>
+      <td class="blueContent">Soft capsule</td>
+      <td class="yorkGreenContent">
+        <input
+          id="FnevSPFfTvy-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Retinol (Vitamin A) Soft capsule 200,000 IU (Stock)"
+          value="[ C-DLI: Retinol (Vitamin A) Soft capsule 200,000 IU (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">35</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Ringer acetate or lactate, compound solution Injectable solution 500-1000ml</div>
+      </td>
+      <td class="blueContent">Bag</td>
+      <td class="yorkGreenContent">
+        <input
+          id="G47ihzFruZl-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Ringer acetate or lactate, compound solution Injectable solution 500-1000ml (Stock)"
+          value="[ C-DLI: Ringer acetate or lactate, compound solution Injectable solution 500-1000ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">36</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Salbutamol tablet 2mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="avjLDngO8bT-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Salbutamol tablet 2mg (Stock)"
+          value="[ C-DLI: Salbutamol tablet 2mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">37</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Sodium chloride Injectable solution 0.9% isotonic in 500-1000ml</div>
+      </td>
+      <td class="blueContent">Bag</td>
+      <td class="yorkGreenContent">
+        <input
+          id="xEjZRuK4NM2-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Sodium chloride Injectable solution  0.9% isotonic in 500-1000ml (Stock)"
+          value="[ C-DLI: Sodium chloride Injectable solution  0.9% isotonic in 500-1000ml (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">38</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Syringe 1.0 ml</div>
+      </td>
+      <td class="blueContent">Piece</td>
+      <td class="yorkGreenContent">
+        <input id="DQp0Fg11hIQ-lmbxvugTvKr-val" name="entryfield" title="C-DLI: Syringe 1.0 ml (Stock)" value="[ C-DLI: Syringe 1.0 ml (Stock) ]" />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">39</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Tetracycline Eye ointment 1%</div>
+      </td>
+      <td class="blueContent">Tube</td>
+      <td class="yorkGreenContent">
+        <input
+          id="LQd1V3w6xkP-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Tetracycline Eye ointment 1% (Stock)"
+          value="[ C-DLI: Tetracycline Eye ointment 1% (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">40</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Thiamine (Vitamine B1) tablet &nbsp;50mg, 100mg, 250mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="ARy1ZAZKHFB-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Thiamine (Vitamin B1) tablet  50mg, 100mg, 250mg (Stock)"
+          value="[ C-DLI: Thiamine (Vitamin B1) tablet  50mg, 100mg, 250mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">41</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Zinc sulfate tablet 20mg</div>
+      </td>
+      <td class="blueContent">Tablet</td>
+      <td class="yorkGreenContent">
+        <input
+          id="IaiLjFykbMU-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Zinc sulfate tablet 20mg (Stock)"
+          value="[ C-DLI: Zinc sulfate tablet 20mg (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">42</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Sputum cups</div>
+      </td>
+      <td class="blueContent">Cup</td>
+      <td class="yorkGreenContent">
+        <input id="W6NP7sqOExg-lmbxvugTvKr-val" name="entryfield" title="C-DLI: Sputum cups (Stock)" value="[ C-DLI: Sputum cups (Stock) ]" />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">43</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Condom</div>
+      </td>
+      <td class="blueContent">Piece</td>
+      <td class="yorkGreenContent">
+        <input id="udDiVTv2fpP-lmbxvugTvKr-val" name="entryfield" title="C-DLI: Condom (Stock)" value="[ C-DLI: Condom (Stock) ]" />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">44</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Malaria Rapid Diagnostic Test</div>
+      </td>
+      <td class="blueContent">Kit</td>
+      <td class="yorkGreenContent">
+        <input
+          id="NhuuFzhVN2Z-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Malaria Rapid Diagnostic Test (Stock)"
+          value="[ C-DLI: Malaria Rapid Diagnostic Test (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">45</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Health Book MCH</div>
+      </td>
+      <td class="blueContent">Book</td>
+      <td class="yorkGreenContent">
+        <input id="MkdOIxlRikr-lmbxvugTvKr-val" name="entryfield" title="C-DLI: Health Book MCH (Stock)" value="[ C-DLI: Health Book MCH (Stock) ]" />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">46</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Levonorgestrel tablet 30mcg (Mini pills, BL/35tablet)</div>
+      </td>
+      <td class="blueContent">Blister</td>
+      <td class="yorkGreenContent">
+        <input
+          id="RuWUoXZIxNY-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Levonorgestrel tablet 30mcg (Mini pills, BL/35tablet) (Stock)"
+          value="[ C-DLI: Levonorgestrel tablet 30mcg (Mini pills, BL/35tablet) (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">47</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Ethinylestradiol + levonorgestrel 30mg/150mcg (Combined Pills, BL/28tablet)</div>
+      </td>
+      <td class="blueContent">Blister</td>
+      <td class="yorkGreenContent">
+        <input
+          id="gkmn8qKHN6B-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Ethinylestradiol + levonorgestrel 30mg/150mcg (Combined Pills, BL/28tablet) (Stock)"
+          value="[ C-DLI: Ethinylestradiol + levonorgestrel 30mg/150mcg (Combined Pills, BL/28tablet) (Stock) ]"
+        />
+      </td>
+    </tr>
+    <tr>
+      <td class="blueContent">48</td>
+      <td class="blueContent">
+        <div class="Alcohol 70%">Medroxy progesterone acetate injection 150mg/ml (Depo-Provera)</div>
+      </td>
+      <td class="blueContent">Vial</td>
+      <td class="yorkGreenContent">
+        <input
+          id="Ropwzlji2U5-lmbxvugTvKr-val"
+          name="entryfield"
+          title="C-DLI: Medroxy progesterone acetate injection  150mg/ml (Depo-Provera) (Stock)"
+          value="[ C-DLI: Medroxy progesterone acetate injection  150mg/ml (Depo-Provera) (Stock) ]"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <span style="color: #0000ff"
+    ><span title="Pleas click on Complete button when your work has done"><span style="background-color: #add8e6">ກະລຸນາກົດປຸ່ມ</span></span></span
+  ><font color="red"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6"> &quot;</span><strong><span style="background-color: #add8e6">ສຳເລັດແລ້ວ</span></strong
+      ><span style="background-color: #add8e6">&quot; </span></span
+    ></font
+  ><span style="color: #0000ff"
+    ><span title="Pleas click on Complete button when your work has done"
+      ><span style="background-color: #add8e6">ເມື່ອທ່ານປ້ອນຂໍ້ມູນຄົບຖ້ວນ</span></span
+    ></span
+  >
+</p>

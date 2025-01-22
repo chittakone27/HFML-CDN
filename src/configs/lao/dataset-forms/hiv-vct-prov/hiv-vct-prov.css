@@ -1,0 +1,11 @@
+#hiv-vct-prov-table {
+  height: fit-content;
+  background-color: aliceblue;
+  border-collapse: collapse;
+  border-radius: 0.8em;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+#hiv-vct-prov-form-container td {
+  border: 1.5px solid #fff;
+}

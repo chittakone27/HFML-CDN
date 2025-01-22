@@ -1,0 +1,18 @@
+#vct-id .input-field-container {
+  padding: 0;
+  border: 0;
+}
+
+#vct-id {
+  padding-left: 20px;
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+#vct-id.reset-border {
+  padding-left: 0;
+  border-left: 0;
+}
+
+#vct-id #input-wrapper input {
+  text-align: center;
+}

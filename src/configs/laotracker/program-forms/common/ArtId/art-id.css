@@ -1,0 +1,18 @@
+#art-id .input-field-container {
+  padding: 0;
+  border: 0;
+}
+
+#art-id {
+  padding-left: 20px;
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+#art-id.reset-border {
+  padding-left: 0;
+  border-left: 0;
+}
+
+#art-id #input-wrapper input {
+  text-align: center;
+}

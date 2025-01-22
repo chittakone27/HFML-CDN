@@ -1,0 +1,28 @@
+.inputfield-container {
+  width: 100%;
+}
+.age-picker-container {
+  width: 100%;
+}
+.age-picker-container span {
+  font-size: 13px;
+}
+/* .geometry-picker-inputs {
+  display: flex;
+  align-items: flex-end;
+}
+.geometry-picker-inputs > div {
+  width: 200px;
+  margin-right: 10px;
+}
+.geometry-picker-map-container {
+  width: 100%;
+  height: 600px;
+} */
+.geometry-picker-container {
+  display: flex;
+  align-items: flex-end;
+}
+.geometry-picker-container > div {
+  margin-right: 5px;
+}

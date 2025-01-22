@@ -1,0 +1,6 @@
+#ncle-data-quality-assessment-form-container table td,
+#ncle-data-quality-assessment-form-container table th {
+  border: 1.5px solid #fff;
+  font-weight: bold;
+  padding: 15px;
+}

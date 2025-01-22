@@ -1,0 +1,12 @@
+.event-tabular-program-stage-item {
+  display: flex;
+  padding: 15px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.event-tabular-program-stage-item:hover {
+  background-color: whitesmoke;
+}
+.etpsi-selected {
+  background-color: whitesmoke;
+}

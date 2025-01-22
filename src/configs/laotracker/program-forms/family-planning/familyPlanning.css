@@ -1,0 +1,46 @@
+.family-planning-form {
+  padding: 10px 0;
+}
+
+.family-planning-form table td,
+.family-planning-form table th {
+  padding: 6px 10px;
+}
+
+.family-planning-form table tr:last-child td {
+  border-bottom: 1;
+}
+
+.family-planning-form .field-container,
+.family-planning-form .bordered-left {
+  padding-left: 16px;
+  border-left: 1px solid #e0e0e0;
+  min-width: 350px;
+}
+
+.family-planning-form .field-container .MuiCheckbox-root {
+  padding: 8px;
+}
+
+.family-planning-form table td:nth-child(1) {
+  width: 300px;
+}
+
+.family-planning-form#profile-form {
+  padding: 0;
+}
+
+.family-planning-form#profile-form table td:nth-child(1),
+.family-planning-form#schedule-dialog table td:nth-child(1) {
+  width: 180px;
+}
+
+.family-planning-form#profile-form.registration table td:nth-child(1) {
+  width: 350px;
+}
+
+.family-planning-form .Mui-disabled input,
+.family-planning-form .MuiInputBase-root.Mui-disabled {
+  background-color: #eee;
+  border-radius: 4px;
+}

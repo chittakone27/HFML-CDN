@@ -1,0 +1,3092 @@
+<script>
+  const openingStocks = [
+    {
+      openingStock: "ILxa69mEu3t",
+      closingStock: "Zmd2CIKSCwD",
+    },
+    {
+      openingStock: "yd80FM8o0de",
+      closingStock: "AAYZpLsfDdO",
+    },
+    {
+      openingStock: "hcNFNQeqUAt",
+      closingStock: "Rdn5Ek1uoBR",
+    },
+    {
+      openingStock: "yGxPFHRhOej",
+      closingStock: "ogduLvSIEyq",
+    },
+    {
+      openingStock: "NAEulNwxR6p",
+      closingStock: "ZDeRWw3ekeY",
+    },
+    {
+      openingStock: "ejVn6MCw1rN",
+      closingStock: "SMPaIfxBZco",
+    },
+    {
+      openingStock: "PUXgXAeHLPQ",
+      closingStock: "R3ube1Xc7mm",
+    },
+    {
+      openingStock: "PIfphG0y49E",
+      closingStock: "to06BpNCfJq",
+    },
+    {
+      openingStock: "sWEchTRGo7e",
+      closingStock: "ql8QfzeQgN2",
+    },
+    {
+      openingStock: "wciO8eGnrSf",
+      closingStock: "mcvIFmTmDZu",
+    },
+    {
+      openingStock: "cW97KCASdqI",
+      closingStock: "AFUBZahxvwG",
+    },
+    {
+      openingStock: "OJ5THjYqCNd",
+      closingStock: "Kj29ghgBU7L",
+    },
+    {
+      openingStock: "C1Y0vdELKG0",
+      closingStock: "qKumEPo6rXU",
+    },
+    {
+      openingStock: "zF3FGR02JKF",
+      closingStock: "WrnXHU7T9e6",
+    },
+    {
+      openingStock: "s85rnzQRpX8",
+      closingStock: "uFM8p2Wnx8z",
+    },
+    {
+      openingStock: "mX2tvZut2vj",
+      closingStock: "onExHOFsHYJ",
+    },
+    {
+      openingStock: "UwFc37Z65wQ",
+      closingStock: "KOhntWCxlqr",
+    },
+    {
+      openingStock: "kCDoO9YYQBS",
+      closingStock: "Jm1AEKtf2nP",
+    },
+    {
+      openingStock: "ZkzILEcQ7sm",
+      closingStock: "r2zy9ajwsaT",
+    },
+    {
+      openingStock: "cfetH7hLzCD",
+      closingStock: "UbXMbhKrWYo",
+    },
+    {
+      openingStock: "WCTf0c1XBi0",
+      closingStock: "uRz9N41r6et",
+    },
+    {
+      openingStock: "cllYhWwpVet",
+      closingStock: "FZOKIFoQJ2D",
+    },
+    {
+      openingStock: "ywAFH0JsCyv",
+      closingStock: "gX7Q1Ov01W2",
+    },
+  ];
+
+  const doWork = () => {
+    const period = $("#selectedPeriodId").val();
+    const periodLastMonth =
+      parseInt(period.substring(4, 6)) - 1 === 0
+        ? `${parseInt(period.substring(0, 4)) - 1}12`
+        : parseInt(period.substring(4, 6)) - 1 < 10
+        ? `${period.substring(0, 4)}0${parseInt(period.substring(4, 6)) - 1}`
+        : `${period.substring(0, 4)}${parseInt(period.substring(4, 6)) - 1}`;
+
+    const orgUnit = $("#orgUnitTree a.selected")
+      .parent()
+      .attr("id")
+      .replace("orgUnit", "");
+
+    openingStocks.forEach((st) => {
+      $.get(
+        `../api/dataValues.json?de=${st.closingStock}&pe=${periodLastMonth}&ou=${orgUnit}&co=lmbxvugTvKr`
+      ).then((dataVal) => {
+        $(`#${st.openingStock}-lmbxvugTvKr-val`).val(parseInt(dataVal));
+        $.post(
+          `../api/dataValues.json?de=${
+            st.openingStock
+          }&pe=${period}&ou=${orgUnit}&co=lmbxvugTvKr&value=${parseInt(
+            dataVal
+          )}`
+        );
+      });
+      $(`#${st.openingStock}-lmbxvugTvKr-val`).attr("disabled", true);
+    });
+  };
+
+  const sectionCalcAll = () => {
+    const period = $("#selectedPeriodId").val();
+    const orgUnit = $("#orgUnitTree a.selected")
+      .parent()
+      .attr("id")
+      .replace("orgUnit", "");
+
+    const closingStockTags = $("#stockForm").find("td[stock='balance']");
+    closingStockTags.each(function () {
+      const receiveTags = $(this).parent().find("td[stock='receive']");
+      let receiveStock = 0;
+      receiveTags.each(function () {
+        receiveStock += isNaN(parseInt($(this).find("input").val()))
+          ? 0
+          : parseInt($(this).find("input").val());
+      });
+
+      const spendTags = $(this).parent().find("td[stock='spend']");
+      let spendStock = 0;
+      spendTags.each(function () {
+        spendStock += isNaN(parseInt($(this).find("input").val()))
+          ? 0
+          : parseInt($(this).find("input").val());
+      });
+
+      $(this)
+        .find("input")
+        .val(receiveStock - spendStock);
+      $.post(
+        `../api/dataValues.json?de=${$(this)
+          .find("input")
+          .attr("id")
+          .replace(
+            "-lmbxvugTvKr-val",
+            ""
+          )}&pe=${period}&ou=${orgUnit}&co=lmbxvugTvKr&value=${
+          receiveStock - spendStock
+        }`
+      );
+    });
+  };
+
+  const setSectionEventsAll = () => {
+    const period = $("#selectedPeriodId").val();
+    const orgUnit = $("#orgUnitTree a.selected")
+      .parent()
+      .attr("id")
+      .replace("orgUnit", "");
+
+    $("#stockForm input").keyup(function () {
+      var trTag = $(this).parent().parent();
+
+      // var inputs = trTag.find("input");
+      // trTag.find("div.total").text(calcData(inputs));
+
+      const receiveTags = $(trTag).find("td[stock='receive']");
+      let receiveStock = 0;
+      receiveTags.each(function () {
+        receiveStock += isNaN(parseInt($(this).find("input").val()))
+          ? 0
+          : parseInt($(this).find("input").val());
+      });
+
+      const spendTags = $(trTag).find("td[stock='spend']");
+      let spendStock = 0;
+      spendTags.each(function () {
+        spendStock += isNaN(parseInt($(this).find("input").val()))
+          ? 0
+          : parseInt($(this).find("input").val());
+      });
+
+      var closingStock = $(trTag).find("td[stock='balance']").find("input");
+      closingStock.val(receiveStock - spendStock);
+      $.post(
+        `../api/dataValues.json?de=${$(closingStock)
+          .attr("id")
+          .replace(
+            "-lmbxvugTvKr-val",
+            ""
+          )}&pe=${period}&ou=${orgUnit}&co=lmbxvugTvKr&value=${
+          receiveStock - spendStock
+        }`
+      );
+    });
+  };
+  //Show form
+  function init() {
+    $("#UacaZBN2uDQ-lmbxvugTvKr-val").is(":checked")
+      ? $("#showForm").show()
+      : $("#showForm").hide();
+    $("#UacaZBN2uDQ-lmbxvugTvKr-val").change(function () {
+      $(this).is(":checked") ? $("#showForm").show() : $("#showForm").hide();
+    });
+  }
+  // SHow test
+  function intnof() {
+    $("#Testnof").is(":checked")
+      ? $("#showllin").show()
+      : $("#showllin").hide();
+    $("#Testnof").change(function () {
+      $(this).is(":checked") ? $("#showllin").show() : $("#showllin").hide();
+    });
+  }
+
+  dhis2.util.on("dhis2.de.event.formReady", function (event, ds) {
+    setSectionEventsAll();
+    doWork();
+    sectionCalcAll();
+  });
+
+  dhis2.util.on("dhis2.de.event.dataValuesLoaded", function (event, ds) {
+    init();
+    intnof();
+    doWork();
+    sectionCalcAll();
+    checkFilled();
+    $("[name=checkFilled] > td > input").on("change", checkFilled);
+  });
+
+  var testNull = (value) => {
+    if (value == "" || value == null) {
+      return 0;
+    } else {
+      return parseInt(value);
+    }
+  };
+
+  function checkFilled() {
+    $("[name=checkFilled]").each(function () {
+      if (
+        testNull($(this).children()[2].children[0].value) !==
+          testNull($(this).children()[3].children[0].value) &&
+        testNull($(this).children()[3].children[0].value) !== 0
+      ) {
+        $(this).children()[3].children[0].style.borderColor = "red";
+      } else {
+        $(this).children()[3].children[0].style.borderColor = "black";
+      }
+    });
+  }
+  /*
+$(document).ready(function HidemyCheck() {
+  $('#Testnof').on('change', function() {
+  if($(this).is(':checked')) {
+$('#showllin').hide();
+} else {
+    $('#showllin').show();
+  }    
+});
+});  */
+</script>
+<style type="text/css">
+  table {
+    width: 100%;
+    border-width: 1px;
+  }
+
+  td {
+    text-align: center;
+    background-color: rgb(244, 249, 255);
+  }
+
+  td.mainTitle {
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: rgb(102, 153, 204);
+  }
+
+  td.mainTitle2 {
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgb(102, 153, 204);
+  }
+
+  td.itemTitle {
+    text-align: left;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: rgb(102, 153, 204);
+  }
+
+  td.blueTitle {
+    background-color: rgb(153, 204, 255);
+    font-weight: bold;
+    text-align: center;
+  }
+
+  input.entryfield {
+    width: 5em;
+  }
+
+  input.lock {
+    background-color: #89b7ed;
+    width: 5em;
+    text-align: center;
+  }
+</style>
+<h1 align="center"><u>1. Confirm complete event</u></h1>
+
+<table id="stockForm">
+  <tbody>
+    <tr>
+      <td class="mainTitle2 eventcomplete" width="80%">
+        <h4>
+          ຈົ່ງໝັ້ນໃຈວ່າ ທ່ານໄດ້ສໍາເລັດການປ້ອນ ຂໍ້ມູນລາຍລະອຽດຂອງຄົນເຈັບ ທຸກຄົນ
+          ແລະ ຂໍ້ມູນທັງໝົດໃນຟອມ F1 ແລະ F2 ຂອງເດືອນຜ່ານມາ
+          ທີ່ສົ່ງຈາກສະຖານບໍລິການທີ່ຂື້ນກັບເມືອງຂອງທ່ານ
+          ກ່ອນທີ່ທ່ານຈະປ້ອນຂໍ້ມູນລາຍງານດ້ານພັດສະດຸ. ຖ້າໄດ້ປ້ອນຄົບຖ້ວນແລ້ວ
+          ໃຫ້ທ່ານກົດປຸ່ມ &ldquo;ຢັ້ງຢືນ&rdquo; ດ້ານຂ້າງນີ້.
+        </h4>
+      </td>
+      <td width="10%">
+        <input
+          id="UacaZBN2uDQ-lmbxvugTvKr-val"
+          name="entryfield"
+          title="MALSTOCK: Event complete"
+          value="[ MALSTOCK: Event complete ]"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<div id="showForm">
+  <h1 align="center"><u>2. Total Tested Cases</u></h1>
+
+  <table id="stockForm">
+    <tbody>
+      <tr>
+        <td class="mainTitle AGE">ອາຍຸ</td>
+        <td class="mainTitle RDTtest">ກວດດ້ວຍເຈ້ຍຈຸ່ມຈາກສະຖານບໍລິການ</td>
+        <td class="mainTitle MICtest">ກວດດ້ວຍກ້ອງຈຸລະທັດ</td>
+        <td class="mainTitle VHVtest">ກວດຈາກ ACD</td>
+        <td class="mainTitle ACTtest">ກວດຈາກອສບ</td>
+        <td class="mainTitle FTATtest">ກວດຈາກ ອສບ RACD</td>
+      </tr>
+      <tr>
+        <td class="mainTitle Under5">ຕ່ຳກ່ວາ 5</td>
+        <td>
+          <input
+            id="OjXIQY2xY7K-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT tested cases Under 5"
+            value="[ MALSTOCK: RDT tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="ulFgJ1voklw-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: Microscopy tested Under 5"
+            value="[ MALSTOCK: Microscopy tested Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="JmJ5tcHSaJP-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT ACD tested cases Under 5"
+            value="[ MALSTOCK: RDT ACD tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="cTaYKaTFnvi-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT VHV tested cases Under 5"
+            value="[ MALSTOCK: RDT VHV tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="rytp1GxObJf-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MAL: RDT ACD FTAT tested cases Under 5"
+            value="[ MAL: RDT ACD FTAT tested cases Under 5 ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="mainTitle Over5">ສູງກ່ວາ 5</td>
+        <td>
+          <input
+            id="OjXIQY2xY7K-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT tested cases Over 5"
+            value="[ MALSTOCK: RDT tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="ulFgJ1voklw-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: Microscopy tested Over 5"
+            value="[ MALSTOCK: Microscopy tested Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="JmJ5tcHSaJP-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT ACD tested cases Over 5"
+            value="[ MALSTOCK: RDT ACD tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="cTaYKaTFnvi-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT VHV tested cases Over 5"
+            value="[ MALSTOCK: RDT VHV tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="rytp1GxObJf-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MAL: RDT ACD FTAT tested cases Over 5"
+            value="[ MAL: RDT ACD FTAT tested cases Over 5 ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <table id="stockForm">
+    <tbody>
+      <tr>
+        <td class="mainTitle AGE">ອາຍຸ</td>
+        <td class="mainTitle RDTtest">ກວດຈາກ PPM</td>
+        <td class="mainTitle RDTtest">ກວດຈາກອສບ ກະໂຕ</td>
+        <td class="mainTitle MICtest">ກວດຈາກອສບ ກະໂຕ RACD</td>
+        <td class="mainTitle VHVtest">ກວດຈາກອສບ ເຄື່ອນທີ່</td>
+        <td class="mainTitle ACTtest">ກວດຈາກອສບ ເຄື່ອນທີ່ RACD</td>
+      </tr>
+      <tr>
+        <td class="mainTitle Under5">ຕ່ຳກ່ວາ 5</td>
+        <td>
+          <input
+            id="HB6KdK6lNgp-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT PPM tested cases Under 5"
+            value="[ MALSTOCK: RDT PPM tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="eIxSWlynWHT-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT KMW tested cases Under 5"
+            value="[ MALSTOCK: RDT KMW tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="yP2KIHquJZ2-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT KMW RACD tested cases Under 5"
+            value="[ MALSTOCK: RDT KMW RACD tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="zqY1bsW1RvE-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT MMW tested cases Under 5"
+            value="[ MALSTOCK: RDT MMW tested cases Under 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="mfxX0XZA9sr-K5TCy4YgFWC-val"
+            name="entryfield"
+            title="MALSTOCK: RDT MMW RACD tested cases Under 5"
+            value="[ MALSTOCK: RDT MMW RACD tested cases Under 5 ]"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td class="mainTitle Over5">ສູງກ່ວາ 5</td>
+        <td>
+          <input
+            id="HB6KdK6lNgp-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT PPM tested cases Over 5"
+            value="[ MALSTOCK: RDT PPM tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="eIxSWlynWHT-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT KMW tested cases Over 5"
+            value="[ MALSTOCK: RDT KMW tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="yP2KIHquJZ2-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT KMW RACD tested cases Over 5"
+            value="[ MALSTOCK: RDT KMW RACD tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="zqY1bsW1RvE-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT MMW tested cases Over 5"
+            value="[ MALSTOCK: RDT MMW tested cases Over 5 ]"
+          />
+        </td>
+        <td>
+          <input
+            id="mfxX0XZA9sr-AavaBYyzhvd-val"
+            name="entryfield"
+            title="MALSTOCK: RDT MMW RACD tested cases Over 5"
+            value="[ MALSTOCK: RDT MMW RACD tested cases Over 5 ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>&nbsp;</p>
+
+  <h1 align="center"><u>3. Monthly summary stock report table</u></h1>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <p>&nbsp;</p>
+
+  <table id="stockForm">
+    <tbody>
+      <tr>
+        <td class="mainTitle Item" rowspan="2">ລາຍການຢາ ແລະ ເຈ້ຍຈຸ່ມ</td>
+        <td class="mainTitle Unit" rowspan="2">ຫົວໜ່ວຍ</td>
+        <td class="blueTitle Opening_stock_auto" rowspan="2">
+          ຈ/ນ ເຫຼືອຈາກເດືອນກ່ອນ (ອັດຕະໂນມັດ)
+        </td>
+        <td class="blueTitle Opening_stock" rowspan="2">ຈ/ນ ເຫຼືອເດືອນກ່ອນ</td>
+        <td class="blueTitle Stock_out" rowspan="2">ຢາຂາດສາງ</td>
+        <td class="blueTitle Receive" colspan="2">ຮັບເຂົ້າ (+)</td>
+        <td class="blueTitle Dispensed" colspan="5">ສົ່ງອອກ (-)</td>
+        <td class="blueTitle Lost" rowspan="2">ຈ/ນ ເສຍຫາຍ</td>
+        <td class="blueTitle Expiring_90_days" rowspan="2">
+          ຈ/ນ ກຳລັງຈະໝົດອາຍຸໃນ 90 ວັນ
+        </td>
+        <td class="blueTitle Expired" rowspan="2">ຈ/ນ ໝົດອາຍຸ</td>
+        <td class="blueTitle Closing" rowspan="2">ຍອດເຫຼືອໃນປັດຈຸບັນ</td>
+      </tr>
+      <tr>
+        <td class="blueTitle Receive_this_month">ຈ/ນ ຮັບໃໝ່ເດືອນນີ້</td>
+        <td class="blueTitle Received_from_transfer">
+          ຈ/ນ ຮັບໂອນມາ / ສົ່ງຄືນຈາກ
+        </td>
+        <td class="blueTitle Dispensed_to_patient">ຈ/ນ ຈ່າຍປິ່ນປົວຄົນເຈັບ</td>
+        <td class="blueTitle Issued_to_HC">ຈ/ນ ຈ່າຍໃຫ້ສະຖານທີ່ບໍລິການ</td>
+        <td class="blueTitle Transfer">ຈ/ນ ໂອນອອກໄປບ່ອນອື່ນ</td>
+        <td class="blueTitle Transfer_ACD">ຈ່າຍປິ່ນປົວຄົນເຈັບ ACD</td>
+        <td class="blueTitle Transfer_TES">ຈ່າຍປິ່ນປົວຄົນເຈັບ TES</td>
+      </tr>
+      <!-- Rapid Diagnostic Test (RDT) -->
+      <tr name="checkFilled">
+        <td class="itemTitle RDT">ເຈ້ຍຈຸ່ມ (RDT)</td>
+        <td class="mainTitle test">ອັນ</td>
+        <td>
+          <input
+            id="PIfphG0y49E-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Opening stock"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="yia3d2eM9kj-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Opening stock (PC)"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="T9RRc9psZ1P-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Stock out"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="stvmrNRY9Z8-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Receive this month"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="gp1B8HsAB60-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Received from other facility non routine"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="D17edGoEwxT-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Dispensed to patient"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="V8B2hbpYiXK-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Issued to HC/village"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="KOujeLuua7f-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Transfered to other facilities non routine"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="NiZYSLYwpJi-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Dispensed to patient ACD"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="WEDD6BWcoVi-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Dispensed to patient TES"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="B29xRoJ32Tv-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Lost or damaged"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="UpScy0yu5xW-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Expiring in next 90 days"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="j0JoZYAw8zP-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Expired"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="to06BpNCfJq-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Rapid Diagnostic Test (RDT) Closing stock"
+            value="[ MALSTOCK: Rapid Diagnostic Test (RDT) Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- G6PD (RDT) -->
+      <tr name="checkFilled">
+        <td class="itemTitle G6PD">ເຈ້ຍຈຸ່ມ (G6PD)</td>
+        <td class="mainTitle test">ອັນ</td>
+        <td>
+          <input
+            id="sWEchTRGo7e-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Opening stock"
+            value="[ MALSTOCK: G6PD (RDT) Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="KZwNJBfEIPO-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Opening stock (PC)"
+            value="[ MALSTOCK: G6PD (RDT) Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="ugHYNMos5JX-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Stock out"
+            value="[ MALSTOCK: G6PD (RDT) Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="aEqe4rZ3WZT-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Receive this month"
+            value="[ MALSTOCK: G6PD (RDT) Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="UYAipvE0YYo-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Received from other facility non routine"
+            value="[ MALSTOCK: G6PD (RDT) Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="HUKHCinJaet-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Dispensed to patient"
+            value="[ MALSTOCK: G6PD (RDT) Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="LQPsGedv2pl-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Issued to HC/village"
+            value="[ MALSTOCK: G6PD (RDT) Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="RP1PgucLPK9-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Transfered to other facilities non routine"
+            value="[ MALSTOCK: G6PD (RDT) Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="Py7Othcx0Tr-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Dispensed to patient ACD"
+            value="[ MALSTOCK: G6PD (RDT) Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="pYK1jZUvUTI-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Dispensed to patient TES"
+            value="[ MALSTOCK: G6PD (RDT) Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="SJkHE3z3SXn-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Lost or damaged"
+            value="[ MALSTOCK: G6PD (RDT) Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="h0fM2edSisr-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Expiring in next 90 days"
+            value="[ MALSTOCK: G6PD (RDT) Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="QnrQs9j4dgg-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Expired"
+            value="[ MALSTOCK: G6PD (RDT) Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="ql8QfzeQgN2-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: G6PD (RDT) Closing stock"
+            value="[ MALSTOCK: G6PD (RDT) Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Coartem [6x1 tablets] -->
+      <tr name="checkFilled">
+        <td class="itemTitle Coartem6x1">ໂກອາກເຕັມ [6x1 ເມັດ]</td>
+        <td class="mainTitle Blisters" width="5%">ແຜງ</td>
+        <td>
+          <input
+            id="ILxa69mEu3t-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Opening stock"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Opening stock ]"
+          />
+        </td>
+        <td stock="receive" width="8.5%">
+          <input
+            id="LBpgWOcdZMb-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Opening stock (PC)"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Opening stock (PC) ]"
+          />
+        </td>
+        <td width="8.5%">
+          <input
+            id="PWzNx2bseR6-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Stock out"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Stock out ]"
+          />
+        </td>
+        <td stock="receive" width="8.5%">
+          <input
+            id="Iz4lmEsn672-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Receive this month"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Receive this month ]"
+          />
+        </td>
+        <td stock="receive" width="8.5%">
+          <input
+            id="mQvNxfye54V-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Received from other facility non routine"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend" width="8.5%">
+          <input
+            id="naA0R9l6h9X-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Dispensed to patient"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend" width="8.5%">
+          <input
+            id="MtoyLzRp5zf-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Issued to HC/village"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend" width="8.5%">
+          <input
+            id="YZHDYIp02V6-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Transferred to other facilities non routine"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Transferred to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="nnM7YMxlyCQ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Dispensed to patient ACD"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="yjXneL8Z61B-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Dispensed to patient TES"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend" width="8.5%">
+          <input
+            id="U9WOMeLIuSr-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Lost or damaged"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="cTmY9OyvihU-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Expiring in next 90 days"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend" width="8.5%">
+          <input
+            id="mJBoWQErq8u-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Expired"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Expired ]"
+          />
+        </td>
+        <td stock="balance" width="8.5%">
+          <input
+            id="Zmd2CIKSCwD-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x1 tablets] Closing stock"
+            value="[ MALSTOCK: Coartem [6x1 tablets] Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Coartem [6x2 tablets] -->
+      <tr name="checkFilled">
+        <td class="itemTitle Coartem6x2">ໂກອາກເຕັມ [6x2 ເມັດ]</td>
+        <td class="mainTitle Blisters">ແຜງ</td>
+        <td>
+          <input
+            id="yd80FM8o0de-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Opening stock"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="Fi1BBIFNJlc-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Opening stock (PC)"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="v4HAgGvW2dV-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Stock out"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="YyfkDg8ZqHV-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Receive this month"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="P9zcnU1rvC2-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Received from other facility non routine"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="X6PGigBc3un-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Dispensed to patient"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="f8rjCGcJIy0-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Issued to HC/village"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="YAKe0xIlVyU-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Transfered to other facilities non routine"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="rXQ79CVy0bE-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Dispensed to patient ACD"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="XE3LeT2LrpA-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Dispensed to patient TES"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="Va9Owx7Pi2M-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Lost or damaged"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="K1nntvzcsJK-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Expiring in next 90 days"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="ly5OR64JbWg-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Expired"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="AAYZpLsfDdO-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x2 tablets] Closing stock"
+            value="[ MALSTOCK: Coartem [6x2 tablets] Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Coartem [6x3 tablets] -->
+      <tr name="checkFilled">
+        <td class="itemTitle Coartem6x3">ໂກອາກເຕັມ [6x3 ເມັດ]</td>
+        <td class="mainTitle Blisters">ແຜງ</td>
+        <td>
+          <input
+            id="hcNFNQeqUAt-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Opening stock"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="h6MPEePXwm0-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Opening stock (PC)"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="haAEtdS70uD-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Stock out"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="HNQZopygZV7-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Receive this month"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="FPqd0fA41md-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Received from other facility non routine"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="i2doErWT8PI-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Dispensed to patient"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="LG23uqn1kw8-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Issued to HC/village"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="xGyQyFE6L2h-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Transfered to other facilities non routine"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="Z2PgmaLJuor-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Dispensed to patient ACD"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="LZcyha9ttXM-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Dispensed to patient TES"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="GMbb5BcDs4H-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Lost or damaged"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="lYXp8MNUlYR-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Expiring in next 90 days"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="wLyPvx49DTK-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Expired"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="Rdn5Ek1uoBR-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x3 tablets] Closing stock"
+            value="[ MALSTOCK: Coartem [6x3 tablets] Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Coartem [6x4 tablets] -->
+      <tr name="checkFilled">
+        <td class="itemTitle Coartem6x4">ໂກອາກເຕັມ [6x4 ເມັດ]</td>
+        <td class="mainTitle Blisters">ແຜງ</td>
+        <td>
+          <input
+            id="yGxPFHRhOej-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Opening stock"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="H6E8DRU76ne-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Opening stock (PC)"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="cTcY4j1YiHQ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Stock out"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="dF8uP7TWSMz-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Receive this month"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="f0tFLSW8sWj-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Received from other facility non routine"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="io8n0MMhHGv-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Dispensed to patient"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="oUk2gvxdoRw-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Issued to HC/village"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="cnSc7owwryt-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Transfered to other facilities non routine"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="pMNGvwwGWlR-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Dispensed to patient ACD"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="xZ6XNzM8apX-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Dispensed to patient TES"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="czix2JdvrOw-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Lost or damaged"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="ST5YGWFXmVk-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Expiring in next 90 days"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="lAA58ysOugs-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Expired"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="ogduLvSIEyq-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Coartem [6x4 tablets] Closing stock"
+            value="[ MALSTOCK: Coartem [6x4 tablets] Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Artesunate 60 mg -->
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Artesunate 60 mg</div>
+        </td>
+        <td class="mainTitle Vials">ຫຼອດ</td>
+        <td>
+          <input
+            id="PUXgXAeHLPQ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Opening stock"
+            value="[ MALSTOCK: Artesunate 60 mg Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="l78uYp68KUH-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Opening stock (PC)"
+            value="[ MALSTOCK: Artesunate 60 mg Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="ece1BitkQ4W-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Stock out"
+            value="[ MALSTOCK: Artesunate 60 mg Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="XFz5bG00QEV-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Receive this month"
+            value="[ MALSTOCK: Artesunate 60 mg Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="cwjvqaxmYFa-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Received from other facility non routine"
+            value="[ MALSTOCK: Artesunate 60 mg Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="MTYSXHWe8jZ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Dispensed to patient"
+            value="[ MALSTOCK: Artesunate 60 mg Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="DuuW8yOwr2J-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Issued to HC/village"
+            value="[ MALSTOCK: Artesunate 60 mg Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="LukP6UgTdrd-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Transfered to other facilities non routine"
+            value="[ MALSTOCK: Artesunate 60 mg Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="FD6sR6RtEm8-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Dispensed to patient ACD"
+            value="[ MALSTOCK: Artesunate 60 mg Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="gy1jp0elUQM-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Dispensed to patient TES"
+            value="[ MALSTOCK: Artesunate 60 mg Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="gez3tHhrz70-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Lost or damaged"
+            value="[ MALSTOCK: Artesunate 60 mg Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="jC1i9YT8Xi2-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Expiring in next 90 days"
+            value="[ MALSTOCK: Artesunate 60 mg Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="hCsevfG3pI1-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Expired"
+            value="[ MALSTOCK: Artesunate 60 mg Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="R3ube1Xc7mm-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate 60 mg Closing stock"
+            value="[ MALSTOCK: Artesunate 60 mg Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Primaquine 7.5 mg -->
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Primaquine 7.5 mg</div>
+        </td>
+        <td class="mainTitle Tablets">ເມັດ</td>
+        <td>
+          <input
+            id="NAEulNwxR6p-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Opening stock"
+            value="[ MALSTOCK: Primaquine 7.5 mg Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="yrCzHfkSwzb-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Opening stock (PC)"
+            value="[ MALSTOCK: Primaquine 7.5 mg Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="tlRER9fhMav-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Stock out"
+            value="[ MALSTOCK: Primaquine 7.5 mg Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="hnEphPKDAyZ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Receive this month"
+            value="[ MALSTOCK: Primaquine 7.5 mg Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="TkZ66i3etzp-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Received from other facility non routine"
+            value="[ MALSTOCK: Primaquine 7.5 mg Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="sljhSz8YH2E-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Dispensed to patient"
+            value="[ MALSTOCK: Primaquine 7.5 mg Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="D9ElNlGjV4z-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Issued to HC/village"
+            value="[ MALSTOCK: Primaquine 7.5 mg Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="JmZi5b6Ds7o-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Transferred to other facilities non routine"
+            value="[ MALSTOCK: Primaquine 7.5 mg Transferred to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="BTb3BszpaIX-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Dispensed to patient ACD"
+            value="[ MALSTOCK: Primaquine 7.5 mg Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="W5MPW1jlPMJ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Dispensed to patient TES"
+            value="[ MALSTOCK: Primaquine 7.5 mg Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="U2s0pXHKJeg-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Lost or damaged"
+            value="[ MALSTOCK: Primaquine 7.5 mg Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="R4Ci0rgFE54-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Expiring in next 90 days"
+            value="[ MALSTOCK: Primaquine 7.5 mg Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="lrytVMJiyW5-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Expired"
+            value="[ MALSTOCK: Primaquine 7.5 mg Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="ZDeRWw3ekeY-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 7.5 mg Closing stock"
+            value="[ MALSTOCK: Primaquine 7.5 mg Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Primaquine 15 mg -->
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Primaquine 15 mg</div>
+        </td>
+        <td class="mainTitle Tablets">ເມັດ</td>
+        <td>
+          <input
+            id="ejVn6MCw1rN-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Opening stock"
+            value="[ MALSTOCK: Primaquine 15 mg Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="MOei9MBDbpu-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Opening stock (PC)"
+            value="[ MALSTOCK: Primaquine 15 mg Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="jpAaGlfI57z-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Stock out"
+            value="[ MALSTOCK: Primaquine 15 mg Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="VCAWCqFQTEO-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Receive this month"
+            value="[ MALSTOCK: Primaquine 15 mg Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="RiKRJ7R696p-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Received from other facility non routine"
+            value="[ MALSTOCK: Primaquine 15 mg Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="S6ZoVHtO0Ja-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Dispensed to patient"
+            value="[ MALSTOCK: Primaquine 15 mg Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="nLPoE5yC5AV-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Issued to HC/village"
+            value="[ MALSTOCK: Primaquine 15 mg Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="Ns519MRbA35-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Transferred to other facilities non routine"
+            value="[ MALSTOCK: Primaquine 15 mg Transferred to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="KN3CzHVdnwD-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Dispensed to patient ACD"
+            value="[ MALSTOCK: Primaquine 15 mg Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="ntZsJ00q896-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Dispensed to patient TES"
+            value="[ MALSTOCK: Primaquine 15 mg Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="oCSQZs0dYmN-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Lost or damaged"
+            value="[ MALSTOCK: Primaquine 15 mg Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="X5a1SDG43t9-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Expiring in next 90 days"
+            value="[ MALSTOCK: Primaquine 15 mg Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="zsxnkofV550-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Expired"
+            value="[ MALSTOCK: Primaquine 15 mg Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="SMPaIfxBZco-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Primaquine 15 mg Closing stock"
+            value="[ MALSTOCK: Primaquine 15 mg Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- Paracetamol (transfer to HC)-->
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Paracetamol</div>
+        </td>
+        <td class="mainTitle Blisters">ເມັດ</td>
+        <td>
+          <input
+            id="wciO8eGnrSf-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Opening stock"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="rGycTe9JGmb-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Opening stock (PC)"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="oMH00Hn4ip4-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Stock out"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="ouadJa5Ht58-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Receive this month"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="Vja8PZsa2Ow-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Received from other facility non routine"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="GHBY8K9hl4Z-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Dispensed to patient"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="WMwJmkvfNmF-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Issued to HC/village"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="cACubZeto8i-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Transfered to other facilities non routine"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="rSMNgewUP1F-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Dispensed to patient ACD"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="CRffV8kyids-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Dispensed to patient TES"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="VkPsO24VDhm-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Lost or damaged"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="YkRcuKcI3yB-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Expiring in next 90 days"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="WAqrQn3Xx7M-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Expired"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="mcvIFmTmDZu-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Paracetamol (transfer to HC) Closing stock"
+            value="[ MALSTOCK: Paracetamol (transfer to HC) Closing stock ]"
+          />
+        </td>
+      </tr>
+      <!-- ORS (transfer to HC)-->
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>ORS</div>
+        </td>
+        <td class="mainTitle Packs">ຊອງ</td>
+        <td>
+          <input
+            id="cW97KCASdqI-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Opening stock"
+            value="[ MALSTOCK: ORS (transfer to HC) Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="qidDuJayVZM-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Opening stock (PC)"
+            value="[ MALSTOCK: ORS (transfer to HC) Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="es6srXg0Jqv-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Stock out"
+            value="[ MALSTOCK: ORS (transfer to HC) Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="VxvKlhjEHT3-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Receive this month"
+            value="[ MALSTOCK: ORS (transfer to HC) Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="jsFd5UhA6FP-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Received from other facility non routine"
+            value="[ MALSTOCK: ORS (transfer to HC) Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="vnJ07dAlib6-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Dispensed to patient"
+            value="[ MALSTOCK: ORS (transfer to HC) Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="DWcVX4wjaz1-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Issued to HC/village"
+            value="[ MALSTOCK: ORS (transfer to HC) Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="X4UQEzAKPf3-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Transferred to other facilities non routine"
+            value="[ MALSTOCK: ORS (transfer to HC) Transferred to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="gXrQPPPz4to-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Dispensed to patient ACD"
+            value="[ MALSTOCK: ORS (transfer to HC) Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="DdNqmaes7uf-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Dispensed to patient TES"
+            value="[ MALSTOCK: ORS (transfer to HC) Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="CP9u0uT7uMG-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Lost or damaged"
+            value="[ MALSTOCK: ORS (transfer to HC) Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="XRbnKin2xtW-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Expiring in next 90 days"
+            value="[ MALSTOCK: ORS (transfer to HC) Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="FQZQKliWiHS-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Expired"
+            value="[ MALSTOCK: ORS (transfer to HC) Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="AFUBZahxvwG-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: ORS (transfer to HC) Closing stock"
+            value="[ MALSTOCK: ORS (transfer to HC) Closing stock ]"
+          />
+        </td>
+      </tr>
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Artesunate-Pyronaridine (ASPY)</div>
+        </td>
+        <td class="mainTitle Packs">ເມັດ</td>
+        <td>
+          <input
+            id="OJ5THjYqCNd-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Opening stock"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="tz0ZKmFYivK-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Opening stock (PC)"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="qfLz5jmgDyM-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Stock out"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="WDUNJ3jpKyw-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Receive this month"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="i6vGJWFBs9J-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Received from other facility non routine"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="eKk3thD8jCV-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Dispensed to patient"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="Sxdzx4N1Ahy-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Issued to HC/village"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="u4PKxDbcUCK-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Transfered to other facilities non routine"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="eqY5yFgz9na-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Dispensed to patient ACD"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="H6vGFzzFGX9-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Dispensed to patient TES"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="F0BcRYxvWoz-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Lost or damaged"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="kzvWReVafGI-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Expiring in next 90 days"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="DibbKgkzdhH-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Expired"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="Kj29ghgBU7L-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-Pyronaridine Closing stock"
+            value="[ MALSTOCK: Artesunate-Pyronaridine Closing stock ]"
+          />
+        </td>
+      </tr>
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Artesunate-mefloquine (ASMQ)</div>
+        </td>
+        <td class="mainTitle Packs">ເມັດ</td>
+        <td>
+          <input
+            id="C1Y0vdELKG0-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Opening stock"
+            value="[ MALSTOCK: Artesunate-mefloquine Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="yrbiXj4UcTg-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Opening stock (PC)"
+            value="[ MALSTOCK: Artesunate-mefloquine Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="mwlRCq9Ba2J-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Stock out"
+            value="[ MALSTOCK: Artesunate-mefloquine Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="ilbyJfvOSgL-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Receive this month"
+            value="[ MALSTOCK: Artesunate-mefloquine Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="RKk4XeEa9bS-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Received from other facility non routine"
+            value="[ MALSTOCK: Artesunate-mefloquine Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="qwZ6ED0wlkA-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Dispensed to patient"
+            value="[ MALSTOCK: Artesunate-mefloquine Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="w3zx4j1R9pb-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Issued to HC/village"
+            value="[ MALSTOCK: Artesunate-mefloquine Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="gQ975VDbdAr-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Transfered to other facilities non routine"
+            value="[ MALSTOCK: Artesunate-mefloquine Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="FAzibxETzOr-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Dispensed to patient ACD"
+            value="[ MALSTOCK: Artesunate-mefloquine Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="G0wWQC2XGVq-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Dispensed to patient TES"
+            value="[ MALSTOCK: Artesunate-mefloquine Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="skfJCYb1g8j-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Lost or damaged"
+            value="[ MALSTOCK: Artesunate-mefloquine Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="wZdDs6GYRp7-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Expiring in next 90 days"
+            value="[ MALSTOCK: Artesunate-mefloquine Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="YQtVbPIhUSE-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Expired"
+            value="[ MALSTOCK: Artesunate-mefloquine Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="qKumEPo6rXU-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Artesunate-mefloquine Closing stock"
+            value="[ MALSTOCK: Artesunate-mefloquine Closing stock ]"
+          />
+        </td>
+      </tr>
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Quinine</div>
+        </td>
+        <td class="mainTitle Packs">ເມັດ</td>
+        <td>
+          <input
+            id="zF3FGR02JKF-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Opening stock"
+            value="[ MALSTOCK: Quinine Intravena Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="O1ejjhFmGTp-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Opening stock (PC)"
+            value="[ MALSTOCK: Quinine Intravena Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="iNwQuQ7M6sB-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Stock out"
+            value="[ MALSTOCK: Quinine Intravena Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="oneV5CioSXt-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Receive this month"
+            value="[ MALSTOCK: Quinine Intravena Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="sCAStAZIiul-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Received from other facility non routine"
+            value="[ MALSTOCK: Quinine Intravena Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="oVQFi2dLRU0-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Dispensed to patient"
+            value="[ MALSTOCK: Quinine Intravena Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="LC9yEMRlgTc-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Issued to HC/village"
+            value="[ MALSTOCK: Quinine Intravena Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="QQB0wjUh3nE-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Transfered to other facilities non routine"
+            value="[ MALSTOCK: Quinine Intravena Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="wIBtQOX8NPu-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Dispensed to patient ACD"
+            value="[ MALSTOCK: Quinine Intravena Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="lJBFWPGMWbB-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Dispensed to patient TES"
+            value="[ MALSTOCK: Quinine Intravena Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="OTVB6YMiKYC-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Lost or damaged"
+            value="[ MALSTOCK: Quinine Intravena Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="MwXNHqfe9QE-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Expiring in next 90 days"
+            value="[ MALSTOCK: Quinine Intravena Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="SyAD5Nwb9gT-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Expired"
+            value="[ MALSTOCK: Quinine Intravena Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="WrnXHU7T9e6-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Intravena Closing stock"
+            value="[ MALSTOCK: Quinine Intravena Closing stock ]"
+          />
+        </td>
+      </tr>
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Quinine</div>
+        </td>
+        <td class="mainTitle Packs">ຫຼອດ</td>
+        <td>
+          <input
+            id="s85rnzQRpX8-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Opening stock"
+            value="[ MALSTOCK: Quinine Oral Opening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="hnRzzsGyLie-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Opening stock (PC)"
+            value="[ MALSTOCK: Quinine Oral Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="FuD2ph9048e-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Stock out"
+            value="[ MALSTOCK: Quinine Oral Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="CGIWTkysns2-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Receive this month"
+            value="[ MALSTOCK: Quinine Oral Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="KUhKics8Anq-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Received from other facility non routine"
+            value="[ MALSTOCK: Quinine Oral Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="kBJcFvqD4qJ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Dispensed to patient"
+            value="[ MALSTOCK: Quinine Oral Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="DuTSYHxjE3J-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Issued to HC/village"
+            value="[ MALSTOCK: Quinine Oral Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="BbU3NCyhmwO-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Transfered to other facilities non routine"
+            value="[ MALSTOCK: Quinine Oral Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="uoQ0hqAQ8RS-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Dispensed to patient ACD"
+            value="[ MALSTOCK: Quinine Oral Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="C2Q49gmioY4-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Dispensed to patient TES"
+            value="[ MALSTOCK: Quinine Oral Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="rs6HK9NgNiu-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Lost or damaged"
+            value="[ MALSTOCK: Quinine Oral Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="pvh9aaMj8XO-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Expiring in next 90 days"
+            value="[ MALSTOCK: Quinine Oral Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="KSLdSRS8ENV-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Expired"
+            value="[ MALSTOCK: Quinine Oral Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="uFM8p2Wnx8z-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Quinine Oral Closing stock"
+            value="[ MALSTOCK: Quinine Oral Closing stock ]"
+          />
+        </td>
+      </tr>
+      <tr name="checkFilled">
+        <td class="itemTitle">
+          <div>Chloroquine</div>
+        </td>
+        <td class="mainTitle Packs">ເມັດ</td>
+        <td>
+          <input
+            id="mX2tvZut2vj-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine OralOpening stock"
+            value="[ MALSTOCK: Chloroquine OralOpening stock ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="PSdYwn2stp7-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Opening stock (PC)"
+            value="[ MALSTOCK: Chloroquine Oral Opening stock (PC) ]"
+          />
+        </td>
+        <td>
+          <input
+            id="MmXyicIrtEf-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral  Stock out"
+            value="[ MALSTOCK: Chloroquine Oral  Stock out ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="Sds93BPqt6C-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Receive this month"
+            value="[ MALSTOCK: Chloroquine Oral Receive this month ]"
+          />
+        </td>
+        <td stock="receive">
+          <input
+            id="hdXIlEj7Jva-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Received from other facility non routine"
+            value="[ MALSTOCK: Chloroquine Oral Received from other facility non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="wLD6cus0VIh-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral  Dispensed to patient"
+            value="[ MALSTOCK: Chloroquine Oral  Dispensed to patient ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="ORm1AZ1nNoy-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Issued to HC/village"
+            value="[ MALSTOCK: Chloroquine Oral Issued to HC/village ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="EzIvNg9vLUE-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral  Transfered to other facilities non routine"
+            value="[ MALSTOCK: Chloroquine Oral  Transfered to other facilities non routine ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="W97EXqjgmRU-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral  Dispensed to patient ACD"
+            value="[ MALSTOCK: Chloroquine Oral  Dispensed to patient ACD ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="kMKjfFBpxf7-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral  Dispensed to patient TES"
+            value="[ MALSTOCK: Chloroquine Oral  Dispensed to patient TES ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="m7NBkch3N0V-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Lost or damaged"
+            value="[ MALSTOCK: Chloroquine Oral Lost or damaged ]"
+          />
+        </td>
+        <td>
+          <input
+            id="Uu3cmXxLeBO-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Expiring in next 90 days"
+            value="[ MALSTOCK: Chloroquine Oral Expiring in next 90 days ]"
+          />
+        </td>
+        <td stock="spend">
+          <input
+            id="acSki3vFJNu-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral Expired"
+            value="[ MALSTOCK: Chloroquine Oral Expired ]"
+          />
+        </td>
+        <td stock="balance">
+          <input
+            id="onExHOFsHYJ-lmbxvugTvKr-val"
+            name="entryfield"
+            title="MALSTOCK: Chloroquine Oral  Closing stock"
+            value="[ MALSTOCK: Chloroquine Oral  Closing stock ]"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  &nbsp;
+
+  <table id="stockForm">
+    <tbody>
+      <tr>
+        <td class="mainTitle2 eventcomplete" width="80%">
+          <h4>ຕ້ອງການປ້ອນຂໍ້ມູນມຸ້ງ</h4>
+        </td>
+        <td width="10%">
+          <input
+            id="Testnof"
+            name="entryfield"
+            title=""
+            type="checkbox"
+            value=""
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  &nbsp;
+
+  <div id="showllin">
+    <table id="stockForm">
+      <tbody>
+        <tr>
+          <td class="mainTitle Item" rowspan="2">ລາຍມຸ້ງ</td>
+          <td class="mainTitle Unit" rowspan="2">ຫົວໜ່ວຍ</td>
+          <td class="blueTitle Opening_stock_auto" rowspan="2">
+            ຈ/ນ ເຫຼືອຈາກເດືອນກ່ອນ (ອັດຕະໂນມັດ)
+          </td>
+          <td class="blueTitle Opening_stock" rowspan="2">
+            ຈ/ນ ເຫຼືອເດືອນກ່ອນ
+          </td>
+          <td class="blueTitle Receive" colspan="2">ຮັບເຂົ້າ (+)</td>
+          <td class="blueTitle Dispensed" colspan="2">ສົ່ງອອກ (-)</td>
+          <td class="blueTitle Lost" rowspan="2">ຈ/ນ ເສຍຫາຍ</td>
+          <td class="blueTitle Closing" rowspan="2">ຍອດເຫຼືອໃນປັດຈຸບັນ</td>
+        </tr>
+        <tr>
+          <td class="blueTitle Receive_this_month">ຈ/ນ ຮັບໃໝ່ເດືອນນີ້</td>
+          <td class="blueTitle Receive_this_month">ຈ/ນ ຮັບໂອນຈາກກິດຈະກຳອື່ນ</td>
+          <td class="blueTitle Dispensed_to_patient">ຈ/ນ ຈ່າຍອອກ</td>
+          <td class="blueTitle Dispensed_to_patient">
+            ຈ/ນ ຈ່າຍໂອນໄປກິດຈະກຳອື່ນ
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງຄອບຄົວ ແມ່ມານ</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="UwFc37Z65wQ-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Opening stock"
+              value="[ MALSTOCK: LLIN Pregnant Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="OIRvAaTjwGO-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Opening stock (PC)"
+              value="[ MALSTOCK: LLIN Pregnant Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="sgoO2F6svbA-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Receive this month"
+              value="[ MALSTOCK: LLIN Pregnant Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="t6dTCeSJq5Z-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Received from another activity"
+              value="[ MALSTOCK: LLIN Pregnant Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="cdY10IWJx8X-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Dispensed to patient"
+              value="[ MALSTOCK: LLIN Pregnant Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="gtAHYNwK5Q9-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant dispend to another activity"
+              value="[ MALSTOCK: LLIN Pregnant dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="RsXFQCOxChC-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Expired"
+              value="[ MALSTOCK: LLIN Pregnant Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="KOhntWCxlqr-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Pregnant Closing stock"
+              value="[ MALSTOCK: LLIN Pregnant Closing stock ]"
+            />
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງດ່ຽວ ຄົນເຄື່ອນຍ້າຍ</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="kCDoO9YYQBS-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Opening stock"
+              value="[ MALSTOCK: LLIN MMP Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="Mxj4jxPzwUd-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Opening stock (PC)"
+              value="[ MALSTOCK: LLIN MMP Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="mHoEH6yB523-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Receive this month"
+              value="[ MALSTOCK: LLIN MMP Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="PjbL3YcARLO-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Received from another activity"
+              value="[ MALSTOCK: LLIN MMP Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="P9I6HxzAfm9-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Dispensed to patient"
+              value="[ MALSTOCK: LLIN MMP Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="Lc0rLBkYoGM-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP dispend to another activity"
+              value="[ MALSTOCK: LLIN MMP dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="hk1C27OYhbC-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Expired"
+              value="[ MALSTOCK: LLIN MMP Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="Jm1AEKtf2nP-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN MMP Closing stock"
+              value="[ MALSTOCK: LLIN MMP Closing stock ]"
+            />
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງຄອບຄົວ ຕ້ານລະບາດ</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="ZkzILEcQ7sm-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Opening stock"
+              value="[ MALSTOCK: LLIN OB Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="iQtuZydO61m-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Opening stock (PC)"
+              value="[ MALSTOCK: LLIN OB Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="iV7Y4HIV54e-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Receive this month"
+              value="[ MALSTOCK: LLIN OB Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="YtmMWa5EQFc-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Received from another activity"
+              value="[ MALSTOCK: LLIN OB Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="Gh0Qnwa5Esl-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Dispensed to patient"
+              value="[ MALSTOCK: LLIN OB Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="slvRlUjBrUS-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB dispend to another activity"
+              value="[ MALSTOCK: LLIN OB dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="man8muSLdKM-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Expired"
+              value="[ MALSTOCK: LLIN OB Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="r2zy9ajwsaT-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN OB Closing stock"
+              value="[ MALSTOCK: LLIN OB Closing stock ]"
+            />
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງດ່ຽວ ທະຫານ</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="cfetH7hLzCD-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Opening stock"
+              value="[ MALSTOCK: LLIN Army Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="Lx9kcUlVpvA-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Opening stock (PC)"
+              value="[ MALSTOCK: LLIN Army Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="fqnDzC6ZcdX-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Receive this month"
+              value="[ MALSTOCK: LLIN Army Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="ig3c9DIgyZx-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Received from another activity"
+              value="[ MALSTOCK: LLIN Army Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="ZRxwlec8G2v-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Dispensed to patient"
+              value="[ MALSTOCK: LLIN Army Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="UWdeDzunFOz-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army dispend to another activity"
+              value="[ MALSTOCK: LLIN Army dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="E7xqWoQHQCo-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Expired"
+              value="[ MALSTOCK: LLIN Army Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="UbXMbhKrWYo-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Army Closing stock"
+              value="[ MALSTOCK: LLIN Army Closing stock ]"
+            />
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງດ່ຽວອູ່</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="WCTf0c1XBi0-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Opening stock"
+              value="[ MALSTOCK: LLIN hammock Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="Am5abiCcRcV-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Opening stock (PC)"
+              value="[ MALSTOCK: LLIN hammock Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="vUKLwePtp1O-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Receive this month"
+              value="[ MALSTOCK: LLIN hammock Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="S1OItpY3BV2-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Received from another activity"
+              value="[ MALSTOCK: LLIN hammock Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="j3k26tvqV5C-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Dispensed to patient"
+              value="[ MALSTOCK: LLIN hammock Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="DcyEjuGER6W-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock dispend to another activity"
+              value="[ MALSTOCK: LLIN hammock dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="aAL5B0bbBrV-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Expired"
+              value="[ MALSTOCK: LLIN hammock Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="uRz9N41r6et-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN hammock Closing stock"
+              value="[ MALSTOCK: LLIN hammock Closing stock ]"
+            />
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງດ່ຽວ TDA</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="cllYhWwpVet-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Opening stock"
+              value="[ MALSTOCK: LLIN Single TDA Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="hyaMHCzXb2n-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Opening stock (PC)"
+              value="[ MALSTOCK: LLIN Single TDA Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="nHAeJS7Or0A-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Receive this month"
+              value="[ MALSTOCK: LLIN Single TDA Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="lHt4d5YsFHF-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Received from another activity"
+              value="[ MALSTOCK: LLIN Single TDA Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="ok1GheoqSbg-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Dispensed to patient"
+              value="[ MALSTOCK: LLIN Single TDA Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="KgpCKhN1uIl-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA dispend to another activity"
+              value="[ MALSTOCK: LLIN Single TDA dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="mWuB1NxWbOg-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Expired"
+              value="[ MALSTOCK: LLIN Single TDA Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="FZOKIFoQJ2D-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Single TDA Closing stock"
+              value="[ MALSTOCK: LLIN Single TDA Closing stock ]"
+            />
+          </td>
+        </tr>
+        <tr name="checkFilled">
+          <td class="itemTitle">
+            <div>ມຸ້ງຄອບຄົວ TDA</div>
+          </td>
+          <td class="mainTitle Packs">ຈຳນວນ</td>
+          <td>
+            <input
+              id="ywAFH0JsCyv-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Opening stock"
+              value="[ MALSTOCK: LLIN Family TDA Opening stock ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="Fi5GxVgVg5e-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Opening stock (PC)"
+              value="[ MALSTOCK: LLIN Family TDA Opening stock (PC) ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="R23fm68luHd-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Receive this month"
+              value="[ MALSTOCK: LLIN Family TDA Receive this month ]"
+            />
+          </td>
+          <td stock="receive">
+            <input
+              id="SE01NNbokhR-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Received from another activity"
+              value="[ MALSTOCK: LLIN Family TDA Received from another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="jEib7ETXYCO-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Dispensed to patient"
+              value="[ MALSTOCK: LLIN Family TDA Dispensed to patient ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="Jb2IvYdfb9y-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA dispend to another activity"
+              value="[ MALSTOCK: LLIN Family TDA dispend to another activity ]"
+            />
+          </td>
+          <td stock="spend">
+            <input
+              id="We7F1zBvlTg-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Expired"
+              value="[ MALSTOCK: LLIN Family TDA Expired ]"
+            />
+          </td>
+          <td stock="balance">
+            <input
+              id="gX7Q1Ov01W2-lmbxvugTvKr-val"
+              name="entryfield"
+              title="MALSTOCK: LLIN Family TDA Closing stock"
+              value="[ MALSTOCK: LLIN Family TDA Closing stock ]"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="text/javascript">
+  $.get("../api/me", function (json) {
+    language = json.settings.keyUiLocale;
+    translate(translation, language);
+  });
+
+  var translation = [
+    /*
+          { key: "eventcomplete", value: ["Please confirm that you have completed entry of all event data from all of the F1 and F2 forms from your district for the previous month into the system before you enter the data into the below stock forms.", "ຈົ່ງໝັ້ນໃຈວ່າ ທ່ານໄດ້ສໍາເລັດການປ້ອນ ຂໍ້ມູນລາຍລະອຽດຂອງຄົນເຈັບ ທຸກຄົນ ແລະ ຂໍ້ມູນທັງໝົດໃນຟອມ F1 ແລະ F2 ຂອງເດືອນຜ່ານມາ ທີ່ສົ່ງຈາກສະຖານບໍລິການທີ່ຂື້ນກັບເມືອງຂອງທ່ານ ກ່ອນທີ່ທ່ານຈະປ້ອນຂໍ້ມູນລາຍງານດ້ານພັດສະດຸ. ຖ້າໄດ້ປ້ອນຄົບຖ້ວນແລ້ວ ໃຫ້ທ່ານກົດປຸ່ມ “ຢັ້ງຢືນ” ດ້ານຂ້າງນີ້."] },
+          { key: "AGE", value: ["AGE", "ອາຍຸ"] },
+          { key: "Under5", value: ["Under 5", "ຕ່ຳກ່ວາ 5"] },
+          { key: "Over5", value: ["Over 5", "ສູງກ່ວາ 5"] },
+          { key: "RDTtest", value: ["Total RDT tested by Health Facility", "ກວດດ້ວຍເຈ້ຍຈຸ່ມ (ສະຖານບໍລິການ)"] },
+          { key: "MICtest", value: ["Total Microscopy tested", "ກວດດ້ວຍກ້ອງຈຸລະທັດ (ສະຖານບໍລິການ)"] },
+          { key: "VHVtest", value: ["Total VHV tested", "ກວດຈາກອສບ ຫຼື UV"] },
+          { key: "ACTtest", value: ["Total ACD tested", "ກວດຈາກ ACD ຫຼື RACD"] },
+    { key: "FTATtest", value: ["Total VMW RACD tested", "ກວດຈາກອສບ RACD (ສະເພາະ ອສບ)"] },
+          { key: "Opening_stock_auto", value: ["Openning stock (auto)", "ຈ/ນ ເຫຼືອຈາກເດືອນກ່ອນ (ອັດຕະໂນມັດ)"] },
+          { key: "Transfer_ACD", value: ["Dispensed to Patient ACD", "ຈ່າຍປິ່ນປົວຄົນເຈັບ ACD"] },
+          { key: "Transfer_TES", value: ["Dispensed to Patient TES", "ຈ່າຍປິ່ນປົວຄົນເຈັບ TES"] },
+          { key: "Item", value: ["Item", "ລາຍການຢາ ແລະ ເຈ້ຍຈຸ່ມ"] },
+          { key: "Unit", value: ["Unit count", "ຫົວໜ່ວຍ"] },
+          { key: "Opening_stock", value: ["Opening stock", "ຈ/ນ ເຫຼືອເດືອນກ່ອນ"] },
+          { key: "Stock_out", value: ["Stock out", "ຢາຂາດສາງ"] },
+          { key: "Receive", value: ["Receive (+)", "ຮັບເຂົ້າ (+)"] },
+          { key: "Dispensed", value: ["Dispensed (-)", "ສົ່ງອອກ (-)"] },
+          { key: "Lost", value: ["Lost or Damaged", "ຈ/ນ ເສຍຫາຍ"] },
+          { key: "Expiring_90_days", value: ["Expiring in next 90 days", "ຈ/ນ ກຳລັງຈະໝົດອາຍຸໃນ 90 ວັນ"] },
+          { key: "Expired", value: ["Expired", "ຈ/ນ ໝົດອາຍຸ"] },
+          { key: "Closing", value: ["Closing", "ຍອດເຫຼືອໃນປັດຈຸບັນ"] },
+          { key: "Receive_this_month", value: ["Receive this month", "ຈ/ນ ຮັບໃໝ່ເດືອນນີ້"] },
+          { key: "Received_from_transfer", value: ["Received from transfer", "ຈ/ນ ຮັບໂອນມາ / ສົ່ງຄືນຈາກ"] },
+          { key: "Dispensed_to_patient", value: ["Dispensed to patient", "ຈ/ນ ຈ່າຍປິ່ນປົວຄົນເຈັບ"] },
+          { key: "Issued_to_HC", value: ["Issued to HC/village", "ຈ/ນ ຈ່າຍໃຫ້ສະຖານທີ່ບໍລິການ"] },
+          { key: "Transfer", value: ["Transfer", "ຈ/ນ ໂອນອອກໄປບ່ອນອື່ນ"] },
+          { key: "RDT", value: ["Rapid Diagnostic Test (RDT)", "ເຈ້ຍຈຸ່ມ (RDT)"] },
+          { key: "G6PD", value: ["G6PD (RDT)", "ເຈ້ຍຈຸ່ມ (G6PD)"] },
+          { key: "test", value: ["Test", "ອັນ"] },
+          { key: "Blisters", value: ["Blisters", "ແຜງ"] },
+          { key: "Coartem6x1", value: ["Coartem [6x1 tablets]", "ໂກອາກເຕັມ [6x1 ເມັດ]"] },
+          { key: "Coartem6x2", value: ["Coartem [6x2 tablets]", "ໂກອາກເຕັມ [6x2 ເມັດ]"] },
+          { key: "Coartem6x3", value: ["Coartem [6x3 tablets]", "ໂກອາກເຕັມ [6x3 ເມັດ]"] },
+          { key: "Coartem6x4", value: ["Coartem [6x4 tablets]", "ໂກອາກເຕັມ [6x4 ເມັດ]"] },
+          { key: "Vials", value: ["Vials", "ຫຼອດ"] },
+          { key: "Tablets", value: ["Tablets", "ເມັດ"] },
+          { key: "Packs", value: ["Packs", "ຊອງ"] } */
+  ];
+
+  function translate(translation, language) {
+    var languageOrder = 0;
+    if (language == "lo") {
+      languageOrder = 1;
+    }
+    $.each(translation, function (index, entry) {
+      $("." + entry.key).text(entry.value[languageOrder]);
+    });
+  }
+</script>

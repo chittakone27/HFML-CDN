@@ -1,0 +1,15 @@
+.tracker-capture-layout3-container-old {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.tracker-capture-layout3-container-old > div:nth-child(1) {
+  width: calc(100% - 600px);
+  height: 100%;
+  padding: 5px 0px 5px 5px;
+}
+.tracker-capture-layout3-container-old > div:nth-child(2) {
+  width: 600px;
+  height: 100%;
+  padding: 5px;
+}

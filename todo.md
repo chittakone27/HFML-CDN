@@ -1,0 +1,7 @@
+- Reload event list after saving (DONE)
+- Check dirty before navigate throught event list and register new event (DONE)
+- Implement program completeness (DONE)
+- Clear current event when program/orgunit/period are changed (DONE)
+- Hide registerevent/complete button if ou is no selected (DONE)
+- Check if newly selected program/dataset has the same period type as selected period type
+- Check auto select orgunit hook in config

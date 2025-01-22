@@ -1,0 +1,13 @@
+#tb-case-finding-form-container table td,
+#tb-case-finding-form-container table th {
+  border: 1.5px solid #ccc;
+  font-weight: bold;
+}
+#tb-case-finding-form-container table tr:hover {
+  background-color: #fff;
+}
+#tb-case-finding-form-container .power1 {
+  position: relative;
+  bottom: 1ex;
+  font-size: 80%;
+}

@@ -1,0 +1,43 @@
+.ncle-community-ebs-form-container {
+  padding: 10px;
+}
+.ncle-community-ebs-form-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 5px;
+}
+.ncle-community-ebs-form-row:last-child {
+  border-bottom: 0px;
+}
+.ncle-community-ebs-form-row > span {
+  width: 400px;
+}
+.ncle-community-ebs-form-row > div {
+  width: calc(100% - 400px);
+  padding-left: 10px;
+}
+.ncle-community-ebs-section-container {
+  border: 1px solid #969696;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+.ncle-community-ebs-section-label {
+  border-bottom: 1px solid #969696;
+  padding: 10px 0px 10px 5px;
+  font-weight: bold;
+  background-color: #dbdbdb;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.ebs-multi-options-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.ebs-multi-opt {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,104 @@
+#ncle-hc-ebs-form-container .form {
+  width: 100%;
+  padding: 12px;
+  margin-left: -15px;
+}
+
+#ncle-hc-ebs-form-container tr {
+  line-height: 140%;
+}
+
+#ncle-hc-ebs-form-container .section-box {
+  line-height: 140%;
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+#ncle-hc-ebs-form-container .ebs-section .collapse-header-wrapper {
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+#ncle-hc-ebs-form-container
+  .ebs-section:has(.MuiCollapse-hidden)
+  .collapse-header-wrapper {
+  border-bottom: 0;
+}
+
+#ncle-hc-ebs-form-container .ebs-section tr:last-child td {
+  border-bottom: 0;
+}
+
+#ncle-hc-ebs-form-container
+  .ebs-section
+  .collapse-header-wrapper
+  .MuiTypography-root {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+#ncle-hc-ebs-form-container
+  .ebs-section
+  .collapse-header-wrapper
+  .MuiButtonBase-root {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+#ncle-hc-ebs-form-container .no-border-table td,
+#ncle-hc-ebs-form-container .no-border-table .input-field-container {
+  border: 0;
+}
+
+#ncle-hc-ebs-form-container .no-border-table td {
+  width: calc(100 / 3 * 1%);
+}
+
+#ncle-hc-ebs-form-container .no-border-table tr:hover {
+  background-color: #fff;
+}
+
+#ncle-hc-ebs-form-container .section-label {
+  font-size: 14pt;
+  font-weight: bold;
+  text-align: left;
+  color: #585d61;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+}
+
+#ncle-hc-ebs-form-container .vertical-spacing {
+  margin-top: 2px;
+}
+
+#ncle-hc-ebs-form-container .small-vertical-spacing {
+  margin: 5px;
+}
+
+#ncle-hc-ebs-form-container .dhis2-list-table {
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+#ncle-hc-ebs-form-container th {
+  text-align: center;
+  color: #39547d;
+  padding: 3px 0 3px 1px;
+  font-size: 14px;
+  font-weight: bold;
+  border-collapse: collapse;
+  border-bottom: 1px solid #cad5e5;
+  min-height: 28px;
+}
+
+#ncle-hc-ebs-form-container .dhis2-list-table > thead > tr > th:first-child {
+  width: 60%;
+}
+
+#ncle-hc-ebs-form-container td {
+  text-align: left;
+}
+
+#ncle-hc-ebs-form-container .hidden {
+  display: none;
+}

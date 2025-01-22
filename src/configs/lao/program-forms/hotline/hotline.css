@@ -1,0 +1,119 @@
+.custom-form.hotline-form-container {
+  width: 100%;
+  padding: 8px;
+  /* height: 100%; */
+}
+
+.custom-form .hotline-section-container {
+  width: 100%;
+  border: 1px solid #3c80bd;
+  border-radius: 5px;
+  margin-bottom: 8px;
+}
+
+.custom-form .hotline-section-content {
+  padding: 10px;
+}
+
+.custom-form .hotline-section-de-message {
+  white-space: pre-wrap;
+  color: rgb(39, 102, 150);
+  font-size: 13px !important;
+  text-align: justify;
+  width: 100%;
+  /* font-weight: bold; */
+}
+.custom-form .section-collapsed {
+  display: none;
+}
+.custom-form .hotline-section-title {
+  border-radius: 5px 5px 0px 0px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  /* color: #ffffff; */
+  background-color: #ebfbff;
+  border-bottom: 1px solid#3c80bd;
+}
+
+.custom-form
+  .hotline-section-container:has(.MuiCollapse-hidden)
+  .hotline-section-title {
+  border-radius: 5px;
+  border-bottom: 1px solid #ebfbff;
+}
+
+.custom-form .hotline-section-title > div:nth-child(1) {
+  flex: 35;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.custom-form .hotline-section-title > div:nth-child(2) {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.custom-form .hotline-table-container {
+  width: 100%;
+}
+.custom-form .hotline-grid-container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.custom-form .hotline-grid-item {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* border: 1px solid black; */
+}
+.custom-form .hotline-grid-item > div:nth-child(1) {
+  width: 25px;
+}
+
+.custom-form .hotline-grid-item > div:nth-child(2) {
+  width: calc(100% - 25px);
+  /* flex: 10; */
+}
+.custom-form .hotline-table-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 5px 0px 5px 0px;
+}
+.custom-form .hotline-table-row > div {
+  width: 50%;
+}
+
+.custom-form .sub-section {
+  margin: 9px 0px 15px 0px;
+  border: 1px solid #29b6f6;
+  border-radius: 8px;
+}
+
+.custom-form .sub-section-title {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1.5px solid #29b6f6;
+  background-color: #e1f5fe;
+  border-radius: 8px 8px 0px 0px;
+  padding: 2px;
+}
+
+.hotline-form-container .no-border-table td,
+.hotline-form-container .no-border-table .input-field-container {
+  border: 0;
+}
+
+.hotline-form-container .no-border-table td {
+  width: calc(100 / 3 * 1%);
+}
+
+.hotline-form-container .no-border-table tr:hover {
+  background-color: #fff;
+}
