@@ -37,7 +37,13 @@ const FormContainer = () => {
   );
   const { selectEvent, initNewEvent, setLayout } = actions;
   const [tab, setTab] = useState(0);
-  const currentProgramStage = program.programStages[tab];
+
+  const programStages = program.programStages.filter((ps) => {
+    const access = ps.access.data.read && ps.access.data.write & (ps.userGroupAccesses.length > 0);
+    return access;
+  });
+  const currentProgramStage = programStages[tab];
+
   const foundEvents = currentEvents.filter((ce) => ce.programStage === currentProgramStage.id);
   const currentEvent = currentEvents.find((ev) => ev.event === selectedEvent);
 
@@ -55,7 +61,7 @@ const FormContainer = () => {
   const color = layout.hideProfile ? "#363f4d" : "#ffffff";
 
   useEffect(() => {
-    setLayout("selectedProgramStage", program.programStages[tab].id);
+    setLayout("selectedProgramStage", programStages[tab].id);
   }, []);
 
   return (
@@ -74,13 +80,12 @@ const FormContainer = () => {
             setTab(newValue);
             selectEvent("");
             setLayout("eventFormEditing", false);
-            setLayout("selectedProgramStage", program.programStages[newValue].id);
+            setLayout("selectedProgramStage", programStages[newValue].id);
           }}
         >
-          {program.programStages.map((ps) => {
+          {programStages.map((ps) => {
             const totalEvents = currentEvents.filter((ce) => ce.programStage === ps.id).length;
-            const access = ps.access.data.read && ps.access.data.write & (ps.userGroupAccesses.length > 0);
-            return access ? <Tab label={`${ps.displayName} (${totalEvents}) `} disabled={!access} /> : null;
+            return <Tab label={`${ps.displayName} (${totalEvents}) `} />;
           })}
         </Tabs>
       </div>
