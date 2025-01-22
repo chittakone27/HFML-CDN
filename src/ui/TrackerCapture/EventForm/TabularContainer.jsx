@@ -61,6 +61,7 @@ const TabularContainer = ({ currentProgramStage }) => {
       return convertDisplayValue(dataElement, value, t);
     }
   };
+  console.log(currentProgramStage);
 
   return (
     <div className="event-form-container-tabular-content-container">

@@ -27,9 +27,7 @@ const Ecd = () => {
     }))
   );
   const { currentTei } = data;
-  const ecdStage = program.programStages.find(
-    (progState) => progState.id === ECD_STAGE_ID
-  );
+  const ecdStage = program.programStages.find((progState) => progState.id === ECD_STAGE_ID);
   const { programStageSections } = ecdStage;
 
   useEffect(() => {
@@ -43,9 +41,7 @@ const Ecd = () => {
   }, [pssFilter]);
 
   useEffect(() => {
-    const dobObj = currentTei.attributes.find(
-      (attr) => attr["attribute"] === DOB_ATTR_ID
-    );
+    const dobObj = currentTei.attributes.find((attr) => attr["attribute"] === DOB_ATTR_ID);
     if (currentEvent.eventDate && dobObj && dobObj.value) {
       const evtDateSubStrs = currentEvent.eventDate.split("T");
       const formattedEvtDate = moment(evtDateSubStrs[0]);
