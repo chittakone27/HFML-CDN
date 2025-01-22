@@ -1,14 +1,14 @@
-.MuiTable-root {
+div#ecd-container .MuiTable-root {
   border-radius: 5px;
   border-collapse: separate !important;
 }
 
-.MuiTableRow-root td:first-child {
+div#ecd-container .MuiTableRow-root td:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
 
-.MuiTableRow-root td:last-child {
+div#ecd-container .MuiTableRow-root td:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }

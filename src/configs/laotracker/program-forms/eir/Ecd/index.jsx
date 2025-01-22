@@ -95,7 +95,7 @@ const Ecd = () => {
   }, [JSON.stringify(currentTei), JSON.stringify(currentEvent)]);
 
   return (
-    <div className="ecd-container">
+    <div id="ecd-container">
       {programStageSections &&
         programStageSections
           .filter((pss) => pssFilter.includes(pss.id))
