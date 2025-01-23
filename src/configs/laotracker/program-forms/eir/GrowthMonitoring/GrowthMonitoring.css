@@ -1,0 +1,11 @@
+.child-nutri-container {
+  display: flex;
+}
+
+/* .child-nutri-container .MuiBox-root {
+    padding: 5px;
+} */
+
+.child-nutri-container .MuiTypography-body2 {
+  font-size: 0.8rem;
+}
