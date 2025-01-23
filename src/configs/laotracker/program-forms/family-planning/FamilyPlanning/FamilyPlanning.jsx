@@ -18,8 +18,8 @@ const FamilyPlanning = () => {
   if (familyPlanningProgram) {
     programStage = familyPlanningProgram.programStages.find((e) => e.id === "Sb26npqib05");
     if (programStage) {
-      dataElementConfigs = programStage.programStageDataElements.map((e) => {
-        return [e.dataElement];
+      dataElementConfigs = programStage.programStageSections[0].dataElements.map((e) => {
+        return [e];
       });
     }
   }
