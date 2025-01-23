@@ -47,7 +47,23 @@ const GrowthMonitoring = () => {
               <div className="child-nutri-container">
                 <SectionCollapse
                   title={"AchiAcho"}
-                  sx={{ mt: 0.5 }}
+                  sx={{ m: 0.5, width: "50%" }}
+                  disabledCollapse
+                >
+                  <Table>
+                    <TableBody>
+                      sdsdsdsdsdsds
+                      {/* <RowMapper
+                rows={tableConfigs}
+                tableName={"Growth monitoring details"}
+                context="event"
+              /> */}
+                    </TableBody>
+                  </Table>
+                </SectionCollapse>
+                <SectionCollapse
+                  title={"AchiAcho"}
+                  sx={{ m: 0.5, width: "50%" }}
                   disabledCollapse
                 >
                   <Table>

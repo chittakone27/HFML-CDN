@@ -1,5 +1,6 @@
 .child-nutri-container {
   display: flex;
+  justify-content: space-between;
 }
 
 /* .child-nutri-container .MuiBox-root {
