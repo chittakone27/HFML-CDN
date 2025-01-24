@@ -13,7 +13,11 @@ import {
   SectionCollapse
 } from "@/configs/lao/program-forms/common/tracker";
 //
-import { GROWTH_MONITOR_ID, CHILD_NUTRI_STATUS_SECTION_ID } from "./const";
+import {
+  GROWTH_MONITOR_ID,
+  CHILD_NUTRI_STATUS_SECTION_ID,
+  DISABLED_FIELDS
+} from "./const";
 import { CHILD_NUTRI_SECTION_UI } from "./mapping";
 //
 import "./GrowthMonitoring.css";
@@ -39,7 +43,13 @@ const GrowthMonitoring = () => {
       {programStageSections.map((pss) => {
         const tableConfigs = pss.dataElements
           .filter((de) => !hiddenFields.includes(de.id))
-          .map((de) => [{ id: de.id }]);
+          .map((de) => {
+            if (DISABLED_FIELDS.includes(de.id)) {
+              return [{ id: de.id, fieldProps: { disabled: true } }];
+            } else {
+              return [{ id: de.id }];
+            }
+          });
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
             <SectionCollapse
