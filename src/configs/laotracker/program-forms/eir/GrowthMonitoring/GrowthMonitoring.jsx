@@ -1,9 +1,6 @@
 import { Box, Table, TableBody } from "@mui/material";
 import { useTranslation } from "react-i18next";
-// import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-// import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-// import useTrackerCaptureStore from "@/state/trackerCapture";
 import useSelectionStore from "@/state/selection";
 import useGrowthMonitorRules from "./useGrowthMonitorRules";
 
@@ -34,9 +31,7 @@ const GrowthMonitoring = () => {
     (progState) => progState.id === GROWTH_MONITOR_ID
   );
   const { programStageSections } = growthMonitorStage;
-  // console.log(programStageSections);
   const { hiddenFields } = useGrowthMonitorRules();
-  // console.log(hiddenFields);
 
   return (
     <Box className="eir-form">
