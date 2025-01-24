@@ -3,13 +3,17 @@ import { useShallow } from "zustand/react/shallow";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useSelectionStore from "@/state/selection";
-//
+// Components
 import TrackerTableSection from "../../common/TrackerTableSection";
-//
-import moment from "moment";
-//
+// Libs
+import {
+  differenceInWeeks,
+  differenceInMonths,
+  differenceInYears
+} from "date-fns";
+// CSS
 import "./index.css";
-//
+// const values
 import { ECD_STAGE_ID, DOB_ATTR_ID, ASSESSMENT_SECTION_ID } from "./const";
 
 const Ecd = () => {
@@ -27,7 +31,9 @@ const Ecd = () => {
     }))
   );
   const { currentTei } = data;
-  const ecdStage = program.programStages.find((progState) => progState.id === ECD_STAGE_ID);
+  const ecdStage = program.programStages.find(
+    (progState) => progState.id === ECD_STAGE_ID
+  );
   const { programStageSections } = ecdStage;
 
   useEffect(() => {
@@ -41,14 +47,15 @@ const Ecd = () => {
   }, [pssFilter]);
 
   useEffect(() => {
-    const dobObj = currentTei.attributes.find((attr) => attr["attribute"] === DOB_ATTR_ID);
+    const dobObj = currentTei.attributes.find(
+      (attr) => attr["attribute"] === DOB_ATTR_ID
+    );
     if (currentEvent.eventDate && dobObj && dobObj.value) {
-      const evtDateSubStrs = currentEvent.eventDate.split("T");
-      const formattedEvtDate = moment(evtDateSubStrs[0]);
-      const formattedDob = moment(dobObj.value);
-      const diffWeeks = formattedEvtDate.diff(formattedDob, "weeks");
-      const diffMonths = formattedEvtDate.diff(formattedDob, "months");
-      const diffYears = formattedEvtDate.diff(formattedDob, "years");
+      const formattedEvtDate = new Date(currentEvent.eventDate);
+      const formattedDob = new Date(dobObj.value);
+      const diffWeeks = differenceInWeeks(formattedEvtDate, formattedDob);
+      const diffMonths = differenceInMonths(formattedEvtDate, formattedDob);
+      const diffYears = differenceInYears(formattedEvtDate, formattedDob);
       switch (true) {
         case diffWeeks < 6:
           setPssFilter([ASSESSMENT_SECTION_ID, "wcFGDbS7sBu"]);
