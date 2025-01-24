@@ -8,6 +8,7 @@ import { differenceInWeeks, differenceInMonths } from "date-fns";
 import { DOB_ATTR_ID } from "./const";
 
 const useGrowthMonitorRules = () => {
+  const [hiddenFields, setHiddenFields] = useState([]);
   const { data, actions } = useTrackerCaptureStore(
     useShallow((state) => ({
       data: state.data,
@@ -20,6 +21,7 @@ const useGrowthMonitorRules = () => {
 
   useEffect(() => {
     console.log(currentEvent, currentTei);
+    let tempHiddenFields = [];
     const dobObj = currentTei.attributes.find(
       (attr) => attr["attribute"] === DOB_ATTR_ID
     );
@@ -31,10 +33,22 @@ const useGrowthMonitorRules = () => {
       //   console.log(ageInWeeks, ageInMonths);
       changeDataValue(currentEvent.event, "DxOqZZgVQhF", ageInWeeks);
       changeDataValue(currentEvent.event, "MV1yoC7BfnG", ageInMonths);
+      if (ageInMonths < 6 || ageInMonths > 11) {
+        // GVHTqqwolWD
+        tempHiddenFields.push("GVHTqqwolWD");
+      } else if (ageInMonths < 12 || ageInMonths > 59) {
+        tempHiddenFields.push("DzNWdRvRB11");
+        // DzNWdRvRB11
+      }
+      console.log(tempHiddenFields);
+      for (const hiddenField of tempHiddenFields) {
+        changeDataValue(currentEvent.event, hiddenField, "");
+      }
+      setHiddenFields([...tempHiddenFields]);
     }
   }, [JSON.stringify(currentEvent), JSON.stringify(currentTei)]);
 
-  return 0;
+  return { hiddenFields: hiddenFields };
 };
 
 export default useGrowthMonitorRules;

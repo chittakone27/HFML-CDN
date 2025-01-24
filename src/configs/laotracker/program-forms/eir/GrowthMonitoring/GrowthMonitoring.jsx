@@ -31,12 +31,15 @@ const GrowthMonitoring = () => {
   );
   const { programStageSections } = growthMonitorStage;
   // console.log(programStageSections);
-  useGrowthMonitorRules();
+  const { hiddenFields } = useGrowthMonitorRules();
+  // console.log(hiddenFields);
 
   return (
     <Box className="eir-form">
       {programStageSections.map((pss) => {
-        const tableConfigs = pss.dataElements.map((de) => [{ id: de.id }]);
+        const tableConfigs = pss.dataElements
+          .filter((de) => !hiddenFields.includes(de.id))
+          .map((de) => [{ id: de.id }]);
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
             <SectionCollapse
