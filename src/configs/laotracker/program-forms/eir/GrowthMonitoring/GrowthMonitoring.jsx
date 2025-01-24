@@ -1,10 +1,11 @@
 import { Box, Table, TableBody } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-import useTrackerCaptureStore from "@/state/trackerCapture";
+// import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
+// import useTrackerCaptureStore from "@/state/trackerCapture";
 import useSelectionStore from "@/state/selection";
+import useGrowthMonitorRules from "./useGrowthMonitorRules";
 
 import {
   withEventDate,
@@ -13,6 +14,7 @@ import {
 } from "@/configs/lao/program-forms/common/tracker";
 //
 import { GROWTH_MONITOR_ID, CHILD_NUTRI_STATUS_SECTION_ID } from "./const";
+import { CHILD_NUTRI_SECTION_UI } from "./mapping";
 //
 import "./GrowthMonitoring.css";
 import "../eir.css";
@@ -29,6 +31,7 @@ const GrowthMonitoring = () => {
   );
   const { programStageSections } = growthMonitorStage;
   // console.log(programStageSections);
+  useGrowthMonitorRules();
 
   return (
     <Box className="eir-form">
@@ -45,38 +48,25 @@ const GrowthMonitoring = () => {
               }}
             >
               <div className="child-nutri-container">
-                <SectionCollapse
-                  title={"AchiAcho"}
-                  sx={{ m: 0.5, width: "50%" }}
-                  disabledCollapse
-                >
-                  <Table>
-                    <TableBody>
-                      sdsdsdsdsdsds
-                      {/* <RowMapper
-                rows={tableConfigs}
-                tableName={"Growth monitoring details"}
-                context="event"
-              /> */}
-                    </TableBody>
-                  </Table>
-                </SectionCollapse>
-                <SectionCollapse
-                  title={"AchiAcho"}
-                  sx={{ m: 0.5, width: "50%" }}
-                  disabledCollapse
-                >
-                  <Table>
-                    <TableBody>
-                      sdsdsdsdsdsds
-                      {/* <RowMapper
-                rows={tableConfigs}
-                tableName={"Growth monitoring details"}
-                context="event"
-              /> */}
-                    </TableBody>
-                  </Table>
-                </SectionCollapse>
+                {CHILD_NUTRI_SECTION_UI.map((col) => {
+                  return (
+                    <SectionCollapse
+                      title={col["colTitle"]}
+                      sx={{ m: 0.5, width: "50%" }}
+                      disabledCollapse
+                    >
+                      <Table>
+                        <TableBody>
+                          <RowMapper
+                            rows={col["colConfigs"]}
+                            tableName={col["colTitle"]}
+                            context="event"
+                          />
+                        </TableBody>
+                      </Table>
+                    </SectionCollapse>
+                  );
+                })}
               </div>
             </SectionCollapse>
           );
@@ -94,7 +84,7 @@ const GrowthMonitoring = () => {
                 <TableBody>
                   <RowMapper
                     rows={tableConfigs}
-                    tableName={"Growth monitoring details"}
+                    tableName={pss.displayName}
                     context="event"
                   />
                 </TableBody>
