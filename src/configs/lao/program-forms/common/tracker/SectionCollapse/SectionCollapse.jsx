@@ -13,8 +13,8 @@ const TitleWrapper = styled(Box)(({ theme, disabledCollapse }) => ({
   borderBottom: "1px solid #c2c2c2",
   backgroundColor: theme.palette.grey[100],
   "&.section-hide": {
-    borderBottom: 0,
-  },
+    borderBottom: 0
+  }
 }));
 
 const SectionWrapper = styled(Box)({
@@ -22,11 +22,17 @@ const SectionWrapper = styled(Box)({
   overflow: "hidden",
   border: "1px solid #c2c2c2",
   "& table tr:last-child td": {
-    borderBottom: 0,
-  },
+    borderBottom: 0
+  }
 });
 
-const SectionCollapse = ({ children, title, disabledCollapse, ...other }) => {
+const SectionCollapse = ({
+  children,
+  title,
+  titleStyling = { fontWeight: 500 },
+  disabledCollapse,
+  ...other
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(true);
 
@@ -38,7 +44,7 @@ const SectionCollapse = ({ children, title, disabledCollapse, ...other }) => {
         }}
         disabledCollapse={disabledCollapse}
       >
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+        <Typography variant="body2" sx={titleStyling}>
           {t(title)}
         </Typography>
         {open

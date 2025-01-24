@@ -20,6 +20,11 @@ import { CHILD_NUTRI_SECTION_UI } from "./mapping";
 import "./GrowthMonitoring.css";
 import "../eir.css";
 
+const sectionTitleStyling = {
+  fontWeight: "bold",
+  fontSize: "0.925rem"
+};
+
 const GrowthMonitoring = () => {
   const { t } = useTranslation();
   const { program } = useSelectionStore(
@@ -50,6 +55,7 @@ const GrowthMonitoring = () => {
             <SectionCollapse
               key={pss.id}
               title={t(pss.displayName)}
+              titleStyling={sectionTitleStyling}
               disabledCollapse
               sx={{
                 marginBottom: "10px"
@@ -83,6 +89,7 @@ const GrowthMonitoring = () => {
             <SectionCollapse
               key={pss.id}
               title={t(pss.displayName)}
+              titleStyling={sectionTitleStyling}
               disabledCollapse
               sx={{
                 marginBottom: "10px"
