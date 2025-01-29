@@ -3,6 +3,8 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  DialogContent,
+  DialogContentText,
   Table,
   TableBody,
   TableHead,
@@ -92,6 +94,7 @@ const ClientRegistrySearchButton = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const hiddenAttributes = ["bxSvU1LK2Sn", "JYpq5unNinA", "rreM2sBjjoT"];
   const [dialog, setDialog] = useState(false);
+  const [errorDialog, setErrorDialog] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState(false);
   const [searchOption, setSearchOption] = useState("");
   const { t, i18n } = useTranslation();
@@ -121,6 +124,11 @@ const ClientRegistrySearchButton = ({
     const url = `/api/routes/chr/run?work=search&filter=${filterString.join(";")}`;
     const result = await pull(url);
     // const result = await searchTeis(newSearch, "m9tWdDKc2Y4", "IWp9dQGM0bS");
+    if (result.httpStatusCode && result.httpStatusCode === 500) {
+      setLoading(false);
+      setErrorDialog(true);
+      return;
+    }
     if (result.trackedEntityInstances.length === 0) {
       setConfirmDialog(true);
     } else {
@@ -347,6 +355,30 @@ const ClientRegistrySearchButton = ({
         </div>
       )}
       {renderTrackerGoBackButton && <TrackerGoBackButton />}
+      <Dialog
+        open={errorDialog}
+        onClose={() => {
+          setErrorDialog(false);
+        }}
+      >
+        <DialogTitle>{t("error")}</DialogTitle>
+        <DialogContent>
+          <Alert variant="filled" severity="error">
+            {t("searchError")}
+          </Alert>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setErrorDialog(false);
+            }}
+            autoFocus
+          >
+            {t("ok")}
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={dialog}
         maxWidth="lg"

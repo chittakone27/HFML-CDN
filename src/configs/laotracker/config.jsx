@@ -68,7 +68,9 @@ const customLocales = {
     howToEditAPersonInChr: "2. How to edit a person in Client Health Registry",
     howToDeleteAPersonInChr: "3. How to delete a person in Client Health Registry",
     checkingClientHealthId: "Checking Client Health ID...",
-    healthIdSearchHelper: "Please carefully input the correct ID format to search on this field (xxxxxxxx-x-xxxx)"
+    healthIdSearchHelper: "Please carefully input the correct ID format to search on this field (xxxxxxxx-x-xxxx)",
+    searchError:
+      "Something went wrong, sorry for the inconvenience, please note your search criterias down and report to system administrator, thank you."
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -90,7 +92,8 @@ const customLocales = {
     howToEditAPersonInChr: "2. How to edit a person in Client Health Registry",
     howToDeleteAPersonInChr: "3. How to delete a person in Client Health Registry",
     checkingClientHealthId: "Checking Client Health ID...",
-    healthIdSearchHelper: "ກະລຸນາປ້ອນລະຫັດສຸຂະພາບໃຫ້ຖືກຕາມຮູບແບບທີ່ກຳນົດໄວ້ເພື່ອຄົ້ນຫາ (xxxxxxxx-x-xxxx)"
+    healthIdSearchHelper: "ກະລຸນາປ້ອນລະຫັດສຸຂະພາບໃຫ້ຖືກຕາມຮູບແບບທີ່ກຳນົດໄວ້ເພື່ອຄົ້ນຫາ (xxxxxxxx-x-xxxx)",
+    searchError: "ການຄົ້ນຫາມີບັນຫາ, ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.  ກະລຸນາຈົດວິທີການຄົ້ນຫາຄັ້ງນີ້ໄວ້ແລ້ວແຈ້ງຫາທີມງານຄຸ້ມຄອງລະບົບຕື່ມ."
   }
 };
 
