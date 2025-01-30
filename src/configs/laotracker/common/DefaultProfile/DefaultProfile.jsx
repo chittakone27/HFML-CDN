@@ -25,8 +25,7 @@ import { pull } from "@/utils/fetch";
 import { IDENTIFICATION_ATTRS } from "./const";
 /* CSS */
 import "./DefaultProfile.css";
-const { saveTei, deleteTei, saveEnrollment, getTeiById, deleteEnrollment } =
-  tracker;
+const { saveTei, deleteTei, saveEnrollment, getTeiById, deleteEnrollment } = tracker;
 const DefaultProfile = ({ attributeProps = {} }) => {
   const [loading, setLoading] = useState(false);
   const [alertContent, setAlertContent] = useState(null);
@@ -40,12 +39,8 @@ const DefaultProfile = ({ attributeProps = {} }) => {
   );
   const { changeAttributeValue, setHandlers, setData, setLayout } = actions;
   const { currentTei, currentEnrollment } = data;
-  const { program, orgUnit } = useSelectionStore(
-    useShallow((state) => ({ program: state.program, orgUnit: state.orgUnit }))
-  );
-  const trackedEntityAttributes = useMetadataStore(
-    (state) => state.trackedEntityAttributes
-  );
+  const { program, orgUnit } = useSelectionStore(useShallow((state) => ({ program: state.program, orgUnit: state.orgUnit })));
+  const trackedEntityAttributes = useMetadataStore((state) => state.trackedEntityAttributes);
   const attributes = program.programTrackedEntityAttributes.map((ptea) => {
     return ptea.trackedEntityAttribute.id;
   });
@@ -53,15 +48,9 @@ const DefaultProfile = ({ attributeProps = {} }) => {
   const disabledAttributes = ["oPKsfqS64oE"];
 
   const currentDate = format(new Date(), "yyyy-MM-dd");
-  const currentHealthId = currentTei.attributes.find(
-    (e) => e.attribute === "oPKsfqS64oE"
-  )?.value;
-  const dob = currentTei.attributes.find(
-    (e) => e.attribute === "tQeFLjYbqzv"
-  )?.value;
-  const sex = currentTei.attributes.find(
-    (e) => e.attribute === "DmuazFb368B"
-  )?.value;
+  const currentHealthId = currentTei.attributes.find((e) => e.attribute === "oPKsfqS64oE")?.value;
+  const dob = currentTei.attributes.find((e) => e.attribute === "tQeFLjYbqzv")?.value;
+  const sex = currentTei.attributes.find((e) => e.attribute === "DmuazFb368B")?.value;
   const props = useDefaultProfileRules();
   const identAttrIds = Object.keys(IDENTIFICATION_ATTRS)
     .map((attrName) => IDENTIFICATION_ATTRS[attrName])
@@ -148,9 +137,7 @@ const DefaultProfile = ({ attributeProps = {} }) => {
       await doEnroll(tei);
     }
     if (layout.layout === "layout3") {
-      await pull(
-        `/api/routes/chr/run?work=update&tei=${currentTei.trackedEntityInstance}`
-      );
+      await pull(`/api/routes/chr/run?work=update&tei=${currentTei.trackedEntityInstance}`);
     }
 
     if (teiResult.ok) {
@@ -181,28 +168,18 @@ const DefaultProfile = ({ attributeProps = {} }) => {
           <div style={{ paddingLeft: "5px" }}>
             <CircularProgress size={25} />
           </div>
-          <div style={{ paddingTop: "5px", paddingLeft: "5px" }}>
-            {t("checkingClientHealthId")}
-          </div>
+          <div style={{ paddingTop: "5px", paddingLeft: "5px" }}>{t("checkingClientHealthId")}</div>
         </div>
       );
       const trackedEntityInstance = _.cloneDeep(tei);
-      const currentHealthId = trackedEntityInstance.attributes.find(
-        (e) => e.attribute === "oPKsfqS64oE"
-      )?.value;
-      const dob = trackedEntityInstance.attributes.find(
-        (e) => e.attribute === "tQeFLjYbqzv"
-      )?.value;
-      const sex = trackedEntityInstance.attributes.find(
-        (e) => e.attribute === "DmuazFb368B"
-      )?.value;
+      const currentHealthId = trackedEntityInstance.attributes.find((e) => e.attribute === "oPKsfqS64oE")?.value;
+      const dob = trackedEntityInstance.attributes.find((e) => e.attribute === "tQeFLjYbqzv")?.value;
+      const sex = trackedEntityInstance.attributes.find((e) => e.attribute === "DmuazFb368B")?.value;
       if (dob && sex) {
         if (currentHealthId) {
           const generatedNumber = currentHealthId.split("-")[2];
           const healthId = await checkDuplicateHealthId(
-            `${moment(dob).format("DDMMYYYY")}-${
-              sex === "M" ? "1" : "2"
-            }-${generatedNumber}`,
+            `${moment(dob).format("DDMMYYYY")}-${sex === "M" ? "1" : "2"}-${generatedNumber}`,
             trackedEntityInstance
           );
           if (healthId !== currentHealthId) {
@@ -211,9 +188,7 @@ const DefaultProfile = ({ attributeProps = {} }) => {
         } else {
           const randomNumber = generateRandomNumber();
           const healthId = await checkDuplicateHealthId(
-            `${moment(dob).format("DDMMYYYY")}-${
-              sex === "M" ? "1" : "2"
-            }-${randomNumber.join("")}`,
+            `${moment(dob).format("DDMMYYYY")}-${sex === "M" ? "1" : "2"}-${randomNumber.join("")}`,
             trackedEntityInstance
           );
           if (healthId !== currentHealthId) {
@@ -229,9 +204,7 @@ const DefaultProfile = ({ attributeProps = {} }) => {
 
   const deleteProfile = async () => {
     const result = await deleteEnrollment(currentEnrollment.enrollment);
-    const result1 = await pull(
-      `/api/routes/chr/run?work=unenroll&tei=${currentEnrollment.trackedEntityInstance}&program=${program.id}`
-    );
+    const result1 = await pull(`/api/routes/chr/run?work=unenroll&tei=${currentEnrollment.trackedEntityInstance}&program=${program.id}`);
     setLayout("layout", "layout1");
   };
 
@@ -244,14 +217,9 @@ const DefaultProfile = ({ attributeProps = {} }) => {
       //   `/api/trackedEntityInstances.json?filter=oPKsfqS64oE:EQ:${healthId}&program=m9tWdDKc2Y4&ou=IWp9dQGM0bS&ouMode=DESCENDANTS&skipPaging=true&fields=trackedEntityInstance`
       // );
       if (result.trackedEntityInstances.length > 0) {
-        if (
-          result.trackedEntityInstances[0].trackedEntityInstance !==
-          currentTei.trackedEntityInstance
-        ) {
+        if (result.trackedEntityInstances[0].trackedEntityInstance !== currentTei.trackedEntityInstance) {
           const randomNumber = generateRandomNumber();
-          healthId = `${healthId.split("-")[0]}-${
-            healthId.split("-")[1]
-          }-${randomNumber.join("")}`;
+          healthId = `${healthId.split("-")[0]}-${healthId.split("-")[1]}-${randomNumber.join("")}`;
         } else {
           flag = false;
         }
@@ -276,17 +244,13 @@ const DefaultProfile = ({ attributeProps = {} }) => {
       if (dob && sex && layout.layout !== "layout3") {
         if (currentHealthId) {
           const generatedNumber = currentHealthId.split("-")[2];
-          const healthId = `${moment(dob).format("DDMMYYYY")}-${
-            sex === "M" ? "1" : "2"
-          }-${generatedNumber}`;
+          const healthId = `${moment(dob).format("DDMMYYYY")}-${sex === "M" ? "1" : "2"}-${generatedNumber}`;
           if (healthId !== currentHealthId) {
             changeAttributeValue("oPKsfqS64oE", healthId);
           }
         } else {
           const randomNumber = generateRandomNumber();
-          const healthId = `${moment(dob).format("DDMMYYYY")}-${
-            sex === "M" ? "1" : "2"
-          }-${randomNumber.join("")}`;
+          const healthId = `${moment(dob).format("DDMMYYYY")}-${sex === "M" ? "1" : "2"}-${randomNumber.join("")}`;
           if (healthId !== currentHealthId) {
             changeAttributeValue("oPKsfqS64oE", healthId);
           }
@@ -296,9 +260,7 @@ const DefaultProfile = ({ attributeProps = {} }) => {
   }, [dob, sex]);
 
   const changeHealthId = (tei, healthId) => {
-    const foundAttribute = tei.attributes.find(
-      (e) => e.attribute === "oPKsfqS64oE"
-    );
+    const foundAttribute = tei.attributes.find((e) => e.attribute === "oPKsfqS64oE");
     if (foundAttribute) {
       foundAttribute.value = healthId;
     } else {
@@ -341,50 +303,44 @@ const DefaultProfile = ({ attributeProps = {} }) => {
                 <div>{t("currentAddress")}</div>
                 <div>
                   <VillageSelectorOrgUnit
-                    mandatoryFields={[
-                      "r8bZppSsIvR",
-                      "oVwa5LfjnvA",
-                      "UNiaP6Oz7Mv"
-                    ]}
-                    VillageSelectorIds={[
-                      "r8bZppSsIvR",
-                      "oVwa5LfjnvA",
-                      "UNiaP6Oz7Mv"
-                    ]}
+                    mandatoryFields={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
+                    VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
                   />
                 </div>
               </div>
             );
-          } else if (attribute === IDENTIFICATION_ATTRS["CVID"]) {
-            return (
-              <div className="ident-section-container">
-                <div className="ident-title">Identification</div>
-                <div className="ident-inputs-container">
-                  <div className="delivery-registry-profile-field-row">
-                    <span className="ident-caution">{t("atLeastIdField")}</span>
-                  </div>
-                  {Object.keys(IDENTIFICATION_ATTRS).map((attrName) => {
-                    return (
-                      <div className="delivery-registry-profile-field-row">
-                        <AttributeLabel
-                          attribute={IDENTIFICATION_ATTRS[attrName]}
-                          mandatory={true}
-                        />
-                        <AttributeField
-                          attribute={IDENTIFICATION_ATTRS[attrName]}
-                          disabled={disabledAttributes.includes(
-                            IDENTIFICATION_ATTRS[attrName]
-                          )}
-                          {...attributeProps[IDENTIFICATION_ATTRS[attrName]]}
-                          {...props[IDENTIFICATION_ATTRS[attrName]]}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          } else if (
+          }
+          // else if (attribute === IDENTIFICATION_ATTRS["CVID"]) {
+          //   return (
+          //     <div className="ident-section-container">
+          //       <div className="ident-title">Identification</div>
+          //       <div className="ident-inputs-container">
+          //         <div className="delivery-registry-profile-field-row">
+          //           <span className="ident-caution">{t("atLeastIdField")}</span>
+          //         </div>
+          //         {Object.keys(IDENTIFICATION_ATTRS).map((attrName) => {
+          //           return (
+          //             <div className="delivery-registry-profile-field-row">
+          //               <AttributeLabel
+          //                 attribute={IDENTIFICATION_ATTRS[attrName]}
+          //                 mandatory={true}
+          //               />
+          //               <AttributeField
+          //                 attribute={IDENTIFICATION_ATTRS[attrName]}
+          //                 disabled={disabledAttributes.includes(
+          //                   IDENTIFICATION_ATTRS[attrName]
+          //                 )}
+          //                 {...attributeProps[IDENTIFICATION_ATTRS[attrName]]}
+          //                 {...props[IDENTIFICATION_ATTRS[attrName]]}
+          //               />
+          //             </div>
+          //           );
+          //         })}
+          //       </div>
+          //     </div>
+          //   );
+          // }
+          else if (
             hiddenAttributes.includes(attribute) ||
             (attributeProps[attribute] && attributeProps[attribute].hidden) ||
             (props[attribute] && props[attribute].hidden)

@@ -60,32 +60,29 @@ const getUserRoles = async () => {
 
 const getOrgUnits = async () => {
   let ouResult;
-  if (VITE_CONFIG_NAME === "laotracker") {
-    ouResult = await pull("/api/routes/cacher/run?type=orgUnits");
-  } else {
-    const results = await Promise.all([
-      pull(
-        "/api/organisationUnits?fields=id,name,displayName,code,path,ancestors[id,code],parent,level,attributeValues,geometry,translations&paging=false"
-      ),
-      pull("/api/organisationUnitGroups?fields=id,name,organisationUnits[id],translations&paging=false")
-    ]);
-    ouResult = results[0];
-    const ouGroupResult = results[1];
-    ouResult.organisationUnits.forEach((ou) => {
-      ou.organisationUnitGroups = [];
+
+  const results = await Promise.all([
+    pull(
+      "/api/organisationUnits?fields=id,name,displayName,code,path,ancestors[id,code],parent,level,attributeValues,geometry,translations&paging=false"
+    ),
+    pull("/api/organisationUnitGroups?fields=id,name,organisationUnits[id],translations&paging=false")
+  ]);
+  ouResult = results[0];
+  const ouGroupResult = results[1];
+  ouResult.organisationUnits.forEach((ou) => {
+    ou.organisationUnitGroups = [];
+  });
+  ouGroupResult.organisationUnitGroups.forEach((oug) => {
+    oug.organisationUnits.forEach((ouItem) => {
+      const foundOu = ouResult.organisationUnits.find((ou) => ou.id === ouItem.id);
+      if (foundOu) {
+        foundOu.organisationUnitGroups.push({
+          id: oug.id,
+          name: oug.name
+        });
+      }
     });
-    ouGroupResult.organisationUnitGroups.forEach((oug) => {
-      oug.organisationUnits.forEach((ouItem) => {
-        const foundOu = ouResult.organisationUnits.find((ou) => ou.id === ouItem.id);
-        if (foundOu) {
-          foundOu.organisationUnitGroups.push({
-            id: oug.id,
-            name: oug.name
-          });
-        }
-      });
-    });
-  }
+  });
 
   // const result = await chunkGet(
   //   "/api/organisationUnits?fields=id,name,displayName,code,path,ancestors[id,code],parent,level,organisationUnitGroups[id,name]",
@@ -133,25 +130,22 @@ const getCategoryCombos = async () => {
 
 const getOptionSets = async () => {
   let optionSetResult;
-  if (VITE_CONFIG_NAME === "laotracker") {
-    optionSetResult = await pull("/api/routes/cacher/run?type=optionSets");
-  } else {
-    optionSetResult = await pull("/api/optionSets?fields=id,displayName,translations&paging=false");
-    const optionResult = await pull("/api/options?fields=id,displayName,name,code,sortOrder,optionSet,attributeValues,translations&paging=false");
-    // const optionResult = await chunkGet("/api/options?fields=id,displayName,code,optionSet,attributeValues", "options", 2000);
-    optionSetResult.optionSets.forEach((os) => {
-      os.options = _.sortBy(
-        optionResult.options.filter((o) => {
-          if (!o.optionSet) {
-            return false;
-          } else {
-            return o.optionSet.id === os.id;
-          }
-        }),
-        ["sortOrder"]
-      );
-    });
-  }
+
+  optionSetResult = await pull("/api/optionSets?fields=id,displayName,translations&paging=false");
+  const optionResult = await pull("/api/options?fields=id,displayName,name,code,sortOrder,optionSet,attributeValues,translations&paging=false");
+  // const optionResult = await chunkGet("/api/options?fields=id,displayName,code,optionSet,attributeValues", "options", 2000);
+  optionSetResult.optionSets.forEach((os) => {
+    os.options = _.sortBy(
+      optionResult.options.filter((o) => {
+        if (!o.optionSet) {
+          return false;
+        } else {
+          return o.optionSet.id === os.id;
+        }
+      }),
+      ["sortOrder"]
+    );
+  });
   return optionSetResult.optionSets;
 };
 

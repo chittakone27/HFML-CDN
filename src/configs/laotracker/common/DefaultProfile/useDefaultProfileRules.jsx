@@ -18,19 +18,13 @@ const useDefaultProfileRules = () => {
 
   useEffect(() => {
     const currentProps = { BaiVwt8jVfg: { disabled: true } };
-    const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find(
-      (ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg"
-    );
-    const foundAge = currentTei.attributes.find(
-      (attr) => attr.attribute === "tQeFLjYbqzv"
-    );
+    const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
+    const foundAge = currentTei.attributes.find((attr) => attr.attribute === "tQeFLjYbqzv");
     const foundCountry = findAttributeValue(currentTei, "q4lqBvHgv7u");
     if (foundAge && foundAgeInYearAttribute) {
       const currentInitialDate = new Date(currentEnrollment.enrollmentDate);
       const currentDate = new Date(foundAge.value);
-      const diff = new Date(
-        currentInitialDate.getTime() - currentDate.getTime()
-      );
+      const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
       const years = diff.getUTCFullYear() - 1970;
       changeAttributeValue("BaiVwt8jVfg", years + "");
     }
@@ -44,30 +38,30 @@ const useDefaultProfileRules = () => {
     }
     setProps({ ...currentProps });
     /* IF ALL ID FIELDS IN IDENTIFICATION SECTION ARE EMPTY, DISABLE THE SAVE BUTTON  */
-    const foundIdentAttrs = Object.keys(IDENTIFICATION_ATTRS).map(
-      (attrName) => {
-        const foundAttribute = program.programTrackedEntityAttributes.find(
-          (ptea) =>
-            ptea.trackedEntityAttribute.id === IDENTIFICATION_ATTRS[attrName]
-        );
-        const foundAttrVl = currentTei.attributes.find(
-          (attr) => attr.attribute === IDENTIFICATION_ATTRS[attrName]
-        );
-        if (foundAttribute && foundAttrVl) {
-          if (foundAttrVl.value !== "") {
-            return true;
-          }
-          return false;
-        } else {
-          return false;
-        }
-      }
-    );
-    if (foundIdentAttrs.includes(true)) {
-      actions.setLayout("disableProfileSaveButton", false);
-    } else {
-      actions.setLayout("disableProfileSaveButton", true);
-    }
+    // const foundIdentAttrs = Object.keys(IDENTIFICATION_ATTRS).map(
+    //   (attrName) => {
+    //     const foundAttribute = program.programTrackedEntityAttributes.find(
+    //       (ptea) =>
+    //         ptea.trackedEntityAttribute.id === IDENTIFICATION_ATTRS[attrName]
+    //     );
+    //     const foundAttrVl = currentTei.attributes.find(
+    //       (attr) => attr.attribute === IDENTIFICATION_ATTRS[attrName]
+    //     );
+    //     if (foundAttribute && foundAttrVl) {
+    //       if (foundAttrVl.value !== "") {
+    //         return true;
+    //       }
+    //       return false;
+    //     } else {
+    //       return false;
+    //     }
+    //   }
+    // );
+    // if (foundIdentAttrs.includes(true)) {
+    //   actions.setLayout("disableProfileSaveButton", false);
+    // } else {
+    //   actions.setLayout("disableProfileSaveButton", true);
+    // }
     // console.log(currentTei.attributes, program.programTrackedEntityAttributes);
   }, [JSON.stringify(currentTei.attributes)]);
 

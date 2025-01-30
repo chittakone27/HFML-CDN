@@ -87,7 +87,7 @@ const useInitialization = () => {
       }
     );
 
-    const programs = results[0];
+    let programs = results[0];
     let dataSets = results[1];
     const orgUnits = results[2];
     const dataElements = results[3];
@@ -136,6 +136,9 @@ const useInitialization = () => {
       p.programRuleVariables = p.programRuleVariables.filter((prv) => {
         return prv.programRuleVariableSourceType === "DATAELEMENT_CURRENT_EVENT";
       });
+    });
+    programs = programs.filter((program) => {
+      return program.access.data.write && program.access.data.read;
     });
     dataSets = dataSets
       .filter((ds) => !filteredDataSets.includes(ds.id))
