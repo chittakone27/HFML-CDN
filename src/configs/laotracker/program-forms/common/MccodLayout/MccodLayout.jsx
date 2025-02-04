@@ -4,7 +4,7 @@ const MccodLayout = () => {
   const { t } = useTranslation();
   return (
     <div className="mccod-layout-container">
-      {t("mccodHelper")} <a href="/api/apps/ICD-10-Cause-of-Death/index.html">{t("link")}</a>
+      {t("mccodHelper")} <a href="../ICD-10-Cause-of-Death/index.html">{t("link")}</a>
     </div>
   );
 };
