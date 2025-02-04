@@ -4,6 +4,7 @@ import useRuleContext from "../hooks/useRuleContext";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import DataValueField from "@/ui/TrackerCapture/EventForm/DataValueField";
+import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 
 const getLabelProps = (context, id) => {
@@ -28,23 +29,16 @@ const getHelpers = (target, { errors, helpers, warnings }) => {
 
 export const FieldCell = ({ context, cell, labelInTop }) => {
   const { id, cellProps } = cell;
-  const {
-    errors,
-    helpers,
-    warnings,
-    hiddenFields,
-    disabledFields,
-    hiddenOptions,
-  } = useRuleContext(context);
+  const { errors, helpers, warnings, hiddenFields, disabledFields, hiddenOptions } = useRuleContext(context);
 
-  const Field = context === "event" ? DataValueField : AttributeField;
+  const Field = context === "event" ? DataValueFieldNoBlur : AttributeField;
   const Label = context === "event" ? DataValueLabel : AttributeLabel;
 
   const options = hiddenOptions[id];
   const disabled = disabledFields[id];
   const fieldProps = {
     helpers: getHelpers(id, { errors, helpers, warnings }),
-    ...cell.fieldProps,
+    ...cell.fieldProps
   };
 
   if (disabled) fieldProps.disabled = true;
@@ -74,13 +68,7 @@ export const LabelCell = ({ context, cell }) => {
   if (context === "event") fieldProps.dataElement = id;
   if (context === "profile") fieldProps.attribute = id;
 
-  return (
-    <TableCell {...cellProps}>
-      {!hiddenFields[id] && <Label {...fieldProps} />}
-    </TableCell>
-  );
+  return <TableCell {...cellProps}>{!hiddenFields[id] && <Label {...fieldProps} />}</TableCell>;
 };
 
-export const CustomCell = ({ customCell, cellProps }) => (
-  <TableCell {...cellProps}>{customCell}</TableCell>
-);
+export const CustomCell = ({ customCell, cellProps }) => <TableCell {...cellProps}>{customCell}</TableCell>;

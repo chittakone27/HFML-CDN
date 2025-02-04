@@ -5,10 +5,11 @@ const ipdDischargeSummaryLocales = {
     dateOfDeathIsMandatory: "Date of death is mandatory",
     admissionDateMustBeBeforeDischargeDate: "Admission Date must be before Discharge Date",
     dischargeDateMustBeAfterDateOfBirth: "Discharge Date must be after Date Of Birth",
-    dateOfDeathMustNotAfterDischargeDate : "Date of Death must not after Discharge Date",
+    dateOfDeathMustNotAfterDischargeDate: "Date of Death must not after Discharge Date",
     currentAddress: "Current Address",
     preConditions: "PreConditions",
-    checkingClientHealthId: "Checking Client Health ID..."
+    checkingClientHealthId: "Checking Client Health ID...",
+    teiList: "Tracked entity instances"
   },
   lo: {
     pregnantWarning:
@@ -16,10 +17,11 @@ const ipdDischargeSummaryLocales = {
     dateOfDeathIsMandatory: "Date of death is mandatory",
     admissionDateMustBeBeforeDischargeDate: "Admission Date must be before Discharge Date",
     dischargeDateMustBeAfterDateOfBirth: "Discharge Date must be after Date Of Birth",
-    dateOfDeathMustNotAfterDischargeDate : "Date of Death must not after Discharge Date",
+    dateOfDeathMustNotAfterDischargeDate: "Date of Death must not after Discharge Date",
     currentAddress: "ທີ່ຢູ່ປະຈຸບັນ",
     preConditions: "ພະຍາດປະຈຳຕົວ",
-    checkingClientHealthId: "Checking Client Health ID..."
+    checkingClientHealthId: "Checking Client Health ID...",
+    teiList: "ລາຍການ"
   }
 };
 
