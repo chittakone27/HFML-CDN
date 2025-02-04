@@ -6,7 +6,11 @@ import useSelectionStore from "@/state/selection";
 // Components
 import TrackerTableSection from "../../common/TrackerTableSection";
 // Libs
-import { differenceInWeeks, differenceInMonths, differenceInYears } from "date-fns";
+import {
+  differenceInWeeks,
+  differenceInMonths,
+  differenceInYears
+} from "date-fns";
 // CSS
 import "./index.css";
 // const values
@@ -29,21 +33,27 @@ const Ecd = () => {
     }))
   );
   const { currentTei } = data;
-  const ecdStage = program.programStages.find((progState) => progState.id === ECD_STAGE_ID);
+  const ecdStage = program.programStages.find(
+    (progState) => progState.id === ECD_STAGE_ID
+  );
   const { programStageSections } = ecdStage;
 
   useEffect(() => {
-    for (const pss of programStageSections) {
-      if (!pssFilter.includes(pss.id)) {
-        pss.dataElements.forEach((de) => {
-          actions.changeDataValue(currentEvent.event, de.id, "");
-        });
+    if (pssFilter.length) {
+      for (const pss of programStageSections) {
+        if (!pssFilter.includes(pss.id)) {
+          pss.dataElements.forEach((de) => {
+            actions.changeDataValue(currentEvent.event, de.id, "");
+          });
+        }
       }
     }
   }, [pssFilter]);
 
   useEffect(() => {
-    const dobObj = currentTei.attributes.find((attr) => attr["attribute"] === DOB_ATTR_ID);
+    const dobObj = currentTei.attributes.find(
+      (attr) => attr["attribute"] === DOB_ATTR_ID
+    );
     if (currentEvent.eventDate && dobObj && dobObj.value) {
       const formattedEvtDate = new Date(currentEvent.eventDate);
       const formattedDob = new Date(dobObj.value);
