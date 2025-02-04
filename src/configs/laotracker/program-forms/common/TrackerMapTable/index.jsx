@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { TableRow, TableCell, Box } from "@mui/material";
 
 import useTrackerCaptureStore from "@/state/trackerCapture";
-import DataValueField from "@/ui/TrackerCapture/EventForm/DataValueField";
+import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 
 // const isHiddenRow = (hiddenFields, dataElements) => {
@@ -33,11 +33,7 @@ import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 //   return true;
 // };
 
-const TrackerMapTable = ({
-  dataElementConfigs,
-  tableName,
-  disableHideCell
-}) => {
+const TrackerMapTable = ({ dataElementConfigs, tableName, disableHideCell }) => {
   const { t } = useTranslation();
   //   const hiddenFields = useEventCaptureStore(
   //     (state) => state.status.hiddenFields,
@@ -45,9 +41,7 @@ const TrackerMapTable = ({
   //   );
 
   return dataElementConfigs.map((dataElements, idx) => (
-    /*!isHiddenRow(hiddenFields, dataElements) &&*/ <TableRow
-      key={`${tableName}-${idx}`}
-    >
+    /*!isHiddenRow(hiddenFields, dataElements) &&*/ <TableRow key={`${tableName}-${idx}`}>
       {dataElements.map((de) => {
         // if (isHiddenField(hiddenFields, de.id) && !disableHideCell) return;
         if (de.customCell) {
@@ -63,7 +57,7 @@ const TrackerMapTable = ({
           case "noLabel":
             return (
               <TableCell key={de.id} {...de.cellProps}>
-                <DataValueField {...fieldProps} />
+                <DataValueFieldNoBlur {...fieldProps} />
               </TableCell>
             );
 
@@ -87,7 +81,7 @@ const TrackerMapTable = ({
           case "labelInBottom":
             return (
               <TableCell key={de.id} {...de.cellProps}>
-                <DataValueField {...fieldProps} />
+                <DataValueFieldNoBlur {...fieldProps} />
                 <DataValueLabel {...fieldProps} />
               </TableCell>
             );
@@ -96,7 +90,7 @@ const TrackerMapTable = ({
             return (
               <TableCell key={de.id} {...de.cellProps}>
                 <DataValueLabel {...fieldProps} />
-                <DataValueField {...fieldProps} />
+                <DataValueFieldNoBlur {...fieldProps} />
               </TableCell>
             );
 
@@ -104,7 +98,7 @@ const TrackerMapTable = ({
             return (
               <TableCell key={de.id} {...de.cellProps}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <DataValueField {...fieldProps} />
+                  <DataValueFieldNoBlur {...fieldProps} />
                   <DataValueLabel {...fieldProps} />
                 </Box>
               </TableCell>
@@ -117,7 +111,7 @@ const TrackerMapTable = ({
                   <DataValueLabel {...fieldProps} />
                 </TableCell>
                 <TableCell {...de.fieldCellProps}>
-                  <DataValueField {...fieldProps} />
+                  <DataValueFieldNoBlur {...fieldProps} />
                 </TableCell>
               </React.Fragment>
             );

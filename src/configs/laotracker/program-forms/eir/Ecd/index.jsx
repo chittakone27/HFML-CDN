@@ -6,15 +6,13 @@ import useSelectionStore from "@/state/selection";
 // Components
 import TrackerTableSection from "../../common/TrackerTableSection";
 // Libs
-import {
-  differenceInWeeks,
-  differenceInMonths,
-  differenceInYears
-} from "date-fns";
+import { differenceInWeeks, differenceInMonths, differenceInYears } from "date-fns";
 // CSS
 import "./index.css";
 // const values
 import { ECD_STAGE_ID, DOB_ATTR_ID, ASSESSMENT_SECTION_ID } from "./const";
+import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
+import EventDateLabel from "@/ui/TrackerCapture/EventForm/EventDateLabel";
 
 const Ecd = () => {
   const [pssFilter, setPssFilter] = useState([]);
@@ -31,9 +29,7 @@ const Ecd = () => {
     }))
   );
   const { currentTei } = data;
-  const ecdStage = program.programStages.find(
-    (progState) => progState.id === ECD_STAGE_ID
-  );
+  const ecdStage = program.programStages.find((progState) => progState.id === ECD_STAGE_ID);
   const { programStageSections } = ecdStage;
 
   useEffect(() => {
@@ -47,9 +43,7 @@ const Ecd = () => {
   }, [pssFilter]);
 
   useEffect(() => {
-    const dobObj = currentTei.attributes.find(
-      (attr) => attr["attribute"] === DOB_ATTR_ID
-    );
+    const dobObj = currentTei.attributes.find((attr) => attr["attribute"] === DOB_ATTR_ID);
     if (currentEvent.eventDate && dobObj && dobObj.value) {
       const formattedEvtDate = new Date(currentEvent.eventDate);
       const formattedDob = new Date(dobObj.value);
@@ -99,6 +93,9 @@ const Ecd = () => {
 
   return (
     <div id="ecd-container">
+      <EventDateLabel type="eventDate" />
+      <EventDateFieldNoBlur type="eventDate" />
+      <br />
       {programStageSections &&
         programStageSections
           .filter((pss) => pssFilter.includes(pss.id))

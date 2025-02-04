@@ -21,6 +21,7 @@ import moment from "moment";
 import _ from "lodash";
 import { Loader } from "@/ui/common";
 import useProfileRules from "./useProfileRules";
+import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 
 const Profile = ({ attributeProps = {} }) => {
   const [edit, setEdit] = useState(false);
@@ -36,6 +37,7 @@ const Profile = ({ attributeProps = {} }) => {
   );
   const { changeAttributeValue, setHandlers, setLayout } = actions;
   const { currentTei, currentEnrollment } = data;
+  const { currentEvent } = useCurrentEvent();
   const { program, orgUnit } = useSelectionStore(useShallow((state) => ({ program: state.program, orgUnit: state.orgUnit })));
   const trackedEntityAttributes = useMetadataStore((state) => state.trackedEntityAttributes);
   const attributes = program.programTrackedEntityAttributes.map((ptea) => {
