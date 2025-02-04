@@ -36,7 +36,6 @@ const useGrowthMonitorRules = () => {
       } else if (ageInMonths < 12 || ageInMonths > 59) {
         tempHiddenFields.push("DzNWdRvRB11");
       }
-      console.log(tempHiddenFields);
       for (const hiddenField of tempHiddenFields) {
         changeDataValue(currentEvent.event, hiddenField, "");
       }

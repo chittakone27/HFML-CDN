@@ -28,7 +28,14 @@ const getHelpers = (target, { errors, helpers, warnings }) => {
 
 export const FieldCell = ({ context, cell, labelInTop }) => {
   const { id, cellProps } = cell;
-  const { errors, helpers, warnings, hiddenFields, disabledFields, hiddenOptions } = useRuleContext(context);
+  const {
+    errors,
+    helpers,
+    warnings,
+    hiddenFields,
+    disabledFields,
+    hiddenOptions
+  } = useRuleContext(context);
 
   const Field = context === "event" ? DataValueField : AttributeField;
   const Label = context === "event" ? DataValueLabel : AttributeLabel;
@@ -67,7 +74,13 @@ export const LabelCell = ({ context, cell }) => {
   if (context === "event") fieldProps.dataElement = id;
   if (context === "profile") fieldProps.attribute = id;
 
-  return <TableCell {...cellProps}>{!hiddenFields[id] && <Label {...fieldProps} />}</TableCell>;
+  return (
+    <TableCell {...cellProps}>
+      {!hiddenFields[id] && <Label {...fieldProps} />}
+    </TableCell>
+  );
 };
 
-export const CustomCell = ({ customCell }) => <TableCell>{customCell}</TableCell>;
+export const CustomCell = ({ customCell, customCellProp }) => (
+  <TableCell {...customCellProp}>{customCell}</TableCell>
+);

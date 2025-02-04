@@ -1,9 +1,12 @@
 import { Box, Table, TableBody } from "@mui/material";
+import DataValueField from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
+import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
+//
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
 import useGrowthMonitorRules from "./useGrowthMonitorRules";
-
+//
 import {
   withEventDate,
   RowMapper,
@@ -13,17 +16,16 @@ import {
 import {
   GROWTH_MONITOR_ID,
   CHILD_NUTRI_STATUS_SECTION_ID,
-  DISABLED_FIELDS
+  CHILD_SYMPS_TREAT_SECTION_ID,
+  MEDIC_SYMPTOM_IDS,
+  DISABLED_FIELDS,
+  sectionTitleStyling,
+  sectionCollapseStyling
 } from "./const";
 import { CHILD_NUTRI_SECTION_UI } from "./mapping";
 //
 import "./GrowthMonitoring.css";
 import "../eir.css";
-
-const sectionTitleStyling = {
-  fontWeight: "bold",
-  fontSize: "0.925rem"
-};
 
 const GrowthMonitoring = () => {
   const { t } = useTranslation();
@@ -38,6 +40,99 @@ const GrowthMonitoring = () => {
   const { programStageSections } = growthMonitorStage;
   const { hiddenFields } = useGrowthMonitorRules();
 
+  const renderSectionContents = (pss, tableConfigs) => {
+    switch (pss.id) {
+      case CHILD_NUTRI_STATUS_SECTION_ID:
+        return (
+          <div className="child-nutri-container">
+            {CHILD_NUTRI_SECTION_UI.map((col) => {
+              return (
+                <SectionCollapse
+                  title={col["colTitle"]}
+                  sx={{ m: 0.5, width: "50%" }}
+                  disabledCollapse
+                >
+                  <Table>
+                    <TableBody>
+                      <RowMapper
+                        rows={col["colConfigs"]}
+                        tableName={col["colTitle"]}
+                        context="event"
+                      />
+                    </TableBody>
+                  </Table>
+                </SectionCollapse>
+              );
+            })}
+          </div>
+        );
+      case CHILD_SYMPS_TREAT_SECTION_ID:
+        // console.log(tableConfigs);
+        const tempNewConfigs = tableConfigs.filter(
+          (cellConfig) =>
+            cellConfig[0]["id"] === "SsTzQsXnzQB" ||
+            !MEDIC_SYMPTOM_IDS.includes(cellConfig[0]["id"])
+        );
+        const newConfigs = tempNewConfigs.map((oldConfig) => {
+          if (oldConfig[0]["id"] === "SsTzQsXnzQB") {
+            return [
+              { display: "text", text: t("medicSymps") },
+              {
+                customCellProp: {
+                  sx: {
+                    width: "78%"
+                  }
+                },
+                customCell: (
+                  <div className="medical-symps-container">
+                    {MEDIC_SYMPTOM_IDS.map((id) => {
+                      return (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center"
+                          }}
+                        >
+                          <DataValueField dataElement={id} />
+                          <DataValueLabel dataElement={id} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              }
+            ];
+          } else {
+            return oldConfig;
+          }
+        });
+        console.log(newConfigs);
+        return (
+          <Table>
+            <TableBody>
+              <RowMapper
+                rows={newConfigs}
+                tableName={pss.displayName}
+                context="event"
+              />
+            </TableBody>
+          </Table>
+        );
+      default:
+        return (
+          <Table>
+            <TableBody>
+              <RowMapper
+                rows={tableConfigs}
+                tableName={pss.displayName}
+                context="event"
+              />
+            </TableBody>
+          </Table>
+        );
+    }
+  };
+
   return (
     <Box className="eir-form">
       {programStageSections.map((pss) => {
@@ -50,63 +145,17 @@ const GrowthMonitoring = () => {
               return [{ id: de.id }];
             }
           });
-        if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
-          return (
-            <SectionCollapse
-              key={pss.id}
-              title={t(pss.displayName)}
-              titleStyling={sectionTitleStyling}
-              disabledCollapse
-              sx={{
-                marginBottom: "10px"
-              }}
-            >
-              <div className="child-nutri-container">
-                {CHILD_NUTRI_SECTION_UI.map((col) => {
-                  return (
-                    <SectionCollapse
-                      title={col["colTitle"]}
-                      sx={{ m: 0.5, width: "50%" }}
-                      disabledCollapse
-                    >
-                      <Table>
-                        <TableBody>
-                          <RowMapper
-                            rows={col["colConfigs"]}
-                            tableName={col["colTitle"]}
-                            context="event"
-                          />
-                        </TableBody>
-                      </Table>
-                    </SectionCollapse>
-                  );
-                })}
-              </div>
-            </SectionCollapse>
-          );
-        } else {
-          return (
-            <SectionCollapse
-              key={pss.id}
-              title={t(pss.displayName)}
-              titleStyling={sectionTitleStyling}
-              disabledCollapse
-              sx={{
-                marginBottom: "10px"
-              }}
-            >
-              <Table>
-                <TableBody>
-                  <RowMapper
-                    rows={tableConfigs}
-                    tableName={pss.displayName}
-                    context="event"
-                  />
-                </TableBody>
-              </Table>
-            </SectionCollapse>
-          );
-        }
+        return (
+          <SectionCollapse
+            key={pss.id}
+            title={t(pss.displayName)}
+            titleStyling={sectionTitleStyling}
+            disabledCollapse
+            sx={sectionCollapseStyling}
+          >
+            {renderSectionContents(pss, tableConfigs)}
+          </SectionCollapse>
+        );
       })}
     </Box>
   );

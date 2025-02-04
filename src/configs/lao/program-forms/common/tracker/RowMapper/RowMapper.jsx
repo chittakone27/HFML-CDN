@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { TableRow, TableCell } from "@mui/material";
+import { TableRow, TableCell, Box } from "@mui/material";
 
 import { CustomCell, FieldCell, LabelCell } from "./components";
 
@@ -21,17 +21,30 @@ const RowMapper = ({ context = "profile", rows, tableName }) => {
   return rows.map((cells, rowIdx) => (
     <TableRow key={`${tableName}-${rowIdx}`}>
       {cells.map((cell, cellIdx) => {
-        const { id, cellProps, customCell } = cell;
+        const {
+          id,
+          cellProps,
+          customCell /*, gridElementIds, gridCellProps*/,
+          customCellProp
+        } = cell;
 
-        if (customCell) return <CustomCell key={`${tableName}-${rowIdx}-${cellIdx}`} customCell={customCell} />;
-
+        if (customCell)
+          return (
+            <CustomCell
+              key={`${tableName}-${rowIdx}-${cellIdx}`}
+              customCell={customCell}
+              customCellProp={customCellProp}
+            />
+          );
         switch (cell.display) {
           case "field":
             return <FieldCell key={id} context={context} cell={cell} />;
           case "label":
             return <LabelCell key={id} context={context} cell={cell} />;
           case "labelInTop":
-            return <FieldCell key={id} context={context} cell={cell} labelInTop />;
+            return (
+              <FieldCell key={id} context={context} cell={cell} labelInTop />
+            );
           case "text":
             const { text } = cell;
             return (
@@ -39,8 +52,32 @@ const RowMapper = ({ context = "profile", rows, tableName }) => {
                 <span>{t(text)}</span>
               </TableCell>
             );
+          // case "grid":
+          //   return gridElementIds && gridElementIds.length ? (
+          //     <TableCell {...cellProps}>
+          //       <Box {...gridCellProps}>
+          //         {gridElementIds.map((elementId) => {
+          //           const gridLabelCell = { id: elementId };
+          //           const gridFieldCell = { id: elementId };
+          //           return (
+          //             <div key={elementId}>
+          //               <FieldCell context={context} cell={gridFieldCell} />
+          //               <LabelCell context={context} cell={gridLabelCell} />
+          //             </div>
+          //           );
+          //         })}
+          //       </Box>
+          //     </TableCell>
+          //   ) : (
+          //     <TableCell>No grid element ids</TableCell>
+          //   );
           case "empty":
-            return <TableCell key={`${tableName}-${rowIdx}-${cellIdx}`} {...cellProps} />;
+            return (
+              <TableCell
+                key={`${tableName}-${rowIdx}-${cellIdx}`}
+                {...cellProps}
+              />
+            );
           default:
             const labelCell = { ...cell, cellProps: cell.labelCellProps };
             const fieldCell = { ...cell, cellProps: cell.fieldCellProps };
