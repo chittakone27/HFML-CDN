@@ -10,6 +10,7 @@ import fddAdrLocales from "./locales/fddAdr.js";
 import ipdDischargeSummaryLocales from "./locales/ipdDischargeSummary.js";
 import ClientRegistrySearchButton from "./common/ClientRegistrySearchButton/ClientRegistrySearchButton.jsx";
 import MchLayout from "./program-forms/common/MchLayout/MchLayout.jsx";
+import MccodLayout from "./program-forms/common/MccodLayout/MccodLayout.jsx";
 import familyPlanning from "./program-forms/family-planning/index.js";
 import abortionDetails from "./program-forms/abortion-details/index.js";
 import postnatalCare from "./program-forms/postnatal-care/index.js";
@@ -70,7 +71,9 @@ const customLocales = {
     checkingClientHealthId: "Checking Client Health ID...",
     healthIdSearchHelper: "Please carefully input the correct ID format to search on this field (xxxxxxxx-x-xxxx)",
     searchError:
-      "Something went wrong, sorry for the inconvenience, please note your search criterias down and report to system administrator, thank you."
+      "Something went wrong, sorry for the inconvenience, please note your search criterias down and report to system administrator, thank you.",
+    mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
+    link: "link"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -93,7 +96,9 @@ const customLocales = {
     howToDeleteAPersonInChr: "3. How to delete a person in Client Health Registry",
     checkingClientHealthId: "Checking Client Health ID...",
     healthIdSearchHelper: "ກະລຸນາປ້ອນລະຫັດສຸຂະພາບໃຫ້ຖືກຕາມຮູບແບບທີ່ກຳນົດໄວ້ເພື່ອຄົ້ນຫາ (xxxxxxxx-x-xxxx)",
-    searchError: "ການຄົ້ນຫາມີບັນຫາ, ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.  ກະລຸນາຈົດວິທີການຄົ້ນຫາຄັ້ງນີ້ໄວ້ແລ້ວແຈ້ງຫາທີມງານຄຸ້ມຄອງລະບົບຕື່ມ."
+    searchError: "ການຄົ້ນຫາມີບັນຫາ, ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.  ກະລຸນາຈົດວິທີການຄົ້ນຫາຄັ້ງນີ້ໄວ້ແລ້ວແຈ້ງຫາທີມງານຄຸ້ມຄອງລະບົບຕື່ມ.",
+    mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
+    link: "link"
   }
 };
 
@@ -337,7 +342,7 @@ const trackerFormTypes = {
   vqNgkw4gfw7: ["noBlur", "tabStage", "tabular"]
 };
 
-const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d"];
+const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA"];
 const modes = [
   //"eventCapture",
   //"dataEntry",
@@ -354,7 +359,8 @@ const customControlBarComponent = {
 };
 
 const customTrackerLayout = {
-  AyPkCOMmgdd: MchLayout
+  AyPkCOMmgdd: MchLayout,
+  ogrOUKoSaWA: MccodLayout
   // fflLsS1lm3g: MchLayout,
   // vqNgkw4gfw7: MchLayout,
   // AyPkCOMmgdd: MchLayout,
