@@ -18,7 +18,7 @@ const VillageSelectorWithoutHandler = ({ labels, change, values }) => {
         ou.organisationUnitGroups.forEach((ouG) => {
           if (ouG.id === "jblbYwuvO33") result[0].push(ou);
           if (ouG.id === "Zh1inFu0Z2O") result[1].push(ou);
-          if (ouG.id === "dGSmKUusVZG") result[2].push(ou);
+          if (ouG.id === "ZVH1xlLGfxn") result[2].push(ou);
         });
 
         return result;
