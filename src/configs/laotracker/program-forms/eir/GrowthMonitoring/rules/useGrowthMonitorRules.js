@@ -5,7 +5,7 @@ import { useShallow } from "zustand/react/shallow";
 //
 import { differenceInWeeks, differenceInMonths } from "date-fns";
 //
-import { DOB_ATTR_ID } from "./const";
+import { DOB_ATTR_ID } from "../const";
 
 const useGrowthMonitorRules = () => {
   const [hiddenFields, setHiddenFields] = useState([]);
@@ -20,7 +20,7 @@ const useGrowthMonitorRules = () => {
   const { currentTei } = data;
 
   useEffect(() => {
-    console.log(currentEvent, currentTei);
+    // console.log(currentEvent, currentTei);
     let tempHiddenFields = [];
     const dobObj = currentTei.attributes.find(
       (attr) => attr["attribute"] === DOB_ATTR_ID
@@ -30,7 +30,6 @@ const useGrowthMonitorRules = () => {
       const teiDob = new Date(dobObj.value);
       const ageInWeeks = differenceInWeeks(currEvtDate, teiDob);
       const ageInMonths = differenceInMonths(currEvtDate, teiDob);
-      //   console.log(ageInWeeks, ageInMonths);
       changeDataValue(currentEvent.event, "DxOqZZgVQhF", ageInWeeks);
       changeDataValue(currentEvent.event, "MV1yoC7BfnG", ageInMonths);
       if (ageInMonths < 6 || ageInMonths > 11) {
@@ -40,7 +39,6 @@ const useGrowthMonitorRules = () => {
         tempHiddenFields.push("DzNWdRvRB11");
         // DzNWdRvRB11
       }
-      console.log(tempHiddenFields);
       for (const hiddenField of tempHiddenFields) {
         changeDataValue(currentEvent.event, hiddenField, "");
       }

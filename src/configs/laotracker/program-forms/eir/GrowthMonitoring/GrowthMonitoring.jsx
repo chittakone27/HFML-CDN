@@ -1,12 +1,10 @@
 import { Box, Table, TableBody } from "@mui/material";
 import { useTranslation } from "react-i18next";
-// import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-// import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-// import useTrackerCaptureStore from "@/state/trackerCapture";
 import useSelectionStore from "@/state/selection";
-import useGrowthMonitorRules from "./useGrowthMonitorRules";
-
+import useGrowthMonitorRules from "./rules/useGrowthMonitorRules";
+import useDetailSectionRules from "./rules/useDetailSectionRules";
+import useChildNutritionStatusRules from "./rules/useChildNutritionStatusRules";
 import {
   withEventDate,
   RowMapper,
@@ -33,6 +31,9 @@ const GrowthMonitoring = () => {
   // console.log(programStageSections);
   const { hiddenFields } = useGrowthMonitorRules();
   // console.log(hiddenFields);
+  useDetailSectionRules();
+  const childNutriDeProps = useChildNutritionStatusRules();
+  console.log(childNutriDeProps);
 
   return (
     <Box className="eir-form">
@@ -52,16 +53,25 @@ const GrowthMonitoring = () => {
             >
               <div className="child-nutri-container">
                 {CHILD_NUTRI_SECTION_UI.map((col) => {
+                  const finalConfigs = col["colConfigs"].map((de) => {
+                    const currConfigObj = de[0];
+                    const newConfigObj = {
+                      ...currConfigObj,
+                      fieldProps: { ...childNutriDeProps[currConfigObj.id] }
+                    };
+                    return [newConfigObj];
+                  });
+                  // console.log(finalConfigs);
                   return (
                     <SectionCollapse
                       title={col["colTitle"]}
                       sx={{ m: 0.5, width: "50%" }}
                       disabledCollapse
                     >
-                      <Table>
+                      <Table sx={{ height: "auto" }}>
                         <TableBody>
                           <RowMapper
-                            rows={col["colConfigs"]}
+                            rows={finalConfigs}
                             tableName={col["colTitle"]}
                             context="event"
                           />
