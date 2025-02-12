@@ -3,6 +3,7 @@ export const CHILD_NUTRI_STATUS_SECTION_ID = "EaOceques9f";
 export const DOB_ATTR_ID = "tQeFLjYbqzv";
 export const GENDER_ATTR_ID = "DmuazFb368B";
 export const GROWTH_MONITOR_DES = {
+  AGE_IN_MONTHS: "MV1yoC7BfnG",
   HEIGHT: "xvE2z6W3wYh",
   WEIGHT: "acQoZnFeVYZ",
   MUAC: "fwerjuyn3QC",
@@ -24,5 +25,3 @@ export const BG_COLORS = {
   YELLOW: "#f8d66d",
   ORANGE: "#ffb54c"
 };
-// #ffb3af
-// #000000

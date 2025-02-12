@@ -24,16 +24,16 @@ export const CHILD_NUTRI_SECTION_UI = [
   {
     colTitle: "Correct child status",
     colConfigs: [
-      [{ id: "eXgCO34QypV" }],
-      [{ id: "J2sDxcMfht1" }],
-      [{ id: "QppFJG84N4H" }]
+      [{ id: "eXgCO34QypV", fieldProps: { disabled: true } }],
+      [{ id: "J2sDxcMfht1", fieldProps: { disabled: true } }],
+      [{ id: "QppFJG84N4H", fieldProps: { disabled: true } }]
     ]
   }
 ];
 
 export const GROWTH_MONITORING = {
   F: {
-    weightToAge: {
+    WEIGHT_FOR_AGE: {
       "-3SD": [
         { months: 0, weight: 2 },
         { months: 1, weight: 2.7 },
@@ -476,7 +476,7 @@ export const GROWTH_MONITORING = {
         { months: 60, weight: 29.5 }
       ]
     },
-    heightToAge: {
+    HEIGHT_FOR_AGE: {
       "-3SD": [
         { months: 0, height: 43.6 },
         { months: 1, height: 47.8 },
@@ -919,7 +919,7 @@ export const GROWTH_MONITORING = {
         { months: 60, height: 123.7 }
       ]
     },
-    weightToHeight: {
+    WEIGHT_FOR_HEIGHT: {
       "0to2": {
         "-3SD": [
           { height: 45, weight: 1.9 },
@@ -2649,7 +2649,7 @@ export const GROWTH_MONITORING = {
     }
   },
   M: {
-    weightToAge: {
+    WEIGHT_FOR_AGE: {
       "-3SD": [
         { months: 0, weight: 2.1 },
         { months: 1, weight: 2.9 },
@@ -3092,7 +3092,7 @@ export const GROWTH_MONITORING = {
         { months: 60, weight: 27.9 }
       ]
     },
-    heightToAge: {
+    HEIGHT_FOR_AGE: {
       "-3SD": [
         { months: 0, height: 44.2 },
         { months: 1, height: 48.9 },
@@ -3535,7 +3535,7 @@ export const GROWTH_MONITORING = {
         { months: 60, height: 123.9 }
       ]
     },
-    weightToHeight: {
+    WEIGHT_FOR_HEIGHT: {
       "0to2": {
         "-3SD": [
           { height: 45, weight: 1.9 },

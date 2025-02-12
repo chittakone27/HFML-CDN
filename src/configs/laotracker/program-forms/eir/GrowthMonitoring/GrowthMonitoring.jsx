@@ -33,10 +33,10 @@ const GrowthMonitoring = () => {
   // console.log(hiddenFields);
   useDetailSectionRules();
   const childNutriDeProps = useChildNutritionStatusRules();
-  console.log(childNutriDeProps);
+  // console.log(childNutriDeProps);
 
   return (
-    <Box className="eir-form">
+    <Box className="eir-growth-monitor-form">
       {programStageSections.map((pss) => {
         const tableConfigs = pss.dataElements
           .filter((de) => !hiddenFields.includes(de.id))
@@ -57,7 +57,10 @@ const GrowthMonitoring = () => {
                     const currConfigObj = de[0];
                     const newConfigObj = {
                       ...currConfigObj,
-                      fieldProps: { ...childNutriDeProps[currConfigObj.id] }
+                      fieldProps: {
+                        ...currConfigObj?.fieldProps,
+                        ...childNutriDeProps[currConfigObj.id]
+                      }
                     };
                     return [newConfigObj];
                   });
