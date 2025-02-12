@@ -1,0 +1,6 @@
+.birth-details-stage-container td {
+  padding: 5px;
+}
+.birth-details-stage-container table td:nth-child(1) {
+  width: 350px;
+}

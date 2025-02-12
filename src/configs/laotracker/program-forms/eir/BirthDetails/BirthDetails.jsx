@@ -1,35 +1,36 @@
+import useMetadataStore from "@/state/metadata";
+import useTrackerCaptureStore from "@/state/trackerCapture";
+import { useShallow } from "zustand/react/shallow";
 import { Box, Table, TableBody } from "@mui/material";
-
-import { SectionCollapse, RowMapper, withRules, withEventDate } from "@/configs/lao/program-forms/common/tracker";
-import useBirthDetailsRule from "./useBirthDetailsRule";
-import "../eir.css";
-
+import { RowMapper, withEventDate, withRules } from "@/configs/laotracker/program-forms/common/tracker";
+import "./BirthDetails.css";
 const BirthDetails = () => {
-  useBirthDetailsRule();
-
-  return (
-    <Box className="eir-form">
-      <SectionCollapse title={"birthDetails"} disabledCollapse>
-        <Table>
-          <TableBody>
-            <RowMapper rows={deConfigs} tableName={"Birth details"} context="event" />
-          </TableBody>
-        </Table>
-      </SectionCollapse>
-    </Box>
+  const { programs } = useMetadataStore(useShallow((state) => ({ programs: state.programs })));
+  const { layout } = useTrackerCaptureStore(
+    useShallow((state) => ({
+      layout: state.layout
+    }))
   );
+  const eirProgram = programs.find((e) => e.id === "Yj9cJ34AXw6");
+  let programStage = null;
+  let dataElementConfigs = [];
+  if (eirProgram) {
+    programStage = eirProgram.programStages.find((e) => e.id === "bwGkn5ebqkD");
+    if (programStage) {
+      dataElementConfigs = programStage.programStageSections[0].dataElements.map((e) => {
+        return [e];
+      });
+    }
+  }
+  return eirProgram && programStage ? (
+    <Box className="birth-details-stage-container">
+      <Table>
+        <TableBody>
+          <RowMapper rows={dataElementConfigs} context="event" editable={layout.eventFormEditing} />
+        </TableBody>
+      </Table>
+    </Box>
+  ) : null;
 };
 
-const deConfigs = [
-  [{ id: "P1fhF8iYjm7" }],
-  [{ id: "EsuDp7LMZTW" }],
-  [{ id: "YesvM1AYsNy" }],
-  [{ id: "Y9zVpoBIXPR" }],
-  [{ id: "O2aFWsqAvWr" }],
-  [{ id: "ceZPRvdgryp" }],
-  [{ id: "qjcqRVWCIqa" }]
-  // [{ id: "VO7tbWG3hxu" }]
-  // [{ id: "oajtMHtVLWP" }],
-];
-
-export default withEventDate(withRules(BirthDetails), "eventDate");
+export default withEventDate(withRules(BirthDetails));
