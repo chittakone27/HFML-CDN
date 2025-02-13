@@ -7,6 +7,12 @@ export const VALUE_COORDS_CONFIGS = {
       yMinusCoord: 350
     },
     {
+      ID: "IBLkiaYRRL3",
+      valueType: "TEXT",
+      xMinusCoord: 350,
+      yMinusCoord: 350
+    },
+    {
       ID: "tQeFLjYbqzv",
       valueType: "DATE",
       dateCoords: {
@@ -24,13 +30,13 @@ export const VALUE_COORDS_CONFIGS = {
         }
       }
     },
-    {
-      ID: "uR9XK6AbPvE",
-      valueType: "OPTIONS",
-      optSetId: "Zd0Zy8VfMls",
-      xMinusCoord: 85,
-      yMinusCoord: 366
-    },
+    // {
+    //   ID: "uR9XK6AbPvE",
+    //   valueType: "OPTIONS",
+    //   optSetId: "Zd0Zy8VfMls",
+    //   xMinusCoord: 85,
+    //   yMinusCoord: 366
+    // },
     {
       ID: "tJrT8GIy477",
       valueType: "OPTIONS",
@@ -54,41 +60,55 @@ export const VALUE_COORDS_CONFIGS = {
       ID: "UNiaP6Oz7Mv",
       valueType: "ORG_UNIT",
       xMinusCoord: 365,
-      yMinusCoord: 414,
-      titleCoords: {
-        xMinusCoord: 500,
-        yMinusCoord: 139
-      }
+      yMinusCoord: 414
+      // titleCoords: {
+      //   xMinusCoord: 500,
+      //   yMinusCoord: 139
+      // }
     },
     {
       ID: "oVwa5LfjnvA",
       valueType: "ORG_UNIT",
       xMinusCoord: 230,
-      yMinusCoord: 414,
-      titleCoords: {
-        xMinusCoord: 480,
-        yMinusCoord: 123
-      }
+      yMinusCoord: 414
+      // titleCoords: {
+      //   xMinusCoord: 480,
+      //   yMinusCoord: 123
+      // }
     },
     {
       ID: "r8bZppSsIvR",
       valueType: "ORG_UNIT",
       xMinusCoord: 556,
-      yMinusCoord: 428,
-      titleCoords: {
-        xMinusCoord: 460,
-        yMinusCoord: 107
-      }
+      yMinusCoord: 428
+      // titleCoords: {
+      //   xMinusCoord: 460,
+      //   yMinusCoord: 107
+      // }
+    },
+    {
+      ID: "UJioxXRLgpw",
+      valueType: "OPTIONS",
+      optSetId: "Vq9lgX1qvfL",
+      xMinusCoord: 465,
+      yMinusCoord: 442
+    },
+    {
+      ID: "ERzDXXMuOdq",
+      valueType: "OPTIONS",
+      optSetId: "WzMWhxUXWn1",
+      xMinusCoord: 325,
+      yMinusCoord: 442
     }
   ],
   CHILD_FIELDS: [
-    {
-      ID: "cDu7LLEjMK2",
-      valueType: "TEXT",
-      valueSrc: "DE",
-      xMinusCoord: 420,
-      yMinusCoord: 328
-    },
+    // {
+    //   ID: "cDu7LLEjMK2",
+    //   valueType: "TEXT",
+    //   valueSrc: "DE",
+    //   xMinusCoord: 420,
+    //   yMinusCoord: 328
+    // },
     {
       ID: "tQeFLjYbqzv",
       valueType: "DATE",
@@ -125,94 +145,122 @@ export const VALUE_COORDS_CONFIGS = {
       ID: "P1fhF8iYjm7",
       valueType: "TEXT",
       valueSrc: "DE",
-      xMinusCoord: 285,
+      xMinusCoord: 275,
       yMinusCoord: 217
     },
     {
       ID: "EsuDp7LMZTW",
       valueType: "TEXT",
       valueSrc: "DE",
-      xMinusCoord: 180,
+      xMinusCoord: 175,
       yMinusCoord: 217
     },
     {
-      ID: "lmBw4l6o2O4",
+      ID: "lWf6j4de9MW",
       valueType: "TEXT",
-      valueSrc: "PARENT_ATTR",
-      xMinusCoord: 375,
-      yMinusCoord: 251
+      valueSrc: "DE",
+      xMinusCoord: 185,
+      yMinusCoord: 200
     },
     {
-      ID: "uR9XK6AbPvE",
-      valueType: "OPTIONS",
-      valueSrc: "PARENT_ATTR",
-      optSetId: "Zd0Zy8VfMls",
-      xMinusCoord: 120,
-      yMinusCoord: 251
-    },
-    {
-      ID: "tJrT8GIy477",
-      valueType: "OPTIONS",
-      valueSrc: "PARENT_ATTR",
-      optSetId: "EOcQNbKLlmO",
-      xMinusCoord: 500,
-      yMinusCoord: 267
-    },
-    {
-      ID: "UNiaP6Oz7Mv",
-      valueType: "ORG_UNIT",
-      valueSrc: "ATTR",
-      xMinusCoord: 255,
-      yMinusCoord: 267
-    },
-    {
-      ID: "oVwa5LfjnvA",
-      valueType: "ORG_UNIT",
-      valueSrc: "ATTR",
-      xMinusCoord: 90,
-      yMinusCoord: 267
-    },
-    {
-      ID: "r8bZppSsIvR",
-      valueType: "ORG_UNIT",
-      valueSrc: "ATTR",
-      xMinusCoord: 365,
-      yMinusCoord: 280
-    },
-    {
-      ID: "W8WZcI1SUjC",
+      ID: "CaHxfqvP1oP",
       valueType: "TEXT",
-      valueSrc: "PARENT_ATTR",
-      xMinusCoord: 450,
-      yMinusCoord: 296
+      valueSrc: "DE",
+      xMinusCoord: 115,
+      yMinusCoord: 200
     },
     {
-      ID: "xbwURy2jG2K",
+      ID: "MKkYDC0tUIr",
       valueType: "TEXT",
-      valueSrc: "PARENT_ATTR",
-      xMinusCoord: 409,
-      yMinusCoord: 296
+      valueSrc: "DE",
+      xMinusCoord: 420,
+      yMinusCoord: 200
     },
     {
-      ID: "UNiaP6Oz7Mv",
-      valueType: "ORG_UNIT",
-      valueSrc: "ATTR",
-      xMinusCoord: 365,
-      yMinusCoord: 296
-    },
-    {
-      ID: "oVwa5LfjnvA",
-      valueType: "ORG_UNIT",
-      valueSrc: "ATTR",
-      xMinusCoord: 160,
-      yMinusCoord: 296
-    },
-    {
-      ID: "r8bZppSsIvR",
-      valueType: "ORG_UNIT",
-      valueSrc: "ATTR",
-      xMinusCoord: 456,
-      yMinusCoord: 312
+      ID: "JS8uvgPMJxl",
+      valueType: "TEXT",
+      valueSrc: "DE",
+      xMinusCoord: 350,
+      yMinusCoord: 200
     }
+    // {
+    //   ID: "lmBw4l6o2O4",
+    //   valueType: "TEXT",
+    //   valueSrc: "PARENT_ATTR",
+    //   xMinusCoord: 375,
+    //   yMinusCoord: 251
+    // },
+    // {
+    //   ID: "uR9XK6AbPvE",
+    //   valueType: "OPTIONS",
+    //   valueSrc: "PARENT_ATTR",
+    //   optSetId: "Zd0Zy8VfMls",
+    //   xMinusCoord: 120,
+    //   yMinusCoord: 251
+    // },
+    // {
+    //   ID: "tJrT8GIy477",
+    //   valueType: "OPTIONS",
+    //   valueSrc: "PARENT_ATTR",
+    //   optSetId: "EOcQNbKLlmO",
+    //   xMinusCoord: 500,
+    //   yMinusCoord: 267
+    // },
+    // {
+    //   ID: "UNiaP6Oz7Mv",
+    //   valueType: "ORG_UNIT",
+    //   valueSrc: "ATTR",
+    //   xMinusCoord: 255,
+    //   yMinusCoord: 267
+    // },
+    // {
+    //   ID: "oVwa5LfjnvA",
+    //   valueType: "ORG_UNIT",
+    //   valueSrc: "ATTR",
+    //   xMinusCoord: 90,
+    //   yMinusCoord: 267
+    // },
+    // {
+    //   ID: "r8bZppSsIvR",
+    //   valueType: "ORG_UNIT",
+    //   valueSrc: "ATTR",
+    //   xMinusCoord: 365,
+    //   yMinusCoord: 280
+    // },
+    // {
+    //   ID: "W8WZcI1SUjC",
+    //   valueType: "TEXT",
+    //   valueSrc: "PARENT_ATTR",
+    //   xMinusCoord: 450,
+    //   yMinusCoord: 296
+    // },
+    // {
+    //   ID: "xbwURy2jG2K",
+    //   valueType: "TEXT",
+    //   valueSrc: "PARENT_ATTR",
+    //   xMinusCoord: 409,
+    //   yMinusCoord: 296
+    // },
+    // {
+    //   ID: "UNiaP6Oz7Mv",
+    //   valueType: "ORG_UNIT",
+    //   valueSrc: "ATTR",
+    //   xMinusCoord: 365,
+    //   yMinusCoord: 296
+    // },
+    // {
+    //   ID: "oVwa5LfjnvA",
+    //   valueType: "ORG_UNIT",
+    //   valueSrc: "ATTR",
+    //   xMinusCoord: 160,
+    //   yMinusCoord: 296
+    // },
+    // {
+    //   ID: "r8bZppSsIvR",
+    //   valueType: "ORG_UNIT",
+    //   valueSrc: "ATTR",
+    //   xMinusCoord: 456,
+    //   yMinusCoord: 312
+    // }
   ]
 };
