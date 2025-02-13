@@ -5,7 +5,11 @@ import useSelectionStore from "@/state/selection";
 import useGrowthMonitorRules from "./rules/useGrowthMonitorRules";
 import useDetailSectionRules from "./rules/useDetailSectionRules";
 import useChildNutritionStatusRules from "./rules/useChildNutritionStatusRules";
-import { withEventDate, RowMapper, SectionCollapse } from "@/configs/lao/program-forms/common/tracker";
+import {
+  withEventDate,
+  RowMapper,
+  SectionCollapse
+} from "@/configs/lao/program-forms/common/tracker";
 //
 import { GROWTH_MONITOR_ID, CHILD_NUTRI_STATUS_SECTION_ID } from "./const";
 import { CHILD_NUTRI_SECTION_UI } from "./mapping";
@@ -20,7 +24,9 @@ const GrowthMonitoring = () => {
       program: state.program
     }))
   );
-  const growthMonitorStage = program.programStages.find((progState) => progState.id === GROWTH_MONITOR_ID);
+  const growthMonitorStage = program.programStages.find(
+    (progState) => progState.id === GROWTH_MONITOR_ID
+  );
   const { programStageSections } = growthMonitorStage;
   // console.log(programStageSections);
   const { hiddenFields } = useGrowthMonitorRules();
@@ -32,7 +38,9 @@ const GrowthMonitoring = () => {
   return (
     <Box className="eir-growth-monitor-form">
       {programStageSections.map((pss) => {
-        const tableConfigs = pss.dataElements.filter((de) => !hiddenFields.includes(de.id)).map((de) => [{ id: de.id }]);
+        const tableConfigs = pss.dataElements
+          .filter((de) => !hiddenFields.includes(de.id))
+          .map((de) => [{ id: de.id }]);
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
             <SectionCollapse
@@ -58,10 +66,18 @@ const GrowthMonitoring = () => {
                   });
                   // console.log(finalConfigs);
                   return (
-                    <SectionCollapse title={col["colTitle"]} sx={{ m: 0.5, width: "50%" }} disabledCollapse>
+                    <SectionCollapse
+                      title={col["colTitle"]}
+                      sx={{ m: 0.5, width: "50%" }}
+                      disabledCollapse
+                    >
                       <Table sx={{ height: "auto" }}>
                         <TableBody>
-                          <RowMapper rows={finalConfigs} tableName={col["colTitle"]} context="event" />
+                          <RowMapper
+                            rows={finalConfigs}
+                            tableName={col["colTitle"]}
+                            context="event"
+                          />
                         </TableBody>
                       </Table>
                     </SectionCollapse>
@@ -82,7 +98,11 @@ const GrowthMonitoring = () => {
             >
               <Table>
                 <TableBody>
-                  <RowMapper rows={tableConfigs} tableName={pss.displayName} context="event" />
+                  <RowMapper
+                    rows={tableConfigs}
+                    tableName={pss.displayName}
+                    context="event"
+                  />
                 </TableBody>
               </Table>
             </SectionCollapse>
