@@ -38,8 +38,10 @@ const eirLocales = {
     last34ClientHealthIdDigits: "Last 3 or 4 digits of Client Health ID",
     foreignerInstruction:
       "Please tick this one if the child is living in another country",
-    medicSymps:
-      "Medical symptoms (Do not pick those that the hospital is not providing)"
+    reportWastingStatusIsNotCorrect: "Report wasting status is not correct",
+    reportStuntingStatusIsNotCorrect: "Report stunting status is not correct",
+    reportUnderweightStatusIsNotCorrect:
+      "Report underweight status is not correct"
   },
   lo: {
     programStage: "Program Stage",
@@ -79,8 +81,9 @@ const eirLocales = {
     yearOfBirth: "ປີເກິດ",
     last34ClientHealthIdDigits: "ເລກທ້າຍ 3 ຫລື 4 ຕົວຂອງລະຫັດສຸຂະພາບ",
     foreignerInstruction: "ກະລຸນະຕິກຖ້າຜູ້ມາຮັບວັກຊີນອາໃສຢູ່ຕ່າງປະເທດ",
-    medicSymps:
-      "Medical symptoms (Do not pick those that the hospital is not providing)"
+    reportWastingStatusIsNotCorrect: "ຄ່ານ້ຳໜັກທຽບໃສ່ລວງສູງບໍ່ຖືກຕ້ອງ",
+    reportStuntingStatusIsNotCorrect: "ຄ່າລວງສູງ/ລວງຍາວບໍ່ຖືກຕ້ອງ",
+    reportUnderweightStatusIsNotCorrect: "ຄ່ານ້ຳໜັກຫຼຸດເກນມາດຕະຖານບໍ່ຖືກຕ້ອງ"
   }
 };
 
