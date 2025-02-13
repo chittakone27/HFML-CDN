@@ -17,7 +17,7 @@ const useDefaultProfileRules = () => {
   const [props, setProps] = useState({});
 
   useEffect(() => {
-    const currentProps = { BaiVwt8jVfg: { disabled: true } };
+    const currentProps = { BaiVwt8jVfg: { disabled: true }, vJdG29KW1Et: { disabled: true, hidden: true } };
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
     const foundAge = currentTei.attributes.find((attr) => attr.attribute === "tQeFLjYbqzv");
     const foundCountry = findAttributeValue(currentTei, "q4lqBvHgv7u");
@@ -37,6 +37,7 @@ const useDefaultProfileRules = () => {
       }
     }
     setProps({ ...currentProps });
+
     /* IF ALL ID FIELDS IN IDENTIFICATION SECTION ARE EMPTY, DISABLE THE SAVE BUTTON  */
     // const foundIdentAttrs = Object.keys(IDENTIFICATION_ATTRS).map(
     //   (attrName) => {

@@ -162,23 +162,24 @@ const useAncRules = () => {
     ////////////////////////////////////////////////////////////////////
     //Disable height if number of anc visit !== 1
     //Put height automatically if there is one event with number of anc visit = 1 and height was available
-    if (dataValues[NUMBER_OF_ANC_VISIT] !== "1") {
-      const foundEvent = currentEvents.find((ce) => {
-        const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
-        const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
-        const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
-        return foundFirstVisit && foundHeight && foundWeight;
-      });
-      currentDisabledFields = [...currentDisabledFields, HEIGHT, WEIGHT_BEFORE_PREGNANT];
-      if (foundEvent) {
-        const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
-        const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
-        changeDataValue(currentEvent.event, HEIGHT, foundHeight.value);
-        changeDataValue(currentEvent.event, WEIGHT_BEFORE_PREGNANT, foundWeight.value);
-      }
-    } else {
-      currentDisabledFields = currentDisabledFields.filter((f) => f !== HEIGHT && f !== WEIGHT_BEFORE_PREGNANT);
-    }
+    //Update 13/02/2025: Disable this logic
+    // if (dataValues[NUMBER_OF_ANC_VISIT] !== "1") {
+    //   const foundEvent = currentEvents.find((ce) => {
+    //     const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
+    //     const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
+    //     const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
+    //     return foundFirstVisit && foundHeight && foundWeight;
+    //   });
+    //   currentDisabledFields = [...currentDisabledFields, HEIGHT, WEIGHT_BEFORE_PREGNANT];
+    //   if (foundEvent) {
+    //     const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
+    //     const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
+    //     changeDataValue(currentEvent.event, HEIGHT, foundHeight.value);
+    //     changeDataValue(currentEvent.event, WEIGHT_BEFORE_PREGNANT, foundWeight.value);
+    //   }
+    // } else {
+    //   currentDisabledFields = currentDisabledFields.filter((f) => f !== HEIGHT && f !== WEIGHT_BEFORE_PREGNANT);
+    // }
     ////////////////////////////////////////////////////////////////////
     //Set Completed ANC 4th = true if number of anc visit >= 4
     if (dataValues[NUMBER_OF_ANC_VISIT] && parseInt(dataValues[NUMBER_OF_ANC_VISIT]) >= 4) {
@@ -221,13 +222,23 @@ const useAncRules = () => {
       }
     }
     ////////////////////////////////////////////////////////////////////
-    //Calculate BMI
-    if (dataValues[HEIGHT] && dataValues[WEIGHT_BEFORE_PREGNANT]) {
-      const height = dataValues[HEIGHT] / 100;
-      const squareOfHeight = height * height;
-      const weight = dataValues[WEIGHT_BEFORE_PREGNANT];
-      const bmi = weight / squareOfHeight;
-      changeDataValue(currentEvent.event, BMI, bmi.toFixed(2));
+    //Calculate BMI based on first ANC visit, and make it fixed
+    const foundEvent = currentEvents.find((ce) => {
+      const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
+      const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
+      const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
+      return foundFirstVisit && foundHeight && foundWeight;
+    });
+    if (foundEvent && !dataValues[BMI]) {
+      const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
+      const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
+      if (foundHeight && foundWeight) {
+        const height = parseInt(foundHeight.value) / 100;
+        const squareOfHeight = height * height;
+        const weight = parseInt(foundWeight.value);
+        const bmi = weight / squareOfHeight;
+        changeDataValue(currentEvent.event, BMI, bmi.toFixed(2));
+      }
     }
 
     ////////////////////////////////////////////////////////////////////
