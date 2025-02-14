@@ -53,7 +53,7 @@ export const VALUE_COORDS_CONFIGS = {
     {
       ID: "xbwURy2jG2K",
       valueType: "TEXT",
-      xMinusCoord: 409,
+      xMinusCoord: 404,
       yMinusCoord: 414
     },
     {

@@ -824,27 +824,29 @@ const PrintBirthCertificateButton = () => {
     const mappedObj = optSetObj["options"].find(
       (opt) => opt["code"] === valueStr
     );
-    // console.log(optSetObj["options"], mappedObj);
-    let finalText = "";
-    if (locale !== "en") {
-      const translationObj = mappedObj
-        ? mappedObj["translations"].find(
-            (translation) =>
-              translation["locale"] === locale &&
-              translation["property"] === "NAME"
-          )
-        : "";
-      finalText = translationObj["value"];
-    } else {
-      finalText = mappedObj ? mappedObj["displayName"] : "";
+    if (mappedObj) {
+      let finalText = "";
+      if (locale !== "en") {
+        // console.log(mappedObj);
+        const translationObj = mappedObj
+          ? mappedObj["translations"].find(
+              (translation) =>
+                translation["locale"] === locale &&
+                translation["property"] === "NAME"
+            )
+          : "";
+        finalText = translationObj["value"];
+      } else {
+        finalText = mappedObj ? mappedObj["displayName"] : "";
+      }
+      // console.log(finalText);
+      pdfPage.drawText(finalText, {
+        x: width - valueField["xMinusCoord"],
+        y: height - valueField["yMinusCoord"],
+        size: 12,
+        ...textConfigs
+      });
     }
-    // console.log(finalText);
-    pdfPage.drawText(finalText, {
-      x: width - valueField["xMinusCoord"],
-      y: height - valueField["yMinusCoord"],
-      size: 12,
-      ...textConfigs
-    });
   };
 
   const renderOrgUnitValue = (
@@ -921,6 +923,7 @@ const PrintBirthCertificateButton = () => {
     // Define the text and its location
     for (const valueField of MOTHER_FIELDS) {
       const valueStr = getAttrValue(attributes, valueField["ID"]);
+      console.log(valueField["ID"], valueStr);
       switch (valueField["valueType"]) {
         case "DATE":
           renderDateStr(
