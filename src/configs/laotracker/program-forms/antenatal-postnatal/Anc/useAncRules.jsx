@@ -284,8 +284,8 @@ const useAncRules = () => {
 
     if (dataValues[NUMBER_OF_ANC_VISIT] && parseInt(dataValues[NUMBER_OF_ANC_VISIT]) > 1) {
       currentHelpers = {
-        [HEIGHT]: [{ type: "HELPER", value: "ຂໍ້ມູນນີ້ຈະຖືກຕືມອັດຕະໂນມັດໂດຍລະບົບ" }],
-        [WEIGHT_BEFORE_PREGNANT]: [{ type: "HELPER", value: "ຂໍ້ມູນນີ້ຈະຖືກຕືມອັດຕະໂນມັດໂດຍລະບົບ" }],
+        // [HEIGHT]: [{ type: "HELPER", value: "ຂໍ້ມູນນີ້ຈະຖືກຕືມອັດຕະໂນມັດໂດຍລະບົບ" }],
+        // [WEIGHT_BEFORE_PREGNANT]: [{ type: "HELPER", value: "ຂໍ້ມູນນີ້ຈະຖືກຕືມອັດຕະໂນມັດໂດຍລະບົບ" }],
         [BMI]: [{ type: "HELPER", value: "ຂໍ້ມູນນີ້ຈະຖືກຕືມອັດຕະໂນມັດໂດຍລະບົບ" }]
       };
     }
