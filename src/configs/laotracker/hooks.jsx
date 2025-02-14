@@ -858,29 +858,32 @@ const PrintBirthCertificateButton = () => {
   ) => {
     const { width, height, textConfigs } = drawConfigs;
     const ouObj = orgUnits.find((ou) => ou["id"] === valueStr);
-    let finalOuText = "";
-    if (locale !== "en") {
-      const translationObj = ouObj["translations"].find(
-        (translation) =>
-          translation["locale"] === locale && translation["property"] === "NAME"
-      );
-      finalOuText = translationObj["value"];
-    } else {
-      finalOuText = ouObj["displayName"];
-    }
-    pdfPage.drawText(finalOuText, {
-      x: width - valueField["xMinusCoord"],
-      y: height - valueField["yMinusCoord"],
-      size: 10.5,
-      ...textConfigs
-    });
-    if (valueField.hasOwnProperty("titleCoords")) {
+    if (ouObj) {
+      let finalOuText = "";
+      if (locale !== "en") {
+        const translationObj = ouObj["translations"].find(
+          (translation) =>
+            translation["locale"] === locale &&
+            translation["property"] === "NAME"
+        );
+        finalOuText = translationObj["value"];
+      } else {
+        finalOuText = ouObj["displayName"];
+      }
       pdfPage.drawText(finalOuText, {
-        x: width - valueField["titleCoords"]["xMinusCoord"],
-        y: height - valueField["titleCoords"]["yMinusCoord"],
+        x: width - valueField["xMinusCoord"],
+        y: height - valueField["yMinusCoord"],
         size: 10.5,
         ...textConfigs
       });
+      if (valueField.hasOwnProperty("titleCoords")) {
+        pdfPage.drawText(finalOuText, {
+          x: width - valueField["titleCoords"]["xMinusCoord"],
+          y: height - valueField["titleCoords"]["yMinusCoord"],
+          size: 10.5,
+          ...textConfigs
+        });
+      }
     }
   };
 
