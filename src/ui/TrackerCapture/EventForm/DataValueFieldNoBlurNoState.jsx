@@ -8,6 +8,8 @@ import useCurrentEvent from "./useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import ErrorDialog from "@/ui/common/ErrorDialog/ErrorDialog";
 import { event } from "@/api";
+import { pickTranslation } from "@/utils/utils";
+
 const { saveEvent } = event;
 const { VITE_MODE } = import.meta.env;
 
@@ -34,7 +36,7 @@ const DataValueFieldNoBlurNoState = (props) => {
   const foundOptionSet = foundDe.optionSetValue ? optionSets.find((os) => os.id === foundDe.optionSet.id) : null;
   let valueSet = foundOptionSet
     ? foundOptionSet.options.map((o) => ({
-        label: o.displayName,
+        label: pickTranslation(o, i18n.language, "name"),
         value: o.code
       }))
     : null;
