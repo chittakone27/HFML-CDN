@@ -44,7 +44,13 @@ const {
   deleteTei
 } = tracker;
 import { ALL_VACCINE_FOR_FULL_IMMUNIZED } from "./program-forms/eir/Immunization/constants";
-import { PDFDocument, StandardFonts, rgb, grayscale } from "pdf-lib";
+import {
+  PDFDocument,
+  StandardFonts,
+  rgb,
+  grayscale,
+  setCharacterSpacing
+} from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import birthCertificateV2 from "@/configs/laotracker/assets/example-bc.pdf";
 import phetsarathFont from "@/configs/laotracker/assets/Phetsarath-OT.ttf";
@@ -908,7 +914,7 @@ const PrintBirthCertificateButton = () => {
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     pdfDoc.registerFontkit(fontkit);
     // Embed a font for adding text
-    const font = await pdfDoc.embedFont(reponseFontBuffer);
+    const font = await pdfDoc.embedFont(reponseFontBuffer, { subset: true });
     // Get the first page of the PDF
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
@@ -926,7 +932,7 @@ const PrintBirthCertificateButton = () => {
     // Define the text and its location
     for (const valueField of MOTHER_FIELDS) {
       const valueStr = getAttrValue(attributes, valueField["ID"]);
-      console.log(valueField["ID"], valueStr);
+      // console.log(valueField["ID"], valueStr);
       switch (valueField["valueType"]) {
         case "DATE":
           renderDateStr(
