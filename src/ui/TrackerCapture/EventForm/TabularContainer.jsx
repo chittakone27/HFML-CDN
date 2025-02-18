@@ -7,7 +7,7 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import useMetadataStore from "@/state/metadata";
 import { useShallow } from "zustand/react/shallow";
 import { convertDisplayValue, convertDisplayDate, pickExecutionDateLabel, pickDueDateLabel } from "@/utils/utils";
-
+import format from "date-fns/format";
 const LEGEND = {
   ACTIVE: "#faf3c8",
   COMPLETED: "#e3e3e3",
@@ -61,7 +61,6 @@ const TabularContainer = ({ currentProgramStage }) => {
       return convertDisplayValue(dataElement, value, t);
     }
   };
-  console.log(currentProgramStage);
 
   return (
     <div className="event-form-container-tabular-content-container">
@@ -95,6 +94,14 @@ const TabularContainer = ({ currentProgramStage }) => {
               .map((ev) => {
                 const foundOu = orgUnits.find((ou) => ou.id === ev.orgUnit);
                 let status = ev.status;
+                const dueDate = ev.dueDate ? format(new Date(ev.dueDate), "yyyy-MM-dd") : "";
+                const eventDate = ev.eventDate ? format(new Date(ev.eventDate), "yyyy-MM-dd") : "";
+                const currentDate = format(new Date(), "yyyy-MM-dd");
+                if (dueDate && !eventDate) {
+                  if (currentDate > dueDate) {
+                    status = "OVERDUE";
+                  }
+                }
                 return (
                   <TableRow
                     sx={{ cursor: "pointer", backgroundColor: LEGEND[status] }}
