@@ -344,7 +344,16 @@ const trackerFormTypes = {
   vqNgkw4gfw7: ["noBlur", "tabStage", "tabular"]
 };
 
-const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA"];
+const allowedPrograms = [
+  "Yj9cJ34AXw6",
+  "ck0rft9jVlF",
+  "AyPkCOMmgdd",
+  "fflLsS1lm3g",
+  "PBLmYwloRHu",
+  "vqNgkw4gfw7",
+  "u1Na9wCGY6d"
+  // "ogrOUKoSaWA"
+];
 const modes = [
   //"eventCapture",
   //"dataEntry",
