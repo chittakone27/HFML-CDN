@@ -221,25 +221,6 @@ const useAncRules = () => {
         changeDataValue(currentEvent.event, GESTATIONAL_WEEK, gestationalWeek + "");
       }
     }
-    ////////////////////////////////////////////////////////////////////
-    //Calculate BMI based on first ANC visit, and make it fixed
-    const foundEvent = currentEvents.find((ce) => {
-      const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
-      const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
-      const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
-      return foundFirstVisit && foundHeight && foundWeight;
-    });
-    if (foundEvent && !dataValues[BMI]) {
-      const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
-      const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
-      if (foundHeight && foundWeight) {
-        const height = parseInt(foundHeight.value) / 100;
-        const squareOfHeight = height * height;
-        const weight = parseInt(foundWeight.value);
-        const bmi = weight / squareOfHeight;
-        changeDataValue(currentEvent.event, BMI, bmi.toFixed(2));
-      }
-    }
 
     ////////////////////////////////////////////////////////////////////
     //IF GDM is yes then show DIAGNOSIS OF GDPM
@@ -315,6 +296,28 @@ const useAncRules = () => {
       changeDataValue(currentEvent.event, key, GPAL[key]);
     });
   }, [currentEvent.event]);
+
+  useEffect(() => {
+    ////////////////////////////////////////////////////////////////////
+    //Calculate BMI based on first ANC visit, and make it fixed
+    const foundEvent = currentEvents.find((ce) => {
+      const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
+      const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
+      const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
+      return foundFirstVisit && foundHeight && foundWeight;
+    });
+    if (foundEvent) {
+      const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
+      const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
+      if (foundHeight && foundWeight) {
+        const height = parseInt(foundHeight.value) / 100;
+        const squareOfHeight = height * height;
+        const weight = parseInt(foundWeight.value);
+        const bmi = weight / squareOfHeight;
+        changeDataValue(currentEvent.event, BMI, bmi.toFixed(2));
+      }
+    }
+  }, [JSON.stringify(currentEvent), JSON.stringify(currentEvents)]);
 
   useEffect(() => {
     currentEvents

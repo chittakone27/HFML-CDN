@@ -102,8 +102,6 @@ const Form = ({ type }) => {
     }
   };
 
-  console.log(layout);
-
   const buttons = [
     !layout.eventFormEditing && !completed && (
       <LoadingButton
