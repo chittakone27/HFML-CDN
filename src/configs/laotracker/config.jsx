@@ -73,7 +73,8 @@ const customLocales = {
     searchError:
       "Something went wrong, sorry for the inconvenience, please note your search criterias down and report to system administrator, thank you.",
     mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
-    link: "link"
+    link: "link",
+    currentAddress: "Current address"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -98,7 +99,8 @@ const customLocales = {
     healthIdSearchHelper: "ກະລຸນາປ້ອນລະຫັດສຸຂະພາບໃຫ້ຖືກຕາມຮູບແບບທີ່ກຳນົດໄວ້ເພື່ອຄົ້ນຫາ (xxxxxxxx-x-xxxx)",
     searchError: "ການຄົ້ນຫາມີບັນຫາ, ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.  ກະລຸນາຈົດວິທີການຄົ້ນຫາຄັ້ງນີ້ໄວ້ແລ້ວແຈ້ງຫາທີມງານຄຸ້ມຄອງລະບົບຕື່ມ.",
     mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
-    link: "link"
+    link: "link",
+    currentAddress: "ທີ່ຢູ່ປະຈຸບັນ"
   }
 };
 
