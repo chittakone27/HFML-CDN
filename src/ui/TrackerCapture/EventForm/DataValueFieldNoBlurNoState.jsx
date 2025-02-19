@@ -9,11 +9,12 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import ErrorDialog from "@/ui/common/ErrorDialog/ErrorDialog";
 import { event } from "@/api";
 import { pickTranslation } from "@/utils/utils";
-
+import { useTranslation } from "react-i18next";
 const { saveEvent } = event;
 const { VITE_MODE } = import.meta.env;
 
 const DataValueFieldNoBlurNoState = (props) => {
+  const { i18n } = useTranslation();
   const [apiError, setApiError] = useState(null);
   let { label, dataElement, disabled, focus, hiddenOptions, helpers, currentEvent, currentProgramStage, change, accept } = props;
   const { dataElements, optionSets } = useMetadataStore(
@@ -23,6 +24,7 @@ const DataValueFieldNoBlurNoState = (props) => {
     }),
     shallow
   );
+
   const orgUnit = useSelectionStore((state) => state.orgUnit);
   const { actions, layout } = useTrackerCaptureStore((state) => ({ actions: state.actions, layout: state.layout }), shallow);
   const { changeDataValue, changeEventProperty, setLayout } = actions;
