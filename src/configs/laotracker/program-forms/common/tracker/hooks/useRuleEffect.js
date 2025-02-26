@@ -78,7 +78,8 @@ export const useEventRuleEffect = (callBack, dependencies) => {
 
   const checkHiddenOptions = (dataElement, options) => {
     const found = currentEvent.dataValues.find(
-      (de) => de.dataElement === dataElement && options.includes(value)
+      (de) =>
+        de.dataElement === dataElement && options.includes(dataElement.value)
     );
 
     return Boolean(found);
