@@ -276,23 +276,35 @@ const DefaultProfile = ({ attributeProps = {} }) => {
     setData("mandatoryAttributes", ["UNiaP6Oz7Mv"]);
   }, []);
 
+  console.log(layout);
   return (
     <div className="delivery-registry-profile-container">
-      <div className="delivery-registry-profile-field-row client-health-id-row">
-        <AttributeLabel attribute="oPKsfqS64oE" />
-        <AttributeField
-          attribute="oPKsfqS64oE"
-          disabled={disabledAttributes.includes("oPKsfqS64oE")}
-          {...attributeProps["oPKsfqS64oE"]}
-          {...props["oPKsfqS64oE"]}
-          helpers={[
-            {
-              type: "HELPER",
-              value: t("childUniqueIdWarning1")
-            }
-          ]}
-        />
-      </div>
+      {layout.layout === "layout2" && (
+        <div className="delivery-registry-profile-field-row client-health-id-row">
+          <AttributeLabel attribute="oPKsfqS64oE" />
+          <div style={{ fontWeight: "bold", color: "#0277bd" }}>
+            <div>{t("clientHealthIdWarning1")}</div>
+            <div>{t("clientHealthIdWarning2")}</div>
+          </div>
+        </div>
+      )}
+      {layout.layout === "layout3" && (
+        <div className="delivery-registry-profile-field-row client-health-id-row">
+          <AttributeLabel attribute="oPKsfqS64oE" />
+          <AttributeField
+            attribute="oPKsfqS64oE"
+            disabled={disabledAttributes.includes("oPKsfqS64oE")}
+            {...attributeProps["oPKsfqS64oE"]}
+            {...props["oPKsfqS64oE"]}
+            helpers={[
+              {
+                type: "HELPER",
+                value: t("clientHealthIdWarning1")
+              }
+            ]}
+          />
+        </div>
+      )}
       <div className="not-client-health-id-row">
         {attributes.map((attribute) => {
           if (attribute === "oPKsfqS64oE" || identAttrIds.includes(attribute)) {
