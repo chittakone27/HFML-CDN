@@ -116,12 +116,19 @@ const useFamilyPlanningRules = () => {
       changeDataValue(event, NEXT_APPOINT_DAY, "");
     }
     /* Next appointment date rules */
-    if (serviceOpted && noDistribution && noDistribution?.value !== "") {
+    if (
+      serviceOpted &&
+      serviceOpted?.value !== "" &&
+      noDistribution &&
+      noDistribution?.value !== ""
+    ) {
       const finalNextAppointDay = calcNextAppointmentDate(
         serviceOpted.value,
         noDistribution.value
       );
       changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
+    } else {
+      changeDataValue(event, NEXT_APPOINT_DAY, "");
     }
   }, [JSON.stringify(currentEvent), JSON.stringify(currentTei)]);
 
