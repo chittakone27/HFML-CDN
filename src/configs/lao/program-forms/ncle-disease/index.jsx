@@ -67,6 +67,7 @@ const NcleDisease = () => {
           isCustomCellHide: Boolean(currentEvent.dataValues["jaan5ZI8EnJ"])
         }
       ],
+      [{ id: "uRDBYw003zK" }],
       [{ id: "bS8cPIyCJNR" }],
       [{ id: "p3jMZ9XRiIJ" }],
       [{ id: "zyZCBNbRZqm" }],
