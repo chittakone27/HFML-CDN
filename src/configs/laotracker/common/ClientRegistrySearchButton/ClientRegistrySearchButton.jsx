@@ -263,6 +263,8 @@ const ClientRegistrySearchButton = ({
     if (foundAttribute && foundAttribute.id === ATTRIBUTES.HEALTH_ID) {
       return (
         <ClientHealthIdField
+          disabled={searchOption ? true : false}
+          value={search[attribute]}
           change={(value) => {
             changeSearch(attribute, value);
           }}
@@ -317,7 +319,7 @@ const ClientRegistrySearchButton = ({
         <div>
           <AttributeLabelNoState attribute={attribute} />
           <AttributeFieldNoState
-            disabled={loading}
+            disabled={loading || (attribute === "corXnplgfQ7" && searchOption ? true : false)}
             value={search[attribute] ? search[attribute] : ""}
             attribute={attribute}
             change={(value) => {

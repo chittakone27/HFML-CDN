@@ -5,7 +5,7 @@ import "./ClientHealthIdField.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const ClientHealthIdField = ({ change }) => {
+const ClientHealthIdField = ({ disabled, value, change }) => {
   const { t } = useTranslation();
   const [dob, setDob] = useState("");
   const [sex, setSex] = useState("");
@@ -30,6 +30,13 @@ const ClientHealthIdField = ({ change }) => {
         break;
     }
   };
+  useEffect(() => {
+    if (!value) {
+      setDob("");
+      setSex("");
+      setNum("");
+    }
+  }, [value]);
 
   useEffect(() => {
     if ([dob, sex, num].join("-") === "--") {
@@ -44,6 +51,7 @@ const ClientHealthIdField = ({ change }) => {
       <AttributeLabel attribute="oPKsfqS64oE" />
       <div className="client-health-id-fields">
         <Input
+          disabled={disabled}
           value={dob}
           valueType="TEXT"
           change={(value) => {
@@ -52,6 +60,7 @@ const ClientHealthIdField = ({ change }) => {
         />
         <div className="client-health-id-seperator">-</div>
         <Input
+          disabled={disabled}
           value={sex}
           valueType="TEXT"
           change={(value) => {
@@ -60,6 +69,7 @@ const ClientHealthIdField = ({ change }) => {
         />
         <div className="client-health-id-seperator">-</div>
         <Input
+          disabled={disabled}
           value={num}
           valueType="TEXT"
           change={(value) => {
