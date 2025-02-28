@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useEventRuleEffect } from "../../common/tracker";
 import { DATA_ELEMENT_IDS, ATTRIBUTE_IDS } from "./const";
-import { addMonths, addYears, format } from "date-fns";
+import { addMonths, addYears, format, differenceInYears } from "date-fns";
 const {
   EMERGENCY_PILLS,
   SERVICE_AT,
@@ -37,8 +37,61 @@ const useFamilyPlanningRules = () => {
   const getAttrVl = (attrId) =>
     attributes.find((attr) => attr.attribute === attrId);
 
+  const isMoreThan49YearsOld = () => {
+    if (currentEvent && currentTei) {
+      const dateOfBirth = getAttrVl(ATTRIBUTE_IDS.DATE_OF_BIRTH);
+      const ageInYear = differenceInYears(
+        new Date(eventDate),
+        new Date(dateOfBirth.value)
+      );
+      return ageInYear > 49 ? true : false;
+    } else {
+      return false;
+    }
+  };
+
+  const calcNextAppointmentDate = (serviceOptedVl, noDistributionVl) => {
+    let tempNextAppointDay;
+    switch (serviceOptedVl) {
+      case "S-pill":
+        tempNextAppointDay = addMonths(new Date(eventDate), noDistributionVl);
+        return format(tempNextAppointDay, "yyyy-MM-dd");
+      case "C-pill":
+        tempNextAppointDay = addMonths(new Date(eventDate), noDistributionVl);
+        return format(tempNextAppointDay, "yyyy-MM-dd");
+      case "Inj":
+        tempNextAppointDay = addMonths(
+          new Date(eventDate),
+          parseInt(noDistributionVl) * 3
+        );
+        return format(tempNextAppointDay, "yyyy-MM-dd");
+      case "IUD":
+        if (!isMoreThan49YearsOld()) {
+          tempNextAppointDay = addYears(
+            new Date(eventDate),
+            parseInt(noDistributionVl) * 10
+          );
+          return format(tempNextAppointDay, "yyyy-MM-dd");
+        } else {
+          return "";
+        }
+      case "Implants":
+        if (!isMoreThan49YearsOld()) {
+          tempNextAppointDay = addYears(
+            new Date(eventDate),
+            parseInt(noDistributionVl) * 3
+          );
+          return format(tempNextAppointDay, "yyyy-MM-dd");
+        } else {
+          return "";
+        }
+      default:
+        return "";
+    }
+  };
+
+  /* Rules for Data value assign */
   useEffect(() => {
-    const ageInYear = getAttrVl(ATTRIBUTE_IDS.AGE_IN_YEAR);
     const isEmergency = getDataVl(EMERGENCY_PILLS);
     const serviceAt = getDataVl(SERVICE_AT);
     const serviceOpted = getDataVl(SERVICE_OPTED);
@@ -64,69 +117,23 @@ const useFamilyPlanningRules = () => {
     }
     /* Next appointment date rules */
     if (serviceOpted && noDistribution && noDistribution?.value !== "") {
-      let tempNextAppointDay;
-      let finalNextAppointDay;
-      switch (serviceOpted.value) {
-        case "S-pill":
-          tempNextAppointDay = addMonths(
-            new Date(eventDate),
-            noDistribution.value
-          );
-          finalNextAppointDay = format(tempNextAppointDay, "yyyy-MM-dd");
-          changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
-          break;
-        case "C-pill":
-          tempNextAppointDay = addMonths(
-            new Date(eventDate),
-            noDistribution.value
-          );
-          finalNextAppointDay = format(tempNextAppointDay, "yyyy-MM-dd");
-          changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
-          break;
-        case "Inj":
-          tempNextAppointDay = addMonths(
-            new Date(eventDate),
-            parseInt(noDistribution.value) * 3
-          );
-          finalNextAppointDay = format(tempNextAppointDay, "yyyy-MM-dd");
-          changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
-          break;
-        case "IUD":
-          if (ageInYear && ageInYear.value <= 49) {
-            tempNextAppointDay = addYears(
-              new Date(eventDate),
-              parseInt(noDistribution.value) * 10
-            );
-            finalNextAppointDay = format(tempNextAppointDay, "yyyy-MM-dd");
-            changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
-          }
-          break;
-        case "Implants":
-          if (ageInYear && ageInYear.value <= 49) {
-            tempNextAppointDay = addYears(
-              new Date(eventDate),
-              parseInt(noDistribution.value) * 3
-            );
-            finalNextAppointDay = format(tempNextAppointDay, "yyyy-MM-dd");
-            changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
-          }
-          break;
-        default:
-          break;
-      }
+      const finalNextAppointDay = calcNextAppointmentDate(
+        serviceOpted.value,
+        noDistribution.value
+      );
+      changeDataValue(event, NEXT_APPOINT_DAY, finalNextAppointDay);
     }
   }, [JSON.stringify(currentEvent), JSON.stringify(currentTei)]);
 
+  /* Rules for Show/Hide fields */
   useEventRuleEffect(() => {
     const hiddenOptions = {};
     const hiddenFields = {};
     const disabledFields = {};
-    if (currentEvent) {
-      const ageInYear = getAttrVl(ATTRIBUTE_IDS.AGE_IN_YEAR);
+    if (currentEvent && currentTei) {
       const isEmergency = getDataVl(EMERGENCY_PILLS);
       const serviceAt = getDataVl(SERVICE_AT);
       const serviceOpted = getDataVl(SERVICE_OPTED);
-      //   console.log(ageInYear);
       /* Emergency Pills rules */
       if (isEmergency && isEmergency.value === "true") {
         hiddenOptions[SERVICE_AT] = ["OutCountry"];
@@ -172,7 +179,7 @@ const useFamilyPlanningRules = () => {
         }
       }
       /* Age in year rules */
-      if (ageInYear && ageInYear.value > 49) {
+      if (isMoreThan49YearsOld()) {
         hiddenOptions[SERVICE_OPTED] = ["IUD"];
       }
       /* Service Opted rules */

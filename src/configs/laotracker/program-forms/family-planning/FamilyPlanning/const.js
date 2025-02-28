@@ -9,5 +9,6 @@ export const DATA_ELEMENT_IDS = {
   NO_DISTRIBUTION: "UPGa0aJLsEX"
 };
 export const ATTRIBUTE_IDS = {
-  AGE_IN_YEAR: "BaiVwt8jVfg"
+  AGE_IN_YEAR: "BaiVwt8jVfg",
+  DATE_OF_BIRTH: "tQeFLjYbqzv"
 };
