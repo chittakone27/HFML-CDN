@@ -6,11 +6,8 @@ import { calculateDiff } from "../utils";
 export const useAgeInYearRule = (dateOfBirthId, AgeInYearId) => {
   const {
     currentEvent,
-    actions: { setCurrentEventDataValue },
-  } = useEventCaptureStore(
-    (state) => ({ currentEvent: state.currentEvent, actions: state.actions }),
-    shallow
-  );
+    actions: { setCurrentEventDataValue }
+  } = useEventCaptureStore((state) => ({ currentEvent: state.currentEvent, actions: state.actions }), shallow);
 
   const eventDate = currentEvent.eventDate;
 
@@ -36,11 +33,8 @@ export const useAgeInYearRule = (dateOfBirthId, AgeInYearId) => {
 export const useForeignerRule = (foreignerId, villageSectorIds) => {
   const {
     currentEvent,
-    actions: { setCurrentEventDataValue },
-  } = useEventCaptureStore(
-    (state) => ({ currentEvent: state.currentEvent, actions: state.actions }),
-    shallow
-  );
+    actions: { setCurrentEventDataValue }
+  } = useEventCaptureStore((state) => ({ currentEvent: state.currentEvent, actions: state.actions }), shallow);
 
   useEffect(() => {
     const isForeigner = currentEvent.dataValues[foreignerId];

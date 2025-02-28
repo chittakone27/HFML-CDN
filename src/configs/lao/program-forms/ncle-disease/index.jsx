@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 const NcleDisease = () => {
   const [prevDisease, setPrevDisease] = useState(null);
   useAgeInYearRule("Z1x2iwf6IIY", "zDPvXY6h4JN");
-  useForeignerRule("jaan5ZI8EnJ", villageSelectorIds);
+  // useForeignerRule("jaan5ZI8EnJ", villageSelectorIds);
 
   const currentEvent = useEventCaptureStore((state) => state.currentEvent, shallow);
   const setCurrentEventDataValue = useEventCaptureStore((state) => state.actions.setCurrentEventDataValue, shallow);
@@ -63,8 +63,8 @@ const NcleDisease = () => {
       [{ id: "OhuguJqwvHt" }],
       [
         {
-          customCell: <VillageCell />,
-          isCustomCellHide: Boolean(currentEvent.dataValues["jaan5ZI8EnJ"])
+          customCell: <VillageCell />
+          // isCustomCellHide: Boolean(currentEvent.dataValues["jaan5ZI8EnJ"])
         }
       ],
       [{ id: "uRDBYw003zK" }],
