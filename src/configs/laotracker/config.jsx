@@ -99,7 +99,7 @@ const customLocales = {
     howToDeleteAPersonInChr: "3. How to delete a person in Client Health Registry",
     checkingClientHealthId: "Checking Client Health ID...",
     healthIdSearchHelper: "ກະລຸນາປ້ອນລະຫັດສຸຂະພາບໃຫ້ຖືກຕາມຮູບແບບທີ່ກຳນົດໄວ້ເພື່ອຄົ້ນຫາ (xxxxxxxx-x-xxxx)",
-    cvidSearchHelper: "Please carefully input the correct System CVID format to search on this field (Hxxxx-x-xxxxx)",
+    cvidSearchHelper: "ໃຫ້ທ່ານກວດສອບຢ່າງລະອຽດທຸກຄັ້ງກ່ອນທີ່ຈະຄົ້ນຫາດ້ວຍລະຫັດໂຄວິດ, ຕ້ອງຕື່ມໃຫ້ຖືກຕາມຮູບແບບຂອງລະຫັດ ຕົວຢ່າງ (Hxxxx-x-xxxxx)",
     searchError: "ການຄົ້ນຫາມີບັນຫາ, ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.  ກະລຸນາຈົດວິທີການຄົ້ນຫາຄັ້ງນີ້ໄວ້ແລ້ວແຈ້ງຫາທີມງານຄຸ້ມຄອງລະບົບຕື່ມ.",
     mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
     link: "link",

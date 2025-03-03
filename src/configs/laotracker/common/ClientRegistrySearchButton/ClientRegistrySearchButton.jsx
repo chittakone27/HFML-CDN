@@ -177,6 +177,22 @@ const ClientRegistrySearchButton = ({
         }
       }
     }
+    if (search["corXnplgfQ7"]) {
+      const splitted = search["corXnplgfQ7"].split("-");
+      if (splitted.length !== 3) {
+        valid = false;
+      } else {
+        if (splitted[0].length !== 5) {
+          valid = false;
+        }
+        if (splitted[1].length !== 1) {
+          valid = false;
+        }
+        if (splitted[2].length !== 5) {
+          valid = false;
+        }
+      }
+    }
     return valid;
   };
 
@@ -331,7 +347,7 @@ const ClientRegistrySearchButton = ({
         <div>
           <AttributeLabelNoState attribute={attribute} />
           <AttributeFieldNoState
-            disabled={loading || (attribute === "corXnplgfQ7" && searchOption ? true : false)}
+            disabled={loading}
             value={search[attribute] ? search[attribute] : ""}
             attribute={attribute}
             change={(value) => {
