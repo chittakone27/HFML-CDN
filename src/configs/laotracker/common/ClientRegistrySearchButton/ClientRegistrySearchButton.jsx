@@ -35,6 +35,7 @@ import ClientHealthIdField from "../ClientHealthIdField/ClientHealthIdField";
 import { pull } from "@/utils/fetch";
 const { searchTeis, saveEnrollment, getTeiById } = tracker;
 import { pickTranslation } from "@/utils/utils";
+import CvidField from "../CvidField/CvidField";
 
 const ATTRIBUTES = {
   HEALTH_ID: "oPKsfqS64oE",
@@ -280,6 +281,17 @@ const ClientRegistrySearchButton = ({
         //     helpers={[{ type: "HELPER", value: t("healthIdSearchHelper") }]}
         //   />
         // </div>
+      );
+    }
+    if (foundAttribute && foundAttribute.id === ATTRIBUTES.CVID) {
+      return (
+        <CvidField
+          disabled={searchOption ? true : false}
+          value={search[attribute]}
+          change={(value) => {
+            changeSearch(attribute, value);
+          }}
+        />
       );
     }
     if (foundAttribute && foundAttribute.id === "r8bZppSsIvR") {
