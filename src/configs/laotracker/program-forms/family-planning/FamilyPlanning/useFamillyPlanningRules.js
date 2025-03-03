@@ -37,11 +37,12 @@ const useFamilyPlanningRules = () => {
   const getAttrVl = (attrId) =>
     attributes.find((attr) => attr.attribute === attrId);
 
-  const isMoreThan49YearsOld = () => {
+  const isMoreThan49YearsOld = (currDate = null) => {
+    const finalCurrDate = currDate ?? new Date(eventDate);
     if (currentEvent && currentTei) {
       const dateOfBirth = getAttrVl(ATTRIBUTE_IDS.DATE_OF_BIRTH);
       const ageInYear = differenceInYears(
-        new Date(eventDate),
+        finalCurrDate,
         new Date(dateOfBirth.value)
       );
       return ageInYear > 49 ? true : false;
@@ -51,42 +52,42 @@ const useFamilyPlanningRules = () => {
   };
 
   const calcNextAppointmentDate = (serviceOptedVl, noDistributionVl) => {
-    let tempNextAppointDay;
-    switch (serviceOptedVl) {
-      case "S-pill":
-        tempNextAppointDay = addMonths(new Date(eventDate), noDistributionVl);
-        return format(tempNextAppointDay, "yyyy-MM-dd");
-      case "C-pill":
-        tempNextAppointDay = addMonths(new Date(eventDate), noDistributionVl);
-        return format(tempNextAppointDay, "yyyy-MM-dd");
-      case "Inj":
-        tempNextAppointDay = addMonths(
-          new Date(eventDate),
-          parseInt(noDistributionVl) * 3
-        );
-        return format(tempNextAppointDay, "yyyy-MM-dd");
-      case "IUD":
-        if (!isMoreThan49YearsOld()) {
-          tempNextAppointDay = addYears(
-            new Date(eventDate),
-            parseInt(noDistributionVl) * 10
-          );
+    if (parseInt(noDistributionVl) > 0) {
+      let tempNextAppointDay;
+      switch (serviceOptedVl) {
+        case "S-pill":
+          tempNextAppointDay = addMonths(new Date(eventDate), noDistributionVl);
           return format(tempNextAppointDay, "yyyy-MM-dd");
-        } else {
-          return "";
-        }
-      case "Implants":
-        if (!isMoreThan49YearsOld()) {
-          tempNextAppointDay = addYears(
+        case "C-pill":
+          tempNextAppointDay = addMonths(new Date(eventDate), noDistributionVl);
+          return format(tempNextAppointDay, "yyyy-MM-dd");
+        case "Inj":
+          tempNextAppointDay = addMonths(
             new Date(eventDate),
             parseInt(noDistributionVl) * 3
           );
           return format(tempNextAppointDay, "yyyy-MM-dd");
-        } else {
+        case "IUD":
+          tempNextAppointDay = addYears(
+            new Date(eventDate),
+            parseInt(noDistributionVl) * 10
+          );
+          return !isMoreThan49YearsOld(tempNextAppointDay)
+            ? format(tempNextAppointDay, "yyyy-MM-dd")
+            : "";
+        case "Implants":
+          tempNextAppointDay = addYears(
+            new Date(eventDate),
+            parseInt(noDistributionVl) * 3
+          );
+          return !isMoreThan49YearsOld(tempNextAppointDay)
+            ? format(tempNextAppointDay, "yyyy-MM-dd")
+            : "";
+        default:
           return "";
-        }
-      default:
-        return "";
+      }
+    } else {
+      return "";
     }
   };
 
@@ -187,7 +188,7 @@ const useFamilyPlanningRules = () => {
       }
       /* Age in year rules */
       if (isMoreThan49YearsOld()) {
-        hiddenOptions[SERVICE_OPTED] = ["IUD"];
+        hiddenOptions[SERVICE_OPTED] = ["IUD", "Implants"];
       }
       /* Service Opted rules */
       if (serviceOpted && ["tube", "vase"].includes(serviceOpted.value)) {
