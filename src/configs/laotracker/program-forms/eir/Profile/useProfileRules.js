@@ -91,7 +91,7 @@ const useProfileRules = () => {
       currentHiddenAttributes.push("villageSelector");
       currentHiddenAttributes.push("GT2H7899zzl");
       setMissingVillage(false);
-      currentHiddenAttributes = currentHiddenAttributes.filter((attr) => attr !== "uR9XK6AbPvE");
+      // currentHiddenAttributes = currentHiddenAttributes.filter((attr) => attr !== "uR9XK6AbPvE");
       if (attributes["uR9XK6AbPvE"] === "LA") {
         changeAttributeValue("uR9XK6AbPvE", "");
       }
@@ -101,7 +101,7 @@ const useProfileRules = () => {
       changeAttributeValue("UNiaP6Oz7Mv", "");
     } else {
       currentHiddenAttributes = currentHiddenAttributes.filter((attr) => attr !== "villageSelector" && attr !== "GT2H7899zzl");
-      currentHiddenAttributes.push("uR9XK6AbPvE");
+      // currentHiddenAttributes.push("uR9XK6AbPvE");
       changeAttributeValue("uR9XK6AbPvE", "LA");
       if (!attributes.UNiaP6Oz7Mv) {
         setMissingVillage(true);
