@@ -1,4 +1,3 @@
-//program
 import _ from "lodash";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import eir from "./program-forms/eir/index.js";
@@ -70,6 +69,7 @@ const customLocales = {
     howToDeleteAPersonInChr: "3. How to delete a person in Client Health Registry",
     checkingClientHealthId: "Checking Client Health ID...",
     healthIdSearchHelper: "Please carefully input the correct ID format to search on this field (xxxxxxxx-x-xxxx)",
+    cvidSearchHelper: "Please carefully input the correct System CVID format to search on this field (Hxxxx-x-xxxxx)",
     searchError:
       "Something went wrong, sorry for the inconvenience, please note your search criterias down and report to system administrator, thank you.",
     mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
@@ -99,6 +99,7 @@ const customLocales = {
     howToDeleteAPersonInChr: "3. How to delete a person in Client Health Registry",
     checkingClientHealthId: "Checking Client Health ID...",
     healthIdSearchHelper: "ກະລຸນາປ້ອນລະຫັດສຸຂະພາບໃຫ້ຖືກຕາມຮູບແບບທີ່ກຳນົດໄວ້ເພື່ອຄົ້ນຫາ (xxxxxxxx-x-xxxx)",
+    cvidSearchHelper: "ໃຫ້ທ່ານກວດສອບຢ່າງລະອຽດທຸກຄັ້ງກ່ອນທີ່ຈະຄົ້ນຫາດ້ວຍລະຫັດໂຄວິດ, ຕ້ອງຕື່ມໃຫ້ຖືກຕາມຮູບແບບຂອງລະຫັດ ຕົວຢ່າງ (Hxxxx-x-xxxxx)",
     searchError: "ການຄົ້ນຫາມີບັນຫາ, ຂໍອະໄພໃນຄວາມບໍ່ສະດວກ.  ກະລຸນາຈົດວິທີການຄົ້ນຫາຄັ້ງນີ້ໄວ້ແລ້ວແຈ້ງຫາທີມງານຄຸ້ມຄອງລະບົບຕື່ມ.",
     mccodHelper: "Please use Cause Of Death App to work with MCCOD program, click this",
     link: "link",
@@ -348,16 +349,7 @@ const trackerFormTypes = {
   vqNgkw4gfw7: ["noBlur", "tabStage", "tabular"]
 };
 
-const allowedPrograms = [
-  "Yj9cJ34AXw6",
-  "ck0rft9jVlF",
-  "AyPkCOMmgdd",
-  "fflLsS1lm3g",
-  "PBLmYwloRHu",
-  "vqNgkw4gfw7",
-  "u1Na9wCGY6d"
-  // "ogrOUKoSaWA"
-];
+const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA"];
 const modes = [
   //"eventCapture",
   //"dataEntry",

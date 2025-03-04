@@ -70,7 +70,7 @@ const useFamilyPlanningRules = () => {
         case "IUD":
           tempNextAppointDay = addYears(
             new Date(eventDate),
-            parseInt(noDistributionVl) * 10
+            parseInt(noDistributionVl) * 3
           );
           return !isMoreThan49YearsOld(tempNextAppointDay)
             ? format(tempNextAppointDay, "yyyy-MM-dd")
@@ -78,7 +78,7 @@ const useFamilyPlanningRules = () => {
         case "Implants":
           tempNextAppointDay = addYears(
             new Date(eventDate),
-            parseInt(noDistributionVl) * 3
+            parseInt(noDistributionVl) * 10
           );
           return !isMoreThan49YearsOld(tempNextAppointDay)
             ? format(tempNextAppointDay, "yyyy-MM-dd")

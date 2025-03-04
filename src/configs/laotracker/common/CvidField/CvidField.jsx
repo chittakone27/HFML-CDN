@@ -1,38 +1,38 @@
-//client health id field
+//cvid field.jsx
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import { Typography } from "@mui/material";
 import { Input } from "@/ui/common";
-import "./ClientHealthIdField.css";
+import "./CvidField.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-const ClientHealthIdField = ({ disabled, value, change }) => {
+const CvidField = ({ disabled, value, change }) => {
   const { t } = useTranslation();
-  const [dob, setDob] = useState("");
-  const [sex, setSex] = useState("");
+  const [hfId, setHfId] = useState("");
+  const [char, setChar] = useState("");
   const [num, setNum] = useState("");
 
-  const changeValue = (type, value) => {
-    let newValue = value.replace(/[a-zA-Z]/g, "");
+  const changeValue = (type, newValue) => {
     const splitted = newValue.split("-");
     if (splitted.length === 3) {
-      if (splitted[0].length === 8 && splitted[1].length === 1 && splitted[2].length === 4) {
-        setDob(splitted[0]);
-        setSex(splitted[1]);
+      if (splitted[0].length === 5 && splitted[1].length === 1 && splitted[2].length === 5) {
+        setHfId(splitted[0]);
+        setChar(splitted[1]);
         setNum(splitted[2]);
       }
     }
+
     switch (type) {
-      case "dob":
-        if (newValue.length > 8) newValue = newValue.slice(0, 8);
-        setDob(newValue);
+      case "hfId":
+        if (newValue.length > 5) newValue = newValue.slice(0, 5);
+        setHfId(newValue);
         break;
-      case "sex":
+      case "char":
         if (newValue.length > 1) newValue = newValue.slice(0, 1);
-        setSex(newValue);
+        setChar(newValue);
         break;
       case "num":
-        if (newValue.length > 4) newValue = newValue.slice(0, 4);
+        if (newValue.length > 5) newValue = newValue.slice(0, 5);
         setNum(newValue);
         break;
       default:
@@ -41,39 +41,39 @@ const ClientHealthIdField = ({ disabled, value, change }) => {
   };
   useEffect(() => {
     if (!value) {
-      setDob("");
-      setSex("");
+      setHfId("");
+      setChar("");
       setNum("");
     }
   }, [value]);
 
   useEffect(() => {
-    if ([dob, sex, num].join("-") === "--") {
-      change([dob, sex, num].join(""));
+    if ([hfId, char, num].join("-") === "--") {
+      change([hfId, char, num].join(""));
     } else {
-      change([dob, sex, num].join("-"));
+      change([hfId, char, num].join("-"));
     }
-  }, [dob, sex, num]);
+  }, [hfId, char, num]);
 
   return (
     <div className="client-health-id-field-container ">
-      <AttributeLabel attribute="oPKsfqS64oE" />
+      <AttributeLabel attribute="corXnplgfQ7" />
       <div className="client-health-id-fields">
         <Input
           disabled={disabled}
-          value={dob}
+          value={hfId}
           valueType="TEXT"
           change={(value) => {
-            changeValue("dob", value);
+            changeValue("hfId", value);
           }}
         />
         <div className="client-health-id-seperator">-</div>
         <Input
           disabled={disabled}
-          value={sex}
+          value={char}
           valueType="TEXT"
           change={(value) => {
-            changeValue("sex", value);
+            changeValue("char", value);
           }}
         />
         <div className="client-health-id-seperator">-</div>
@@ -87,10 +87,10 @@ const ClientHealthIdField = ({ disabled, value, change }) => {
         />
       </div>
       <div className="client-health-id-field-helper">
-        <Typography variant="HELPER">{t("healthIdSearchHelper")}</Typography>
+        <Typography variant="HELPER">{t("cvidSearchHelper")}</Typography>
       </div>
     </div>
   );
 };
 
-export default ClientHealthIdField;
+export default CvidField;

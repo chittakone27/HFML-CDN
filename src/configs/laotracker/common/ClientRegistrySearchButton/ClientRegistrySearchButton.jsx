@@ -35,6 +35,7 @@ import ClientHealthIdField from "../ClientHealthIdField/ClientHealthIdField";
 import { pull } from "@/utils/fetch";
 const { searchTeis, saveEnrollment, getTeiById } = tracker;
 import { pickTranslation } from "@/utils/utils";
+import CvidField from "../CvidField/CvidField";
 
 const ATTRIBUTES = {
   HEALTH_ID: "oPKsfqS64oE",
@@ -176,6 +177,22 @@ const ClientRegistrySearchButton = ({
         }
       }
     }
+    if (search["corXnplgfQ7"]) {
+      const splitted = search["corXnplgfQ7"].split("-");
+      if (splitted.length !== 3) {
+        valid = false;
+      } else {
+        if (splitted[0].length !== 5) {
+          valid = false;
+        }
+        if (splitted[1].length !== 1) {
+          valid = false;
+        }
+        if (splitted[2].length !== 5) {
+          valid = false;
+        }
+      }
+    }
     return valid;
   };
 
@@ -282,6 +299,17 @@ const ClientRegistrySearchButton = ({
         // </div>
       );
     }
+    if (foundAttribute && foundAttribute.id === ATTRIBUTES.CVID) {
+      return (
+        <CvidField
+          disabled={searchOption ? true : false}
+          value={search[attribute]}
+          change={(value) => {
+            changeSearch(attribute, value);
+          }}
+        />
+      );
+    }
     if (foundAttribute && foundAttribute.id === "r8bZppSsIvR") {
       return (
         <div>
@@ -319,7 +347,7 @@ const ClientRegistrySearchButton = ({
         <div>
           <AttributeLabelNoState attribute={attribute} />
           <AttributeFieldNoState
-            disabled={loading || (attribute === "corXnplgfQ7" && searchOption ? true : false)}
+            disabled={loading}
             value={search[attribute] ? search[attribute] : ""}
             attribute={attribute}
             change={(value) => {

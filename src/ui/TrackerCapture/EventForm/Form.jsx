@@ -64,6 +64,7 @@ const Form = ({ type }) => {
     } else {
       setApiError({ ...result });
     }
+    changeEventProperty(currentEvent.event, "isNew", false);
     setLayout("formLoading", false);
     setLayout("eventFormEditing", false);
   };
@@ -80,6 +81,7 @@ const Form = ({ type }) => {
     const result = await saveEvent(eventToBeSaved);
     if (result.ok) {
       changeEventProperty(currentEvent.event, "status", status);
+      changeEventProperty(currentEvent.event, "isNew", false);
       if (additionalCompleteHandler) {
         await additionalCompleteHandler(currentTei, currentEnrollment, eventToBeSaved);
       }
@@ -152,6 +154,9 @@ const Form = ({ type }) => {
           variant="contained"
           onClick={(event) => {
             selectEvent(null);
+            if (currentEvent.isNew) {
+              deleteEventFromList(currentEvent.event);
+            }
           }}
         >
           {t("close")}
@@ -172,6 +177,9 @@ const Form = ({ type }) => {
               return;
             }
             selectEvent(null);
+            if (currentEvent.isNew) {
+              deleteEventFromList(currentEvent.event);
+            }
             setLayout("eventFormEditing", false);
           }}
         >

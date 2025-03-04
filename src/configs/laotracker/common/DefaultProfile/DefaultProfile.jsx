@@ -276,7 +276,6 @@ const DefaultProfile = ({ attributeProps = {} }) => {
     setData("mandatoryAttributes", ["UNiaP6Oz7Mv"]);
   }, []);
 
-  console.log(layout);
   return (
     <div className="delivery-registry-profile-container">
       {layout.layout === "layout2" && (
