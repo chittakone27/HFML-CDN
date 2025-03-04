@@ -134,7 +134,7 @@ const IPDVisitDetails = () => {
     });
   };
 
-  const { props, icd10ValueSet } = useIpdVisitDetailsRules();
+  const { props, icd10ValueSet } = useIpdVisitDetailsRules(program);
 
   const renderSelect = () => (
     <FormControl sx={{ width: "100%" }}>

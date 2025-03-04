@@ -28,7 +28,7 @@ const {
 } = DATA_ELEMENTS;
 const { DOB, SEX, VILLAGE } = ATTRIBUTES;
 
-const useIpdVisitDetailsRules = () => {
+const useIpdVisitDetailsRules = (program) => {
   const { t } = useTranslation();
   const { orgUnits, optionSets } = useMetadataStore(
     useShallow((state) => ({
@@ -314,9 +314,16 @@ const useIpdVisitDetailsRules = () => {
     }
 
     //mandatory fields
-    if (!admissionDate || !ipdStatusAtDischarge || !ipdTreatmentType) {
-      valid = false;
-    }
+    program.programStages[0].programStageDataElements.forEach((psde) => {
+      if (psde.compulsory) {
+        const foundDataValue = currentEvent.dataValues.find(
+          (dv) => dv.dataElement === psde.dataElement.id
+        );
+        if (!foundDataValue) {
+          valid = false;
+        }
+      }
+    });
 
     if (!valid) {
       setLayout("disableEventSaveButton", true);
