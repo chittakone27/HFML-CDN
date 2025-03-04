@@ -319,7 +319,7 @@ const useIpdVisitDetailsRules = (program) => {
         const foundDataValue = currentEvent.dataValues.find(
           (dv) => dv.dataElement === psde.dataElement.id
         );
-        if (!foundDataValue) {
+        if (!foundDataValue || (foundDataValue && !foundDataValue.value)) {
           valid = false;
         }
       }
