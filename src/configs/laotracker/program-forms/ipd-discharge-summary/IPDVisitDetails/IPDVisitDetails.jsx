@@ -20,7 +20,12 @@ import { useShallow } from "zustand/react/shallow";
 import { DATA_ELEMENTS } from "../const";
 import { t } from "i18next";
 
-const { IPD_MAIN_DIAGNOSIS, CLIENT_AGE_AT_VISIT, IPD_ADMISSION_DATE, IPD_MAIN_DIAGNOSIS_ICD10 } = DATA_ELEMENTS;
+const {
+  IPD_MAIN_DIAGNOSIS,
+  CLIENT_AGE_AT_VISIT,
+  IPD_ADMISSION_DATE,
+  IPD_MAIN_DIAGNOSIS_ICD10,
+} = DATA_ELEMENTS;
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -29,62 +34,83 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250
-    }
-  }
+      width: 250,
+    },
+  },
 };
 
 const styles = {
   container: {
-    padding: "5px"
+    padding: "5px",
   },
   checkbox: { display: "flex", alignItems: "center", marginBottom: "5px" },
   field: {
-    marginBottom: "5px"
+    marginBottom: "5px",
   },
   error: {
-    color: "red"
+    color: "red",
   },
   preCondition: {
-    marginTop: "5px"
-  }
+    marginTop: "5px",
+  },
 };
 
 const getStyles = (name, selectedIds, theme) => ({
-  fontWeight: selectedIds.includes(name) ? theme.typography.fontWeightMedium : theme.typography.fontWeightRegular
+  fontWeight: selectedIds.includes(name)
+    ? theme.typography.fontWeightMedium
+    : theme.typography.fontWeightRegular,
 });
 
 const IPDVisitDetails = () => {
   const theme = useTheme();
   const { program } = useSelectionStore((state) => ({
-    program: state.program
+    program: state.program,
   }));
 
   const { layout, actions } = useTrackerCaptureStore(
     useShallow((state) => ({
       layout: state.layout,
-      actions: state.actions
+      actions: state.actions,
     }))
   );
 
   const { changeDataValue, setLayout } = actions;
   const { dataElements } = useMetadataStore((state) => ({
-    dataElements: state.dataElements
+    dataElements: state.dataElements,
   }));
   const { currentEvent } = useCurrentEvent();
   const psIPDVisitDetailStageId = "PuT0v7uvrDO";
-  const psIPDVisitDetail = useMemo(() => program.programStages.find((e) => e.id === psIPDVisitDetailStageId), [program.programStages]);
+  const psIPDVisitDetail = useMemo(
+    () => program.programStages.find((e) => e.id === psIPDVisitDetailStageId),
+    [program.programStages]
+  );
 
-  const lstDEs = useMemo(() => psIPDVisitDetail.programStageDataElements.map((e) => e.dataElement.id), [psIPDVisitDetail]);
+  const lstDEs = useMemo(
+    () =>
+      psIPDVisitDetail.programStageDataElements.map((e) => e.dataElement.id),
+    [psIPDVisitDetail]
+  );
 
-  const preConditionDataElements = ["dLIPYO8wooC", "eYGlKgmZyj8", "NoXeTahc1E2", "uN8LfG3KPgZ", "ZwwgoOLFry8", "CuKwviFco3q"];
+  const preConditionDataElements = [
+    "dLIPYO8wooC",
+    "eYGlKgmZyj8",
+    "NoXeTahc1E2",
+    "uN8LfG3KPgZ",
+    "ZwwgoOLFry8",
+    "CuKwviFco3q",
+  ];
   const [selectedIds, setSelectedIds] = useState(
     currentEvent.dataValues
-      .filter((value) => preConditionDataElements.includes(value.dataElement) && value.value == "true")
+      .filter(
+        (value) =>
+          preConditionDataElements.includes(value.dataElement) &&
+          value.value == "true"
+      )
       .map((dataValue) => dataValue.dataElement)
   );
 
-  const deName = (dataElement) => dataElements.find((de) => de.id === dataElement).displayFormName;
+  const deName = (dataElement) =>
+    dataElements.find((de) => de.id === dataElement).displayFormName;
 
   const handleChange = (event) => {
     const { value } = event.target;
@@ -92,7 +118,11 @@ const IPDVisitDetails = () => {
     setSelectedIds(selectedIds);
     preConditionDataElements.forEach((preConditionDe) => {
       const isDePreConditionSelected = selectedIds.includes(preConditionDe);
-      changeDataValue(currentEvent.event, preConditionDe, isDePreConditionSelected ? "true" : "");
+      changeDataValue(
+        currentEvent.event,
+        preConditionDe,
+        isDePreConditionSelected ? "true" : ""
+      );
     });
   };
 
@@ -105,6 +135,7 @@ const IPDVisitDetails = () => {
   };
 
   const { props, icd10ValueSet } = useIpdVisitDetailsRules();
+
   const renderSelect = () => (
     <FormControl sx={{ width: "100%" }}>
       <Select
@@ -121,7 +152,11 @@ const IPDVisitDetails = () => {
                 key={value}
                 label={deName(value)}
                 clickable
-                deleteIcon={<CancelIcon onMouseDown={(event) => event.stopPropagation()} />}
+                deleteIcon={
+                  <CancelIcon
+                    onMouseDown={(event) => event.stopPropagation()}
+                  />
+                }
                 onDelete={() => layout.eventFormEditing && handleDelete(value)}
               />
             ))}
@@ -132,7 +167,11 @@ const IPDVisitDetails = () => {
         {preConditionDataElements.map((id) => {
           const hidden = props[id] && props[id].hidden;
           return hidden ? null : (
-            <MenuItem key={id} value={id} style={getStyles(id, selectedIds, theme)}>
+            <MenuItem
+              key={id}
+              value={id}
+              style={getStyles(id, selectedIds, theme)}
+            >
               {dataElements.find((element) => element.id === id).displayName}
             </MenuItem>
           );
@@ -144,10 +183,16 @@ const IPDVisitDetails = () => {
   return (
     <div style={styles.container}>
       <EventDateLabel type="eventDate" />
-      <EventDateFieldNoBlur type="eventDate" maxDate={new Date().toISOString().split("T")[0]} {...props.eventDate} />
+      <EventDateFieldNoBlur
+        type="eventDate"
+        maxDate={new Date().toISOString().split("T")[0]}
+        {...props.eventDate}
+      />
       {lstDEs.map((de) => {
         const hidden = props[de] && props[de].hidden;
-        const isCheckbox = dataElements.find((element) => element.id === de).valueType === "TRUE_ONLY";
+        const isCheckbox =
+          dataElements.find((element) => element.id === de).valueType ===
+          "TRUE_ONLY";
         if (hidden || preConditionDataElements.includes(de)) return null;
         return (
           <div key={de} style={isCheckbox ? styles.checkbox : styles.field}>
@@ -163,7 +208,9 @@ const IPDVisitDetails = () => {
                   dataElement={de}
                   disabled={de === CLIENT_AGE_AT_VISIT}
                   {...props[de]}
-                  customValueSet={de === IPD_MAIN_DIAGNOSIS_ICD10 ? icd10ValueSet : undefined}
+                  customValueSet={
+                    de === IPD_MAIN_DIAGNOSIS_ICD10 ? icd10ValueSet : undefined
+                  }
                 />
                 {/* PreCondition under IDP main diagnosis */}
                 {de === IPD_MAIN_DIAGNOSIS && (
