@@ -1,0 +1,35 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.0">
+  <diagram name="Page-1" id="9cUdCU5SEo9kOHcvHSh7">
+    <mxGraphModel dx="2300" dy="1107" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="qZU6nShPuq34IywfJoR2-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="qZU6nShPuq34IywfJoR2-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="180" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qZU6nShPuq34IywfJoR2-2" value="START" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="10" y="40" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qZU6nShPuq34IywfJoR2-9" value="is CHR program" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="qZU6nShPuq34IywfJoR2-7" target="qZU6nShPuq34IywfJoR2-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qZU6nShPuq34IywfJoR2-11" value="is not CHR program" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="qZU6nShPuq34IywfJoR2-7" target="qZU6nShPuq34IywfJoR2-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="qZU6nShPuq34IywfJoR2-7" value="Select the program" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="30" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="qZU6nShPuq34IywfJoR2-8" value="- Delete all the data related to all other programs&lt;div&gt;- Delete all the data related to CHR program&lt;/div&gt;&lt;div&gt;- Completedly delete the person&lt;/div&gt;" style="whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="530" y="40" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="qZU6nShPuq34IywfJoR2-10" value="- Delete all the data related to the selected program&lt;div&gt;- Leave the CHR data untouched&lt;/div&gt;" style="whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="150" y="200" width="280" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

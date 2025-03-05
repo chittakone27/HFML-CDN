@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36" version="24.8.0">
+  <diagram name="Page-1" id="xhLap2_-qilT-OzlFrXl">
+    <mxGraphModel dx="2300" dy="1107" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="r_BQGI7AdNbcGRaAPGjM-1" target="r_BQGI7AdNbcGRaAPGjM-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-1" value="START" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="10" y="45" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="r_BQGI7AdNbcGRaAPGjM-2" target="r_BQGI7AdNbcGRaAPGjM-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-2" value="Edit the information of one person in CHR&lt;div&gt;- Allowed fields to edit:&lt;/div&gt;&lt;blockquote style=&quot;margin: 0 0 0 40px; border: none; padding: 0px;&quot;&gt;&lt;div&gt;+ First name&lt;/div&gt;&lt;div&gt;+ Last name&lt;/div&gt;&lt;div&gt;+ Date of birth&lt;/div&gt;&lt;div&gt;+ Gender&lt;/div&gt;&lt;/blockquote&gt;" style="whiteSpace=wrap;html=1;strokeWidth=2;align=left;" vertex="1" parent="1">
+          <mxGeometry x="180" y="10" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-4" value="- Save all the changes to CHR person, and the changes can be seen in all across other programs&lt;div&gt;- Save the changes log to ChangeLog program stage of CHR program&lt;/div&gt;&lt;div&gt;- Log to be stored:&lt;/div&gt;&lt;div&gt;+ The program that change the information&lt;/div&gt;&lt;div&gt;+ The user that change the information&lt;/div&gt;&lt;div&gt;+ What are the changes&lt;/div&gt;" style="whiteSpace=wrap;html=1;align=left;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="480" y="10" width="350" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-6" value="END" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="605" y="200" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="r_BQGI7AdNbcGRaAPGjM-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="r_BQGI7AdNbcGRaAPGjM-4" target="r_BQGI7AdNbcGRaAPGjM-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
