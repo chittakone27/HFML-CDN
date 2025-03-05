@@ -138,7 +138,7 @@ const useInitialization = () => {
       });
     });
     programs = programs.filter((program) => {
-      return program.access.data.write && program.access.data.read;
+      return program.access.data.read;
     });
     dataSets = dataSets
       .filter((ds) => !filteredDataSets.includes(ds.id))

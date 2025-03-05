@@ -21,6 +21,25 @@ const TrackerCapture = () => {
     setLayout("layout", "layout1");
   }, [program.id, orgUnit.id]);
 
+  useEffect(() => {
+    if (!program.access.data.write) {
+      disableEverything(true);
+    } else {
+      disableEverything(false);
+    }
+  }, [layout.layout]);
+
+  const disableEverything = (value) => {
+    setTimeout(() => {
+      setLayout("disableEventEditButton", value);
+      setLayout("disableEventCompleteButton", value);
+      setLayout("disableEventCreateButton", value);
+      setLayout("disableEventDeleteButton", value);
+      setLayout("disableProfileEditButton", value);
+      setLayout("hideProfileDeleteButton", value);
+    }, 300);
+  };
+
   const renderLayout = () => {
     if (CustomTrackerLayout) {
       return <CustomTrackerLayout />;

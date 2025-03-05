@@ -71,9 +71,9 @@ const useProfileRules = () => {
     }
   }, [currentEvents.map((ce) => ce.eventDate).join(";")]);
 
-  // useEffect(() => {
-  //   if (!nationality) changeAttributeValue("uR9XK6AbPvE", "LA");
-  // }, [nationality]);
+  useEffect(() => {
+    if (!nationality) changeAttributeValue("uR9XK6AbPvE", "LA");
+  }, []);
 
   useEffect(() => {
     let fullImmunize = true;
@@ -102,7 +102,7 @@ const useProfileRules = () => {
     } else {
       currentHiddenAttributes = currentHiddenAttributes.filter((attr) => attr !== "villageSelector" && attr !== "GT2H7899zzl");
       // currentHiddenAttributes.push("uR9XK6AbPvE");
-      changeAttributeValue("uR9XK6AbPvE", "LA");
+      // changeAttributeValue("uR9XK6AbPvE", "LA");
       if (!attributes.UNiaP6Oz7Mv) {
         setMissingVillage(true);
       } else {

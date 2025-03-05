@@ -39,7 +39,7 @@ const FormContainer = () => {
   const [tab, setTab] = useState(0);
 
   const programStages = program.programStages.filter((ps) => {
-    const access = ps.access.data.read && ps.access.data.write & (ps.userGroupAccesses.length > 0);
+    const access = ps.access.data.read && ps.userGroupAccesses.length > 0;
     return access;
   });
   const currentProgramStage = programStages[tab];

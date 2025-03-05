@@ -34,23 +34,9 @@ import _ from "lodash";
 import { tracker } from "@/api";
 import { format } from "date-fns";
 import { pull } from "@/utils/fetch";
-const {
-  getTeiById,
-  saveTei,
-  deleteEvent,
-  saveEvent,
-  saveEnrollment,
-  deleteEnrollment,
-  deleteTei
-} = tracker;
+const { getTeiById, saveTei, deleteEvent, saveEvent, saveEnrollment, deleteEnrollment, deleteTei } = tracker;
 import { ALL_VACCINE_FOR_FULL_IMMUNIZED } from "./program-forms/eir/Immunization/constants";
-import {
-  PDFDocument,
-  StandardFonts,
-  rgb,
-  grayscale,
-  setCharacterSpacing
-} from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb, grayscale, setCharacterSpacing } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import birthCertificateV2 from "@/configs/laotracker/assets/example-bc.pdf";
 import phetsarathFont from "@/configs/laotracker/assets/Phetsarath-OT.ttf";
@@ -76,20 +62,10 @@ const ToggleActivationStatusButton = () => {
       actions: state.actions
     }))
   );
-  const {
-    setLayout,
-    setCustomState,
-    changeAttributeValue,
-    deleteEventFromList,
-    initData,
-    resetState
-  } = actions;
+  const { setLayout, setCustomState, changeAttributeValue, deleteEventFromList, initData, resetState } = actions;
   const { currentTei, currentEvents } = data;
   const foundActivationValue = findAttributeValue(currentTei, "qFFDE1Aud9N");
-  let activationStatus =
-    foundActivationValue && foundActivationValue === "true"
-      ? "deactivated"
-      : "activated";
+  let activationStatus = foundActivationValue && foundActivationValue === "true" ? "deactivated" : "activated";
 
   const toggleActivation = async () => {
     setAnchorEl(null);
@@ -98,9 +74,7 @@ const ToggleActivationStatusButton = () => {
       const newTei = _.cloneDeep(currentTei);
       newTei.attributes.push({ attribute: "qFFDE1Aud9N", value: "true" });
       await saveTei(newTei);
-      const foundScheduledEvent = currentEvents.find(
-        (ev) => ev.status === "SCHEDULE"
-      );
+      const foundScheduledEvent = currentEvents.find((ev) => ev.status === "SCHEDULE");
       if (foundScheduledEvent) {
         deleteEventFromList(foundScheduledEvent.event);
         await deleteEvent(foundScheduledEvent);
@@ -109,9 +83,7 @@ const ToggleActivationStatusButton = () => {
     } else {
       changeAttributeValue("qFFDE1Aud9N", "");
       const newTei = _.cloneDeep(currentTei);
-      const foundAttributeIndex = newTei.attributes.findIndex(
-        (attr) => attr.attribute === "qFFDE1Aud9N"
-      );
+      const foundAttributeIndex = newTei.attributes.findIndex((attr) => attr.attribute === "qFFDE1Aud9N");
       if (foundAttributeIndex > -1) {
         newTei.attributes[foundAttributeIndex].value = "";
       }
@@ -162,11 +134,7 @@ const ToggleActivationStatusButton = () => {
         <div className="delete-event-confirmation">
           <Alert severity="error" style={{ color: "#ff4538" }}>
             <AlertTitle>{t("warning")}</AlertTitle>
-            {t(
-              activationStatus === "activated"
-                ? "deactivateChildWarning"
-                : "activateChildWarning"
-            )}
+            {t(activationStatus === "activated" ? "deactivateChildWarning" : "activateChildWarning")}
           </Alert>
           <br />
           <LoadingButton
@@ -180,11 +148,7 @@ const ToggleActivationStatusButton = () => {
               setAnchorEl(null);
             }}
           >
-            {t(
-              activationStatus === "activated"
-                ? "deactivateChild"
-                : "activateChild"
-            )}
+            {t(activationStatus === "activated" ? "deactivateChild" : "activateChild")}
           </LoadingButton>
           &nbsp;
           <Button
@@ -207,33 +171,21 @@ const ToggleActivationStatusButton = () => {
           setAnchorEl(event.currentTarget);
         }}
       >
-        {t(
-          activationStatus === "activated" ? "deactivateChild" : "activateChild"
-        )}
+        {t(activationStatus === "activated" ? "deactivateChild" : "activateChild")}
       </LoadingButton>
     </>
   );
 };
 
 const useDefaultOrgUnitSelection = (ready) => {
-  const { program, dataSet } = useSelectionStore(
-    (state) => ({ program: state.program, dataSet: state.dataSet }),
-    shallow
-  );
-  const { me, orgUnits } = useMetadataStore(
-    (state) => ({ me: state.me, orgUnits: state.orgUnits }),
-    shallow
-  );
+  const { program, dataSet } = useSelectionStore((state) => ({ program: state.program, dataSet: state.dataSet }), shallow);
+  const { me, orgUnits } = useMetadataStore((state) => ({ me: state.me, orgUnits: state.orgUnits }), shallow);
   const { selectOrgUnit } = useSelectionStore((state) => state.actions);
 
   useEffect(() => {
     if ((ready && me.organisationUnits.length === 1) || program || dataSet) {
-      const foundOu = orgUnits.find(
-        (ou) => ou.id === me.organisationUnits[0].id
-      );
-      const foundOuGroup = foundOu.organisationUnitGroups.find(
-        (oug) => oug.id === "zk3lBJfnL6b"
-      );
+      const foundOu = orgUnits.find((ou) => ou.id === me.organisationUnits[0].id);
+      const foundOuGroup = foundOu.organisationUnitGroups.find((oug) => oug.id === "zk3lBJfnL6b");
       if (foundOuGroup) {
         selectOrgUnit(foundOu);
       }
@@ -292,11 +244,7 @@ const useDisableEirRegisterButton = () => {
         setCustomState("isEirVillage", false);
       }
     }
-  }, [
-    program ? program.id : "",
-    orgUnit ? orgUnit.id : "",
-    layout ? layout.layout : ""
-  ]);
+  }, [program ? program.id : "", orgUnit ? orgUnit.id : "", layout ? layout.layout : ""]);
 };
 
 const useCustomSearchForEir = () => {
@@ -311,22 +259,12 @@ const useCustomSearchForEir = () => {
   const { setLayout } = controlBarActions;
 
   useEffect(() => {
-    if (
-      program &&
-      program.id === "Yj9cJ34AXw6" &&
-      orgUnit &&
-      layout &&
-      layout.layout === "layout1"
-    ) {
+    if (program && program.id === "Yj9cJ34AXw6" && orgUnit && layout && layout.layout === "layout1") {
       setLayout("customControlBarComponent", <CustomEirSearchButton />);
     } else {
       setLayout("customControlBarComponent", null);
     }
-  }, [
-    program ? program.id : "",
-    layout ? layout.layout : "",
-    orgUnit ? orgUnit.id : ""
-  ]);
+  }, [program ? program.id : "", layout ? layout.layout : "", orgUnit ? orgUnit.id : ""]);
 };
 
 const useEirToggleActivationStatusButton = () => {
@@ -379,11 +317,7 @@ const useEirDisableCreateEventButton = () => {
 
   useEffect(() => {
     let disabled = false;
-    if (
-      program &&
-      program.id === "Yj9cJ34AXw6" &&
-      selectedProgramStage === "hCTTxOH8FOa"
-    ) {
+    if (program && program.id === "Yj9cJ34AXw6" && selectedProgramStage === "hCTTxOH8FOa") {
       let fullyImmunized = true;
       let foundActiveOrScheduledEvent = false;
       ALL_VACCINE_FOR_FULL_IMMUNIZED.forEach((id) => {
@@ -407,11 +341,7 @@ const useEirDisableCreateEventButton = () => {
       disabled = fullyImmunized || foundActiveOrScheduledEvent;
     }
     setLayout("disableEventCreateButton", disabled);
-  }, [
-    program ? program.id : "",
-    JSON.stringify(currentEvents),
-    selectedProgramStage
-  ]);
+  }, [program ? program.id : "", JSON.stringify(currentEvents), selectedProgramStage]);
 };
 
 const CloseButton = () => {
@@ -447,39 +377,19 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
     }))
   );
   const { setData, changeDataValue } = actions;
-  const {
-    currentEnrollments,
-    currentEnrollment,
-    currentEvents,
-    currentTei,
-    childTeis
-  } = data;
+  const { currentEnrollments, currentEnrollment, currentEvents, currentTei, childTeis } = data;
   const { currentEvent } = useCurrentEvent();
   const enrollmentId = currentEnrollment.enrollment;
-  const foundEnrollment = currentEnrollments.find(
-    (fde) => fde.enrollment === enrollmentId
-  );
-  const deliveryEvent = currentEvents.find(
-    (ce) => ce.programStage === "YOHVx1Xmpgr" && ce.enrollment === enrollmentId
-  );
-  const foundListOfChildren = deliveryEvent
-    ? deliveryEvent.dataValues.find((dv) => dv.dataElement === "pRlMcY5Ubn5")
-    : null;
-  const foundDateOfDelivery = findDataValue(
-    deliveryEvent.dataValues,
-    "grMMOiF9fPj"
-  );
-  const foundLiveBirths = findDataValue(
-    deliveryEvent.dataValues,
-    "OcT4N2illVT"
-  );
+  const foundEnrollment = currentEnrollments.find((fde) => fde.enrollment === enrollmentId);
+  const deliveryEvent = currentEvents.find((ce) => ce.programStage === "YOHVx1Xmpgr" && ce.enrollment === enrollmentId);
+  const foundListOfChildren = deliveryEvent ? deliveryEvent.dataValues.find((dv) => dv.dataElement === "pRlMcY5Ubn5") : null;
+  const foundDateOfDelivery = findDataValue(deliveryEvent.dataValues, "grMMOiF9fPj");
+  const foundLiveBirths = findDataValue(deliveryEvent.dataValues, "OcT4N2illVT");
 
   const disabled = !foundDateOfDelivery || !foundLiveBirths || !validToComplete;
 
   const findAttributeValue = (tei, attribute) => {
-    const found = tei
-      ? tei.attributes.find((attr) => attr.attribute === attribute)
-      : null;
+    const found = tei ? tei.attributes.find((attr) => attr.attribute === attribute) : null;
     return found ? found.value : "";
   };
 
@@ -505,19 +415,14 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
         `/api/trackedEntityInstances.json?filter=oPKsfqS64oE:EQ:${healthId}&program=Yj9cJ34AXw6&ou=IWp9dQGM0bS&ouMode=DESCENDANTS&skipPaging=true&fields=trackedEntityInstance`
       );
       if (result.trackedEntityInstances.length > 0) {
-        if (
-          result.trackedEntityInstances[0].trackedEntityInstance !==
-          currentTei.trackedEntityInstance
-        ) {
+        if (result.trackedEntityInstances[0].trackedEntityInstance !== currentTei.trackedEntityInstance) {
           const randomNumber = [
             Math.floor(Math.random() * (9 - 0 + 1)) + 0,
             Math.floor(Math.random() * (9 - 0 + 1)) + 0,
             Math.floor(Math.random() * (9 - 0 + 1)) + 0
             //Math.floor(Math.random() * (9 - 0 + 1)) + 0,
           ];
-          healthId = `${healthId.split("-")[0]}-${
-            healthId.split("-")[1]
-          }-${randomNumber.join("")}`;
+          healthId = `${healthId.split("-")[0]}-${healthId.split("-")[1]}-${randomNumber.join("")}`;
         } else {
           flag = false;
         }
@@ -543,10 +448,7 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
         Math.floor(Math.random() * (9 - 0 + 1)) + 0
         //Math.floor(Math.random() * (9 - 0 + 1)) + 0,
       ];
-      const healthId = await checkDuplicateHealthId(
-        [dob, sex, randomNumber.join("")].join("-"),
-        newChildTei
-      );
+      const healthId = await checkDuplicateHealthId([dob, sex, randomNumber.join("")].join("-"), newChildTei);
       newChildTei.attributes.push({
         attribute: "oPKsfqS64oE",
         value: healthId
@@ -554,17 +456,10 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
       newChildTeis[i] = { ...newChildTei };
     }
     setData("childTeis", newChildTeis);
-    changeDataValue(
-      deliveryEvent.event,
-      "lYdXxom1BAG",
-      JSON.stringify(newChildTeis)
-    );
+    changeDataValue(deliveryEvent.event, "lYdXxom1BAG", JSON.stringify(newChildTeis));
     const newCurrentEvent = _.cloneDeep(deliveryEvent);
-    const foundCurrentChildTeisDataValue = newCurrentEvent.dataValues.findIndex(
-      (dv) => dv.dataElement === "lYdXxom1BAG"
-    );
-    newCurrentEvent.dataValues[foundCurrentChildTeisDataValue].value =
-      JSON.stringify(newChildTeis);
+    const foundCurrentChildTeisDataValue = newCurrentEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
+    newCurrentEvent.dataValues[foundCurrentChildTeisDataValue].value = JSON.stringify(newChildTeis);
     await saveEvent(newCurrentEvent);
     setUniqueIdLoading(false);
     return newChildTeis;
@@ -609,9 +504,7 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
     actions.changeEnrollmentProperty("status", "COMPLETED");
     actions.setLayout("eventFormEditing", false);
     const clonedEnrollments = _.cloneDeep(currentEnrollments);
-    const foundEnrollmentIndex = clonedEnrollments.findIndex(
-      (ce) => ce.enrollment === enrollmentId
-    );
+    const foundEnrollmentIndex = clonedEnrollments.findIndex((ce) => ce.enrollment === enrollmentId);
     clonedEnrollments[foundEnrollmentIndex].status = "COMPLETED";
     setData("currentEnrollments", clonedEnrollments);
     await saveEnrollment(newEnroll);
@@ -629,13 +522,7 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
   return (
     <>
       {currentEnrollment.status !== "COMPLETED" && (
-        <LoadingButton
-          disabled={disabled}
-          loading={loading}
-          variant="contained"
-          color="success"
-          onClick={completeEnrollment}
-        >
+        <LoadingButton disabled={disabled} loading={loading} variant="contained" color="success" onClick={completeEnrollment}>
           {t("completeThisDelivery")}
         </LoadingButton>
       )}
@@ -664,11 +551,7 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
               alignItems: "center"
             }}
           >
-            {completeDeliveryLoading ? (
-              <CircularProgress size={20} />
-            ) : (
-              <FontAwesomeIcon icon={faCheck} color="green" />
-            )}
+            {completeDeliveryLoading ? <CircularProgress size={20} /> : <FontAwesomeIcon icon={faCheck} color="green" />}
             &nbsp; {t("completingCurrentDelivery")}
           </div>
           {showSummaryTable ? (
@@ -698,32 +581,14 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
                   </TableHead>
                   <TableBody>
                     {childTeis.map((tei) => {
-                      const foundHealthId = tei.attributes.find(
-                        (e) => e.attribute === "oPKsfqS64oE"
-                      );
-                      const foundSex = tei.attributes.find(
-                        (e) => e.attribute === "DmuazFb368B"
-                      );
-                      const foundDob = tei.attributes.find(
-                        (e) => e.attribute === "tQeFLjYbqzv"
-                      );
+                      const foundHealthId = tei.attributes.find((e) => e.attribute === "oPKsfqS64oE");
+                      const foundSex = tei.attributes.find((e) => e.attribute === "DmuazFb368B");
+                      const foundDob = tei.attributes.find((e) => e.attribute === "tQeFLjYbqzv");
                       return (
                         <TableRow>
-                          <TableCell>
-                            {foundHealthId ? foundHealthId.value : ""}
-                          </TableCell>
-                          <TableCell>
-                            {foundSex
-                              ? foundSex.value === "F"
-                                ? t("Female")
-                                : t("Male")
-                              : ""}
-                          </TableCell>
-                          <TableCell>
-                            {foundDob
-                              ? format(new Date(foundDob.value), "yyyy-MM-dd")
-                              : ""}
-                          </TableCell>
+                          <TableCell>{foundHealthId ? foundHealthId.value : ""}</TableCell>
+                          <TableCell>{foundSex ? (foundSex.value === "F" ? t("Female") : t("Male")) : ""}</TableCell>
+                          <TableCell>{foundDob ? format(new Date(foundDob.value), "yyyy-MM-dd") : ""}</TableCell>
                         </TableRow>
                       );
                     })}
@@ -761,9 +626,7 @@ const PrintBirthCertificateButton = () => {
       orgUnits: state.orgUnits
     }))
   );
-  const { orgUnit } = useSelectionStore(
-    useShallow((state) => ({ orgUnit: state.orgUnit }))
-  );
+  const { orgUnit } = useSelectionStore(useShallow((state) => ({ orgUnit: state.orgUnit })));
   const { data, actions } = useTrackerCaptureStore(
     useShallow((state) => ({
       data: state.data,
@@ -815,31 +678,17 @@ const PrintBirthCertificateButton = () => {
     }
   };
 
-  const renderOptionTypeValue = (
-    pdfPage,
-    valueField,
-    valueStr,
-    locale,
-    drawConfigs
-  ) => {
+  const renderOptionTypeValue = (pdfPage, valueField, valueStr, locale, drawConfigs) => {
     const { width, height, textConfigs } = drawConfigs;
-    const optSetObj = optionSets.find(
-      (optSet) => optSet["id"] === valueField["optSetId"]
-    );
+    const optSetObj = optionSets.find((optSet) => optSet["id"] === valueField["optSetId"]);
     // console.log(valueStr);
-    const mappedObj = optSetObj["options"].find(
-      (opt) => opt["code"] === valueStr
-    );
+    const mappedObj = optSetObj["options"].find((opt) => opt["code"] === valueStr);
     if (mappedObj) {
       let finalText = "";
       if (locale !== "en") {
         // console.log(mappedObj);
         const translationObj = mappedObj
-          ? mappedObj["translations"].find(
-              (translation) =>
-                translation["locale"] === locale &&
-                translation["property"] === "NAME"
-            )
+          ? mappedObj["translations"].find((translation) => translation["locale"] === locale && translation["property"] === "NAME")
           : "";
         finalText = translationObj["value"];
       } else {
@@ -855,23 +704,13 @@ const PrintBirthCertificateButton = () => {
     }
   };
 
-  const renderOrgUnitValue = (
-    pdfPage,
-    valueField,
-    valueStr,
-    locale,
-    drawConfigs
-  ) => {
+  const renderOrgUnitValue = (pdfPage, valueField, valueStr, locale, drawConfigs) => {
     const { width, height, textConfigs } = drawConfigs;
     const ouObj = orgUnits.find((ou) => ou["id"] === valueStr);
     if (ouObj) {
       let finalOuText = "";
       if (locale !== "en") {
-        const translationObj = ouObj["translations"].find(
-          (translation) =>
-            translation["locale"] === locale &&
-            translation["property"] === "NAME"
-        );
+        const translationObj = ouObj["translations"].find((translation) => translation["locale"] === locale && translation["property"] === "NAME");
         finalOuText = translationObj["value"];
       } else {
         finalOuText = ouObj["displayName"];
@@ -905,9 +744,7 @@ const PrintBirthCertificateButton = () => {
 
   const generatePdfUrl = async (childTei) => {
     // Load the PDF template
-    const existingPdfBytes = await fetch(birthCertificateV2).then((res) =>
-      res.arrayBuffer()
-    );
+    const existingPdfBytes = await fetch(birthCertificateV2).then((res) => res.arrayBuffer());
     const fontFile = await fetch(phetsarathFont);
     const reponseFontBuffer = await fontFile.arrayBuffer();
     // Load a PDFDocument from the existing PDF bytes
@@ -935,30 +772,13 @@ const PrintBirthCertificateButton = () => {
       // console.log(valueField["ID"], valueStr);
       switch (valueField["valueType"]) {
         case "DATE":
-          renderDateStr(
-            firstPage,
-            valueStr,
-            valueField["dateCoords"],
-            drawConfigs
-          );
+          renderDateStr(firstPage, valueStr, valueField["dateCoords"], drawConfigs);
           break;
         case "OPTIONS":
-          renderOptionTypeValue(
-            firstPage,
-            valueField,
-            valueStr,
-            me.settings.keyUiLocale,
-            drawConfigs
-          );
+          renderOptionTypeValue(firstPage, valueField, valueStr, me.settings.keyUiLocale, drawConfigs);
           break;
         case "ORG_UNIT":
-          renderOrgUnitValue(
-            firstPage,
-            valueField,
-            valueStr,
-            me.settings.keyUiLocale,
-            drawConfigs
-          );
+          renderOrgUnitValue(firstPage, valueField, valueStr, me.settings.keyUiLocale, drawConfigs);
           break;
         default:
           renderRegularText(firstPage, valueField, valueStr, drawConfigs);
@@ -968,32 +788,19 @@ const PrintBirthCertificateButton = () => {
     for (const childVlField of CHILD_FIELDS) {
       let childValueStr = "";
       if (childVlField["valueSrc"] === "ATTR") {
-        const attrObj = childTei.attributes.find(
-          (attr) => attr["attribute"] === childVlField["ID"]
-        );
+        const attrObj = childTei.attributes.find((attr) => attr["attribute"] === childVlField["ID"]);
         childValueStr = attrObj ? attrObj["value"] : "";
       } else if (childVlField["valueSrc"] === "PARENT_ATTR") {
         childValueStr = getAttrValue(attributes, childVlField["ID"]);
       } else {
-        const eirEnroll = childTei.enrollments.find(
-          (enroll) => enroll["program"] === "Yj9cJ34AXw6"
-        );
-        const birthDetailsStage = eirEnroll.events.find(
-          (evt) => evt["programStage"] === "bwGkn5ebqkD"
-        );
-        const dataVlObj = birthDetailsStage.dataValues.find(
-          (dataVl) => dataVl["dataElement"] === childVlField["ID"]
-        );
+        const eirEnroll = childTei.enrollments.find((enroll) => enroll["program"] === "Yj9cJ34AXw6");
+        const birthDetailsStage = eirEnroll.events.find((evt) => evt["programStage"] === "bwGkn5ebqkD");
+        const dataVlObj = birthDetailsStage.dataValues.find((dataVl) => dataVl["dataElement"] === childVlField["ID"]);
         childValueStr = dataVlObj ? dataVlObj["value"] : "";
       }
       switch (childVlField["valueType"]) {
         case "DATE":
-          renderDateStr(
-            firstPage,
-            childValueStr,
-            childVlField["dateCoords"],
-            drawConfigs
-          );
+          renderDateStr(firstPage, childValueStr, childVlField["dateCoords"], drawConfigs);
           break;
         case "SEX":
           if (childValueStr === "M") {
@@ -1017,30 +824,13 @@ const PrintBirthCertificateButton = () => {
           }
           break;
         case "OPTIONS":
-          renderOptionTypeValue(
-            firstPage,
-            childVlField,
-            childValueStr,
-            me.settings.keyUiLocale,
-            drawConfigs
-          );
+          renderOptionTypeValue(firstPage, childVlField, childValueStr, me.settings.keyUiLocale, drawConfigs);
           break;
         case "ORG_UNIT":
-          renderOrgUnitValue(
-            firstPage,
-            childVlField,
-            childValueStr,
-            me.settings.keyUiLocale,
-            drawConfigs
-          );
+          renderOrgUnitValue(firstPage, childVlField, childValueStr, me.settings.keyUiLocale, drawConfigs);
           break;
         default:
-          renderRegularText(
-            firstPage,
-            childVlField,
-            childValueStr,
-            drawConfigs
-          );
+          renderRegularText(firstPage, childVlField, childValueStr, drawConfigs);
           break;
       }
     }
@@ -1078,32 +868,18 @@ const PrintBirthCertificateButton = () => {
               onChange={handleTabChange}
               // aria-label="lab API tabs example"
             >
-              {childTeis &&
-                childTeis.map((childTei, index) => (
-                  <Tab
-                    key={`label${index}}`}
-                    label={`Infant ${index + 1}`}
-                    value={`${index + 1}`}
-                  />
-                ))}
+              {childTeis && childTeis.map((childTei, index) => <Tab key={`label${index}}`} label={`Infant ${index + 1}`} value={`${index + 1}`} />)}
             </TabList>
           </div>
           <div>
             {childTeis &&
               childTeis.map((childTei, index) => {
-                const teiUrlObj = childCertPdfUrls.current.find(
-                  (urlObj) =>
-                    urlObj["tei"] === childTei["trackedEntityInstance"]
-                );
+                const teiUrlObj = childCertPdfUrls.current.find((urlObj) => urlObj["tei"] === childTei["trackedEntityInstance"]);
                 // console.log(teiUrlObj);
                 return (
                   <Fragment key={`tab${index}}`}>
                     <TabPanel value={`${index + 1}`}>
-                      <iframe
-                        src={teiUrlObj ? teiUrlObj["url"] : birthCertificateV2}
-                        width="100%"
-                        height="500px"
-                      />
+                      <iframe src={teiUrlObj ? teiUrlObj["url"] : birthCertificateV2} width="100%" height="500px" />
                     </TabPanel>
                   </Fragment>
                 );
@@ -1182,16 +958,12 @@ const useDeliveryRegistryCompleteEnrollmentButton = () => {
               variant="contained"
               onClick={async () => {
                 const length = currentEnrollments.length;
-                const result = await deleteEnrollment(
-                  currentEnrollment.enrollment
-                );
+                const result = await deleteEnrollment(currentEnrollment.enrollment);
                 if (length === 1) {
                   const result1 = await pull(
                     `/api/routes/chr/run?work=unenroll&tei=${currentEnrollment.trackedEntityInstance}&program=${program.id}`
                   );
-                  const result2 = await deleteTei(
-                    currentTei.trackedEntityInstance
-                  );
+                  const result2 = await deleteTei(currentTei.trackedEntityInstance);
                 }
                 if (!result.ok) {
                   setApiError({ ...result });
@@ -1224,29 +996,15 @@ const useDeliveryRegistryCompleteEnrollmentButton = () => {
     } else {
       setLayout("customEventFormButtons", null);
     }
-  }, [
-    program ? program.id : "",
-    layout.layout,
-    currentEnrollment ? currentEnrollment.enrollment : "",
-    anchorEl
-  ]);
+  }, [program ? program.id : "", layout.layout, currentEnrollment ? currentEnrollment.enrollment : "", anchorEl]);
 
   useEffect(() => {
-    if (
-      program &&
-      program.id === "AyPkCOMmgdd" &&
-      currentEnrollment &&
-      currentEnrollment.status === "COMPLETED"
-    ) {
+    if (program && program.id === "AyPkCOMmgdd" && currentEnrollment && currentEnrollment.status === "COMPLETED") {
       setLayout("disableEventEditButton", true);
     } else {
       setLayout("disableEventEditButton", false);
     }
-  }, [
-    currentEnrollment
-      ? currentEnrollment.enrollment + currentEnrollment.status
-      : ""
-  ]);
+  }, [currentEnrollment ? currentEnrollment.enrollment + currentEnrollment.status : ""]);
 };
 
 const useDisableEventCreateButtonIfThereAreUncompletedEvents = () => {
@@ -1264,12 +1022,8 @@ const useDisableEventCreateButtonIfThereAreUncompletedEvents = () => {
   const { setLayout } = actions;
   useEffect(() => {
     if (program && programs.includes(program.id) && selectedProgramStage) {
-      const currentProgramStageEvents = currentEvents.filter(
-        (ce) => ce.programStage === selectedProgramStage
-      );
-      const foundUncompletedEvents = currentProgramStageEvents.find(
-        (ce) => ce.status === "ACTIVE"
-      );
+      const currentProgramStageEvents = currentEvents.filter((ce) => ce.programStage === selectedProgramStage);
+      const foundUncompletedEvents = currentProgramStageEvents.find((ce) => ce.status === "ACTIVE");
       if (foundUncompletedEvents) {
         setLayout("disableEventCreateButton", true);
       } else {
