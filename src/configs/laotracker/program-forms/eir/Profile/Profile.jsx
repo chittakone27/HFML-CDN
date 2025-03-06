@@ -296,7 +296,13 @@ const Profile = ({ attributeProps = {} }) => {
           const initialDate = attribute === "tQeFLjYbqzv" ? format(new Date(), "yyyy-MM-dd") : undefined;
           return (
             <div className="custom-tracker-profile-field-row">
-              <AttributeLabel attribute={attribute} />
+              {attribute === "DtqYqC9Xr5Z" ? (
+                <div style={{ display: "flex" }}>
+                  <Typography variant={"body1"}>{t("livingAbroad")}</Typography>
+                </div>
+              ) : (
+                <AttributeLabel attribute={attribute} />
+              )}
               <div>
                 <AttributeField
                   renderAsRadio={attribute === "DmuazFb368B" ? true : undefined}
