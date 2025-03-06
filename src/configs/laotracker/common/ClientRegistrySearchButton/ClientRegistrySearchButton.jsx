@@ -599,6 +599,7 @@ const ClientRegistrySearchButton = ({
         <DialogActions>
           <Button
             variant="contained"
+            disabled={program.readOnly}
             onClick={() => {
               const currentDate = format(new Date(), "yyyy-MM-dd");
               register(currentDate, currentDate);
@@ -644,6 +645,7 @@ const ClientRegistrySearchButton = ({
           </Button>
           <Button
             variant="contained"
+            disabled={program.readOnly}
             onClick={() => {
               const currentDate = format(new Date(), "yyyy-MM-dd");
               register(currentDate, currentDate);

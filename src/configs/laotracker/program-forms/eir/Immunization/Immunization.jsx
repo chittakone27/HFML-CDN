@@ -25,7 +25,12 @@ const Immunization = () => {
   const [currentDueDate, setCurrentDueDate] = useState("");
   const [dialog, setDialog] = useState(false);
   const { t } = useTranslation();
-  const orgUnit = useSelectionStore((state) => state.orgUnit);
+  const { orgUnit, program } = useSelectionStore(
+    useShallow((state) => ({
+      orgUnit: state.orgUnit,
+      program: state.program
+    }))
+  );
   const { actions, data } = useTrackerCaptureStore(
     useShallow((state) => ({
       actions: state.actions,
@@ -148,7 +153,7 @@ const Immunization = () => {
       <EventDateFieldNoBlur type="dueDate" disabled={!dueDateEditing} />
       <div style={{ height: 3 }}></div>
       {!dueDateEditing && (
-        <Button variant="contained" onClick={toggleDueDateEditing}>
+        <Button disabled={program.readOnly} variant="contained" onClick={toggleDueDateEditing}>
           {t("rescheduleDate")}
         </Button>
       )}
@@ -180,6 +185,7 @@ const Immunization = () => {
       <div style={{ height: 3 }}></div>
       <EventDateLabel type="eventDate" />
       <EventDateFieldNoBlur
+        disabled={program.readOnly}
         maxDate={format(new Date(), "yyyy-MM-dd")}
         type="eventDate"
         focus={() => {

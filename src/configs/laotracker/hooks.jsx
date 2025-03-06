@@ -138,6 +138,7 @@ const ToggleActivationStatusButton = () => {
           </Alert>
           <br />
           <LoadingButton
+            disabled={program.readOnly}
             loading={loading}
             color="warning"
             variant="contained"
@@ -164,7 +165,7 @@ const ToggleActivationStatusButton = () => {
         </div>
       </Popover>
       <LoadingButton
-        disabled={disabled}
+        disabled={disabled || program.readOnly}
         color="warning"
         variant="contained"
         onClick={(event) => {
@@ -367,7 +368,7 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
   const [eirEnrollmentLoading, setEirEnrollmentLoading] = useState(false);
   const [completeDeliveryLoading, setCompleteDeliveryLoading] = useState(false);
   const [showSummaryTable, setShowSummaryTable] = useState(false);
-
+  const program = useSelectionStore((state) => state.program);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const { data, actions } = useTrackerCaptureStore(
@@ -522,7 +523,7 @@ const DeliveryRegistryCompleteEnrollmentButton = () => {
   return (
     <>
       {currentEnrollment.status !== "COMPLETED" && (
-        <LoadingButton disabled={disabled} loading={loading} variant="contained" color="success" onClick={completeEnrollment}>
+        <LoadingButton disabled={disabled || program.readOnly} loading={loading} variant="contained" color="success" onClick={completeEnrollment}>
           {t("completeThisDelivery")}
         </LoadingButton>
       )}
@@ -920,6 +921,7 @@ const useDeliveryRegistryCompleteEnrollmentButton = () => {
           <>
             &nbsp;
             <Button
+              disabled={program.readOnly}
               variant="outlined"
               color="error"
               onClick={(event) => {

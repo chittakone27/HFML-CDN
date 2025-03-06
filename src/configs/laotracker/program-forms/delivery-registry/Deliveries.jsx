@@ -203,7 +203,7 @@ const Deliveries = () => {
           </TableBody>
         </Table>
         <div className="add-new-delivery-button">
-          <LoadingButton onClick={doEnroll} loading={loading} variant="contained" disabled={!ableToEnroll}>
+          <LoadingButton onClick={doEnroll} loading={loading} variant="contained" disabled={!ableToEnroll || program.readOnly}>
             {t("addNewDelivery")}
           </LoadingButton>
           <div className="add-new-delivery-warning">{!ableToEnroll && <div>{t("addNewDeliveryWarning")}</div>}</div>

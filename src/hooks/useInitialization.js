@@ -137,9 +137,16 @@ const useInitialization = () => {
         return prv.programRuleVariableSourceType === "DATAELEMENT_CURRENT_EVENT";
       });
     });
-    programs = programs.filter((program) => {
-      return program.access.data.read;
-    });
+    programs = programs
+      .filter((program) => {
+        return program.access.data.read;
+      })
+      .map((program) => {
+        if (!program.access.data.write) {
+          program.readOnly = true;
+        }
+        return program;
+      });
     dataSets = dataSets
       .filter((ds) => !filteredDataSets.includes(ds.id))
       .filter((ds) => {
