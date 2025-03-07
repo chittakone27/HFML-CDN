@@ -1035,6 +1035,19 @@ const useDisableEventCreateButtonIfThereAreUncompletedEvents = () => {
   }, [selectedProgramStage, JSON.stringify(currentEvents)]);
 };
 
+const useRedirectToCodApp = () => {
+  const actions = useSelectionStore((state) => state.actions);
+  const { setCustomProgramDataSetHandler } = actions;
+
+  useEffect(() => {
+    setCustomProgramDataSetHandler((value) => {
+      if (value && value.id === "ogrOUKoSaWA") {
+        window.open("../ICD-10-Cause-of-Death/index.html", "_self");
+      }
+    });
+  }, []);
+};
+
 const hooks = [
   useDefaultOrgUnitSelection,
   useDisableEirRegisterButton,
@@ -1042,6 +1055,7 @@ const hooks = [
   useEirToggleActivationStatusButton,
   useEirDisableCreateEventButton,
   useDeliveryRegistryCompleteEnrollmentButton,
-  useDisableEventCreateButtonIfThereAreUncompletedEvents
+  useDisableEventCreateButtonIfThereAreUncompletedEvents,
+  useRedirectToCodApp
 ];
 export default hooks;

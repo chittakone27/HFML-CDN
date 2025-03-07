@@ -23,13 +23,14 @@ const ProgramDataSetSelector = ({ disabled }) => {
     }),
     shallow
   );
-  const { program, dataSet, orgUnit, period, actions } = useSelectionStore(
+  const { program, dataSet, orgUnit, period, actions, customProgramDataSetHandler } = useSelectionStore(
     (state) => ({
       orgUnit: state.orgUnit,
       program: state.program,
       dataSet: state.dataSet,
       period: state.period,
-      actions: state.actions
+      actions: state.actions,
+      customProgramDataSetHandler: state.customProgramDataSetHandler
     }),
     shallow
   );
@@ -191,6 +192,10 @@ const ProgramDataSetSelector = ({ disabled }) => {
           // if (!foundAssignedOu) {
           //   selectOrgUnit(null);
           // }
+
+          if (customProgramDataSetHandler) {
+            customProgramDataSetHandler(foundProgramDataSet);
+          }
           if (!type) {
             resetPeriod();
             selectProgram(null);

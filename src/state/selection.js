@@ -11,6 +11,7 @@ const useSelectionStore = create((set, get) => ({
   dataSet: null,
   attributeOptionCombo: null,
   filteredOrgUnits: null,
+  customProgramDataSetHandler: null,
   actions: {
     selectOrgUnit: (orgUnit) =>
       set(() => ({
@@ -42,6 +43,12 @@ const useSelectionStore = create((set, get) => ({
       set(
         produce((state) => {
           state.filteredOrgUnits = value;
+        })
+      ),
+    setCustomProgramDataSetHandler: (handler) =>
+      set(
+        produce((state) => {
+          state.customProgramDataSetHandler = handler;
         })
       )
   }
