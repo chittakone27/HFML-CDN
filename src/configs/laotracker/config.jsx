@@ -87,7 +87,7 @@ const customLocales = {
     searchAgain: "ຄົ້ນຫາອີກຄັ້ງໜຶ່ງ",
     doEnroll:
       "ຜູ້ມາຮັບບໍລິການສາທາລະນະສຸກຜູ້ນີ້ຈະໄດ້ຖືກລົງທະບຽນເຂົ້າໃນໂປຣແກຣມ {{program}} ຢູ່ທີ່ສະຖານທີ່ບໍລິການ: {{facility}}. ທ່ານຢາກສືບຕໍ່ລົງທະບຽນບໍ່?",
-    enrolled: "This client is already enrolled to {{program}}. Click OK to open the form",
+    enrolled: `ຜູ້ມາຮັບບໍລິການຄົນນີ້ໄດ້ຖືກລົງທະບຽນເຂົ້າໃນສາຍງານ {{program}}. ໃຫ້ທ່ານກົດໃສ່ "ຕົກລົງ" ເພື່ອເປີດຟອມຂຶ້ນມາ.`,
     profile: "ຂໍມູນຂອງແມ່",
     searchOptions: "ຕົວເລືອກການຄົ້ນຫາ",
     clientRegistryRegister: "ລົງທະບຽນ",
