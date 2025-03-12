@@ -5,12 +5,18 @@ import useMetadataStore from "@/state/metadata";
 import Cascader from "@/ui/common/Cascader/Cascader";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
+import { useShallow } from "zustand/react/shallow";
 
 const VillageSelectorOrgUnitNoState = ({ VillageSelectorIds, change, initValues, mandatoryFields }) => {
-  const orgUnits = useMetadataStore((state) => state.orgUnits, shallow);
+  const { orgUnits, me } = useMetadataStore(
+    useShallow((state) => ({
+      orgUnits: state.orgUnits,
+      me: state.me
+    }))
+  );
   const { currentTei } = useTrackerCaptureStore((state) => state.data, shallow);
   const { changeAttributeValue, changeEnrollmentProperty } = useTrackerCaptureStore((state) => state.actions, shallow);
-
+  console.log(me);
   const [provinces, districts, villages] = useMemo(() => {
     return orgUnits.reduce(
       (result, ou) => {
@@ -25,9 +31,8 @@ const VillageSelectorOrgUnitNoState = ({ VillageSelectorIds, change, initValues,
       [[], [], []]
     );
   }, [orgUnits]);
-
-  const options = generateVillageSelectorOptionsById(provinces, districts, villages);
-
+  const language = me.settings.keyUiLocale;
+  const options = generateVillageSelectorOptionsById(provinces, districts, villages, language);
   return (
     <Cascader
       change={change}
