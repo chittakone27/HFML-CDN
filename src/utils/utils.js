@@ -8,10 +8,7 @@ const sample = (d = [], fn = Math.random) => {
 };
 
 const generateUid = (limit = 11, fn = Math.random) => {
-  const allowedLetters = [
-    "abcdefghijklmnopqrstuvwxyz",
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  ].join("");
+  const allowedLetters = ["abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"].join("");
   const allowedChars = ["0123456789", allowedLetters].join("");
   const arr = [sample(allowedLetters, fn)];
   for (let i = 0; i < limit - 1; i++) {
@@ -25,12 +22,7 @@ const convertDisplayValue = (dataItem, value, t) => {
   switch (dataItem.valueType) {
     case "DATE":
     case "AGE":
-      return value
-        ? format(
-            new Date(value),
-            VITE_DATE_FORMAT ? VITE_DATE_FORMAT : "yyyy-MM-dd"
-          )
-        : "";
+      return value ? format(new Date(value), VITE_DATE_FORMAT ? VITE_DATE_FORMAT : "yyyy-MM-dd") : "";
     case "TRUE_ONLY":
     case "BOOLEAN":
       return value === "true" ? t("yes") : value === "false" ? t("no") : "";
@@ -40,21 +32,14 @@ const convertDisplayValue = (dataItem, value, t) => {
 };
 
 const convertDisplayDate = (value) => {
-  const converted = value
-    ? format(
-        new Date(value),
-        VITE_DATE_FORMAT ? VITE_DATE_FORMAT : "yyyy-MM-dd"
-      )
-    : "";
+  const converted = value ? format(new Date(value), VITE_DATE_FORMAT ? VITE_DATE_FORMAT : "yyyy-MM-dd") : "";
   return converted;
 };
 
 const stringToSlug = (str) => {
   // remove accents
-  var from =
-      "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
-    to =
-      "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
+  var from = "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+    to = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
   for (var i = 0, l = from.length; i < l; i++) {
     str = str.replace(RegExp(from[i], "gi"), to[i]);
   }
@@ -137,14 +122,7 @@ const returnSixMonthly = (year, sixMonth, t) => {
   }
 };
 
-const generateWeeklySaturdayPeriods = (
-  valueSet,
-  maxDate,
-  currentYear,
-  maxYear,
-  maxWeek,
-  countYear
-) => {
+const generateWeeklySaturdayPeriods = (valueSet, maxDate, currentYear, maxYear, maxWeek, countYear) => {
   let year = currentYear;
   let startDate = getStartDateOfYear(year, 6);
   let nextYearStartDate = Date.parse(getStartDateOfYear(year + 1, 1));
@@ -158,14 +136,9 @@ const generateWeeklySaturdayPeriods = (
     let endDate = new Date(startDate);
     endDate = addWeeks(endDate, 1);
     endDate.setDate(endDate.getDate() - 1);
-    let isNextYearWeek =
-      Date.parse(startDate) <= nextYearStartDate &&
-      nextYearStartDate <= Date.parse(endDate);
+    let isNextYearWeek = Date.parse(startDate) <= nextYearStartDate && nextYearStartDate <= Date.parse(endDate);
     let days = Math.floor((startDate - year) / (24 * 60 * 60 * 1000));
-    if (
-      (Math.ceil((startDate.getDay() + 1 + days) / 7) === 1 && week > 50) ||
-      isNextYearWeek
-    ) {
+    if ((Math.ceil((startDate.getDay() + 1 + days) / 7) === 1 && week > 50) || isNextYearWeek) {
       break;
     }
     let valid = true;
@@ -177,7 +150,7 @@ const generateWeeklySaturdayPeriods = (
     if (valid && (valueSet.length <= 12 || countYear)) {
       valueSet.push({
         label: `W${week} Sat ${year}`,
-        value: `${year}SatW${week}`,
+        value: `${year}SatW${week}`
       });
     }
     startDate = addWeeks(startDate, 1);
@@ -222,12 +195,8 @@ const returnHistoryPeriodArray = (period, t) => {
     case "Monthly":
       for (let i = 12; i >= 0; i--) {
         arr.push({
-          label: moment(period.dhis2Period)
-            .subtract(i, "month")
-            .format("MMMM YYYY"),
-          value: moment(period.dhis2Period)
-            .subtract(i, "month")
-            .format("YYYYMM"),
+          label: moment(period.dhis2Period).subtract(i, "month").format("MMMM YYYY"),
+          value: moment(period.dhis2Period).subtract(i, "month").format("YYYYMM")
         });
       }
       return arr;
@@ -235,7 +204,7 @@ const returnHistoryPeriodArray = (period, t) => {
       for (let i = 12; i >= 0; i--) {
         arr.push({
           label: period.dhis2Period - i,
-          value: period.dhis2Period - i,
+          value: period.dhis2Period - i
         });
       }
       return arr;
@@ -246,33 +215,23 @@ const returnHistoryPeriodArray = (period, t) => {
             moment(period.startDate).subtract(i, "month").year(),
             moment(period.startDate).subtract(i, "month").month() <= 5 ? 1 : 2
           ),
-          value: `${moment(period.startDate).subtract(i, "month").year()}S${
-            moment(period.startDate).subtract(i, "month").month() <= 5 ? 1 : 2
-          }`,
+          value: `${moment(period.startDate).subtract(i, "month").year()}S${moment(period.startDate).subtract(i, "month").month() <= 5 ? 1 : 2}`
         });
       }
       return arr;
     case "Quarterly":
       for (let i = 12; i >= 0; i--) {
         arr.push({
-          label: returnQuarterlyName(
-            moment(period.startDate).subtract(i, "Q").year(),
-            moment(period.startDate).subtract(i, "Q").format("[Q]Q"),
-            t
-          ),
-          value: moment(period.startDate).subtract(i, "Q").format("Y[Q]Q"),
+          label: returnQuarterlyName(moment(period.startDate).subtract(i, "Q").year(), moment(period.startDate).subtract(i, "Q").format("[Q]Q"), t),
+          value: moment(period.startDate).subtract(i, "Q").format("Y[Q]Q")
         });
       }
       return arr;
     case "Weekly":
       for (let i = 12; i >= 0; i--) {
         arr.push({
-          label: `W${moment(period.startDate)
-            .subtract(i, "week")
-            .isoWeek()} ${moment(period.startDate).subtract(i, "week").year()}`,
-          value: `${moment(period.startDate)
-            .subtract(i, "week")
-            .year()}W${moment(period.startDate).subtract(i, "week").isoWeek()}`,
+          label: `W${moment(period.startDate).subtract(i, "week").isoWeek()} ${moment(period.startDate).subtract(i, "week").year()}`,
+          value: `${moment(period.startDate).subtract(i, "week").year()}W${moment(period.startDate).subtract(i, "week").isoWeek()}`
         });
       }
       return arr;
@@ -280,33 +239,29 @@ const returnHistoryPeriodArray = (period, t) => {
       for (let i = 12; i >= 0; i--) {
         arr.push({
           label: `Oct ${period.year - i} to Sept ${period.year - i + 1}`,
-          value: `${period.year - i}Oct`,
+          value: `${period.year - i}Oct`
         });
       }
       return arr;
     case "WeeklySunday":
       let yearWeeklySunday = period.year;
-      let totalWeeksSunday = iso53WeeklySundayISOYear(yearWeeklySunday)
-        ? 53
-        : 52;
+      let totalWeeksSunday = iso53WeeklySundayISOYear(yearWeeklySunday) ? 53 : 52;
       let currentWeekSunday = period.week;
       arr.push({
         label: `W${currentWeekSunday} Sun ${yearWeeklySunday}`,
-        value: `${yearWeeklySunday}SunW${currentWeekSunday}`,
+        value: `${yearWeeklySunday}SunW${currentWeekSunday}`
       });
       for (let i = 0; i < 12; i++) {
         if (currentWeekSunday - 1 === 0) {
           yearWeeklySunday--;
-          totalWeeksSunday = iso53WeeklySundayISOYear(yearWeeklySunday)
-            ? 53
-            : 52;
+          totalWeeksSunday = iso53WeeklySundayISOYear(yearWeeklySunday) ? 53 : 52;
           currentWeekSunday = totalWeeksSunday;
         } else {
           currentWeekSunday -= 1;
         }
         arr.push({
           label: `W${currentWeekSunday} Sun ${yearWeeklySunday}`,
-          value: `${yearWeeklySunday}SunW${currentWeekSunday}`,
+          value: `${yearWeeklySunday}SunW${currentWeekSunday}`
         });
       }
       arr = arr.reverse();
@@ -316,27 +271,13 @@ const returnHistoryPeriodArray = (period, t) => {
       let currentYearWeeklySaturday = period.year;
       let totalWeeksSaturday = period.week;
       while (flag) {
-        arr = generateWeeklySaturdayPeriods(
-          arr,
-          period.endDate,
-          currentYearWeeklySaturday,
-          period.year,
-          totalWeeksSaturday,
-          false
-        );
+        arr = generateWeeklySaturdayPeriods(arr, period.endDate, currentYearWeeklySaturday, period.year, totalWeeksSaturday, false);
         if (arr.length >= 12) {
           flag = false;
         } else {
           currentYearWeeklySaturday -= 1;
           let arrCount = [];
-          arrCount = generateWeeklySaturdayPeriods(
-            arrCount,
-            period.startDate,
-            currentYearWeeklySaturday,
-            period.year,
-            null,
-            true
-          );
+          arrCount = generateWeeklySaturdayPeriods(arrCount, period.startDate, currentYearWeeklySaturday, period.year, null, true);
           totalWeeksSaturday = arrCount.length;
         }
       }
@@ -345,12 +286,8 @@ const returnHistoryPeriodArray = (period, t) => {
     case "Daily":
       for (let i = 12; i >= 0; i--) {
         arr.push({
-          label: moment(period.dhis2Period)
-            .subtract(i, "day")
-            .format("YYYY-MM-DD"),
-          value: moment(period.dhis2Period)
-            .subtract(i, "day")
-            .format("YYYYMMDD"),
+          label: moment(period.dhis2Period).subtract(i, "day").format("YYYY-MM-DD"),
+          value: moment(period.dhis2Period).subtract(i, "day").format("YYYYMMDD")
         });
       }
       return arr;
@@ -375,11 +312,7 @@ const pickExecutionDateLabel = (programStage, t) => {
     : t("eventDate");
 };
 const pickDueDateLabel = (programStage, t) => {
-  return programStage.displayDueDateLabel
-    ? programStage.displayDueDateLabel
-    : programStage.dueDateLabel
-    ? programStage.dueDateLabel
-    : t("dueDate");
+  return programStage.displayDueDateLabel ? programStage.displayDueDateLabel : programStage.dueDateLabel ? programStage.dueDateLabel : t("dueDate");
 };
 const escapeRegExp = (string) => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
@@ -410,9 +343,7 @@ const getTime = (value) => {
 
 const generateValueLabel = (value) => {
   if (value) {
-    const dateValue = VITE_DATE_FORMAT
-      ? format(new Date(value), VITE_DATE_FORMAT)
-      : value;
+    const dateValue = VITE_DATE_FORMAT ? format(new Date(value), VITE_DATE_FORMAT) : value;
     const { hour, minute } = getTime(value);
     return `${dateValue} ${hour}:${minute}`;
   }
@@ -422,8 +353,7 @@ const generateValueLabel = (value) => {
 const isValidCoordinate = (value) => {
   //value: string "[latitude],[longitude]"
   // This regular expression validates geographic coordinates
-  const re =
-    /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
+  const re = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
 
   // Explanation of the regex:
   // ^[-+]? : Start of string, optional + or -
@@ -458,17 +388,11 @@ const isValidCoordinate = (value) => {
 const pickTranslation = (object, language, field) => {
   const fieldMapping = {
     formName: "FORM_NAME",
-    name: "NAME",
+    name: "NAME"
   };
-  const foundTranslation = object.translations.find(
-    (t) => t.property === fieldMapping[field] && t.locale === language
-  );
-  return foundTranslation
-    ? foundTranslation.value
-    : object[field] ||
-        object["displayFormName"] ||
-        object["displayName"] ||
-        object["name"];
+  const foundTranslation = object.translations.find((t) => t.property === fieldMapping[field] && t.locale === language);
+  console.log(foundTranslation);
+  return foundTranslation ? foundTranslation.value : object[field] || object["displayFormName"] || object["displayName"] || object["name"];
 };
 
 export {
@@ -487,5 +411,5 @@ export {
   getTime,
   generateValueLabel,
   isValidCoordinate,
-  pickTranslation,
+  pickTranslation
 };

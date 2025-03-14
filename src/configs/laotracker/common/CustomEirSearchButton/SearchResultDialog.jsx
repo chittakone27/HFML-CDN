@@ -54,13 +54,12 @@ const SearchResultDialog = ({ open, setSearchResultDialog, setSearchDialog, resu
     if (foundOptionSet) {
       const foundOption = foundOptionSet.options.find((o) => o.code === value);
       if (foundOption) {
-        return foundOption.displayName;
+        return pickTranslation(foundOption, locale, "name");
       } else {
         return value;
       }
     } else if (tea.valueType === "ORGANISATION_UNIT") {
       const foundOu = orgUnits.find((ou) => ou.id === value);
-      console.log(pickTranslation(foundOu, locale, "name"), locale);
       return foundOu ? pickTranslation(foundOu, locale, "name") : value;
     } else {
       return convertDisplayValue(tea, value, t);
