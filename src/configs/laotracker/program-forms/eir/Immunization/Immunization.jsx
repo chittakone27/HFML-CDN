@@ -112,7 +112,7 @@ const Immunization = () => {
   }, []);
 
   return (
-    <Box className="eir-form-chilao">
+    <Box className="eir-form">
       <Dialog
         open={dialog}
         onClose={(event, reason) => {
@@ -210,9 +210,7 @@ const Immunization = () => {
           return (
             !hidden && (
               <div className="eir-immunization-row">
-                <div>
-                  <DataValueLabel dataElement={de[0].id} />
-                </div>
+                <DataValueLabel dataElement={de[0].id} />
                 <DataValueFieldNoBlur
                   hiddenOptions={hiddenOptions}
                   dataElement={de[0].id}
