@@ -391,7 +391,6 @@ const pickTranslation = (object, language, field) => {
     name: "NAME"
   };
   const foundTranslation = object.translations.find((t) => t.property === fieldMapping[field] && t.locale === language);
-  console.log(foundTranslation);
   return foundTranslation ? foundTranslation.value : object[field] || object["displayFormName"] || object["displayName"] || object["name"];
 };
 

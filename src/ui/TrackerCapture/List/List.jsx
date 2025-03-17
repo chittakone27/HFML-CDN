@@ -50,7 +50,6 @@ const List = (prop) => {
     if (foundOptionSet) {
       const foundOption = foundOptionSet.options.find((o) => o.code === value);
       if (foundOption) {
-        console.log(foundOption, locale);
         return pickTranslation(foundOption, locale, "name");
       } else {
         return value;

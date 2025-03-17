@@ -278,7 +278,6 @@ const useDeliveryDetailsRules = () => {
     //Hide Gestational aged under/equal 34 weeks received Antenital-Corticosteriod if gestational age over 34 week
     const currentGestationalWeek = dataValues[GESTATIONAL_WEEKS] ? parseInt(dataValues[GESTATIONAL_WEEKS]) : null;
     if (currentGestationalWeek) {
-      console.log(currentGestationalWeek);
       if (currentGestationalWeek <= 34) {
         props[GESTATIONAL_UNDER_OR_EQUAL_34_WEEKS_RECEIVED_CORTICOSTERIOD].hidden = false;
       } else {

@@ -224,7 +224,6 @@ const teiFilterSections = {};
 const customTeiFilterFields = {
   hr56o6I5n6p: {
     r8bZppSsIvR: (currentTeas, filters, changeFilter) => {
-      console.log(filters);
       const foundProvince = currentTeas.find((tea) => tea.id === "r8bZppSsIvR");
       const foundDistrict = currentTeas.find((tea) => tea.id === "oVwa5LfjnvA");
       const foundVillage = currentTeas.find((tea) => tea.id === "UNiaP6Oz7Mv");
@@ -241,7 +240,6 @@ const customTeiFilterFields = {
           labels={[foundProvince.displayFormName, foundDistrict.displayFormName, foundVillage.displayFormName]}
           values={values}
           change={(values) => {
-            console.log(values);
             changeFilter(foundProvince, values[0] ? values[0].value : "");
             changeFilter(foundDistrict, values[1] ? values[1].value : "");
             changeFilter(foundVillage, values[2] ? values[2].value : "");
