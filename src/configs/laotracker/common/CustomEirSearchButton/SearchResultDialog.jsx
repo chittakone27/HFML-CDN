@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import useSelectionStore from "@/state/selection";
 import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-import { convertDisplayValue } from "@/utils/utils";
+import { convertDisplayValue, pickTranslation } from "@/utils/utils";
 import { useShallow } from "zustand/react/shallow";
 import { useState } from "react";
 import _ from "lodash";
@@ -25,13 +25,15 @@ const SearchResultDialog = ({ open, setSearchResultDialog, setSearchDialog, resu
   );
   const { setLayout, initData, register } = actions;
 
-  const { trackedEntityAttributes, optionSets, orgUnits } = useMetadataStore(
+  const { trackedEntityAttributes, optionSets, orgUnits, me } = useMetadataStore(
     useShallow((state) => ({
       optionSets: state.optionSets,
       trackedEntityAttributes: state.trackedEntityAttributes,
-      orgUnits: state.orgUnits
+      orgUnits: state.orgUnits,
+      me: state.me
     }))
   );
+  const locale = me.settings.keyUiLocale;
   const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
       program: state.program,
@@ -52,13 +54,13 @@ const SearchResultDialog = ({ open, setSearchResultDialog, setSearchDialog, resu
     if (foundOptionSet) {
       const foundOption = foundOptionSet.options.find((o) => o.code === value);
       if (foundOption) {
-        return foundOption.displayName;
+        return pickTranslation(foundOption, locale, "name");
       } else {
         return value;
       }
     } else if (tea.valueType === "ORGANISATION_UNIT") {
       const foundOu = orgUnits.find((ou) => ou.id === value);
-      return foundOu ? foundOu.displayName : value;
+      return foundOu ? pickTranslation(foundOu, locale, "name") : value;
     } else {
       return convertDisplayValue(tea, value, t);
     }

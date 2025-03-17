@@ -68,7 +68,6 @@ const usePncRules = () => {
     //HIDE PNC2_WITHIN_2_3DAYS IF PNC VISIT NUMBER = 1
     //HIDE PNC3_WITHIN_7_14DAYS IF PNC VISIT NUMBER = 1 or 2
     //HIDE PNC_IN_6WEEKS IF PNC VISIT NUMBER > 6
-    console.log(dataValues[PNC_VISIT_NUMBER] === "2");
     if (dataValues[PNC_VISIT_NUMBER] === "1") {
       currentHiddenFields.push(PNC2_WITHIN_2_3DAYS);
       currentHiddenFields.push(PNC3_WITHIN_7_14DAYS);

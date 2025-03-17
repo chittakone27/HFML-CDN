@@ -138,7 +138,6 @@ const DateTimeInput = ({ accept, value, maxDate, minDate, disabled, backgroundCo
               style={{ marginRight: 5 }}
               variant="contained"
               onClick={() => {
-                console.log(date ? format(date, "yyyy-MM-dd") + `T${time.hour}:${time.minute}:00` : "");
                 accept(date ? format(date, "yyyy-MM-dd") + `T${time.hour}:${time.minute}:00` : "");
                 handleClose();
               }}

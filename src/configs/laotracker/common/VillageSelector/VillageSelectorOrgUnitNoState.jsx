@@ -16,7 +16,6 @@ const VillageSelectorOrgUnitNoState = ({ VillageSelectorIds, change, initValues,
   );
   const { currentTei } = useTrackerCaptureStore((state) => state.data, shallow);
   const { changeAttributeValue, changeEnrollmentProperty } = useTrackerCaptureStore((state) => state.actions, shallow);
-  console.log(me);
   const [provinces, districts, villages] = useMemo(() => {
     return orgUnits.reduce(
       (result, ou) => {

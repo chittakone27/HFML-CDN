@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import withModuleSection from "@/hocs/withModuleSection";
 import FilterDialog from "./FilterDialog";
 import moment from "moment";
-import { convertDisplayValue } from "@/utils/utils";
+import { convertDisplayValue, pickTranslation } from "@/utils/utils";
 import { shallow } from "zustand/shallow";
 import useEventCaptureStore from "@/state/eventCapture";
 import useSelectionStore from "@/state/selection";
@@ -26,10 +26,11 @@ const List = (prop) => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const { program, orgUnit } = useSelectionStore((state) => ({ program: state.program, orgUnit: state.orgUnit }), shallow);
-  const { trackedEntityAttributes, optionSets, orgUnits } = useMetadataStore(
-    (state) => ({ trackedEntityAttributes: state.trackedEntityAttributes, optionSets: state.optionSets, orgUnits: state.orgUnits }),
+  const { trackedEntityAttributes, optionSets, orgUnits, me } = useMetadataStore(
+    (state) => ({ trackedEntityAttributes: state.trackedEntityAttributes, optionSets: state.optionSets, orgUnits: state.orgUnits, me: state.me }),
     shallow
   );
+  const locale = me.settings.keyUiLocale;
   const { teis, filter, paging, actions, data } = useTrackerCaptureStore(
     (state) => ({ teis: state.teis, actions: state.actions, filter: state.filter, paging: state.paging, data: state.data }),
     shallow
@@ -49,13 +50,13 @@ const List = (prop) => {
     if (foundOptionSet) {
       const foundOption = foundOptionSet.options.find((o) => o.code === value);
       if (foundOption) {
-        return foundOption.displayName;
+        return pickTranslation(foundOption, locale, "name");
       } else {
         return value;
       }
     } else if (tea.valueType === "ORGANISATION_UNIT") {
       const foundOu = orgUnits.find((ou) => ou.id === value);
-      return foundOu ? foundOu.displayName : value;
+      return pickTranslation(foundOu, locale, "name");
     } else {
       return convertDisplayValue(tea, value, t);
     }

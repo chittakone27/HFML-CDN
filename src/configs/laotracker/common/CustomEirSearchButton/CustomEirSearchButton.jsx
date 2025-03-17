@@ -131,7 +131,6 @@ const CustomEirSearchButton = () => {
                     VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
                     initValues={search[foundTea.id] ? search[foundTea.id].split(";") : ["", "", ""]}
                     change={(values) => {
-                      console.log(values);
                       if (values[0] && values[1]) {
                         changeSearch(foundTea.id, values.map((v) => (v ? v.value : "")).join(";"));
                       } else {

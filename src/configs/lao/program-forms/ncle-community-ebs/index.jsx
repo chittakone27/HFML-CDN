@@ -22,10 +22,7 @@ const NcleCommunityEbs = () => {
   const { hiddenFields } = status;
   const program = useSelectionStore((state) => state.program);
   const sections = program.programStages[0].programStageSections;
-  console.log(sections);
-  const foundFinalAssessmentSection = sections.find(
-    (section) => section.id === "uXSDa2jRbSM"
-  );
+  const foundFinalAssessmentSection = sections.find((section) => section.id === "uXSDa2jRbSM");
   const [props, setProps] = useState({});
   useEffect(() => {
     const currentProps = {};
@@ -48,14 +45,9 @@ const NcleCommunityEbs = () => {
         }
         return (
           <div className="ncle-community-ebs-section-container">
-            <div className="ncle-community-ebs-section-label">
-              {section.displayName}
-            </div>
+            <div className="ncle-community-ebs-section-label">{section.displayName}</div>
             {section.dataElements.map((de) => {
-              if (
-                hiddenFields.includes(de.id) ||
-                INVESTIGATED_BY_OPTS.includes(de.id)
-              ) {
+              if (hiddenFields.includes(de.id) || INVESTIGATED_BY_OPTS.includes(de.id)) {
                 return null;
               }
               return de.id !== "PWnpVKZKxpq" ? (
