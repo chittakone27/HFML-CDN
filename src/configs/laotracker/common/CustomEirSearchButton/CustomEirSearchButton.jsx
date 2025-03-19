@@ -32,11 +32,10 @@ const CustomEirSearchButton = () => {
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [search, setSearch] = useState({});
-  const [selectedSo, setSelectedSo] = useState("");
+  const [selectedSo, setSelectedSo] = useState("oPKsfqS64oE");
   const program = useSelectionStore((state) => state.program);
   const trackedEntityAttributes = useMetadataStore((state) => state.trackedEntityAttributes);
   const { t } = useTranslation();
-
   const valueSet = searchOptions.map((so) => {
     let labels = [];
     let values = [];

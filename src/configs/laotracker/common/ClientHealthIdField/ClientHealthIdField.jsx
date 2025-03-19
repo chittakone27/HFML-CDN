@@ -16,7 +16,7 @@ const ClientHealthIdField = ({ disabled, value, change }) => {
     let newValue = value.replace(/[a-zA-Z]/g, "");
     const splitted = newValue.split("-");
     if (splitted.length === 3) {
-      if (splitted[0].length === 8 && splitted[1].length === 1 && splitted[2].length === 4) {
+      if (splitted[0].length === 8 && splitted[1].length === 1 && (splitted[2].length === 4 || splitted[2].length === 3)) {
         setDob(splitted[0]);
         setSex(splitted[1]);
         setNum(splitted[2]);
