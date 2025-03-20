@@ -48,25 +48,26 @@ const Immunization = () => {
     let foundIpv2 = false;
     let foundScheduledEvent = false;
     let latestDate = "";
-
-    events.forEach((ce) => {
-      if (!latestDate || ce.eventDate > latestDate) {
-        latestDate = ce.eventDate;
-      }
-      const foundMr2Ce = ce.dataValues.find((dv) => dv.dataElement === MR2 && dv.value === "true");
-      const foundIpv2Ce = ce.dataValues.find((dv) => dv.dataElement === IPV2 && dv.value === "true");
-      if (foundMr2Ce) {
-        foundMr2 = true;
-      }
-      if (foundIpv2Ce) {
-        foundIpv2 = true;
-      }
-      if (ce.status === "SCHEDULE") {
-        if (ce.event !== event.event) {
-          foundScheduledEvent = true;
+    events
+      .filter((ev) => ev.programStage === "hCTTxOH8FOa")
+      .forEach((ce) => {
+        if (!latestDate || ce.eventDate > latestDate) {
+          latestDate = ce.eventDate;
         }
-      }
-    });
+        const foundMr2Ce = ce.dataValues.find((dv) => dv.dataElement === MR2 && dv.value === "true");
+        const foundIpv2Ce = ce.dataValues.find((dv) => dv.dataElement === IPV2 && dv.value === "true");
+        if (foundMr2Ce) {
+          foundMr2 = true;
+        }
+        if (foundIpv2Ce) {
+          foundIpv2 = true;
+        }
+        if (ce.status === "SCHEDULE") {
+          if (ce.event !== event.event) {
+            foundScheduledEvent = true;
+          }
+        }
+      });
     if ((foundMr2 && foundIpv2) || foundScheduledEvent) {
       setDialog(false);
       selectEvent("");
