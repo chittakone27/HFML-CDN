@@ -16,27 +16,49 @@ const DownloadExcelButton = () => {
   const download = () => {
     const newWb = utils.book_new();
     newWb.SheetNames.push("Data");
+    const columns = program.programTrackedEntityAttributes
+      .filter((ptea) => ptea.displayInList)
+      .map((ptea) => {
+        const foundTea = trackedEntityAttributes.find((tea) => tea.id === ptea.trackedEntityAttribute.id);
+        return foundTea;
+      });
+
+    // const convertedTeis = program.programTrackedEntityAttributes
+    //   .filter((ptea) => ptea.displayInList)
+    //   .map((ptea) => {
+    //     const newTei = {};
+    //     const foundTea = trackedEntityAttributes.find((tea) => tea.id === ptea.trackedEntityAttribute.id);
+    //     const tea = ptea.trackedEntityAttribute.id;
+    //     if (foundTea) {
+    //       newTei[foundTea.displayFormName] = tei[key];
+    //     } else {
+    //       newTei[t(key)] = tei[key];
+    //     }
+    //   });
+
     const convertedTeis = teis.map((tei) => {
       const newTei = {};
-
-      Object.keys(tei).forEach((key) => {
-        if (["status"].includes(key)) {
-          return;
-        }
-        if (key === "id") {
-          return;
-        }
-        if (key === "enrollmentDate") {
-          newTei[program.enrollmentDateLabel] = tei[key];
-          return;
-        }
-        const foundTea = trackedEntityAttributes.find((tea) => tea.id === key);
-        if (foundTea) {
-          newTei[foundTea.displayFormName] = tei[key];
-        } else {
-          newTei[t(key)] = tei[key];
-        }
+      columns.forEach((tea) => {
+        newTei[tea.displayFormName] = tei[tea.id];
       });
+      // Object.keys(tei).forEach((key) => {
+      //   if (["status"].includes(key)) {
+      //     return;
+      //   }
+      //   if (key === "id") {
+      //     return;
+      //   }
+      //   if (key === "enrollmentDate") {
+      //     newTei[program.enrollmentDateLabel] = tei[key];
+      //     return;
+      //   }
+      //   const foundTea = trackedEntityAttributes.find((tea) => tea.id === key);
+      //   if (foundTea) {
+      //     newTei[foundTea.displayFormName] = tei[key];
+      //   } else {
+      //     newTei[t(key)] = tei[key];
+      //   }
+      // });
       return newTei;
     });
     newWb.Sheets["Data"] = utils.json_to_sheet(convertedTeis);
