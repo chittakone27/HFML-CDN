@@ -1010,7 +1010,7 @@ const useDeliveryRegistryCompleteEnrollmentButton = () => {
 };
 
 const useDisableEventCreateButtonIfThereAreUncompletedEvents = () => {
-  const programs = ["u1Na9wCGY6d", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7"];
+  const programs = ["u1Na9wCGY6d", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "ck0rft9jVlF"];
   const program = useSelectionStore((state) => state.program);
   const { data, actions, layout } = useTrackerCaptureStore(
     useShallow((state) => ({
