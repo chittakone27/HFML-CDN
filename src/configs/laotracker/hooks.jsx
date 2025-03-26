@@ -1024,13 +1024,16 @@ const useDisableEventCreateButtonIfThereAreUncompletedEvents = () => {
   const { setLayout } = actions;
   useEffect(() => {
     if (program && programs.includes(program.id) && selectedProgramStage) {
-      const currentProgramStageEvents = currentEvents.filter((ce) => ce.programStage === selectedProgramStage);
-      const foundUncompletedEvents = currentProgramStageEvents.find((ce) => ce.status === "ACTIVE");
-      if (foundUncompletedEvents) {
-        setLayout("disableEventCreateButton", true);
-      } else {
-        setLayout("disableEventCreateButton", false);
-      }
+      setTimeout(() => {
+        const currentProgramStageEvents = currentEvents.filter((ce) => ce.programStage === selectedProgramStage);
+        const foundUncompletedEvents = currentProgramStageEvents.find((ce) => ce.status === "ACTIVE");
+        console.log(foundUncompletedEvents);
+        if (foundUncompletedEvents) {
+          setLayout("disableEventCreateButton", true);
+        } else {
+          setLayout("disableEventCreateButton", false);
+        }
+      }, 600);
     }
   }, [selectedProgramStage, JSON.stringify(currentEvents)]);
 };

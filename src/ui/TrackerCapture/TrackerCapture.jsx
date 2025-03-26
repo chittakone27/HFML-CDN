@@ -37,7 +37,7 @@ const TrackerCapture = () => {
       setLayout("disableEventDeleteButton", value);
       setLayout("disableProfileEditButton", value);
       setLayout("hideProfileDeleteButton", value);
-    }, 300);
+    }, 500);
   };
 
   const renderLayout = () => {

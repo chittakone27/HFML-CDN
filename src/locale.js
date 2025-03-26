@@ -314,7 +314,7 @@ const resources = {
       selectMinute: "Minute",
       dragAndDrop: "Drag and drop files here or select file to upload",
       uploadFile: "Upload file",
-      ACTIVE: "ກຳລັງດຳເນີນການ",
+      ACTIVE: "ຂໍ້ມູນຍັງບໍ່ສຳເລັດ",
       COMPLETED: "ສຳເລັດ"
     }
   },

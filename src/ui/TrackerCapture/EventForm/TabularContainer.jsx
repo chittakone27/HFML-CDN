@@ -69,6 +69,9 @@ const TabularContainer = ({ currentProgramStage }) => {
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontSize: 12 }} align="left">
+                {t("status")}
+              </TableCell>
+              <TableCell sx={{ fontSize: 12 }} align="left">
                 {pickExecutionDateLabel(currentProgramStage, t)}
               </TableCell>
               {!currentProgramStage.hideDueDate && (
@@ -114,6 +117,9 @@ const TabularContainer = ({ currentProgramStage }) => {
                       }
                     }}
                   >
+                    <TableCell sx={{ fontSize: 12 }} align="left">
+                      {t(ev.status)}
+                    </TableCell>
                     <TableCell sx={{ fontSize: 12 }} align="left">
                       {convertDisplayDate(ev.eventDate)}
                     </TableCell>
