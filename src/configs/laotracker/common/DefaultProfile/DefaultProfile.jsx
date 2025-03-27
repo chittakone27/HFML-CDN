@@ -44,7 +44,7 @@ const DefaultProfile = ({ attributeProps = {} }) => {
   const attributes = program.programTrackedEntityAttributes.map((ptea) => {
     return ptea.trackedEntityAttribute.id;
   });
-  const hiddenAttributes = ["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"];
+  const hiddenAttributes = ["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv", "I40YqLHbAvE"];
   const disabledAttributes = ["oPKsfqS64oE"];
 
   const currentDate = format(new Date(), "yyyy-MM-dd");

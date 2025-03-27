@@ -61,7 +61,8 @@ const Input = ({
   multiline,
   rows,
   optionNotes = [],
-  row = true
+  row = true,
+  customDateFormat
 }) => {
   let isMobile = false;
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -317,6 +318,7 @@ const Input = ({
       case "DATE":
         return (
           <DateInput
+            customDateFormat={customDateFormat}
             accept={accept}
             value={value}
             maxDate={maxDate}

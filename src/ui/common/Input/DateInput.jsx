@@ -17,7 +17,7 @@ const localeMap = {
   lo
 };
 
-const DateInput = ({ accept, value, maxDate, minDate, disabled, backgroundColor, focus, blur, defaultMonth, disableClearable }) => {
+const DateInput = ({ accept, value, maxDate, minDate, disabled, backgroundColor, focus, blur, defaultMonth, disableClearable, customDateFormat }) => {
   const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const locale = i18n.language;
@@ -25,6 +25,16 @@ const DateInput = ({ accept, value, maxDate, minDate, disabled, backgroundColor,
     setAnchorEl(null);
   };
   const open = Boolean(anchorEl);
+  let displayValue;
+  if (customDateFormat && value) {
+    displayValue = format(new Date(value), customDateFormat);
+  } else if (VITE_DATE_FORMAT && value) {
+    displayValue = format(new Date(value), VITE_DATE_FORMAT);
+  } else if (value) {
+    displayValue = format(new Date(value), "yyyy-MM-dd");
+  } else {
+    displayValue = "";
+  }
   return (
     <>
       <TextField
@@ -41,7 +51,7 @@ const DateInput = ({ accept, value, maxDate, minDate, disabled, backgroundColor,
         size="small"
         fullWidth
         disabled={disabled}
-        value={value ? (VITE_DATE_FORMAT ? format(new Date(value), VITE_DATE_FORMAT) : format(new Date(value), "yyyy-MM-dd")) : ""}
+        value={displayValue}
       />
       <Popover
         open={open}

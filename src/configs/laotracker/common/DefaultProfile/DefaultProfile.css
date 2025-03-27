@@ -28,7 +28,7 @@
 }
 .not-client-health-id-row {
   overflow: auto;
-  height: calc(100% - 135px);
+  height: calc(100% - 96px);
 }
 
 .ident-section-container {
