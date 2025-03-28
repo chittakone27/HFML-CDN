@@ -61,14 +61,20 @@ const getTeis = async (program, orgUnit, paging, filters, teiFilter) => {
   return result;
 };
 
-const searchTeis = async (criterias, program, orgUnit) => {
-  let url = `/api/trackedEntityInstances?program=${program}&ou=${orgUnit}&ouMode=ACCESSIBLE&fields=*,enrollments[program,status,enrollmentDate]&skipPaging=true`;
+const searchTeis = async (criterias, program, orgUnit, tet) => {
+  let url = `/api/trackedEntityInstances?ou=${orgUnit}&ouMode=ACCESSIBLE&fields=*,enrollments[program,status,enrollmentDate]&skipPaging=true`;
   Object.keys(criterias).forEach((tea) => {
     const value = criterias[tea];
     if (value) {
       url += `&filter=${tea}:like:${value}`;
     }
   });
+  if (program) {
+    url += `&program=${program}`;
+  }
+  if (tet) {
+    url += `&trackedEntityType=${tet}`;
+  }
   const result = await pull(url);
   return result;
 };

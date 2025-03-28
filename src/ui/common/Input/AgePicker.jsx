@@ -66,7 +66,7 @@ const AgePicker = (props) => {
   return (
     <div className="age-picker-container">
       <DateInput {...props} maxDate={format(new Date(), "yyyy-MM-dd")} />
-      <div style={{ display: "flex", paddingTop: 5 }}>
+      <div style={{ display: "flex", paddingTop: 5, width: 350 }}>
         <div>
           <Input
             className="age-picker-item"

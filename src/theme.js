@@ -12,84 +12,84 @@ let theme = createTheme({
       fontFamily: font,
       color: red[600],
       fontSize: 14,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     mandatoryStar: {
       fontFamily: font,
       color: red[600],
       fontSize: 17,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     HELPER: {
       fontFamily: font,
       color: lightBlue[800],
       fontSize: 14,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     WARNING: {
       fontFamily: font,
       color: orange[500],
       fontSize: 14,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
-    inputFieldLabel: { fontFamily: font, fontSize: 15 },
+    inputFieldLabel: { fontFamily: font, fontSize: 15 }
   },
   palette: {
     text: {
-      primary: "#363f4d",
+      primary: "#363f4d"
     },
     grey: {
       main: grey[300],
-      contrastText: "#000000",
+      contrastText: "#000000"
     },
     primary: {
-      main: lightBlue[800],
+      main: lightBlue[800]
     },
     secondary: {
       main: red[600],
-      contrastText: "#fff",
+      contrastText: "#fff"
     },
     orange: {
       main: orange[500],
       dark: orange[700],
-      contrastText: "#fff",
+      contrastText: "#fff"
     },
     green: {
       main: green[500],
       dark: green[700],
-      contrastText: "#fff",
+      contrastText: "#fff"
     },
     teal: {
       main: "#00796B",
       dark: "#015e53",
-      contrastText: "#fff",
-    },
+      contrastText: "#fff"
+    }
   },
   components: {
     MuiInputBase: {
       styleOverrides: {
         root: {
           textAlign: "center",
-          background: "#ffffff",
-        },
-      },
+          background: "#ffffff"
+        }
+      }
     },
     MuiButtonGroup: {
       defaultProps: {
-        disableElevation: true,
-      },
+        disableElevation: true
+      }
     },
     MuiButton: {
       defaultProps: {
-        disableElevation: true,
+        disableElevation: true
       },
       styleOverrides: {
         root: {
-          height: 40,
-        },
-      },
-    },
-  },
+          height: 40
+        }
+      }
+    }
+  }
 });
 
 export default theme;

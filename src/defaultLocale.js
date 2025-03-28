@@ -317,7 +317,8 @@ const resources = {
       uploadFile: "Upload file",
       ACTIVE: "ຂໍ້ມູນຍັງບໍ່ສຳເລັດ",
       COMPLETED: "ສຳເລັດ",
-      atLeastIdField: "At least one field must be filled in this section"
+      atLeastIdField: "At least one field must be filled in this section",
+      thisFieldIsRequired: "ຂໍ້ມູນນີ້ຕ້ອງຖືກຕື່ມໃສ່ຈຶ່ງສາມາດບັນທຶກໄດ້"
     }
   },
   vi: {

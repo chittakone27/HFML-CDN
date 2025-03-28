@@ -170,6 +170,7 @@ const resources = {
       uploadFile: "Upload file",
       ACTIVE: "ACTIVE",
       COMPLETED: "COMPLETED",
+      atLeastIdField: "At least one field must be filled in this section",
       filterInSection: "Filter in section"
     }
   },
@@ -315,7 +316,9 @@ const resources = {
       dragAndDrop: "Drag and drop files here or select file to upload",
       uploadFile: "Upload file",
       ACTIVE: "ຂໍ້ມູນຍັງບໍ່ສຳເລັດ",
-      COMPLETED: "ສຳເລັດ"
+      COMPLETED: "ສຳເລັດ",
+      atLeastIdField: "At least one field must be filled in this section",
+      thisFieldIsRequired: "ຂໍ້ມູນນີ້ຕ້ອງຖືກຕື່ມໃສ່ຈຶ່ງສາມາດບັນທຶກໄດ້"
     }
   },
   vi: {
@@ -490,7 +493,8 @@ const resources = {
       dragAndDrop: "Kéo thả tệp vào đây hoặc chọn file để tải lên",
       uploadFile: "Tải lên file",
       ACTIVE: "ACTIVE",
-      COMPLETED: "COMPLETED"
+      COMPLETED: "COMPLETED",
+      atLeastIdField: "At least one field must be filled in this section"
     }
   },
   km: {
@@ -664,7 +668,8 @@ const resources = {
       dragAndDrop: "Drag and drop files here or select file to upload",
       uploadFile: "Upload file",
       ACTIVE: "ACTIVE",
-      COMPLETED: "COMPLETED"
+      COMPLETED: "COMPLETED",
+      atLeastIdField: "At least one field must be filled in this section"
     }
   },
   th_TH: {
@@ -836,7 +841,8 @@ const resources = {
       dragAndDrop: "Drag and drop files here or select file to upload",
       uploadFile: "Upload file",
       ACTIVE: "ACTIVE",
-      COMPLETED: "COMPLETED"
+      COMPLETED: "COMPLETED",
+      atLeastIdField: "At least one field must be filled in this section"
     }
   }
 };

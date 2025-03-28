@@ -7,7 +7,7 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
 import { useShallow } from "zustand/react/shallow";
 
-const VillageSelectorOrgUnitNoState = ({ VillageSelectorIds, change, initValues, mandatoryFields }) => {
+const VillageSelectorOrgUnitNoState = ({ VillageSelectorIds, change, initValues, mandatoryFields, disabled }) => {
   const { orgUnits, me } = useMetadataStore(
     useShallow((state) => ({
       orgUnits: state.orgUnits,
@@ -34,15 +34,16 @@ const VillageSelectorOrgUnitNoState = ({ VillageSelectorIds, change, initValues,
   const options = generateVillageSelectorOptionsById(provinces, districts, villages, language);
   return (
     <Cascader
+      disabled={disabled}
       change={change}
       data={{
         data: options,
         initValues: initValues,
         ids: VillageSelectorIds,
         labels: [
-          <AttributeLabelNoState attribute={VillageSelectorIds[0]} />,
-          <AttributeLabelNoState attribute={VillageSelectorIds[1]} />,
-          <AttributeLabelNoState attribute={VillageSelectorIds[2]} />
+          <AttributeLabelNoState mandatory={mandatoryFields.includes(VillageSelectorIds[0])} attribute={VillageSelectorIds[0]} />,
+          <AttributeLabelNoState mandatory={mandatoryFields.includes(VillageSelectorIds[1])} attribute={VillageSelectorIds[1]} />,
+          <AttributeLabelNoState mandatory={mandatoryFields.includes(VillageSelectorIds[2])} attribute={VillageSelectorIds[2]} />
         ]
       }}
     />
