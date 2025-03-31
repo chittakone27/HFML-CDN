@@ -47,7 +47,7 @@
 }
 .chr-tracker-event-title,
 .chr-tracker-profile-title {
-  height: 40px;
+  height: 48px;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
 }
 .chr-tracker-section-content {
   width: 100%;
-  height: calc(100% - 90px);
+  height: calc(100% - 98px);
   overflow: auto;
 }
 .chr-tracker-section-buttons {

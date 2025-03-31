@@ -42,7 +42,7 @@ const useProfileRules = () => {
     const hiddenFields = ["I40YqLHbAvE"];
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
     const foundAge = findAttributeValue(currentTei, "tQeFLjYbqzv");
-
+    const foundMobile = findAttributeValue(currentTei, "RwoKpuIgMmA");
     if (foundAge && foundAgeInYearAttribute) {
       const currentInitialDate = new Date(currentEnrollment.enrollmentDate);
       const currentDate = new Date(foundAge);
@@ -76,6 +76,21 @@ const useProfileRules = () => {
           });
         }
       });
+
+    if (foundMobile) {
+      let newValue = foundMobile.replace(/\D/g, "");
+      if (newValue.length < 11) {
+        helpers.push({
+          target: "RwoKpuIgMmA",
+          type: "ERROR",
+          value: t("invalidPhoneNumber")
+        });
+      }
+      if (newValue.length > 11) {
+        newValue = newValue.substring(0, 11);
+      }
+      changeAttributeValue("RwoKpuIgMmA", newValue);
+    }
 
     setProfile("helpers", helpers);
     setProfile("disabledFields", disabledFields);

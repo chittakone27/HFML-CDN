@@ -19,7 +19,8 @@ import { pull } from "@/utils/fetch";
 import { generateUid } from "@/utils/utils";
 import { toast } from "react-toastify";
 import _ from "lodash";
-const { searchTeis, saveTei } = tracker;
+import { Input } from "@/ui/common";
+const { searchTeis, saveTei, saveEnrollment, getTeiById } = tracker;
 
 const Profile = ({ title }) => {
   const { t } = useTranslation();
@@ -151,6 +152,7 @@ const Profile = ({ title }) => {
       valid = false;
     }
   });
+
   return (
     <div className="chr-tracker-profile-container">
       <div>
@@ -171,7 +173,7 @@ const Profile = ({ title }) => {
                     label={t("currentAddress")}
                     field={[
                       <VillageSelectorOrgUnitNoState
-                        disabled={!layout.profileFormEditing}
+                        disabled={!layout.profileFormEditing || loading}
                         VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
                         change={(values) => {
                           changeAttributeValue("r8bZppSsIvR", values[0] ? values[0].value : "");
@@ -189,6 +191,30 @@ const Profile = ({ title }) => {
                     ]}
                   />
                 );
+              } else if (teaId === "RwoKpuIgMmA") {
+                let value = findAttributeValue(currentTei, "RwoKpuIgMmA");
+                value = value.substring(3);
+                return (
+                  <Row
+                    label={<AttributeLabel attribute={teaId} />}
+                    field={
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <span>020</span>&nbsp;
+                        <div>
+                          <Input
+                            change={(value) => {
+                              changeAttributeValue("RwoKpuIgMmA", "020" + value);
+                            }}
+                            value={value}
+                            valueType="TEXT"
+                            helpers={helpers.filter((h) => h.target === teaId)}
+                            disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
+                          />
+                        </div>
+                      </div>
+                    }
+                  />
+                );
               } else {
                 return (
                   <Row
@@ -197,7 +223,7 @@ const Profile = ({ title }) => {
                       <AttributeField
                         attribute={teaId}
                         helpers={helpers.filter((h) => h.target === teaId)}
-                        disabled={disabledFields.includes(teaId)}
+                        disabled={disabledFields.includes(teaId) || loading}
                       />
                     }
                   />

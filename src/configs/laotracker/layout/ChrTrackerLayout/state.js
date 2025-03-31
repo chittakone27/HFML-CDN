@@ -7,11 +7,21 @@ const useChrTrackerStore = create((set, get) => ({
     disabledFields: [],
     hiddenFields: []
   },
+  event: {
+    currentProgramStage: null
+  },
   actions: {
     setProfile: (key, value) => {
       set(
         produce((state) => {
           state.profile[key] = value;
+        })
+      );
+    },
+    setEvent: (key, value) => {
+      set(
+        produce((state) => {
+          state.event[key] = value;
         })
       );
     }
