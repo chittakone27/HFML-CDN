@@ -1,21 +1,22 @@
 import { Box, TableCell } from "@mui/material";
 import { useEffect, useMemo } from "react";
 
-import { shallow } from "zustand/shallow";
 import VillageSelector from "../../common/VillageSelector/VillageSelector";
 import CustomSection from "./components/CustomSection";
 import "../common/index.css";
 import "./malaria-llin.css";
 import useEventCaptureStore from "@/state/eventCapture";
-import { useTranslation } from "react-i18next";
+import { useShallow } from "zustand/react/shallow";
 
 const MalariaLlin = () => {
   const {
     currentEvent,
-    actions: { setCurrentEventDataValue },
+    actions: { setCurrentEventDataValue }
   } = useEventCaptureStore(
-    (state) => ({ currentEvent: state.currentEvent, actions: state.actions }),
-    shallow
+    useShallow((state) => ({
+      currentEvent: state.currentEvent,
+      actions: state.actions
+    }))
   );
 
   useEffect(() => {
@@ -28,21 +29,21 @@ const MalariaLlin = () => {
 
   const section2Configs = useMemo(
     () => [
-      [
-        {
-          customCell: <VillageCell />,
-          isCustomCellHide:
-            currentEvent.dataValues["l0yIt0ZsGJC"] !== "MassDistribution",
-        },
-      ],
-      [
-        {
-          ...commonProps,
-          id: "cFxemJofAt5",
-          fieldCellProps: { className: "checkbox input-field" },
-        },
-      ],
-      [{ id: "sCfMABW2aMk", ...commonProps }],
+      // [
+      //   {
+      //     customCell: <VillageCell />,
+      //     isCustomCellHide:
+      //       currentEvent.dataValues["l0yIt0ZsGJC"] !== "MassDistribution"
+      //   }
+      // ],
+      // [
+      //   {
+      //     ...commonProps,
+      //     id: "cFxemJofAt5",
+      //     fieldCellProps: { className: "checkbox input-field" }
+      //   }
+      // ],
+      // [{ id: "sCfMABW2aMk", ...commonProps }],
       [{ id: "DFT4tQmbdRh", ...commonProps }],
       [{ id: "kUyk7pE1N6S", ...commonProps }],
       [{ id: "yZ4BwwboO7S", ...commonProps }],
@@ -53,7 +54,7 @@ const MalariaLlin = () => {
       [{ id: "hFdRIbnjY54", ...commonProps }],
       [{ id: "KyWO5yFsMJb", ...commonProps }],
       [{ id: "Du6ABMJktE1", ...commonProps }],
-      [{ id: "I3F0zfFtEWF", ...commonProps }],
+      [{ id: "I3F0zfFtEWF", ...commonProps }]
     ],
     [currentEvent.dataValues["l0yIt0ZsGJC"]]
   );
@@ -83,27 +84,27 @@ const MalariaLlin = () => {
 
 const villageSelectorIds = ["r2lL9b9n7AH", "WtqnbO4FXrx", "mrrTTvKqyi1"];
 
-const VillageCell = () => {
-  const { t } = useTranslation();
+// const VillageCell = () => {
+//   const { t } = useTranslation();
 
-  return (
-    <>
-      <TableCell>{t("currentAddress")}</TableCell>
-      <TableCell>
-        <Box className="bordered-left">
-          <VillageSelector
-            dataElementIds={villageSelectorIds}
-            storeGeometry={true}
-          />
-        </Box>
-      </TableCell>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <TableCell>{t("currentAddress")}</TableCell>
+//       <TableCell>
+//         <Box className="bordered-left">
+//           <VillageSelector
+//             dataElementIds={villageSelectorIds}
+//             storeGeometry={true}
+//           />
+//         </Box>
+//       </TableCell>
+//     </>
+//   );
+// };
 
 const commonProps = {
   labelCellProps: { className: "label-field", sx: { width: "400px" } },
-  fieldCellProps: { className: "input-field" },
+  fieldCellProps: { className: "input-field" }
 };
 
 const section1Configs = [[{ id: "l0yIt0ZsGJC", ...commonProps }]];
