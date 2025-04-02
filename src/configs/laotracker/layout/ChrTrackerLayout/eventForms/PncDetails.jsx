@@ -1,0 +1,79 @@
+import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
+import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
+import { useTranslation } from "react-i18next";
+import { pickExecutionDateLabel } from "@/utils/utils";
+import useChrTrackerStore from "../state";
+import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlurNoState";
+import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
+import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
+import BloodPressureField from "../BloodPressureField/BloodPressureField";
+import Row from "../Row";
+import { useShallow } from "zustand/react/shallow";
+
+const PncDetails = () => {
+  const { t } = useTranslation();
+  const { event } = useChrTrackerStore(
+    useShallow((state) => ({
+      event: state.event
+    }))
+  );
+  const { currentEvent, currentProgramStage, editing } = event;
+  const completed = currentEvent && currentEvent.status === "COMPLETED";
+  const generateSections = () => {
+    return currentProgramStage.programStageSections.map((pss, pssIndex) => {
+      return (
+        <div className="ancpnc-section-container">
+          <div>{pss.displayName}</div>
+          {pssIndex === 0 && (
+            <>
+              <Row label={<AttributeLabel attribute="oPKsfqS64oE" />} field={<AttributeField attribute="oPKsfqS64oE" disabled={true} />} />
+              <Row
+                label={pickExecutionDateLabel(currentProgramStage, t)}
+                field={
+                  <EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />
+                }
+              />
+            </>
+          )}
+          {pss.dataElements.map((de) => {
+            switch (de.id) {
+              case "tVPKjkXrMSB":
+                return <Row label={t("bloodPressure")} field={<BloodPressureField disabled={!editing || completed} />} />;
+              case "TThw3XArMBK":
+              case "CLon1OEoS2k":
+                return null;
+              default:
+                return (
+                  <Row
+                    label={<DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />}
+                    field={
+                      <DataValueFieldNoBlurNoState
+                        disabled={!editing || completed}
+                        dataElement={de.id}
+                        currentProgramStage={currentProgramStage}
+                        currentEvent={currentEvent}
+                      />
+                    }
+                  />
+                );
+            }
+          })}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <div className="ancpnc-anc-container">
+      {!currentEvent.eventDate && (
+        <Row
+          label={pickExecutionDateLabel(currentProgramStage, t)}
+          field={<EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />}
+        />
+      )}
+      {currentEvent.eventDate && generateSections()}
+    </div>
+  );
+};
+
+export default PncDetails;

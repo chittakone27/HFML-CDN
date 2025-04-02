@@ -62,7 +62,7 @@
 }
 .chr-tracker-section-content {
   width: 100%;
-  height: calc(100% - 98px);
+  height: calc(100% - 48px);
   overflow: auto;
 }
 .chr-tracker-section-buttons {
@@ -93,4 +93,21 @@
 .chr-tracker-field-row > div:nth-child(2) {
   width: calc(100% - 270px);
   padding: 6px;
+}
+.chr-tracker-event-form-container {
+  width: 100%;
+  height: 700px;
+}
+.chr-tracker-event-form {
+  width: 100%;
+  height: calc(100% - 50px);
+  padding: 5px;
+  overflow: auto;
+}
+.chr-tracker-event-form-buttons {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  padding: 5px;
+  border-top: 2px solid #d5dde5;
 }

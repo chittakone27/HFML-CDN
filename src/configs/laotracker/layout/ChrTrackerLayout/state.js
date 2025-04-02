@@ -8,7 +8,9 @@ const useChrTrackerStore = create((set, get) => ({
     hiddenFields: []
   },
   event: {
-    currentProgramStage: null
+    currentProgramStage: null,
+    currentEvent: null,
+    editing: false
   },
   actions: {
     setProfile: (key, value) => {

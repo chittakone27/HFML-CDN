@@ -8,6 +8,7 @@ import useChrTrackerStore from "./state";
 import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { format } from "date-fns";
+import EventFormDialog from "./EventFormDialog";
 const LEGEND = {
   ACTIVE: "#faf3c8",
   COMPLETED: "#e3e3e3",
@@ -138,6 +139,7 @@ const Event = ({ title }) => {
                         hover
                         key={ev.event}
                         onClick={() => {
+                          setEvent("currentEvent", ev);
                           // selectEvent(ev.event);
                           // if (!ev.eventDate) {
                           //   setLayout("eventFormEditing", true);
@@ -173,7 +175,7 @@ const Event = ({ title }) => {
             </Table>
           )}
         </div>
-        <div className="chr-tracker-section-buttons chr-tracker-event-buttons">asdasd</div>
+        <EventFormDialog />
       </div>
     </div>
   );
