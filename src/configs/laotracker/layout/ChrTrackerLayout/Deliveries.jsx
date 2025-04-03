@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
-import { pickEnrollmentDateLabel, convertDisplayDate } from "@/utils/utils";
+import { pickEnrollmentDateLabel, convertDisplayDate, generateUid } from "@/utils/utils";
 import { findDataValue } from "../../common/utils";
 import useSelectionStore from "@/state/selection";
 import { useShallow } from "zustand/react/shallow";
 import useMetadataStore from "@/state/metadata";
 import _ from "lodash";
+import { format } from "date-fns";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "./state";
 import DeliveryDialog from "./DeliveryDialog";
@@ -17,9 +18,10 @@ const Deliveries = () => {
       data: state.data
     }))
   );
-  const { program } = useSelectionStore(
+  const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
-      program: state.program
+      program: state.program,
+      orgUnit: state.orgUnit
     }))
   );
 
@@ -44,6 +46,7 @@ const Deliveries = () => {
     const foundDe = dataElements.find((currentDe) => currentDe.id === de);
     return foundDe;
   });
+  console.log(currentEnrollments);
   return (
     <div className="chr-deliveries-container">
       <div>
@@ -87,7 +90,27 @@ const Deliveries = () => {
                       cursor: "pointer"
                     }}
                     onClick={() => {
+                      const newEventId = generateUid();
                       setEvent("currentEnrollment", fde);
+                      setEvent(
+                        "currentEvent",
+                        fde.events
+                          ? fde.events[0]
+                          : {
+                              isDirty: true,
+                              isNew: true,
+                              eventDate: format(new Date(), "yyyy-MM-dd"),
+                              dueDate: format(new Date(), "yyyy-MM-dd"),
+                              event: newEventId,
+                              orgUnit: orgUnit.id,
+                              enrollment: fde.enrollment,
+                              trackedEntityInstance: fde.trackedEntityInstance,
+                              program: fde.program,
+                              programStage: "YOHVx1Xmpgr",
+                              dataValues: [],
+                              status: "ACTIVE"
+                            }
+                      );
                     }}
                   >
                     <TableCell>{convertDisplayDate(fde.enrollmentDate)}</TableCell>

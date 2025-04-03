@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import i18n from "../i18n";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import { format } from "date-fns";
+import _ from "lodash";
 const { VITE_MODE } = import.meta.env;
 const { saveEvent } = event;
 
@@ -236,7 +237,7 @@ const useTrackerCaptureStore = create((set, get) => ({
           });
           state.data.currentEvents = currentEvents;
           state.data.currentTei = tei;
-          state.data.currentEnrollments = tei.enrollments;
+          state.data.currentEnrollments = _.cloneDeep(tei.enrollments);
           delete foundEnrollment.events;
           state.data.currentEnrollment = foundEnrollment;
           delete tei.enrollments;
@@ -405,6 +406,18 @@ const useTrackerCaptureStore = create((set, get) => ({
       set(
         produce((state) => {
           state.data.currentTei[property] = value;
+        })
+      );
+    },
+    saveEventToState: (event) => {
+      set(
+        produce((state) => {
+          const foundEventIndex = state.data.currentEvents.findIndex((ev) => ev.event === event.event);
+          if (foundEventIndex === -1) {
+            state.data.currentEvents.push(event);
+          } else {
+            state.data.currentEvents[foundEventIndex] = { ...event };
+          }
         })
       );
     }

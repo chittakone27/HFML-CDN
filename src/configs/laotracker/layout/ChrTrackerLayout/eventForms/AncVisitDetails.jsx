@@ -12,12 +12,15 @@ import { useShallow } from "zustand/react/shallow";
 
 const AncVisitDetails = () => {
   const { t } = useTranslation();
-  const { event } = useChrTrackerStore(
+  const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
-      event: state.event
+      event: state.event,
+      actions: state.actions
     }))
   );
+
   const { currentEvent, currentProgramStage, editing } = event;
+  const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss) => {
@@ -30,7 +33,14 @@ const AncVisitDetails = () => {
               <Row
                 label={pickExecutionDateLabel(currentProgramStage, t)}
                 field={
-                  <EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />
+                  <EventDateFieldNoState
+                    disabled={!editing || completed}
+                    currentEvent={currentEvent}
+                    currentProgramStage={currentProgramStage}
+                    accept={(value) => {
+                      changeEventProperty("eventDate", value);
+                    }}
+                  />
                 }
               />
             </>
@@ -52,6 +62,12 @@ const AncVisitDetails = () => {
                         dataElement={de.id}
                         currentProgramStage={currentProgramStage}
                         currentEvent={currentEvent}
+                        change={(value) => {
+                          changeDataValue(de.id, value);
+                        }}
+                        accept={(value) => {
+                          changeDataValue(de, value);
+                        }}
                       />
                     }
                   />
@@ -69,7 +85,16 @@ const AncVisitDetails = () => {
       {!currentEvent.eventDate && (
         <Row
           label={pickExecutionDateLabel(currentProgramStage, t)}
-          field={<EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />}
+          field={
+            <EventDateFieldNoState
+              disabled={!editing || completed}
+              currentEvent={currentEvent}
+              currentProgramStage={currentProgramStage}
+              accept={(value) => {
+                changeEventProperty("eventDate", value);
+              }}
+            />
+          }
         />
       )}
     </div>

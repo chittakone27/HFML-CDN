@@ -12,12 +12,14 @@ import { useShallow } from "zustand/react/shallow";
 
 const PncDetails = () => {
   const { t } = useTranslation();
-  const { event } = useChrTrackerStore(
+  const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
-      event: state.event
+      event: state.event,
+      actions: state.actions
     }))
   );
   const { currentEvent, currentProgramStage, editing } = event;
+  const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss, pssIndex) => {
@@ -30,7 +32,14 @@ const PncDetails = () => {
               <Row
                 label={pickExecutionDateLabel(currentProgramStage, t)}
                 field={
-                  <EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />
+                  <EventDateFieldNoState
+                    disabled={!editing || completed}
+                    currentEvent={currentEvent}
+                    currentProgramStage={currentProgramStage}
+                    accept={(value) => {
+                      changeEventProperty("eventDate", value);
+                    }}
+                  />
                 }
               />
             </>
@@ -48,6 +57,12 @@ const PncDetails = () => {
                     label={<DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />}
                     field={
                       <DataValueFieldNoBlurNoState
+                        change={(value) => {
+                          changeDataValue(psde.dataElement.id, value);
+                        }}
+                        accept={(value) => {
+                          changeDataValue(de, value);
+                        }}
                         disabled={!editing || completed}
                         dataElement={de.id}
                         currentProgramStage={currentProgramStage}
@@ -69,6 +84,9 @@ const PncDetails = () => {
         <Row
           label={pickExecutionDateLabel(currentProgramStage, t)}
           field={<EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />}
+          accept={(value) => {
+            changeEventProperty("eventDate", value);
+          }}
         />
       )}
       {currentEvent.eventDate && generateSections()}

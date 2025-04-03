@@ -14,12 +14,15 @@ const BloodPressureField = ({ disabled }) => {
       layout: state.layout
     }))
   );
-  const { event } = useChrTrackerStore(
+  const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
-      event: state.event
+      event: state.event,
+      actions: state.actions
     }))
   );
   const { currentProgramStage, currentEvent } = event;
+  const { changeDataValue, changeEventProperty } = actions;
+
   return (
     <div className="blood-pressure-field-row">
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -30,6 +33,9 @@ const BloodPressureField = ({ disabled }) => {
             dataElement="tVPKjkXrMSB"
             currentEvent={currentEvent}
             currentProgramStage={currentProgramStage}
+            change={(value) => {
+              changeDataValue("tVPKjkXrMSB", value);
+            }}
           />
         </div>
         <div style={{ alignSelf: "flex-end", height: 36, fontSize: 25 }}>&nbsp;/&nbsp;</div>
@@ -40,6 +46,9 @@ const BloodPressureField = ({ disabled }) => {
             dataElement="TThw3XArMBK"
             currentEvent={currentEvent}
             currentProgramStage={currentProgramStage}
+            change={(value) => {
+              changeDataValue("TThw3XArMBK", value);
+            }}
           />
         </div>
         <div style={{ alignSelf: "flex-end", height: 32 }}>&nbsp;mmHg</div>

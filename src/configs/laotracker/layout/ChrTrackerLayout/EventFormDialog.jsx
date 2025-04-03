@@ -1,4 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { useShallow } from "zustand/react/shallow";
 import useChrTrackerStore from "./state";
 import { useTranslation } from "react-i18next";
@@ -7,6 +8,11 @@ import AbortionDetails from "./eventForms/AbortionDetails";
 import FamilyPlanning from "./eventForms/FamilyPlanning";
 import AncVisitDetails from "./eventForms/AncVisitDetails";
 import PncDetails from "./eventForms/PncDetails";
+import useTrackerCaptureStore from "@/state/trackerCapture";
+import { tracker } from "@/api";
+import { useState } from "react";
+import _ from "lodash";
+const { saveEvent } = tracker;
 const mapping = {
   vqNgkw4gfw7: {
     ks9YrW50xb5: AbortionDetails
@@ -22,7 +28,13 @@ const mapping = {
   }
 };
 const EventFormDialog = () => {
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+  const { trackerActions } = useTrackerCaptureStore(
+    useShallow((state) => ({
+      trackerActions: state.actions
+    }))
+  );
   const { program } = useSelectionStore(
     useShallow((state) => ({
       program: state.program
@@ -34,8 +46,9 @@ const EventFormDialog = () => {
       actions: state.actions
     }))
   );
+  const { saveEventToState } = trackerActions;
   const { currentEvent, currentProgramStage, editing } = event;
-  const { setEvent } = actions;
+  const { setEvent, changeEventProperty } = actions;
   const Component = currentEvent && currentProgramStage && mapping[program.id][currentProgramStage.id];
   const completed = currentEvent && currentEvent.status === "COMPLETED";
 
@@ -47,36 +60,71 @@ const EventFormDialog = () => {
         </div>
         <div className="chr-tracker-event-form-buttons">
           {editing && (
-            <Button
+            <LoadingButton
+              loading={loading}
               variant="contained"
-              onClick={() => {
+              onClick={async () => {
+                setLoading(true);
+                saveEventToState(currentEvent);
+                await saveEvent(currentEvent);
                 setEvent("editing", false);
+                setLoading(false);
               }}
             >
               {t("save")}
-            </Button>
+            </LoadingButton>
           )}
           {!editing && !completed && (
-            <Button
+            <LoadingButton
               variant="contained"
               onClick={() => {
                 setEvent("editing", true);
               }}
             >
               {t("edit")}
-            </Button>
+            </LoadingButton>
           )}
+          &nbsp;
           {!completed && editing && (
-            <Button variant="contained" color="success" onClick={() => {}}>
+            <LoadingButton
+              loading={loading}
+              variant="contained"
+              color="success"
+              onClick={() => {
+                setLoading(true);
+                changeEventProperty("status", "COMPLETED");
+                const cloned = _.cloneDeep(currentEvent);
+                cloned.status = "COMPLETED";
+                saveEventToState(cloned);
+                saveEvent(cloned);
+                setEvent("editing", false);
+                setLoading(false);
+              }}
+            >
               {t("complete")}
-            </Button>
+            </LoadingButton>
           )}
           {completed && (
-            <Button variant="contained" color="warning" onClick={() => {}}>
+            <LoadingButton
+              loading={loading}
+              variant="contained"
+              color="warning"
+              onClick={() => {
+                setLoading(true);
+                changeEventProperty("status", "ACTIVE");
+                const cloned = _.cloneDeep(currentEvent);
+                cloned.status = "ACTIVE";
+                saveEventToState(cloned);
+                saveEvent(cloned);
+                setEvent("editing", false);
+                setLoading(false);
+              }}
+            >
               {t("incomplete")}
-            </Button>
+            </LoadingButton>
           )}
-          <Button
+          <LoadingButton
+            loading={loading}
             style={{ marginLeft: "auto" }}
             variant="contained"
             color="error"
@@ -86,7 +134,7 @@ const EventFormDialog = () => {
             }}
           >
             {t("close")}
-          </Button>
+          </LoadingButton>
         </div>
       </div>
     </Dialog>

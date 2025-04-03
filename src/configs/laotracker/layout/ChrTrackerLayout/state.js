@@ -28,6 +28,28 @@ const useChrTrackerStore = create((set, get) => ({
           state.event[key] = value;
         })
       );
+    },
+    changeDataValue: (dataElement, value) => {
+      set(
+        produce((state) => {
+          const foundDataValueIndex = state.event.currentEvent.dataValues.findIndex((dv) => dv.dataElement === dataElement);
+          if (foundDataValueIndex === -1) {
+            state.event.currentEvent.dataValues.push({
+              dataElement,
+              value
+            });
+          } else {
+            state.event.currentEvent.dataValues[foundDataValueIndex].value = value;
+          }
+        })
+      );
+    },
+    changeEventProperty: (property, value) => {
+      set(
+        produce((state) => {
+          state.event.currentEvent[property] = value;
+        })
+      );
     }
   }
 }));

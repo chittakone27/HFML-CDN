@@ -32,9 +32,8 @@ const DeliveryDetails = () => {
   );
   const currentProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
   const dataElements = currentProgramStage.programStageSections[0].dataElements.map((pssDe) => pssDe.id);
-  const { currentEnrollment, editing } = event;
-  const currentEvent = currentEnrollment.events[0];
-  const { setEvent } = actions;
+  const { currentEnrollment, currentEvent, editing } = event;
+  const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
 
   return (
@@ -49,7 +48,17 @@ const DeliveryDetails = () => {
       <div style={{ height: "calc(100% - 32px)", overflow: "auto" }}>
         <Row
           label={pickExecutionDateLabel(currentProgramStage, t)}
-          field={<EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />}
+          field={
+            <EventDateFieldNoState
+              disabled={!editing || completed}
+              currentEvent={currentEvent}
+              currentProgramStage={currentProgramStage}
+              accept={(value) => {
+                changeEventProperty("eventDate", value);
+                changeEventProperty("dueDate", value);
+              }}
+            />
+          }
           labelWidth={400}
         />
         {dataElements.map((de) => {
@@ -58,6 +67,12 @@ const DeliveryDetails = () => {
               label={<DataValueLabelNoState dataElement={de} currentProgramStage={currentProgramStage} />}
               field={
                 <DataValueFieldNoBlurNoState
+                  change={(value) => {
+                    changeDataValue(de, value);
+                  }}
+                  accept={(value) => {
+                    changeDataValue(de, value);
+                  }}
                   disabled={!editing || completed}
                   dataElement={de}
                   currentProgramStage={currentProgramStage}

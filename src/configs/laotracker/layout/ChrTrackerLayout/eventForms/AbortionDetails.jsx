@@ -8,9 +8,10 @@ import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelN
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
 
 const AbortionDetails = () => {
-  const { event } = useChrTrackerStore(
+  const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
-      event: state.event
+      event: state.event,
+      actions: state.actions
     }))
   );
   const { data } = useTrackerCaptureStore(
@@ -19,12 +20,23 @@ const AbortionDetails = () => {
     }))
   );
   const { currentEvent, currentProgramStage, editing } = event;
+  const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
+
   return (
     <div>
       <Row
         label={<EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />}
-        field={<EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} />}
+        field={
+          <EventDateFieldNoState
+            accept={(value) => {
+              changeEventProperty("eventDate", value);
+              changeEventProperty("dueDate", value);
+            }}
+            disabled={!editing || completed}
+            currentEvent={currentEvent}
+          />
+        }
       />
       {currentProgramStage.programStageDataElements.map((psde) => {
         return (
@@ -32,6 +44,12 @@ const AbortionDetails = () => {
             label={<DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />}
             field={
               <DataValueFieldNoBlurNoState
+                change={(value) => {
+                  changeDataValue(psde.dataElement.id, value);
+                }}
+                accept={(value) => {
+                  changeDataValue(de, value);
+                }}
                 disabled={!editing || completed}
                 dataElement={psde.dataElement.id}
                 currentProgramStage={currentProgramStage}

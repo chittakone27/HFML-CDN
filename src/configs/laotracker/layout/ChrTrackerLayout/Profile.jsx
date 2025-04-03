@@ -157,7 +157,7 @@ const Profile = ({ title }) => {
     <div className="chr-tracker-profile-container">
       <div>
         <div className="chr-tracker-profile-title">{title ? title : t("profile")}</div>
-        <div className="chr-tracker-section-content">
+        <div className="chr-tracker-profile-section-content">
           {program.programTrackedEntityAttributes
             .filter((ptea) => {
               const teaId = ptea.trackedEntityAttribute.id;

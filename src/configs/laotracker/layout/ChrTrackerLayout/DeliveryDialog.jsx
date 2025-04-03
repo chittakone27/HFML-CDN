@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
 import { Dialog, Button, Tabs, Tab } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import DeliveryDetails from "./eventForms/DeliveryDetails";
 import Infant from "./eventForms/Infant";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
+import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "./state";
 import { useTranslation } from "react-i18next";
 import { findDataValue } from "../../common/utils";
+import _ from "lodash";
+import { tracker } from "@/api";
+const { saveEvent } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
+  const { trackerActions } = useTrackerCaptureStore(
+    useShallow((state) => ({
+      trackerActions: state.actions
+    }))
+  );
   const { program } = useSelectionStore(
     useShallow((state) => ({
       program: state.program
@@ -21,10 +32,11 @@ const DeliveryDialog = () => {
       actions: state.actions
     }))
   );
-  const { currentEnrollment, currentProgramStage, editing } = event;
+  const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
 
-  const currentEvent = currentEnrollment.events[0];
   const { setEvent } = actions;
+  const { saveEventToState } = trackerActions;
+
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
   const childTeisValue = findDataValue(currentEvent.dataValues, "lYdXxom1BAG");
   let children = [];
@@ -62,35 +74,43 @@ const DeliveryDialog = () => {
         </div>
         <div className="chr-tracker-event-form-buttons">
           {editing && (
-            <Button
+            <LoadingButton
+              loading={loading}
               variant="contained"
-              onClick={() => {
+              onClick={async () => {
+                setLoading(true);
+                saveEventToState(currentEvent);
+                await saveEvent(currentEvent);
                 setEvent("editing", false);
+                setLoading(false);
               }}
             >
               {t("save")}
-            </Button>
+            </LoadingButton>
           )}
           {!editing && !completed && (
-            <Button
+            <LoadingButton
               variant="contained"
               onClick={() => {
                 setEvent("editing", true);
               }}
             >
               {t("edit")}
-            </Button>
+            </LoadingButton>
           )}
-          <Button
+          <LoadingButton
+            loading={loading}
             style={{ marginLeft: "auto" }}
             variant="contained"
             color="error"
             onClick={() => {
               setEvent("currentEnrollment", null);
+              setEvent("currentEvent", null);
+              setEvent("editing", false);
             }}
           >
             {t("close")}
-          </Button>
+          </LoadingButton>
         </div>
       </div>
     </Dialog>
