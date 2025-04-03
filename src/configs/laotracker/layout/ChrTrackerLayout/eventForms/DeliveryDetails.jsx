@@ -7,7 +7,7 @@ import useSelectionStore from "@/state/selection";
 import useChrTrackerStore from "../state";
 import { useTranslation } from "react-i18next";
 import Row from "../Row";
-import { findAttributeValue } from "@/configs/laotracker/common/utils";
+import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { pickExecutionDateLabel } from "@/utils/utils";
 const DeliveryDetails = () => {
@@ -36,6 +36,7 @@ const DeliveryDetails = () => {
   const currentEvent = currentEnrollment.events[0];
   const { setEvent } = actions;
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
+
   return (
     <div style={{ height: "100%" }}>
       <div style={{ height: 32 }}>

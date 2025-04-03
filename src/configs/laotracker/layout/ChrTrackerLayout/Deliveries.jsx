@@ -35,6 +35,7 @@ const Deliveries = () => {
       actions: state.actions
     }))
   );
+  const { currentEnrollment } = event;
   const { setEvent } = actions;
   const { currentEnrollments, currentEvents } = data;
   const foundDeliveryEnrollments = currentEnrollments.filter((ce) => ce.program === "AyPkCOMmgdd");
@@ -48,7 +49,7 @@ const Deliveries = () => {
       <div>
         <div className="chr-deliveries-title">{t("listOfDeliveries")}</div>
         <div className="chr-deliveries-content">
-          <DeliveryDialog />
+          {currentEnrollment && <DeliveryDialog />}
           <Table size="small">
             <TableHead>
               <TableRow>

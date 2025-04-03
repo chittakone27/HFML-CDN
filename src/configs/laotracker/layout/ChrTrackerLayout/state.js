@@ -11,7 +11,8 @@ const useChrTrackerStore = create((set, get) => ({
     currentProgramStage: null,
     currentEvent: null,
     editing: false,
-    currentEnrollment: null
+    currentEnrollment: null,
+    currentChild: null
   },
   actions: {
     setProfile: (key, value) => {
