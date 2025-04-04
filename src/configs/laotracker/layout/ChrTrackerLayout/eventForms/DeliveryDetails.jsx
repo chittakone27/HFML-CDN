@@ -1,5 +1,6 @@
 import { useState } from "react";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
+import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
 import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlurNoState";
 import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
 import { useShallow } from "zustand/react/shallow";
@@ -10,6 +11,8 @@ import Row from "../Row";
 import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { pickExecutionDateLabel } from "@/utils/utils";
+import { useDeliveryDetailsRules } from "./useDeliveryDetailsRules";
+
 const DeliveryDetails = () => {
   const { t } = useTranslation();
   const [tab, setTab] = useState(0);
@@ -35,7 +38,7 @@ const DeliveryDetails = () => {
   const { currentEnrollment, currentEvent, editing } = event;
   const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
-
+  const props = useDeliveryDetailsRules();
   return (
     <div style={{ height: "100%" }}>
       <Row
@@ -46,7 +49,7 @@ const DeliveryDetails = () => {
       />
       <div style={{ height: "calc(100% - 65px)", overflow: "auto" }}>
         <Row
-          label={pickExecutionDateLabel(currentProgramStage, t)}
+          label={<EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />}
           field={
             <EventDateFieldNoState
               disabled={!editing || completed}
@@ -61,18 +64,21 @@ const DeliveryDetails = () => {
           labelWidth={400}
         />
         {dataElements.map((de) => {
+          if (props[de] && props[de].hidden) {
+            return null;
+          }
           return (
             <Row
               label={<DataValueLabelNoState dataElement={de} currentProgramStage={currentProgramStage} />}
               field={
                 <DataValueFieldNoBlurNoState
+                  disabled={!editing || completed || (props[de] && props[de].disabled)}
                   change={(value) => {
                     changeDataValue(de, value);
                   }}
                   accept={(value) => {
                     changeDataValue(de, value);
                   }}
-                  disabled={!editing || completed}
                   dataElement={de}
                   currentProgramStage={currentProgramStage}
                   currentEvent={currentEvent}

@@ -9,6 +9,7 @@ import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldN
 import BloodPressureField from "../BloodPressureField/BloodPressureField";
 import Row from "../Row";
 import { useShallow } from "zustand/react/shallow";
+import useAncRules from "./useAncRules";
 
 const AncVisitDetails = () => {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ const AncVisitDetails = () => {
   const { currentEvent, currentProgramStage, editing } = event;
   const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
+  const { disabledFields, hiddenFields, helpers, props } = useAncRules();
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss) => {
       return (
@@ -46,6 +48,9 @@ const AncVisitDetails = () => {
             </>
           )}
           {pss.dataElements.map((de) => {
+            if (hiddenFields.includes(de.id)) {
+              return null;
+            }
             switch (de.id) {
               case "tVPKjkXrMSB":
                 return <Row label={t("bloodPressure")} field={<BloodPressureField disabled={!editing || completed} />} />;
@@ -58,7 +63,8 @@ const AncVisitDetails = () => {
                     label={<DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />}
                     field={
                       <DataValueFieldNoBlurNoState
-                        disabled={!editing || completed}
+                        helpers={helpers[de.id]}
+                        disabled={!editing || completed || disabledFields.includes(de.id)}
                         dataElement={de.id}
                         currentProgramStage={currentProgramStage}
                         currentEvent={currentEvent}
@@ -66,8 +72,9 @@ const AncVisitDetails = () => {
                           changeDataValue(de.id, value);
                         }}
                         accept={(value) => {
-                          changeDataValue(de, value);
+                          changeDataValue(de.id, value);
                         }}
+                        {...props[de.id]}
                       />
                     }
                   />

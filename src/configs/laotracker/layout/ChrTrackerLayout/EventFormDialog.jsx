@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Alert, AlertTitle } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useShallow } from "zustand/react/shallow";
 import useChrTrackerStore from "./state";
@@ -12,6 +12,7 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { tracker } from "@/api";
 import { useState } from "react";
 import _ from "lodash";
+import useBasicRules from "./eventForms/useBasicRules";
 const { saveEvent } = tracker;
 const mapping = {
   vqNgkw4gfw7: {
@@ -51,6 +52,7 @@ const EventFormDialog = () => {
   const { setEvent, changeEventProperty } = actions;
   const Component = currentEvent && currentProgramStage && mapping[program.id][currentProgramStage.id];
   const completed = currentEvent && currentEvent.status === "COMPLETED";
+  const errors = useBasicRules();
 
   return currentEvent ? (
     <Dialog fullWidth={true} maxWidth={"lg"} open={true}>
@@ -58,9 +60,25 @@ const EventFormDialog = () => {
         <div className="chr-tracker-event-form">
           <Component />
         </div>
+        <div className="chr-tracker-event-form-helper">
+          {errors.length > 0 ? (
+            <div
+              style={{ padding: 5, color: "#e53935", height: "100%", width: "100%", overflow: "auto", backgroundColor: "#ffcdd2", borderRadius: 3 }}
+            >
+              {errors.map((error) => {
+                return <div>{error}</div>;
+              })}
+            </div>
+          ) : (
+            <div style={{ padding: 5, height: "100%", width: "100%", overflow: "auto", backgroundColor: "#e8f5e9", borderRadius: 3 }}>
+              {t("noErrors")}
+            </div>
+          )}
+        </div>
         <div className="chr-tracker-event-form-buttons">
           {editing && (
             <LoadingButton
+              disabled={errors.length > 0}
               loading={loading}
               variant="contained"
               onClick={async () => {
@@ -88,6 +106,7 @@ const EventFormDialog = () => {
           {!completed && editing && (
             <LoadingButton
               loading={loading}
+              disabled={errors.length > 0}
               variant="contained"
               color="success"
               onClick={() => {

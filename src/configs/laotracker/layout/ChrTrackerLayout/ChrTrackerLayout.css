@@ -139,7 +139,12 @@
 }
 .chr-tracker-event-form {
   width: 100%;
-  height: calc(100% - 50px);
+  height: calc(100% - 150px);
+  padding: 5px;
+  overflow: auto;
+}
+.chr-tracker-event-form-helper {
+  height: 100px;
   padding: 5px;
   overflow: auto;
 }
@@ -149,4 +154,11 @@
   display: flex;
   padding: 5px;
   border-top: 2px solid #d5dde5;
+}
+.add-new-delivery-warning {
+  margin-top: 5px;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  color: #ed6c02;
 }

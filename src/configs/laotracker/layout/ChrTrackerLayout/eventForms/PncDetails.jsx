@@ -9,6 +9,7 @@ import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldN
 import BloodPressureField from "../BloodPressureField/BloodPressureField";
 import Row from "../Row";
 import { useShallow } from "zustand/react/shallow";
+import usePncRules from "./usePncRules";
 
 const PncDetails = () => {
   const { t } = useTranslation();
@@ -21,6 +22,8 @@ const PncDetails = () => {
   const { currentEvent, currentProgramStage, editing } = event;
   const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
+  const { disabledFields, hiddenFields, props } = usePncRules();
+  console.log(props);
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss, pssIndex) => {
       return (
@@ -45,6 +48,9 @@ const PncDetails = () => {
             </>
           )}
           {pss.dataElements.map((de) => {
+            if (hiddenFields.includes(de.id)) {
+              return null;
+            }
             switch (de.id) {
               case "tVPKjkXrMSB":
                 return <Row label={t("bloodPressure")} field={<BloodPressureField disabled={!editing || completed} />} />;
@@ -58,15 +64,16 @@ const PncDetails = () => {
                     field={
                       <DataValueFieldNoBlurNoState
                         change={(value) => {
-                          changeDataValue(psde.dataElement.id, value);
+                          changeDataValue(de.id, value);
                         }}
                         accept={(value) => {
-                          changeDataValue(de, value);
+                          changeDataValue(de.id, value);
                         }}
-                        disabled={!editing || completed}
+                        disabled={!editing || completed || disabledFields.includes(de.id)}
                         dataElement={de.id}
                         currentProgramStage={currentProgramStage}
                         currentEvent={currentEvent}
+                        {...props[de.id]}
                       />
                     }
                   />

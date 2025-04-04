@@ -1,9 +1,9 @@
 import useSelectionStore from "@/state/selection";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
-import { Tabs, Tab, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Tabs, Tab, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { pickTranslation, pickExecutionDateLabel, pickDueDateLabel, convertDisplayValue, convertDisplayDate } from "@/utils/utils";
+import { pickTranslation, pickExecutionDateLabel, pickDueDateLabel, convertDisplayValue, convertDisplayDate, generateUid } from "@/utils/utils";
 import useChrTrackerStore from "./state";
 import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -22,7 +22,7 @@ const Event = ({ title }) => {
       data: state.data
     }))
   );
-  const { currentEvents } = data;
+  const { currentEvents, currentEnrollment } = data;
   const { dataElements, orgUnits } = useMetadataStore(
     useShallow((state) => ({
       dataElements: state.dataElements,
@@ -35,9 +35,10 @@ const Event = ({ title }) => {
       actions: state.actions
     }))
   );
-  const { program } = useSelectionStore(
+  const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
-      program: state.program
+      program: state.program,
+      orgUnit: state.orgUnit
     }))
   );
   const [tab, setTab] = useState(0);
@@ -65,6 +66,7 @@ const Event = ({ title }) => {
     const programStage = program.programStages[tab];
     setEvent("currentProgramStage", programStage);
   }, [tab]);
+
   const currentDataElements = [];
 
   if (currentProgramStage) {
@@ -174,6 +176,31 @@ const Event = ({ title }) => {
               </TableBody>
             </Table>
           )}
+          <div style={{ padding: 5 }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                const eventId = generateUid();
+                const newEvent = {
+                  isDirty: true,
+                  isNew: true,
+                  eventDate: format(new Date(), "yyyy-MM-dd"),
+                  dueDate: format(new Date(), "yyyy-MM-dd"),
+                  event: eventId,
+                  orgUnit: orgUnit.id,
+                  enrollment: currentEnrollment.enrollment,
+                  trackedEntityInstance: currentEnrollment.trackedEntityInstance,
+                  program: currentEnrollment.program,
+                  programStage: currentProgramStage.id,
+                  dataValues: [],
+                  status: "ACTIVE"
+                };
+                setEvent("currentEvent", newEvent);
+              }}
+            >
+              {t("newEvent")}
+            </Button>
+          </div>
         </div>
         <EventFormDialog />
       </div>

@@ -41,7 +41,7 @@ const FamilyPlanning = () => {
                   changeDataValue(psde.dataElement.id, value);
                 }}
                 accept={(value) => {
-                  changeDataValue(de, value);
+                  changeDataValue(psde.dataElement.id, value);
                 }}
                 disabled={!editing || completed}
                 dataElement={psde.dataElement.id}

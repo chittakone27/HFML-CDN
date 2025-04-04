@@ -6,9 +6,12 @@ import Row from "../Row";
 import { useTranslation } from "react-i18next";
 import useChrTrackerStore from "../state";
 import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
-import _ from "lodash";
+import _, { clone } from "lodash";
 import { useEffect } from "react";
 import useTrackerCaptureStore from "@/state/trackerCapture";
+import { useInfantFormRules } from "./useDeliveryDetailsRules";
+import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
+import AttributeFieldNoState from "@/ui/TrackerCapture/Profile/AttributeFieldNoState";
 const Infant = ({ childIndex }) => {
   const { t } = useTranslation();
   const { programs } = useMetadataStore(
@@ -35,7 +38,7 @@ const Infant = ({ childIndex }) => {
   const children = JSON.parse(childTeisValue);
   const currentChild = children[childIndex];
   const foundEirEnrollment = currentChild.enrollments.find((enr) => enr.program === "Yj9cJ34AXw6");
-  const currentEvent = foundEirEnrollment.events.find((ev) => ev.programStage === "bwGkn5ebqkD");
+  const birthDetailsEvent = foundEirEnrollment.events.find((ev) => ev.programStage === "bwGkn5ebqkD");
   const foundEirProgram = programs.find((p) => p.id === "Yj9cJ34AXw6");
   const foundBirthDetailsStage = foundEirProgram.programStages.find((ps) => ps.id === "bwGkn5ebqkD");
   const pss = foundBirthDetailsStage.programStageSections[0];
@@ -52,12 +55,14 @@ const Infant = ({ childIndex }) => {
     } else {
       cloned.attributes[foundAttributeIndex].value = value;
     }
+    console.log(cloned);
+
     children[childIndex] = cloned;
     changeDataValue("lYdXxom1BAG", JSON.stringify(children));
   };
 
   const updateDataValue = (dataElement, value) => {
-    const cloned = _.cloneDeep(currentEvent);
+    const cloned = _.cloneDeep(birthDetailsEvent);
     const foundDataValueIndex = cloned.dataValues.findIndex((dv) => dv.dataElement === dataElement);
     if (foundDataValueIndex === -1) {
       cloned.dataValues.push({
@@ -126,7 +131,10 @@ const Infant = ({ childIndex }) => {
     changeDataValue("lYdXxom1BAG", JSON.stringify(children));
   }, []);
 
+  const foundSex = findAttributeValue(currentChild, "DmuazFb368B");
   const foundChildHealthId = findAttributeValue(currentChild, "oPKsfqS64oE");
+
+  const props = useInfantFormRules(birthDetailsEvent, childIndex);
 
   return (
     <div style={{ height: "100%" }}>
@@ -140,17 +148,36 @@ const Infant = ({ childIndex }) => {
         }
         labelWidth={400}
       />
+
       <div style={{ height: "calc(100% - 65px)", overflow: "auto" }}>
+        <Row
+          height={65}
+          label={<AttributeLabelNoState attribute="DmuazFb368B" mandatory={true} />}
+          field={
+            <AttributeFieldNoState
+              disabled={!editing}
+              value={foundSex}
+              attribute="DmuazFb368B"
+              change={(value) => {
+                updateAttribute("DmuazFb368B", value);
+              }}
+            />
+          }
+          labelWidth={400}
+        />
         {dataElements.map((de) => {
+          if (props[de] && props[de].hidden) {
+            return null;
+          }
           return (
             <Row
               label={<DataValueLabelNoState dataElement={de} currentProgramStage={foundBirthDetailsStage} />}
               field={
                 <DataValueFieldNoBlurNoState
-                  disabled={!editing}
+                  disabled={!editing || (props[de] && props[de].disabled)}
                   dataElement={de}
                   currentProgramStage={foundBirthDetailsStage}
-                  currentEvent={currentEvent}
+                  currentEvent={birthDetailsEvent}
                   change={(value) => {
                     updateDataValue(de, value);
                   }}

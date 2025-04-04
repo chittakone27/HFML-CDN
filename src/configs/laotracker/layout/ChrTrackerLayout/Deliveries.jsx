@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
+import { Table, TableHead, TableRow, TableCell, TableBody, Button } from "@mui/material";
 import { pickEnrollmentDateLabel, convertDisplayDate, generateUid } from "@/utils/utils";
 import { findDataValue } from "../../common/utils";
 import useSelectionStore from "@/state/selection";
@@ -40,12 +40,15 @@ const Deliveries = () => {
   const { currentEnrollment } = event;
   const { setEvent } = actions;
   const { currentEnrollments, currentEvents } = data;
+  const foundProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
   const foundDeliveryEnrollments = currentEnrollments.filter((ce) => ce.program === "AyPkCOMmgdd");
   const foundActiveEnrollment = foundDeliveryEnrollments.find((fde) => fde.status === "ACTIVE");
   const gpalDataElements = ["x9pl4PJop26", "fm0Mge3AePX", "E4lPyETCSON", "Vny88TWPZ1I"].map((de) => {
     const foundDe = dataElements.find((currentDe) => currentDe.id === de);
     return foundDe;
   });
+  let ableToEnroll = foundActiveEnrollment ? false : true;
+
   return (
     <div className="chr-deliveries-container">
       <div>
@@ -91,6 +94,7 @@ const Deliveries = () => {
                     onClick={() => {
                       const newEventId = generateUid();
                       setEvent("currentEnrollment", fde);
+                      setEvent("currentProgramStage", foundProgramStage);
                       setEvent(
                         "currentEvent",
                         fde.events
@@ -132,6 +136,12 @@ const Deliveries = () => {
               })}
             </TableBody>
           </Table>
+          <div style={{ padding: 5 }}>
+            <Button disabled={!ableToEnroll} variant="contained">
+              {t("addNewDelivery")}
+            </Button>
+            <div className="add-new-delivery-warning">{!ableToEnroll && <div>{t("addNewDeliveryWarning")}</div>}</div>
+          </div>
         </div>
       </div>
     </div>

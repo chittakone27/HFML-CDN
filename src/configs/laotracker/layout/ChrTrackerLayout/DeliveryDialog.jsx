@@ -8,20 +8,24 @@ import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "./state";
 import { useTranslation } from "react-i18next";
-import { findDataValue } from "../../common/utils";
+import { findAttributeValue, findDataValue } from "../../common/utils";
 import _ from "lodash";
 import { tracker } from "@/api";
 import { generateUid } from "@/utils/utils";
+import useBasicRules from "./eventForms/useBasicRules";
+import useDeliveryDialogRules from "./useDeliveryDialogRules";
 const { saveEvent } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
-  const { trackerActions } = useTrackerCaptureStore(
+  const { trackerActions, data } = useTrackerCaptureStore(
     useShallow((state) => ({
+      data: state.data,
       trackerActions: state.actions
     }))
   );
+  const { currentTei } = data;
   const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
       program: state.program,
@@ -159,8 +163,52 @@ const DeliveryDialog = () => {
             ],
             attributes: []
           };
+          [
+            {
+              deliveryTeaId: "tQeFLjYbqzv",
+              eirTeaId: "tQeFLjYbqzv"
+            },
+            {
+              deliveryTeaId: "IEE2BMhfoSc",
+              eirTeaId: "RqEyvE6zcTE"
+            },
+            {
+              deliveryTeaId: "IBLkiaYRRL3",
+              eirTeaId: "WkHHrysFy3n"
+            },
+            {
+              deliveryTeaId: "r8bZppSsIvR",
+              eirTeaId: "r8bZppSsIvR"
+            },
+            {
+              deliveryTeaId: "oVwa5LfjnvA",
+              eirTeaId: "oVwa5LfjnvA"
+            },
+            {
+              deliveryTeaId: "UNiaP6Oz7Mv",
+              eirTeaId: "UNiaP6Oz7Mv"
+            },
+            {
+              deliveryTeaId: "RwoKpuIgMmA", //lgHRdU82IJv
+              eirTeaId: "DcMyN6eoyFD"
+            }
+          ].forEach((tea) => {
+            if (tea.deliveryTeaId === "tQeFLjYbqzv") {
+              newChild.attributes.push({
+                attribute: tea.eirTeaId,
+                value: foundDateOfDelivery
+              });
+            } else {
+              const foundCurrentAttribute = findAttributeValue(currentTei, tea.deliveryTeaId);
+              newChild.attributes.push({
+                attribute: tea.eirTeaId,
+                value: foundCurrentAttribute
+              });
+            }
+          });
           children.push(newChild);
         }
+
         changeDataValue("lYdXxom1BAG", JSON.stringify(children));
         const cloned = _.cloneDeep(currentEvent);
         cloned.dataValues.push({
@@ -196,6 +244,9 @@ const DeliveryDialog = () => {
   //   }
   // }
 
+  const errors = useBasicRules();
+  const { basicErrors, completeDeliveryErrors } = useDeliveryDialogRules();
+  const finalErrors = [...errors, ...basicErrors];
   return currentEnrollment ? (
     <Dialog fullWidth={true} maxWidth={"lg"} open={true}>
       <div className="chr-tracker-event-form-container">
@@ -219,9 +270,25 @@ const DeliveryDialog = () => {
             {tab !== 0 && <Infant childIndex={tab - 1} />}
           </div>
         </div>
+        <div className="chr-tracker-event-form-helper">
+          {finalErrors.length > 0 ? (
+            <div
+              style={{ padding: 5, color: "#e53935", height: "100%", width: "100%", overflow: "auto", backgroundColor: "#ffcdd2", borderRadius: 3 }}
+            >
+              {finalErrors.map((error) => {
+                return <div>{error}</div>;
+              })}
+            </div>
+          ) : (
+            <div style={{ padding: 5, height: "100%", width: "100%", overflow: "auto", backgroundColor: "#e8f5e9", borderRadius: 3 }}>
+              {t("noErrors")}
+            </div>
+          )}
+        </div>
         <div className="chr-tracker-event-form-buttons">
           {editing && (
             <LoadingButton
+              disabled={finalErrors.length > 0}
               loading={loading}
               variant="contained"
               onClick={async () => {
@@ -248,6 +315,7 @@ const DeliveryDialog = () => {
           )}
           &nbsp;
           <LoadingButton
+            disabled={completeDeliveryErrors.length > 0}
             color="success"
             variant="contained"
             onClick={async () => {

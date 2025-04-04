@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-import { DATA_ELEMENTS } from "./const";
+import { DATA_ELEMENTS } from "./ancConst";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { add, sub, format, differenceInCalendarWeeks } from "date-fns";
 import { findDataValue } from "@/configs/laotracker/common/utils";
 import _ from "lodash";
+import useChrTrackerStore from "../state";
 const {
   DIASTOLIC_BLOOD_PRESSURE,
   SYSTOLIC_BLOOD_PRESSURE,
@@ -94,10 +95,17 @@ const useAncRules = () => {
       actions: state.actions
     }))
   );
+  const { event, chrTrackerActions } = useChrTrackerStore(
+    useShallow((state) => ({
+      event: state.event,
+      chrTrackerActions: actions
+    }))
+  );
   const { currentEvents } = data;
-  const { changeDataValue } = actions;
-  const { currentEvent } = useCurrentEvent();
+  const { changeDataValue } = chrTrackerActions;
+  const { currentEvent } = event;
   const [props, setProps] = useState({});
+
   const dataValues = currentEvent.dataValues.reduce((prev, curr) => {
     prev[curr.dataElement] = curr.value;
     return prev;
@@ -113,19 +121,19 @@ const useAncRules = () => {
     const systolicBloodPressure = dataValues[SYSTOLIC_BLOOD_PRESSURE] ? parseInt(dataValues[SYSTOLIC_BLOOD_PRESSURE]) : null;
     if (diastolicBloodPressure || systolicBloodPressure) {
       if (diastolicBloodPressure > 89 || systolicBloodPressure > 139) {
-        changeDataValue(currentEvent.event, HIGH_BLOOD_PRESSURE, "true");
+        changeDataValue(HIGH_BLOOD_PRESSURE, "true");
       } else {
-        changeDataValue(currentEvent.event, HIGH_BLOOD_PRESSURE, "");
+        changeDataValue(HIGH_BLOOD_PRESSURE, "");
       }
     } else {
-      changeDataValue(currentEvent.event, HIGH_BLOOD_PRESSURE, "");
+      changeDataValue(HIGH_BLOOD_PRESSURE, "");
     }
     ////////////////////////////////////////////////////////////////////
     //Hide fundual height and fetus heart rate if gestational week < 20
     if (dataValues[GESTATIONAL_WEEK] && parseInt(dataValues[GESTATIONAL_WEEK]) < 20) {
       currentHiddenFields = [...currentHiddenFields, FUNDUAL_HEIGHT, FETUS_HEART_RATE];
-      changeDataValue(currentEvent.event, FUNDUAL_HEIGHT, "");
-      changeDataValue(currentEvent.event, FETUS_HEART_RATE, "");
+      changeDataValue(FUNDUAL_HEIGHT, "");
+      changeDataValue(FETUS_HEART_RATE, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((field) => field !== FUNDUAL_HEIGHT && field !== FETUS_HEART_RATE);
     }
@@ -133,20 +141,20 @@ const useAncRules = () => {
     //Set ANC visit at 36 weeks above if Gestational age in ANC 1st > 36
     if (!dataValues[GESTATIONAL_AGE_1ST_VISIT] || parseInt(dataValues[GESTATIONAL_AGE_1ST_VISIT]) <= 24) {
       currentHiddenFields = [...currentHiddenFields, FETUS_POSITION];
-      changeDataValue(currentEvent.event, FETUS_POSITION, "");
+      changeDataValue(FETUS_POSITION, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((field) => field !== FETUS_POSITION);
     }
     if (dataValues[GESTATIONAL_AGE_1ST_VISIT] && parseInt(dataValues[GESTATIONAL_AGE_1ST_VISIT]) > 36) {
-      changeDataValue(currentEvent.event, ANC_VISIT_AT_36_WEEKS_ABOVE, "true");
+      changeDataValue(ANC_VISIT_AT_36_WEEKS_ABOVE, "true");
     } else {
-      changeDataValue(currentEvent.event, ANC_VISIT_AT_36_WEEKS_ABOVE, "");
+      changeDataValue(ANC_VISIT_AT_36_WEEKS_ABOVE, "");
     }
     ////////////////////////////////////////////////////////////////////
     //Hide medication for high-risk women other if Others is not selected
     if (dataValues[MEDICATION_FOR_HIGH_RISK_WOMEN] !== "Others") {
       currentHiddenFields = [...currentHiddenFields, MEDICATION_FOR_HIGH_RISK_WOMEN_OTHERS];
-      changeDataValue(currentEvent.event, MEDICATION_FOR_HIGH_RISK_WOMEN_OTHERS, "");
+      changeDataValue(MEDICATION_FOR_HIGH_RISK_WOMEN_OTHERS, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((field) => field !== MEDICATION_FOR_HIGH_RISK_WOMEN_OTHERS);
     }
@@ -154,8 +162,8 @@ const useAncRules = () => {
     //Hide referral data elements if transferred is false
     if (dataValues[TRANSFERRED_TO_HIGHER_FACILITY] !== "true") {
       currentHiddenFields = [...currentHiddenFields, REASON_FOR_REFERRAL, REFERRED_TO];
-      changeDataValue(currentEvent.event, REASON_FOR_REFERRAL, "");
-      changeDataValue(currentEvent.event, REFERRED_TO, "");
+      changeDataValue(REASON_FOR_REFERRAL, "");
+      changeDataValue(REFERRED_TO, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((field) => field !== REASON_FOR_REFERRAL && field !== REFERRED_TO);
     }
@@ -174,8 +182,8 @@ const useAncRules = () => {
     //   if (foundEvent) {
     //     const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
     //     const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
-    //     changeDataValue(currentEvent.event, HEIGHT, foundHeight.value);
-    //     changeDataValue(currentEvent.event, WEIGHT_BEFORE_PREGNANT, foundWeight.value);
+    //     changeDataValue( HEIGHT, foundHeight.value);
+    //     changeDataValue( WEIGHT_BEFORE_PREGNANT, foundWeight.value);
     //   }
     // } else {
     //   currentDisabledFields = currentDisabledFields.filter((f) => f !== HEIGHT && f !== WEIGHT_BEFORE_PREGNANT);
@@ -183,9 +191,9 @@ const useAncRules = () => {
     ////////////////////////////////////////////////////////////////////
     //Set Completed ANC 4th = true if number of anc visit >= 4
     if (dataValues[NUMBER_OF_ANC_VISIT] && parseInt(dataValues[NUMBER_OF_ANC_VISIT]) >= 4) {
-      changeDataValue(currentEvent.event, COMPLETED_ANC_4TH, "true");
+      changeDataValue(COMPLETED_ANC_4TH, "true");
     } else {
-      changeDataValue(currentEvent.event, COMPLETED_ANC_4TH, "");
+      changeDataValue(COMPLETED_ANC_4TH, "");
     }
     ////////////////////////////////////////////////////////////////////
     //If dont remember LMP date
@@ -204,11 +212,11 @@ const useAncRules = () => {
       let lmpDate = "";
       if (eventDate && week) {
         lmpDate = sub(eventDate, { days: week * 7 });
-        changeDataValue(currentEvent.event, LMP_DATE, format(lmpDate, "yyyy-MM-dd"));
+        changeDataValue(LMP_DATE, format(lmpDate, "yyyy-MM-dd"));
       }
       if (lmpDate) {
         const estimatedDueDate = add(new Date(lmpDate), { days: 40 * 7 });
-        changeDataValue(currentEvent.event, ESTIMATED_DUE_DATE, format(estimatedDueDate, "yyyy-MM-dd"));
+        changeDataValue(ESTIMATED_DUE_DATE, format(estimatedDueDate, "yyyy-MM-dd"));
       }
     } else {
       currentDisabledFields = currentDisabledFields.filter((f) => f !== LMP_DATE);
@@ -217,8 +225,8 @@ const useAncRules = () => {
       if (eventDate && lmpDate) {
         const gestationalWeek = differenceInCalendarWeeks(eventDate, lmpDate);
         const estimatedDueDate = add(lmpDate, { days: 40 * 7 });
-        changeDataValue(currentEvent.event, ESTIMATED_DUE_DATE, format(estimatedDueDate, "yyyy-MM-dd"));
-        changeDataValue(currentEvent.event, GESTATIONAL_WEEK, gestationalWeek + "");
+        changeDataValue(ESTIMATED_DUE_DATE, format(estimatedDueDate, "yyyy-MM-dd"));
+        changeDataValue(GESTATIONAL_WEEK, gestationalWeek + "");
       }
     }
 
@@ -226,7 +234,7 @@ const useAncRules = () => {
     //IF GDM is yes then show DIAGNOSIS OF GDPM
     if (dataValues[GDM] !== "true") {
       currentHiddenFields = [...currentHiddenFields, DIAGNOSIS_OF_GDM];
-      changeDataValue(currentEvent.event, DIAGNOSIS_OF_GDM, "");
+      changeDataValue(DIAGNOSIS_OF_GDM, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((chf) => chf !== DIAGNOSIS_OF_GDM);
     }
@@ -234,31 +242,31 @@ const useAncRules = () => {
     //SHOW HIDE TESTS
     if (dataValues[HEMOGLOBIN_TEST] !== "true") {
       currentHiddenFields = [...currentHiddenFields, RESULT_OF_HEMOGLOBIN_TEST];
-      changeDataValue(currentEvent.event, RESULT_OF_HEMOGLOBIN_TEST, "");
+      changeDataValue(RESULT_OF_HEMOGLOBIN_TEST, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((chf) => chf !== RESULT_OF_HEMOGLOBIN_TEST);
     }
     if (dataValues[HIV_TEST1] !== "true") {
       currentHiddenFields = [...currentHiddenFields, RESULT_HIV_TEST1];
-      changeDataValue(currentEvent.event, RESULT_HIV_TEST1, "");
+      changeDataValue(RESULT_HIV_TEST1, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((chf) => chf !== RESULT_HIV_TEST1);
     }
     if (dataValues[HIV_TEST2] !== "true") {
       currentHiddenFields = [...currentHiddenFields, RESULT_HIV_TEST2];
-      changeDataValue(currentEvent.event, RESULT_HIV_TEST2, "");
+      changeDataValue(RESULT_HIV_TEST2, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((chf) => chf !== RESULT_HIV_TEST2);
     }
     if (dataValues[SYPHILIS] !== "true") {
       currentHiddenFields = [...currentHiddenFields, RESULT_SYPHILIS];
-      changeDataValue(currentEvent.event, RESULT_SYPHILIS, "");
+      changeDataValue(RESULT_SYPHILIS, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((chf) => chf !== RESULT_SYPHILIS);
     }
     if (dataValues[HEPATITIS_B] !== "true") {
       currentHiddenFields = [...currentHiddenFields, RESULT_HEPATITIS_B];
-      changeDataValue(currentEvent.event, RESULT_HEPATITIS_B, "");
+      changeDataValue(RESULT_HEPATITIS_B, "");
     } else {
       currentHiddenFields = currentHiddenFields.filter((chf) => chf !== RESULT_HEPATITIS_B);
     }
@@ -285,7 +293,7 @@ const useAncRules = () => {
     //AUTO ASSIGN G, P, A, L
     const GPAL = findGPAL(currentEvents);
     Object.keys(GPAL).forEach((key) => {
-      changeDataValue(currentEvent.event, key, GPAL[key]);
+      changeDataValue(key, GPAL[key]);
     });
   }, [currentEvent.event]);
 
@@ -293,7 +301,7 @@ const useAncRules = () => {
     //AUTO ASSIGN G, P, A, Lsrc/configs/laotracker/program-forms/antenatal-postnatal/Anc/useAncRules.jsx
     const GPAL = findGPAL(currentEvents);
     Object.keys(GPAL).forEach((key) => {
-      changeDataValue(currentEvent.event, key, GPAL[key]);
+      changeDataValue(key, GPAL[key]);
     });
   }, [currentEvent.event]);
 
@@ -314,7 +322,7 @@ const useAncRules = () => {
         const squareOfHeight = height * height;
         const weight = parseInt(foundWeight.value);
         const bmi = weight / squareOfHeight;
-        changeDataValue(currentEvent.event, BMI, bmi.toFixed(2));
+        changeDataValue(BMI, bmi.toFixed(2));
       }
     }
   }, [JSON.stringify(currentEvent), JSON.stringify(currentEvents)]);
@@ -324,16 +332,16 @@ const useAncRules = () => {
       .filter((ce) => ce.programStage === "IZ9GXqMAZV8")
       .forEach((event) => {
         if (dataValues[G]) {
-          changeDataValue(event.event, G, dataValues[G]);
+          changeDataValue(G, dataValues[G]);
         }
         if (dataValues[P]) {
-          changeDataValue(event.event, P, dataValues[P]);
+          changeDataValue(P, dataValues[P]);
         }
         if (dataValues[A]) {
-          changeDataValue(event.event, A, dataValues[A]);
+          changeDataValue(A, dataValues[A]);
         }
         if (dataValues[L]) {
-          changeDataValue(event.event, L, dataValues[L]);
+          changeDataValue(L, dataValues[L]);
         }
       });
   }, [dataValues[G], dataValues[P], dataValues[A], dataValues[L]]);
