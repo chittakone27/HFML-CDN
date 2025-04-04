@@ -2,6 +2,10 @@
   width: 100%;
   height: 100%;
 }
+.chr-tracker-event-form-container .input-field-container,
+.chr-tracker-profile-container .input-field-container {
+  width: 100%;
+}
 .chr-tracker-layout1-container {
   padding: 5px;
   width: 100%;
@@ -116,7 +120,6 @@
 }
 .chr-tracker-field-row {
   display: flex;
-  /* align-items: center; */
   border-bottom: 1px solid #d5dde5;
 }
 .chr-tracker-field-row > div:nth-child(1) {
@@ -127,6 +130,8 @@
 }
 .chr-tracker-field-row > div:nth-child(2) {
   padding: 6px;
+  display: flex;
+  align-items: center;
 }
 .chr-tracker-event-form-container {
   width: 100%;

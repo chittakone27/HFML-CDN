@@ -38,14 +38,13 @@ const DeliveryDetails = () => {
 
   return (
     <div style={{ height: "100%" }}>
-      <div style={{ height: 32 }}>
-        <Row
-          label={<div style={{ fontWeight: "bold" }}>{t("healthIdMother")}</div>}
-          field={<div style={{ color: "#0277bd", fontWeight: "bold" }}>{findAttributeValue(currentTei, "oPKsfqS64oE")}</div>}
-          labelWidth={400}
-        />
-      </div>
-      <div style={{ height: "calc(100% - 32px)", overflow: "auto" }}>
+      <Row
+        label={<div style={{ fontWeight: "bold" }}>{t("healthIdMother")}</div>}
+        field={<div style={{ color: "#0277bd", fontWeight: "bold" }}>{findAttributeValue(currentTei, "oPKsfqS64oE")}</div>}
+        labelWidth={400}
+        height={65}
+      />
+      <div style={{ height: "calc(100% - 65px)", overflow: "auto" }}>
         <Row
           label={pickExecutionDateLabel(currentProgramStage, t)}
           field={

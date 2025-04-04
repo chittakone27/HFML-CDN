@@ -46,7 +46,6 @@ const Deliveries = () => {
     const foundDe = dataElements.find((currentDe) => currentDe.id === de);
     return foundDe;
   });
-  console.log(currentEnrollments);
   return (
     <div className="chr-deliveries-container">
       <div>
