@@ -9,12 +9,12 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "./state";
 import { useTranslation } from "react-i18next";
 import { findAttributeValue, findDataValue } from "../../common/utils";
-import _ from "lodash";
+import _, { clone } from "lodash";
 import { tracker } from "@/api";
 import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
-const { saveEvent } = tracker;
+const { saveEvent, saveEnrollment, searchTeis } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -40,8 +40,8 @@ const DeliveryDialog = () => {
   );
   const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
 
-  const { setEvent, changeDataValue } = actions;
-  const { saveEventToState } = trackerActions;
+  const { setEvent, changeDataValue, changeEventProperty } = actions;
+  const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState } = trackerActions;
 
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
   const childTeisValue = findDataValue(currentEvent.dataValues, "lYdXxom1BAG");
@@ -54,58 +54,6 @@ const DeliveryDialog = () => {
     setTab(0);
     setEvent("currentChild", null);
   }, [currentEnrollment.enrollment]);
-
-  const populateChildAttributes = (child) => {
-    [
-      {
-        deliveryTeaId: "tQeFLjYbqzv",
-        eirTeaId: "tQeFLjYbqzv"
-      },
-      {
-        deliveryTeaId: "IEE2BMhfoSc",
-        eirTeaId: "RqEyvE6zcTE"
-      },
-      {
-        deliveryTeaId: "IBLkiaYRRL3",
-        eirTeaId: "WkHHrysFy3n"
-      },
-      {
-        deliveryTeaId: "r8bZppSsIvR",
-        eirTeaId: "r8bZppSsIvR"
-      },
-      {
-        deliveryTeaId: "oVwa5LfjnvA",
-        eirTeaId: "oVwa5LfjnvA"
-      },
-      {
-        deliveryTeaId: "UNiaP6Oz7Mv",
-        eirTeaId: "UNiaP6Oz7Mv"
-      },
-      {
-        deliveryTeaId: "RwoKpuIgMmA", //lgHRdU82IJv
-        eirTeaId: "DcMyN6eoyFD"
-      }
-    ].forEach((tea) => {
-      if (tea.deliveryTeaId === "tQeFLjYbqzv") {
-        tei = updateAttribute(tei, tea.eirTeaId, {
-          value: foundDateOfDelivery
-        });
-      } else {
-        const foundCurrentAttribute = currentTei.attributes.find((e) => e.attribute === tea.deliveryTeaId);
-        if (foundCurrentAttribute) {
-          tei = updateAttribute(tei, tea.eirTeaId, foundCurrentAttribute);
-        } else {
-          if (tea.deliveryTeaId === "RwoKpuIgMmA") {
-            const foundCurrentPhoneNumber = currentTei.attributes.find((e) => e.attribute === "lgHRdU82IJv");
-            if (foundCurrentPhoneNumber) {
-              tei = updateAttribute(tei, "lgHRdU82IJv", foundCurrentPhoneNumber);
-            }
-          }
-        }
-      }
-    });
-    return tei;
-  };
 
   const updateInfants = () => {
     if (!childTeisValue) {
@@ -163,49 +111,6 @@ const DeliveryDialog = () => {
             ],
             attributes: []
           };
-          [
-            {
-              deliveryTeaId: "tQeFLjYbqzv",
-              eirTeaId: "tQeFLjYbqzv"
-            },
-            {
-              deliveryTeaId: "IEE2BMhfoSc",
-              eirTeaId: "RqEyvE6zcTE"
-            },
-            {
-              deliveryTeaId: "IBLkiaYRRL3",
-              eirTeaId: "WkHHrysFy3n"
-            },
-            {
-              deliveryTeaId: "r8bZppSsIvR",
-              eirTeaId: "r8bZppSsIvR"
-            },
-            {
-              deliveryTeaId: "oVwa5LfjnvA",
-              eirTeaId: "oVwa5LfjnvA"
-            },
-            {
-              deliveryTeaId: "UNiaP6Oz7Mv",
-              eirTeaId: "UNiaP6Oz7Mv"
-            },
-            {
-              deliveryTeaId: "RwoKpuIgMmA", //lgHRdU82IJv
-              eirTeaId: "DcMyN6eoyFD"
-            }
-          ].forEach((tea) => {
-            if (tea.deliveryTeaId === "tQeFLjYbqzv") {
-              newChild.attributes.push({
-                attribute: tea.eirTeaId,
-                value: foundDateOfDelivery
-              });
-            } else {
-              const foundCurrentAttribute = findAttributeValue(currentTei, tea.deliveryTeaId);
-              newChild.attributes.push({
-                attribute: tea.eirTeaId,
-                value: foundCurrentAttribute
-              });
-            }
-          });
           children.push(newChild);
         }
 
@@ -216,37 +121,32 @@ const DeliveryDialog = () => {
           value: JSON.stringify(children)
         });
         return cloned;
+      } else {
+        console.log("here here");
+        return currentEvent;
       }
     } else {
       return currentEvent;
     }
   };
 
-  // if (liveBirths && liveBirths > 0) {
-  //   for (let i = 0; i < liveBirths.length; i++) {
-  //     while (true) {
-  //       const dob = findAttributeValue(currentTei, "tQeFLjYbqzv");
-  //       const splitted = dob.split("-");
-  //       const sex = findAttributeValue(currentTei, "DmuazFb368B");
-  //       const randomNumbers = [
-  //         Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-  //         Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-  //         Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-  //         Math.floor(Math.random() * (9 - 0 + 1)) + 0
-  //       ];
-  //       const number = randomNumbers.join("");
-  //       newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
-  //       const found = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
-  //       if (found.trackedEntityInstances.length === 0) {
-  //         break;
-  //       }
-  //     }
-  //   }
-  // }
-
   const errors = useBasicRules();
   const { basicErrors, completeDeliveryErrors } = useDeliveryDialogRules();
   const finalErrors = [...errors, ...basicErrors];
+  let ableToCompleteDelivery = true;
+  if (completeDeliveryErrors.length > 0) {
+    ableToCompleteDelivery = false;
+  }
+  const liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
+  if (!liveBirths) {
+    ableToCompleteDelivery = false;
+  }
+  if (liveBirths && parseInt(liveBirths) > 0) {
+    if (!childTeisValue) {
+      ableToCompleteDelivery = false;
+    }
+  }
+
   return currentEnrollment ? (
     <Dialog fullWidth={true} maxWidth={"lg"} open={true}>
       <div className="chr-tracker-event-form-container">
@@ -294,6 +194,7 @@ const DeliveryDialog = () => {
               onClick={async () => {
                 setLoading(true);
                 const toBeSavedEvent = await updateInfants(currentEvent);
+                console.log(toBeSavedEvent);
                 saveEventToState(toBeSavedEvent);
                 await saveEvent(toBeSavedEvent);
                 setEvent("editing", false);
@@ -305,6 +206,7 @@ const DeliveryDialog = () => {
           )}
           {!editing && !completed && (
             <LoadingButton
+              loading={loading}
               variant="contained"
               onClick={() => {
                 setEvent("editing", true);
@@ -314,16 +216,61 @@ const DeliveryDialog = () => {
             </LoadingButton>
           )}
           &nbsp;
-          <LoadingButton
-            disabled={completeDeliveryErrors.length > 0}
-            color="success"
-            variant="contained"
-            onClick={async () => {
-              // await createInfants();
-            }}
-          >
-            {t("completeThisDelivery")}
-          </LoadingButton>
+          {!completed && (
+            <LoadingButton
+              loading={loading}
+              disabled={!ableToCompleteDelivery}
+              color="success"
+              variant="contained"
+              onClick={async () => {
+                setLoading(true);
+                setEvent("editing", false);
+                const cloned = _.cloneDeep(children);
+                for (let i = 0; i < cloned.length; i++) {
+                  const currentChild = cloned[i];
+                  while (true) {
+                    const dob = findAttributeValue(currentChild, "tQeFLjYbqzv");
+                    const splitted = dob.split("-");
+                    const sex = findAttributeValue(currentChild, "DmuazFb368B");
+                    const randomNumbers = [
+                      Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                      Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                      Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                      Math.floor(Math.random() * (9 - 0 + 1)) + 0
+                    ];
+                    const number = randomNumbers.join("");
+                    const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
+                    const found = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
+                    if (found.trackedEntityInstances.length === 0) {
+                      cloned[i].attributes.push({
+                        attribute: "oPKsfqS64oE",
+                        value: newClientHealthId
+                      });
+                      break;
+                    }
+                  }
+                }
+                const clonedEnrollment = _.cloneDeep(currentEnrollment);
+                const toBeSavedEvent = _.cloneDeep(currentEvent);
+                const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
+                toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
+                console.log(cloned);
+                changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
+                changeEnrollmentProperty("status", "COMPLETED");
+                changeEventProperty("status", "COMPLETED");
+                toBeSavedEvent.status = "COMPLETED";
+                clonedEnrollment.status = "COMPLETED";
+                saveEnrollmentToState(clonedEnrollment);
+                saveEventToState(toBeSavedEvent);
+                await saveEnrollment(clonedEnrollment);
+                await saveEvent(toBeSavedEvent);
+                setEvent("currentEnrollment", clonedEnrollment);
+                setLoading(false);
+              }}
+            >
+              {t("completeThisDelivery")}
+            </LoadingButton>
+          )}
           <LoadingButton
             loading={loading}
             style={{ marginLeft: "auto" }}

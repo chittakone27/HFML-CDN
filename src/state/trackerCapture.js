@@ -420,6 +420,18 @@ const useTrackerCaptureStore = create((set, get) => ({
           }
         })
       );
+    },
+    saveEnrollmentToState: (enrollment) => {
+      set(
+        produce((state) => {
+          const foundEnrollmentIndex = state.data.currentEnrollments.findIndex((enr) => enr.enrollment === enrollment.enrollment);
+          if (foundEnrollmentIndex === -1) {
+            state.data.currentEnrollments.push(enrollment);
+          } else {
+            state.data.currentEnrollments[foundEnrollmentIndex] = { ...enrollment };
+          }
+        })
+      );
     }
   }
 }));

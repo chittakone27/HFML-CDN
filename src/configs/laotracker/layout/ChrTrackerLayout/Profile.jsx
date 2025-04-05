@@ -132,9 +132,6 @@ const Profile = ({ title }) => {
         progress: undefined
       });
       changeTeiProperty("lastSaved", new Date().toString());
-      setLoading(false);
-    } else {
-      setLoading(false);
     }
     if (layout.layout === "layout2") {
       await doEnroll(toBeSavedTei);
@@ -142,6 +139,7 @@ const Profile = ({ title }) => {
     }
     if (layout.layout === "layout3") {
       await pull(`/api/routes/chr/run?work=update&tei=${currentTei.trackedEntityInstance}`);
+      setLoading(false);
     }
   };
 
@@ -171,24 +169,26 @@ const Profile = ({ title }) => {
                 return (
                   <Row
                     label={t("currentAddress")}
-                    field={[
-                      <VillageSelectorOrgUnitNoState
-                        disabled={!layout.profileFormEditing || loading}
-                        VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
-                        change={(values) => {
-                          changeAttributeValue("r8bZppSsIvR", values[0] ? values[0].value : "");
-                          changeAttributeValue("oVwa5LfjnvA", values[1] ? values[1].value : "");
-                          changeAttributeValue("UNiaP6Oz7Mv", values[2] ? values[2].value : "");
-                        }}
-                        initValues={[
-                          findAttributeValue(currentTei, "r8bZppSsIvR"),
-                          findAttributeValue(currentTei, "oVwa5LfjnvA"),
-                          findAttributeValue(currentTei, "UNiaP6Oz7Mv")
-                        ]}
-                        mandatoryFields={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
-                      />,
-                      !findAttributeValue(currentTei, "UNiaP6Oz7Mv") && <Typography variant="ERROR">{t("thisFieldIsRequired")}</Typography>
-                    ]}
+                    field={
+                      <div style={{ width: "100%" }}>
+                        <VillageSelectorOrgUnitNoState
+                          disabled={!layout.profileFormEditing || loading}
+                          VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
+                          change={(values) => {
+                            changeAttributeValue("r8bZppSsIvR", values[0] ? values[0].value : "");
+                            changeAttributeValue("oVwa5LfjnvA", values[1] ? values[1].value : "");
+                            changeAttributeValue("UNiaP6Oz7Mv", values[2] ? values[2].value : "");
+                          }}
+                          initValues={[
+                            findAttributeValue(currentTei, "r8bZppSsIvR"),
+                            findAttributeValue(currentTei, "oVwa5LfjnvA"),
+                            findAttributeValue(currentTei, "UNiaP6Oz7Mv")
+                          ]}
+                          mandatoryFields={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
+                        />
+                        {!findAttributeValue(currentTei, "UNiaP6Oz7Mv") && <Typography variant="ERROR">{t("thisFieldIsRequired")}</Typography>}
+                      </div>
+                    }
                   />
                 );
               } else if (teaId === "RwoKpuIgMmA") {

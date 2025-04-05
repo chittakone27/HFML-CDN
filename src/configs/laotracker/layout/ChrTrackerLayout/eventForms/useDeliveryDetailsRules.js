@@ -38,7 +38,8 @@ const {
   G,
   P,
   A,
-  L
+  L,
+  CHILD_TEIS
 } = DELIVERY_DETAILS_DATA_ELEMENTS;
 const { NUMBER_OF_ANC_VISIT, HIV_TEST1, HIV_TEST2 } = ANC_DATA_ELEMENTS;
 const {
@@ -310,6 +311,13 @@ const useDeliveryDetailsRules = () => {
       props[BLOOD_LOSS_VOLUME].hidden = false;
     }
 
+    if (!dataValues[LIVE_BIRTHS]) {
+      changeDataValue(CHILD_TEIS, "");
+    }
+    if (dataValues[LIVE_BIRTHS] && parseInt(dataValues[LIVE_BIRTHS]) < 1) {
+      changeDataValue(CHILD_TEIS, "");
+    }
+
     setProps({ ...props });
   }, [JSON.stringify(currentEvent), attributes[AGE]]);
 
@@ -330,6 +338,12 @@ const useDeliveryDetailsRules = () => {
 };
 
 const useInfantFormRules = (birthDetailsEvent, childIndex) => {
+  const { data } = useTrackerCaptureStore(
+    useShallow((state) => ({
+      data: state.data
+    }))
+  );
+  const { currentTei } = data;
   const { event, chrTrackerActions } = useChrTrackerStore(
     useShallow((state) => ({
       event: state.event,
@@ -447,7 +461,7 @@ const useInfantFormRules = (birthDetailsEvent, childIndex) => {
       currentAssignations[SERVICE_LOCATION] = deliveryDetailsDataValues[SERVICE_LOCATION];
     }
     const cloned = _.cloneDeep(birthDetailsEvent);
-    const children = JSON.parse(deliveryDetailsDataValues["lYdXxom1BAG"]);
+    const children = JSON.parse(deliveryDetailsDataValues[CHILD_TEIS]);
     Object.keys(currentAssignations).forEach((key) => {
       const foundDataValueIndex = cloned.dataValues.findIndex((dv) => dv.dataElement === key);
       if (foundDataValueIndex === -1) {
@@ -462,33 +476,62 @@ const useInfantFormRules = (birthDetailsEvent, childIndex) => {
     const foundEnrollmentIndex = children[childIndex].enrollments.findIndex((enr) => enr.program === "Yj9cJ34AXw6");
     const foundEventIndex = children[childIndex].enrollments[foundEnrollmentIndex].events.findIndex((ev) => ev.event === birthDetailsEvent.event);
     children[childIndex].enrollments[foundEnrollmentIndex].events[foundEventIndex] = cloned;
-    changeDataValue("lYdXxom1BAG", JSON.stringify(children));
 
-    // const newChildTeis = _.cloneDeep(childTeis);
-    // const foundChildTeiIndex = childTeis.findIndex((c) => c.trackedEntityInstance === childTei.trackedEntityInstance);
-    // const foundEnrollmentIndex = childTei.enrollments.findIndex((enr) => enr.program === "Yj9cJ34AXw6");
-    // const foundEventIndex =
-    //   childTei && childTei.enrollments
-    //     ? childTei.enrollments[foundEnrollmentIndex].events.findIndex((ev) => ev.programStage === "bwGkn5ebqkD")
-    //     : null;
+    if (deliveryDetailsDataValues[LIVE_BIRTHS] && parseInt(deliveryDetailsDataValues[LIVE_BIRTHS]) > 0) {
+      const childAttributes = [
+        {
+          deliveryTeaId: "tQeFLjYbqzv",
+          eirTeaId: "tQeFLjYbqzv"
+        },
+        {
+          deliveryTeaId: "IEE2BMhfoSc",
+          eirTeaId: "RqEyvE6zcTE"
+        },
+        {
+          deliveryTeaId: "IBLkiaYRRL3",
+          eirTeaId: "WkHHrysFy3n"
+        },
+        {
+          deliveryTeaId: "r8bZppSsIvR",
+          eirTeaId: "r8bZppSsIvR"
+        },
+        {
+          deliveryTeaId: "oVwa5LfjnvA",
+          eirTeaId: "oVwa5LfjnvA"
+        },
+        {
+          deliveryTeaId: "UNiaP6Oz7Mv",
+          eirTeaId: "UNiaP6Oz7Mv"
+        },
+        {
+          deliveryTeaId: "RwoKpuIgMmA", //lgHRdU82IJv
+          eirTeaId: "DcMyN6eoyFD"
+        }
+      ];
+      children.forEach((child) => {
+        childAttributes.forEach((attribute) => {
+          let value = "";
+          if (attribute.deliveryTeaId === "tQeFLjYbqzv") {
+            value = findDataValue(foundDeliveryDetailEvent.dataValues, "grMMOiF9fPj");
+          } else {
+            value = findAttributeValue(currentTei, attribute.deliveryTeaId);
+          }
+          const foundAttributeIndex = child.attributes.findIndex((attr) => attr.attribute === attribute.eirTeaId);
+          if (foundAttributeIndex === -1) {
+            child.attributes.push({
+              attribute: attribute.eirTeaId,
+              value
+            });
+          } else {
+            child.attributes[foundAttributeIndex].value = value;
+          }
+        });
+      });
+      changeDataValue(CHILD_TEIS, JSON.stringify(children));
+    }
 
-    // Object.keys(assignations).forEach((de) => {
-    //   const foundDataValueIndex = newChildTeis[foundChildTeiIndex].enrollments[foundEnrollmentIndex].events[foundEventIndex].dataValues.findIndex(
-    //     (dv) => dv.dataElement === de
-    //   );
-    //   if (foundDataValueIndex === -1) {
-    //     newChildTeis[foundChildTeiIndex].enrollments[foundEnrollmentIndex].events[foundEventIndex].dataValues.push({
-    //       dataElement: de,
-    //       value: assignations[de]
-    //     });
-    //   } else {
-    //     newChildTeis[foundChildTeiIndex].enrollments[foundEnrollmentIndex].events[foundEventIndex].dataValues[foundDataValueIndex].value =
-    //       assignations[de];
-    //   }
-    // });
-    // setData("childTeis", newChildTeis);
     setProps({ ...props });
-  }, [JSON.stringify(currentEvent), JSON.stringify(birthDetailsEvent)]);
+  }, [JSON.stringify(currentTei), JSON.stringify(currentEvent), JSON.stringify(birthDetailsEvent)]);
 
   return props;
 };

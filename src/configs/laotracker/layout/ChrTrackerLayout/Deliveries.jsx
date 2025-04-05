@@ -10,12 +10,18 @@ import { format } from "date-fns";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "./state";
 import DeliveryDialog from "./DeliveryDialog";
+import { useState } from "react";
+import { tracker } from "@/api";
+import { LoadingButton } from "@mui/lab";
+const { saveEnrollment, saveEvent } = tracker;
 
 const Deliveries = () => {
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const { data } = useTrackerCaptureStore(
+  const { data, trackerActions } = useTrackerCaptureStore(
     useShallow((state) => ({
-      data: state.data
+      data: state.data,
+      trackerActions: state.actions
     }))
   );
   const { program, orgUnit } = useSelectionStore(
@@ -39,7 +45,8 @@ const Deliveries = () => {
   );
   const { currentEnrollment } = event;
   const { setEvent } = actions;
-  const { currentEnrollments, currentEvents } = data;
+  const { currentTei, currentEnrollments, currentEvents } = data;
+  const { setData } = trackerActions;
   const foundProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
   const foundDeliveryEnrollments = currentEnrollments.filter((ce) => ce.program === "AyPkCOMmgdd");
   const foundActiveEnrollment = foundDeliveryEnrollments.find((fde) => fde.status === "ACTIVE");
@@ -49,6 +56,48 @@ const Deliveries = () => {
   });
   let ableToEnroll = foundActiveEnrollment ? false : true;
 
+  const createNewDelivery = async () => {
+    if (ableToEnroll) {
+      setLoading(true);
+      const newEnrId = generateUid();
+      const newEventId = generateUid();
+      const currentDate = format(new Date(), "yyyy-MM-dd");
+      const newEvent = {
+        event: newEventId,
+        eventDate: currentDate,
+        orgUnit: orgUnit.id,
+        program: program.id,
+        programStage: "YOHVx1Xmpgr",
+        trackedEntityInstance: currentTei.trackedEntityInstance,
+        enrollment: newEnrId,
+        dataValues: []
+      };
+      const newEnrollment = {
+        attributes: [],
+        orgUnit: orgUnit.id,
+        program: program.id,
+        trackedEntityInstance: currentTei.trackedEntityInstance,
+        enrollment: newEnrId,
+        trackedEntityType: program.trackedEntityType.id,
+        enrollmentDate: currentDate,
+        incidentDate: currentDate,
+        status: "ACTIVE",
+        events: [newEvent]
+      };
+      await saveEnrollment(newEnrollment);
+      const clonedEnrollments = _.cloneDeep(currentEnrollments);
+      clonedEnrollments.push(newEnrollment);
+      const clonedEvents = _.cloneDeep(currentEvents);
+      clonedEvents.push(newEvent);
+      setData("currentEnrollments", clonedEnrollments);
+      setData("currentEvents", clonedEvents);
+      setData("currentEnrollment", newEnrollment);
+      setEvent("currentEnrollment", newEnrollment);
+      setEvent("currentProgramStage", foundProgramStage);
+      setEvent("currentEvent", newEvent);
+      setLoading(false);
+    }
+  };
   return (
     <div className="chr-deliveries-container">
       <div>
@@ -84,7 +133,7 @@ const Deliveries = () => {
                 const foundOu = orgUnits.find((ou) => fde.orgUnit === ou.id);
                 const foundEvent = currentEvents.find((ce) => ce.enrollment === fde.enrollment && ce.programStage === "YOHVx1Xmpgr");
                 const foundDataValue = foundEvent.dataValues.find((dv) => dv.dataElement === "lYdXxom1BAG");
-                const numberOfBabies = foundDataValue ? JSON.parse(foundDataValue.value).length : 0;
+                const numberOfBabies = foundDataValue && foundDataValue.value ? JSON.parse(foundDataValue.value).length : 0;
                 return (
                   <TableRow
                     hover
@@ -137,9 +186,9 @@ const Deliveries = () => {
             </TableBody>
           </Table>
           <div style={{ padding: 5 }}>
-            <Button disabled={!ableToEnroll} variant="contained">
+            <LoadingButton loading={loading} disabled={!ableToEnroll} variant="contained" onClick={createNewDelivery}>
               {t("addNewDelivery")}
-            </Button>
+            </LoadingButton>
             <div className="add-new-delivery-warning">{!ableToEnroll && <div>{t("addNewDeliveryWarning")}</div>}</div>
           </div>
         </div>

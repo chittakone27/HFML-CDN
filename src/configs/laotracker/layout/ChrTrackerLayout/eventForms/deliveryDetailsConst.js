@@ -23,7 +23,8 @@ const DELIVERY_DETAILS_DATA_ELEMENTS = {
   G: "x9pl4PJop26",
   P: "fm0Mge3AePX",
   A: "E4lPyETCSON",
-  L: "Vny88TWPZ1I"
+  L: "Vny88TWPZ1I",
+  CHILD_TEIS: "lYdXxom1BAG"
 };
 
 const ANC_DATA_ELEMENTS = {

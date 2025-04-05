@@ -73,7 +73,8 @@ const Infant = ({ childIndex }) => {
       cloned.dataValues[foundDataValueIndex].value = value;
     }
     const foundEnrollmentIndex = children[childIndex].enrollments.findIndex((enr) => enr.program === "Yj9cJ34AXw6");
-    const foundEventIndex = children[childIndex].enrollments[foundEnrollmentIndex].events.findIndex((ev) => ev.event === currentEvent.event);
+    const foundEventIndex = children[childIndex].enrollments[foundEnrollmentIndex].events.findIndex((ev) => ev.event === birthDetailsEvent.event);
+    console.log(cloned);
     children[childIndex].enrollments[foundEnrollmentIndex].events[foundEventIndex] = cloned;
     changeDataValue("lYdXxom1BAG", JSON.stringify(children));
   };
@@ -133,7 +134,6 @@ const Infant = ({ childIndex }) => {
 
   const foundSex = findAttributeValue(currentChild, "DmuazFb368B");
   const foundChildHealthId = findAttributeValue(currentChild, "oPKsfqS64oE");
-
   const props = useInfantFormRules(birthDetailsEvent, childIndex);
 
   return (
