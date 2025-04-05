@@ -55,7 +55,6 @@ const Infant = ({ childIndex }) => {
     } else {
       cloned.attributes[foundAttributeIndex].value = value;
     }
-    console.log(cloned);
 
     children[childIndex] = cloned;
     changeDataValue("lYdXxom1BAG", JSON.stringify(children));
@@ -74,7 +73,6 @@ const Infant = ({ childIndex }) => {
     }
     const foundEnrollmentIndex = children[childIndex].enrollments.findIndex((enr) => enr.program === "Yj9cJ34AXw6");
     const foundEventIndex = children[childIndex].enrollments[foundEnrollmentIndex].events.findIndex((ev) => ev.event === birthDetailsEvent.event);
-    console.log(cloned);
     children[childIndex].enrollments[foundEnrollmentIndex].events[foundEventIndex] = cloned;
     changeDataValue("lYdXxom1BAG", JSON.stringify(children));
   };

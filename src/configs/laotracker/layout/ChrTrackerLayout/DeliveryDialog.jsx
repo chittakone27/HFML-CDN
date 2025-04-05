@@ -194,7 +194,6 @@ const DeliveryDialog = () => {
               onClick={async () => {
                 setLoading(true);
                 const toBeSavedEvent = await updateInfants(currentEvent);
-                console.log(toBeSavedEvent);
                 saveEventToState(toBeSavedEvent);
                 await saveEvent(toBeSavedEvent);
                 setEvent("editing", false);
