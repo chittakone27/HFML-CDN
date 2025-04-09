@@ -216,10 +216,22 @@ const DeliveryDialog = () => {
             </LoadingButton>
           )}
           &nbsp;
-          {!completed && (
+          <LoadingButton
+            loading={loading}
+            variant="contained"
+            color="error"
+            onClick={() => {
+              setEvent("currentEnrollment", null);
+              setEvent("currentEvent", null);
+              setEvent("editing", false);
+            }}
+          >
+            {t("close")}
+          </LoadingButton>
+          <div style={{ marginLeft: "auto" }}>
             <LoadingButton
               loading={loading}
-              disabled={!ableToCompleteDelivery}
+              disabled={!ableToCompleteDelivery || completed}
               color="success"
               variant="contained"
               onClick={async () => {
@@ -275,20 +287,20 @@ const DeliveryDialog = () => {
             >
               {t("completeThisDelivery")}
             </LoadingButton>
-          )}
-          <LoadingButton
-            loading={loading}
-            style={{ marginLeft: "auto" }}
-            variant="contained"
-            color="error"
-            onClick={() => {
-              setEvent("currentEnrollment", null);
-              setEvent("currentEvent", null);
-              setEvent("editing", false);
-            }}
-          >
-            {t("close")}
-          </LoadingButton>
+            &nbsp;
+            {completed && (
+              <LoadingButton
+                color="success"
+                loading={loading}
+                variant="contained"
+                onClick={() => {
+                  console.log("print birth certificate");
+                }}
+              >
+                {t("printBirthCertificate")}
+              </LoadingButton>
+            )}
+          </div>
         </div>
       </div>
     </Dialog>
