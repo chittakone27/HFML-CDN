@@ -14,6 +14,7 @@ import { tracker } from "@/api";
 import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
+import { pull } from "@/utils/fetch";
 const { saveEvent, saveEnrollment, searchTeis } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
@@ -239,8 +240,9 @@ const DeliveryDialog = () => {
                     ];
                     const number = randomNumbers.join("");
                     const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
-                    const found = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
-                    if (found.trackedEntityInstances.length === 0) {
+                    const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
+                    const foundInChr = await pull("/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}");
+                    if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
                       cloned[i].attributes.push({
                         attribute: "oPKsfqS64oE",
                         value: newClientHealthId
@@ -253,7 +255,6 @@ const DeliveryDialog = () => {
                 const toBeSavedEvent = _.cloneDeep(currentEvent);
                 const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
                 toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
-                console.log(cloned);
                 changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
                 changeEnrollmentProperty("status", "COMPLETED");
                 changeEventProperty("status", "COMPLETED");
