@@ -109,8 +109,9 @@ const customLocales = {
     currentAddress: "ທີ່ຢູ່ປະຈຸບັນ",
     clientHealthIdWarning1: "ຫ້ອງນີ້ລະບົບຈະສ້າງໃຫ້ອັດຕະໂນມັດ",
     clientHealthIdWarning2: "ລະຫັດຈະຖືກສ້າງຂຶ້ນໃຫ້ໂດຍອັດຕະໂນມັດຢູ່ຫນ້າຕໍ່ໄປຫລັງຈາກທ່ານລົງທະບຽນຜູ້ມາຮັບບໍລິການຮຽບຮ້ອຍແລ້ວ.",
-    cannotSaveMissingMandatoryFields: "Cannot save this record because these mandatory fields are missing",
-    noErrors: "No errors, you can save this record!"
+    cannotSaveMissingMandatoryFields:
+      "ລະບົບບໍ່ສາມາບດບັນທຶກຂໍ້ມູນທີ່ທ່ານປ້ອນໄດ້ເທື່ອເພາະວ່າຂໍ້ມູນທີ່ຈຳເປັນຍັງບໍ່ທັນໄດ້ຕື່ມໃສ່, ໃຫ້ທ່ານກວດຄືນເບິ່ງຕື່ມວ່າມີຂໍ້ມູນໃດທີ່ຍັງບໍ່ໄດ້ປ້ອນເທື່ອ",
+    noErrors: "ຂໍ້ມູນຖືກຕື່ມຄົບຖ້ວນແລ້ວ, ທ່ານສາມາດບັນທຶກໄດ້ເລີຍ!"
   }
 };
 
