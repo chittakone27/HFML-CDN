@@ -80,7 +80,7 @@ const Infant = ({ childIndex }) => {
   useEffect(() => {
     const childAttributes = [
       {
-        deliveryTeaId: "tQeFLjYbqzv",
+        deliveryDataElementId: "grMMOiF9fPj",
         eirTeaId: "tQeFLjYbqzv"
       },
       {
@@ -111,8 +111,8 @@ const Infant = ({ childIndex }) => {
     const cloned = _.cloneDeep(currentChild);
     childAttributes.forEach((attribute) => {
       let value = "";
-      if (attribute.deliveryTeaId === "tQeFLjYbqzv") {
-        value = findDataValue(currentDeliveryEvent.dataValues, "grMMOiF9fPj");
+      if (attribute.deliveryDataElementId) {
+        value = findDataValue(currentDeliveryEvent.dataValues, attribute.deliveryDataElementId);
       } else {
         value = findAttributeValue(currentTei, attribute.deliveryTeaId);
       }
@@ -178,9 +178,21 @@ const Infant = ({ childIndex }) => {
                   currentEvent={birthDetailsEvent}
                   change={(value) => {
                     updateDataValue(de, value);
+                    if (de === "MKkYDC0tUIr") {
+                      updateAttribute("IEE2BMhfoSc", value);
+                    }
+                    if (de === "JS8uvgPMJxl") {
+                      updateAttribute("IBLkiaYRRL3", value);
+                    }
                   }}
                   accept={(value) => {
                     updateDataValue(de, value);
+                    if (de === "MKkYDC0tUIr") {
+                      updateAttribute("IEE2BMhfoSc", value);
+                    }
+                    if (de === "JS8uvgPMJxl") {
+                      updateAttribute("IBLkiaYRRL3", value);
+                    }
                   }}
                 />
               }
