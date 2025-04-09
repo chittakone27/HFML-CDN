@@ -15,7 +15,7 @@ import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
 import { pull } from "@/utils/fetch";
-const { saveEvent, saveEnrollment, searchTeis } = tracker;
+const { saveEvent, saveEnrollment, searchTeis, saveTei } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -241,7 +241,7 @@ const DeliveryDialog = () => {
                     const number = randomNumbers.join("");
                     const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
                     const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
-                    const foundInChr = await pull("/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}");
+                    const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
                     if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
                       cloned[i].attributes.push({
                         attribute: "oPKsfqS64oE",
@@ -265,6 +265,11 @@ const DeliveryDialog = () => {
                 await saveEnrollment(clonedEnrollment);
                 await saveEvent(toBeSavedEvent);
                 setEvent("currentEnrollment", clonedEnrollment);
+                //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
+                for (let i = 0; i < cloned.length; i++) {
+                  await saveTei(cloned[i]);
+                  await pull(`/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6`);
+                }
                 setLoading(false);
               }}
             >
