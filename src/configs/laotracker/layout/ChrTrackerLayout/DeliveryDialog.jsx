@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Dialog, Button, Tabs, Tab } from "@mui/material";
+import { Dialog, Tabs, Tab } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import DeliveryDetails from "./eventForms/DeliveryDetails";
 import Infant from "./eventForms/Infant";
+import BirthCertificateButton from "./BirthCertificateButton";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -39,12 +40,15 @@ const DeliveryDialog = () => {
       actions: state.actions
     }))
   );
-  const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
+  const { currentEnrollment, currentProgramStage, currentEvent, editing } =
+    event;
 
   const { setEvent, changeDataValue, changeEventProperty } = actions;
-  const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState } = trackerActions;
+  const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState } =
+    trackerActions;
 
-  const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
+  const completed =
+    currentEnrollment && currentEnrollment.status === "COMPLETED";
   const childTeisValue = findDataValue(currentEvent.dataValues, "lYdXxom1BAG");
   let children = [];
   if (childTeisValue) {
@@ -63,7 +67,10 @@ const DeliveryDialog = () => {
       if (liveBirths && liveBirths > 0) {
         const children = [];
         for (let i = 0; i < liveBirths; i++) {
-          const foundDateOfDelivery = findDataValue(currentEvent.dataValues, "grMMOiF9fPj");
+          const foundDateOfDelivery = findDataValue(
+            currentEvent.dataValues,
+            "grMMOiF9fPj"
+          );
           const newTeiId = generateUid();
           const newEnrollmentId = generateUid();
           const newBirthDetailEventId = generateUid();
@@ -174,14 +181,31 @@ const DeliveryDialog = () => {
         <div className="chr-tracker-event-form-helper">
           {finalErrors.length > 0 ? (
             <div
-              style={{ padding: 5, color: "#e53935", height: "100%", width: "100%", overflow: "auto", backgroundColor: "#ffcdd2", borderRadius: 3 }}
+              style={{
+                padding: 5,
+                color: "#e53935",
+                height: "100%",
+                width: "100%",
+                overflow: "auto",
+                backgroundColor: "#ffcdd2",
+                borderRadius: 3
+              }}
             >
               {finalErrors.map((error) => {
                 return <div>{error}</div>;
               })}
             </div>
           ) : (
-            <div style={{ padding: 5, height: "100%", width: "100%", overflow: "auto", backgroundColor: "#e8f5e9", borderRadius: 3 }}>
+            <div
+              style={{
+                padding: 5,
+                height: "100%",
+                width: "100%",
+                overflow: "auto",
+                backgroundColor: "#e8f5e9",
+                borderRadius: 3
+              }}
+            >
               {t("noErrors")}
             </div>
           )}
@@ -251,10 +275,22 @@ const DeliveryDialog = () => {
                       Math.floor(Math.random() * (9 - 0 + 1)) + 0
                     ];
                     const number = randomNumbers.join("");
-                    const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
-                    const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
-                    const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
-                    if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
+                    const newClientHealthId = `${splitted[2]}${splitted[1]}${
+                      splitted[0]
+                    }-${sex === "M" ? "1" : "2"}-${number}`;
+                    const foundInDhis2 = await searchTeis(
+                      { oPKsfqS64oE: newClientHealthId },
+                      null,
+                      "IWp9dQGM0bS",
+                      "MCPQUTHX1Ze"
+                    );
+                    const foundInChr = await pull(
+                      `/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`
+                    );
+                    if (
+                      foundInDhis2.trackedEntityInstances.length === 0 &&
+                      foundInChr.trackedEntityInstances.length === 0
+                    ) {
                       cloned[i].attributes.push({
                         attribute: "oPKsfqS64oE",
                         value: newClientHealthId
@@ -265,8 +301,11 @@ const DeliveryDialog = () => {
                 }
                 const clonedEnrollment = _.cloneDeep(currentEnrollment);
                 const toBeSavedEvent = _.cloneDeep(currentEvent);
-                const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
-                toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
+                const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex(
+                  (dv) => dv.dataElement === "lYdXxom1BAG"
+                );
+                toBeSavedEvent.dataValues[foundDataValueIndex].value =
+                  JSON.stringify(cloned);
                 changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
                 changeEnrollmentProperty("status", "COMPLETED");
                 changeEventProperty("status", "COMPLETED");
@@ -280,7 +319,9 @@ const DeliveryDialog = () => {
                 //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
                 for (let i = 0; i < cloned.length; i++) {
                   await saveTei(cloned[i]);
-                  await pull(`/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6`);
+                  await pull(
+                    `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6`
+                  );
                 }
                 setLoading(false);
               }}
@@ -289,16 +330,7 @@ const DeliveryDialog = () => {
             </LoadingButton>
             &nbsp;
             {completed && (
-              <LoadingButton
-                color="success"
-                loading={loading}
-                variant="contained"
-                onClick={() => {
-                  console.log("print birth certificate");
-                }}
-              >
-                {t("printBirthCertificate")}
-              </LoadingButton>
+              <BirthCertificateButton loading={loading} children={children} />
             )}
           </div>
         </div>
