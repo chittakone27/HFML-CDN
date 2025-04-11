@@ -12,7 +12,9 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { tracker } from "@/api";
 import { useState } from "react";
 import _ from "lodash";
+import IpdVisitDetails from "./eventForms/IpdVisitDetails";
 import useBasicRules from "./eventForms/useBasicRules";
+
 const { saveEvent } = tracker;
 const mapping = {
   vqNgkw4gfw7: {
@@ -26,6 +28,9 @@ const mapping = {
   },
   u1Na9wCGY6d: {
     huYWjrG6A1C: PncDetails
+  },
+  ck0rft9jVlF: {
+    PuT0v7uvrDO: IpdVisitDetails
   }
 };
 const EventFormDialog = () => {
@@ -52,10 +57,9 @@ const EventFormDialog = () => {
   const { setEvent, changeEventProperty } = actions;
   const Component = currentEvent && currentProgramStage && mapping[program.id][currentProgramStage.id];
   const completed = currentEvent && currentEvent.status === "COMPLETED";
-  const errors = useBasicRules();
-
+  const errors = [...useBasicRules(), ...event.formErrors];
   return currentEvent ? (
-    <Dialog fullWidth={true} maxWidth={"lg"} open={true}>
+    <Dialog fullWidth={true} maxWidth={"xl"} open={true}>
       <div className="chr-tracker-event-form-container">
         <div className="chr-tracker-event-form">
           <Component />
@@ -66,7 +70,7 @@ const EventFormDialog = () => {
               style={{ padding: 5, color: "#e53935", height: "100%", width: "100%", overflow: "auto", backgroundColor: "#ffcdd2", borderRadius: 3 }}
             >
               {errors.map((error) => {
-                return <div>{error}</div>;
+                return <div>- {error}</div>;
               })}
             </div>
           ) : (
@@ -150,6 +154,7 @@ const EventFormDialog = () => {
             onClick={() => {
               setEvent("currentEvent", null);
               setEvent("editing", false);
+              setEvent("formErrors", []);
             }}
           >
             {t("close")}

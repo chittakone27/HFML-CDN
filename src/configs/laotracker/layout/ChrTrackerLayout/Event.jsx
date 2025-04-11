@@ -23,10 +23,11 @@ const Event = ({ title }) => {
     }))
   );
   const { currentEvents, currentEnrollment } = data;
-  const { dataElements, orgUnits } = useMetadataStore(
+  const { dataElements, orgUnits, optionSets } = useMetadataStore(
     useShallow((state) => ({
       dataElements: state.dataElements,
-      orgUnits: state.orgUnits
+      orgUnits: state.orgUnits,
+      optionSets: state.optionSets
     }))
   );
   const { event, actions } = useChrTrackerStore(
