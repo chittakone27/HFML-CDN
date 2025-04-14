@@ -2,10 +2,7 @@ import { useEffect, useState } from "react";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { DATA_ELEMENTS, ATTRIBUTES } from "../const";
-import {
-  findDataValue,
-  findAttributeValue,
-} from "@/configs/laotracker/common/utils";
+import { findDataValue, findAttributeValue } from "@/configs/laotracker/common/utils";
 import { useShallow } from "zustand/react/shallow";
 import { format, isAfter, isBefore } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -24,7 +21,7 @@ const {
   OUTSIDE_DISTRICT,
   IPD_MAIN_DIAGNOSIS_ICD10,
   IDC10_CAUSE_GROUP,
-  IPD_TREATMENT_TYPE,
+  IPD_TREATMENT_TYPE
 } = DATA_ELEMENTS;
 const { DOB, SEX, VILLAGE } = ATTRIBUTES;
 
@@ -33,7 +30,7 @@ const useIpdVisitDetailsRules = (program) => {
   const { orgUnits, optionSets } = useMetadataStore(
     useShallow((state) => ({
       orgUnits: state.orgUnits,
-      optionSets: state.optionSets,
+      optionSets: state.optionSets
     }))
   );
   const orgUnit = useSelectionStore((state) => state.orgUnit);
@@ -42,22 +39,16 @@ const useIpdVisitDetailsRules = (program) => {
     hiddenFields: [],
     disableFields: [],
     errorAdmissionDate: false,
-    dischargeDate: "",
+    dischargeDate: ""
   });
   const { currentEvent } = useCurrentEvent();
   const { data, actions } = useTrackerCaptureStore(
     useShallow((state) => ({
       data: state.data,
-      actions: state.actions,
+      actions: state.actions
     }))
   );
-  const {
-    setLayout,
-    changeDataValue,
-    changeEventProperty,
-    setHandlers,
-    changeEnrollmentProperty,
-  } = actions;
+  const { setLayout, changeDataValue, changeEventProperty, setHandlers, changeEnrollmentProperty } = actions;
   const { currentTei } = data;
 
   const calculateAgeInYears = (dob, dischargeDate) => {
@@ -68,10 +59,7 @@ const useIpdVisitDetailsRules = (program) => {
       ageInYears = dischargeDateValue.getFullYear() - dobValue.getFullYear();
       const m = dischargeDateValue.getMonth() - dobValue.getMonth();
 
-      if (
-        m < 0 ||
-        (m === 0 && dischargeDateValue.getDate() < dobValue.getDate())
-      ) {
+      if (m < 0 || (m === 0 && dischargeDateValue.getDate() < dobValue.getDate())) {
         ageInYears--;
       }
     }
@@ -87,9 +75,7 @@ const useIpdVisitDetailsRules = (program) => {
   };
 
   const findCustomAttributeValue = (attribute, attributes) => {
-    const foundAttributeValue = attributes.find(
-      (attr) => attr.attribute.id === attribute
-    );
+    const foundAttributeValue = attributes.find((attr) => attr.attribute.id === attribute);
 
     return foundAttributeValue ? foundAttributeValue.value : "";
   };
@@ -98,27 +84,18 @@ const useIpdVisitDetailsRules = (program) => {
     let valid = true;
     const newProps = {};
     // newProps[IDC10_CAUSE_GROUP] = { hidden: true };
-    const admissionDate = findDataValue(
-      currentEvent.dataValues,
-      IPD_ADMISSION_DATE
-    );
+    const admissionDate = findDataValue(currentEvent.dataValues, IPD_ADMISSION_DATE);
     const eventDate = currentEvent.eventDate.split("T")[0];
     const dob = findAttributeValue(currentTei, DOB);
     const sex = findAttributeValue(currentTei, SEX);
     const ageAtVisit = calculateAgeInYears(dob, eventDate);
     const village = findAttributeValue(currentTei, VILLAGE);
-    const ipdStatusAtDischarge = findDataValue(
-      currentEvent.dataValues,
-      IPD_STATUS_AT_DISCHARGE
-    );
-    const ipdTreatmentType = findDataValue(
-      currentEvent.dataValues,
-      IPD_TREATMENT_TYPE
-    );
+    const ipdStatusAtDischarge = findDataValue(currentEvent.dataValues, IPD_STATUS_AT_DISCHARGE);
+    const ipdTreatmentType = findDataValue(currentEvent.dataValues, IPD_TREATMENT_TYPE);
     const dateOfDeath = findDataValue(currentEvent.dataValues, DATE_OF_DEATH);
     newProps[IPD_ADMISSION_DATE] = {
       maxDate: formatDate(eventDate),
-      helpers: [],
+      helpers: []
     };
     newProps[IS_PREGNANT_ID] = {};
     newProps[DATE_OF_DEATH] = {};
@@ -133,14 +110,14 @@ const useIpdVisitDetailsRules = (program) => {
     if (isAfter(new Date(admissionDate), new Date(eventDate))) {
       newProps[IPD_ADMISSION_DATE].helpers.push({
         type: "ERROR",
-        value: t("admissionDateMustBeBeforeDischargeDate"),
+        value: t("admissionDateMustBeBeforeDischargeDate")
       });
       valid = false;
     }
     if (isBefore(new Date(admissionDate), new Date(dob))) {
       newProps[IPD_ADMISSION_DATE].helpers.push({
         type: "ERROR",
-        value: t("admissionDateMustBeAfterDateOfBirth"),
+        value: t("admissionDateMustBeAfterDateOfBirth")
       });
       valid = false;
     }
@@ -149,7 +126,7 @@ const useIpdVisitDetailsRules = (program) => {
     if (isBefore(new Date(eventDate), new Date(dob))) {
       newProps.eventDate.helpers.push({
         type: "ERROR",
-        value: t("dischargeDateMustBeAfterDateOfBirth"),
+        value: t("dischargeDateMustBeAfterDateOfBirth")
       });
       valid = false;
     }
@@ -171,16 +148,16 @@ const useIpdVisitDetailsRules = (program) => {
         newProps[DATE_OF_DEATH].helpers = [
           {
             type: "ERROR",
-            value: t("dateOfDeathIsMandatory"),
-          },
+            value: t("dateOfDeathIsMandatory")
+          }
         ];
       } else {
         if (isAfter(new Date(dateOfDeath), new Date(eventDate))) {
           newProps[DATE_OF_DEATH].helpers = [
             {
               type: "ERROR",
-              value: t("dateOfDeathMustNotAfterDischargeDate"),
-            },
+              value: t("dateOfDeathMustNotAfterDischargeDate")
+            }
           ];
           valid = false;
         }
@@ -191,37 +168,19 @@ const useIpdVisitDetailsRules = (program) => {
     }
     //Assign discharge date (event date) automatically
     if (!eventDate) {
-      changeEventProperty(
-        currentEvent.event,
-        "eventDate",
-        formatDate(new Date())
-      );
+      changeEventProperty(currentEvent.event, "eventDate", formatDate(new Date()));
     }
 
     //Assign outside province/district automatically
     const foundVillage = orgUnits.find((ou) => ou.id === village);
-    const foundVillageProvince = findCustomAttributeValue(
-      "AExdcxSHkXj",
-      foundVillage.attributeValues
-    );
-    const foundVillageDistrict = findCustomAttributeValue(
-      "DUuCROLcoik",
-      foundVillage.attributeValues
-    );
+    const foundVillageProvince = findCustomAttributeValue("AExdcxSHkXj", foundVillage.attributeValues);
+    const foundVillageDistrict = findCustomAttributeValue("DUuCROLcoik", foundVillage.attributeValues);
     if (foundVillage && foundVillageProvince && foundVillageDistrict) {
       const facilityAncestors = orgUnit.ancestors.map((a) => a.id);
       const outsideProvince = !facilityAncestors.includes(foundVillageProvince);
       const outsideDistrict = !facilityAncestors.includes(foundVillageDistrict);
-      changeDataValue(
-        currentEvent.event,
-        OUTSIDE_PROVINCE,
-        outsideProvince ? "true" : ""
-      );
-      changeDataValue(
-        currentEvent.event,
-        OUTSIDE_DISTRICT,
-        outsideDistrict ? "true" : ""
-      );
+      changeDataValue(currentEvent.event, OUTSIDE_PROVINCE, outsideProvince ? "true" : "");
+      changeDataValue(currentEvent.event, OUTSIDE_DISTRICT, outsideDistrict ? "true" : "");
     } else {
       changeDataValue(currentEvent.event, OUTSIDE_PROVINCE, "");
       changeDataValue(currentEvent.event, OUTSIDE_DISTRICT, "");
@@ -259,56 +218,45 @@ const useIpdVisitDetailsRules = (program) => {
     //
 
     if (isDead) {
-      setHandlers(
-        "eventSave",
-        async (currentEvent, currentTei, currentEnrollment) => {
-          const foundCodSystemId = currentTei.attributes.find(
-            (attr) => attr.attribute === "BfkIayM14MF"
-          );
-          if (!foundCodSystemId) {
-            const codSystemId = await getReservedValue("BfkIayM14MF", "null");
-            const clonedTei = _.cloneDeep(currentTei);
-            clonedTei.attributes.push({
-              attribute: "BfkIayM14MF",
-              value: codSystemId[0].value,
-            });
-            await saveTei(clonedTei);
-          }
-          const eventResult = await saveEvent(currentEvent);
-          const newEnrollment = {
-            trackedEntityInstance: currentTei.trackedEntityInstance,
-            orgUnit: currentEvent.orgUnit,
-            enrollmentDate: currentEvent.eventDate,
-            program: "ogrOUKoSaWA",
-            incidentDate: dateOfDeath,
-            events: [
-              {
-                trackedEntityInstance: currentTei.trackedEntityInstance,
-                eventDate: dateOfDeath,
-                orgUnit: currentEvent.orgUnit,
-                program: "ogrOUKoSaWA",
-                programStage: "WlWJt4lVSWw",
-              },
-            ],
-          };
-          const clonedCurrentEnrollment = _.cloneDeep(currentEnrollment);
-          clonedCurrentEnrollment.status = "COMPLETED";
-          const newEnrollmentResult = await saveEnrollment(newEnrollment);
-          const currentEnrollmentResult = await saveEnrollment(
-            clonedCurrentEnrollment
-          );
-          if (
-            eventResult.ok &&
-            newEnrollmentResult.ok &&
-            currentEnrollmentResult.ok
-          ) {
-            changeEnrollmentProperty("status", "COMPLETED");
-            return { ok: true };
-          } else {
-            return { ok: false };
-          }
+      setHandlers("eventSave", async (currentEvent, currentTei, currentEnrollment) => {
+        const foundCodSystemId = currentTei.attributes.find((attr) => attr.attribute === "BfkIayM14MF");
+        if (!foundCodSystemId) {
+          const codSystemId = await getReservedValue("BfkIayM14MF", "null");
+          const clonedTei = _.cloneDeep(currentTei);
+          clonedTei.attributes.push({
+            attribute: "BfkIayM14MF",
+            value: codSystemId[0].value
+          });
+          await saveTei(clonedTei);
         }
-      );
+        const eventResult = await saveEvent(currentEvent);
+        const newEnrollment = {
+          trackedEntityInstance: currentTei.trackedEntityInstance,
+          orgUnit: currentEvent.orgUnit,
+          enrollmentDate: currentEvent.eventDate,
+          program: "ogrOUKoSaWA",
+          incidentDate: dateOfDeath,
+          events: [
+            {
+              trackedEntityInstance: currentTei.trackedEntityInstance,
+              eventDate: dateOfDeath,
+              orgUnit: currentEvent.orgUnit,
+              program: "ogrOUKoSaWA",
+              programStage: "WlWJt4lVSWw"
+            }
+          ]
+        };
+        const clonedCurrentEnrollment = _.cloneDeep(currentEnrollment);
+        clonedCurrentEnrollment.status = "COMPLETED";
+        const newEnrollmentResult = await saveEnrollment(newEnrollment);
+        const currentEnrollmentResult = await saveEnrollment(clonedCurrentEnrollment);
+        if (eventResult.ok && newEnrollmentResult.ok && currentEnrollmentResult.ok) {
+          changeEnrollmentProperty("status", "COMPLETED");
+          return { ok: true };
+        } else {
+          return { ok: false };
+        }
+      });
     } else {
       setHandlers("eventSave", null);
     }
@@ -316,9 +264,7 @@ const useIpdVisitDetailsRules = (program) => {
     //mandatory fields
     program.programStages[0].programStageDataElements.forEach((psde) => {
       if (psde.compulsory) {
-        const foundDataValue = currentEvent.dataValues.find(
-          (dv) => dv.dataElement === psde.dataElement.id
-        );
+        const foundDataValue = currentEvent.dataValues.find((dv) => dv.dataElement === psde.dataElement.id);
         if (!foundDataValue || (foundDataValue && !foundDataValue.value)) {
           valid = false;
         }
@@ -337,14 +283,10 @@ const useIpdVisitDetailsRules = (program) => {
   }, [JSON.stringify(currentEvent), JSON.stringify(currentTei)]);
 
   useEffect(() => {
-    const foundIcd10OptionSet = optionSets.find(
-      (os) => os.id === "ZgqhnzhZZcQ"
-    );
+    const foundIcd10OptionSet = optionSets.find((os) => os.id === "ZgqhnzhZZcQ");
     const valueSet = foundIcd10OptionSet.options.map((o) => {
       const value = o.code;
-      const foundTranslation = o.translations.find(
-        (t) => t.locale === "lo" && t.property === "NAME"
-      );
+      const foundTranslation = o.translations.find((t) => t.locale === "lo" && t.property === "NAME");
       let labels = [o.name];
       if (foundTranslation) {
         labels.unshift(foundTranslation.value);

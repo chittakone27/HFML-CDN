@@ -78,7 +78,6 @@ const Event = ({ title }) => {
         currentDataElements.push(foundDe);
       });
   }
-
   return (
     <div className="chr-tracker-event-container">
       <div>
@@ -179,6 +178,7 @@ const Event = ({ title }) => {
           )}
           <div style={{ padding: 5 }}>
             <Button
+              disabled={currentEnrollment.status === "COMPLETED"}
               variant="contained"
               onClick={() => {
                 const eventId = generateUid();

@@ -14,7 +14,7 @@ import { useState } from "react";
 import _ from "lodash";
 import IpdVisitDetails from "./eventForms/IpdVisitDetails";
 import useBasicRules from "./eventForms/useBasicRules";
-
+import { saveIpdVisitDetails } from "./handlers";
 const { saveEvent } = tracker;
 const mapping = {
   vqNgkw4gfw7: {
@@ -36,9 +36,10 @@ const mapping = {
 const EventFormDialog = () => {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
-  const { trackerActions } = useTrackerCaptureStore(
+  const { trackerActions, data } = useTrackerCaptureStore(
     useShallow((state) => ({
-      trackerActions: state.actions
+      trackerActions: state.actions,
+      data: state.data
     }))
   );
   const { program } = useSelectionStore(
@@ -53,7 +54,8 @@ const EventFormDialog = () => {
     }))
   );
   const { saveEventToState } = trackerActions;
-  const { currentEvent, currentProgramStage, editing } = event;
+  const { currentEnrollment, currentTei } = data;
+  const { currentEvent, currentProgramStage, editing, disableIncompleteButton } = event;
   const { setEvent, changeEventProperty } = actions;
   const Component = currentEvent && currentProgramStage && mapping[program.id][currentProgramStage.id];
   const completed = currentEvent && currentEvent.status === "COMPLETED";
@@ -87,9 +89,12 @@ const EventFormDialog = () => {
               variant="contained"
               onClick={async () => {
                 setLoading(true);
+                setEvent("editing", false);
                 saveEventToState(currentEvent);
                 await saveEvent(currentEvent);
-                setEvent("editing", false);
+                if (program.id === "ck0rft9jVlF") {
+                  await saveIpdVisitDetails(currentEvent, currentTei, currentEnrollment, trackerActions, actions);
+                }
                 setLoading(false);
               }}
             >
@@ -98,6 +103,7 @@ const EventFormDialog = () => {
           )}
           {!editing && !completed && (
             <LoadingButton
+              loading={loading}
               variant="contained"
               onClick={() => {
                 setEvent("editing", true);
@@ -113,13 +119,16 @@ const EventFormDialog = () => {
               disabled={errors.length > 0}
               variant="contained"
               color="success"
-              onClick={() => {
+              onClick={async () => {
                 setLoading(true);
                 changeEventProperty("status", "COMPLETED");
                 const cloned = _.cloneDeep(currentEvent);
                 cloned.status = "COMPLETED";
                 saveEventToState(cloned);
-                saveEvent(cloned);
+                await saveEvent(cloned);
+                if (program.id === "ck0rft9jVlF") {
+                  await saveIpdVisitDetails(currentEvent, currentTei, currentEnrollment, trackerActions, actions);
+                }
                 setEvent("editing", false);
                 setLoading(false);
               }}
@@ -129,6 +138,7 @@ const EventFormDialog = () => {
           )}
           {completed && (
             <LoadingButton
+              disabled={disableIncompleteButton}
               loading={loading}
               variant="contained"
               color="warning"

@@ -185,6 +185,12 @@ const useIpdVisitDetailsRules = () => {
       changeDataValue(OUTSIDE_DISTRICT, "");
     }
 
+    if (isDead && dateOfDeath && currentEvent.status === "COMPLETED") {
+      setEvent("disableIncompleteButton", true);
+    } else {
+      setEvent("disableIncompleteButton", false);
+    }
+
     ////////////////////////////////////////////////////////
     const currentProps = {
       hiddenFields: currentHiddenFields,
@@ -203,6 +209,7 @@ const useIpdVisitDetailsRules = () => {
         });
       }
     });
+
     setEvent("formErrors", errors);
   }, [JSON.stringify(currentEvent)]);
 

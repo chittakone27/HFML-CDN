@@ -376,8 +376,7 @@ const customTrackerLayout = {
   vqNgkw4gfw7: ChrTrackerLayout,
   PBLmYwloRHu: ChrTrackerLayout,
   ck0rft9jVlF: ChrTrackerLayout,
-  u1Na9wCGY6d: ChrTrackerLayout,
-  ck0rft9jVlF: ChrTrackerLayout
+  u1Na9wCGY6d: ChrTrackerLayout
 };
 
 export default {
