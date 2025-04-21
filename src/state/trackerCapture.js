@@ -308,6 +308,16 @@ const useTrackerCaptureStore = create((set, get) => ({
         })
       );
     },
+    deleteEnrollmentFromList: (enrollmentId) => {
+      set(
+        produce((state) => {
+          const foundEnrollmentIndex = state.data.currentEnrollments.findIndex((enr) => enr.enrollment === enrollmentId);
+          if (foundEnrollmentIndex !== -1) {
+            state.data.currentEnrollments.splice(foundEnrollmentIndex, 1);
+          }
+        })
+      );
+    },
     selectEvent: (eventId) => {
       set(
         produce((state) => {

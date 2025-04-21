@@ -5,7 +5,7 @@ import VillageSelectorOrgUnitNoState from "../../common/VillageSelector/VillageS
 import Row from "./Row";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
-import { Button } from "@mui/material";
+import { Button, Popover, Alert, AlertTitle } from "@mui/material";
 import useSelectionStore from "@/state/selection";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -20,10 +20,11 @@ import { generateUid } from "@/utils/utils";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { Input } from "@/ui/common";
-const { searchTeis, saveTei, saveEnrollment, getTeiById } = tracker;
+const { searchTeis, saveTei, saveEnrollment, getTeiById, deleteEnrollment } = tracker;
 
 const Profile = ({ title }) => {
   const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const { profile } = useChrTrackerStore(
     useShallow((state) => ({
@@ -43,7 +44,7 @@ const Profile = ({ title }) => {
       orgUnit: state.orgUnit
     }))
   );
-  const { currentTei } = data;
+  const { currentTei, currentEnrollments } = data;
   const { helpers, disabledFields, hiddenFields } = profile;
   const { setLayout, changeAttributeValue, changeTeiProperty } = actions;
   useProfileRules();
@@ -192,8 +193,9 @@ const Profile = ({ title }) => {
                   />
                 );
               } else if (teaId === "RwoKpuIgMmA") {
-                let value = findAttributeValue(currentTei, "RwoKpuIgMmA");
-                value = value.substring(3);
+                let currentPhoneNo = findAttributeValue(currentTei, "RwoKpuIgMmA");
+                const backNum = currentPhoneNo.substring(3);
+                const frontNum = currentPhoneNo.substring(0, 3);
                 return (
                   <Row
                     label={<AttributeLabel attribute={teaId} />}
@@ -204,28 +206,32 @@ const Profile = ({ title }) => {
                             <Input
                               disableClearable
                               change={(value) => {
-                                changeAttributeValue("RwoKpuIgMmA", "020" + value);
+                                changeAttributeValue("RwoKpuIgMmA", value + backNum);
                               }}
                               valueSet={[
                                 { value: "020", label: "020" },
                                 { value: "030", label: "030" }
                               ]}
-                              value={value}
+                              value={frontNum}
                               valueType="TEXT"
                               disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
                             />
                           </div>
+                          &nbsp;
                           <Input
                             change={(value) => {
-                              changeAttributeValue("RwoKpuIgMmA", "020" + value);
+                              changeAttributeValue("RwoKpuIgMmA", frontNum + value);
                             }}
-                            value={value}
+                            value={backNum}
                             valueType="TEXT"
                             disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
                           />
                         </div>
-                        {/* helpers={helpers.filter((h) => h.target === teaId)} */}
-                        <div>asd</div>
+                        {helpers
+                          .filter((h) => h.target === teaId)
+                          .map((h) => {
+                            return <Typography variant="ERROR">{t(h.value)}</Typography>;
+                          })}
                       </div>
                     }
                   />
@@ -271,6 +277,69 @@ const Profile = ({ title }) => {
               {t("save")}
             </LoadingButton>
           )}
+          &nbsp;
+          <LoadingButton
+            loading={loading}
+            variant="outlined"
+            color="error"
+            onClick={(event) => {
+              setAnchorEl(event.currentTarget);
+            }}
+          >
+            {t("delete")}
+          </LoadingButton>
+          <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={(event, reason) => {
+              if (reason !== "backdropClick") {
+                setAnchorEl(null);
+              }
+            }}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+          >
+            <div className="delete-event-confirmation">
+              <Alert severity="error" style={{ color: "#ff4538" }}>
+                <AlertTitle>{t("warning")}</AlertTitle>
+                {t("deleteTeiConfirmation")}
+              </Alert>
+              <br />
+              <LoadingButton
+                loading={loading}
+                color="error"
+                variant="contained"
+                onClick={async () => {
+                  setLoading(true);
+                  for (let i = 0; i < currentEnrollments.length; i++) {
+                    await deleteEnrollment(currentEnrollments[i].enrollment);
+                  }
+                  await pull(`/api/routes/chr/run?work=unenroll&tei=${currentTei.trackedEntityInstance}&program=${program.id}`);
+                  setLoading(false);
+                  setLayout("layout", "layout1");
+                }}
+              >
+                {t("delete")}
+              </LoadingButton>
+              &nbsp;
+              <LoadingButton
+                loading={loading}
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  setAnchorEl(null);
+                }}
+              >
+                {t("cancel")}
+              </LoadingButton>
+            </div>
+          </Popover>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dialog, Tabs, Tab } from "@mui/material";
+import { Dialog, Tabs, Tab, Popover, Alert, AlertTitle } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import DeliveryDetails from "./eventForms/DeliveryDetails";
 import Infant from "./eventForms/Infant";
@@ -16,9 +16,10 @@ import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
 import { pull } from "@/utils/fetch";
-const { saveEvent, saveEnrollment, searchTeis, saveTei } = tracker;
+const { saveEvent, saveEnrollment, searchTeis, saveTei, deleteEnrollment } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(0);
   const { trackerActions, data } = useTrackerCaptureStore(
@@ -27,7 +28,7 @@ const DeliveryDialog = () => {
       trackerActions: state.actions
     }))
   );
-  const { currentTei } = data;
+  const { currentTei, currentEnrollments } = data;
   const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
       program: state.program,
@@ -40,15 +41,12 @@ const DeliveryDialog = () => {
       actions: state.actions
     }))
   );
-  const { currentEnrollment, currentProgramStage, currentEvent, editing } =
-    event;
+  const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
 
   const { setEvent, changeDataValue, changeEventProperty } = actions;
-  const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState } =
-    trackerActions;
+  const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState, deleteEnrollmentFromList } = trackerActions;
 
-  const completed =
-    currentEnrollment && currentEnrollment.status === "COMPLETED";
+  const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
   const childTeisValue = findDataValue(currentEvent.dataValues, "lYdXxom1BAG");
   let children = [];
   if (childTeisValue) {
@@ -67,10 +65,7 @@ const DeliveryDialog = () => {
       if (liveBirths && liveBirths > 0) {
         const children = [];
         for (let i = 0; i < liveBirths; i++) {
-          const foundDateOfDelivery = findDataValue(
-            currentEvent.dataValues,
-            "grMMOiF9fPj"
-          );
+          const foundDateOfDelivery = findDataValue(currentEvent.dataValues, "grMMOiF9fPj");
           const newTeiId = generateUid();
           const newEnrollmentId = generateUid();
           const newBirthDetailEventId = generateUid();
@@ -252,6 +247,71 @@ const DeliveryDialog = () => {
           >
             {t("close")}
           </LoadingButton>
+          &nbsp;
+          {!completed && (
+            <LoadingButton
+              loading={loading}
+              variant="outlined"
+              color="error"
+              onClick={(event) => {
+                setAnchorEl(event.currentTarget);
+              }}
+            >
+              {t("delete")}
+            </LoadingButton>
+          )}
+          <Popover
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={(event, reason) => {
+              if (reason !== "backdropClick") {
+                setAnchorEl(null);
+              }
+            }}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+          >
+            <div className="delete-event-confirmation">
+              <Alert severity="error" style={{ color: "#ff4538" }}>
+                <AlertTitle>{t("warning")}</AlertTitle>
+                {t("deleteDeliveryConfirmation")}
+              </Alert>
+              <br />
+              <LoadingButton
+                loading={loading}
+                color="error"
+                variant="contained"
+                onClick={async () => {
+                  setLoading(true);
+                  const length = currentEnrollments.length;
+                  deleteEnrollmentFromList(currentEnrollment.enrollment);
+                  await deleteEnrollment(currentEnrollment.enrollment);
+                  setEvent("currentEnrollment", null);
+                  setAnchorEl(null);
+                  setLoading(false);
+                }}
+              >
+                {t("delete")}
+              </LoadingButton>
+              &nbsp;
+              <LoadingButton
+                loading={loading}
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  setAnchorEl(null);
+                }}
+              >
+                {t("cancel")}
+              </LoadingButton>
+            </div>
+          </Popover>
           <div style={{ marginLeft: "auto" }}>
             <LoadingButton
               loading={loading}
@@ -275,22 +335,10 @@ const DeliveryDialog = () => {
                       Math.floor(Math.random() * (9 - 0 + 1)) + 0
                     ];
                     const number = randomNumbers.join("");
-                    const newClientHealthId = `${splitted[2]}${splitted[1]}${
-                      splitted[0]
-                    }-${sex === "M" ? "1" : "2"}-${number}`;
-                    const foundInDhis2 = await searchTeis(
-                      { oPKsfqS64oE: newClientHealthId },
-                      null,
-                      "IWp9dQGM0bS",
-                      "MCPQUTHX1Ze"
-                    );
-                    const foundInChr = await pull(
-                      `/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`
-                    );
-                    if (
-                      foundInDhis2.trackedEntityInstances.length === 0 &&
-                      foundInChr.trackedEntityInstances.length === 0
-                    ) {
+                    const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
+                    const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
+                    const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
+                    if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
                       cloned[i].attributes.push({
                         attribute: "oPKsfqS64oE",
                         value: newClientHealthId
@@ -301,11 +349,8 @@ const DeliveryDialog = () => {
                 }
                 const clonedEnrollment = _.cloneDeep(currentEnrollment);
                 const toBeSavedEvent = _.cloneDeep(currentEvent);
-                const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex(
-                  (dv) => dv.dataElement === "lYdXxom1BAG"
-                );
-                toBeSavedEvent.dataValues[foundDataValueIndex].value =
-                  JSON.stringify(cloned);
+                const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
+                toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
                 changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
                 changeEnrollmentProperty("status", "COMPLETED");
                 changeEventProperty("status", "COMPLETED");
@@ -319,9 +364,7 @@ const DeliveryDialog = () => {
                 //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
                 for (let i = 0; i < cloned.length; i++) {
                   await saveTei(cloned[i]);
-                  await pull(
-                    `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6`
-                  );
+                  await pull(`/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6`);
                 }
                 setLoading(false);
               }}
@@ -329,9 +372,7 @@ const DeliveryDialog = () => {
               {t("completeThisDelivery")}
             </LoadingButton>
             &nbsp;
-            {completed && (
-              <BirthCertificateButton loading={loading} children={children} />
-            )}
+            {completed && <BirthCertificateButton loading={loading} children={children} />}
           </div>
         </div>
       </div>
