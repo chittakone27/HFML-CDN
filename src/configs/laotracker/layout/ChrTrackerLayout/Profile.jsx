@@ -198,19 +198,34 @@ const Profile = ({ title }) => {
                   <Row
                     label={<AttributeLabel attribute={teaId} />}
                     field={
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <span>020</span>&nbsp;
-                        <div>
+                      <div>
+                        <div style={{ display: "flex" }}>
+                          <div style={{ width: 120 }}>
+                            <Input
+                              disableClearable
+                              change={(value) => {
+                                changeAttributeValue("RwoKpuIgMmA", "020" + value);
+                              }}
+                              valueSet={[
+                                { value: "020", label: "020" },
+                                { value: "030", label: "030" }
+                              ]}
+                              value={value}
+                              valueType="TEXT"
+                              disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
+                            />
+                          </div>
                           <Input
                             change={(value) => {
                               changeAttributeValue("RwoKpuIgMmA", "020" + value);
                             }}
                             value={value}
                             valueType="TEXT"
-                            helpers={helpers.filter((h) => h.target === teaId)}
                             disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
                           />
                         </div>
+                        {/* helpers={helpers.filter((h) => h.target === teaId)} */}
+                        <div>asd</div>
                       </div>
                     }
                   />

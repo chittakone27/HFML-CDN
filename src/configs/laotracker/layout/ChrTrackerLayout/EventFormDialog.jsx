@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Alert, AlertTitle } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Alert, AlertTitle, Popover } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useShallow } from "zustand/react/shallow";
 import useChrTrackerStore from "./state";
@@ -9,13 +9,14 @@ import FamilyPlanning from "./eventForms/FamilyPlanning";
 import AncVisitDetails from "./eventForms/AncVisitDetails";
 import PncDetails from "./eventForms/PncDetails";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-import { tracker } from "@/api";
+import { tracker, event } from "@/api";
 import { useState } from "react";
 import _ from "lodash";
 import IpdVisitDetails from "./eventForms/IpdVisitDetails";
 import useBasicRules from "./eventForms/useBasicRules";
 import { saveIpdVisitDetails } from "./handlers";
 const { saveEvent } = tracker;
+const { deleteEvent } = event;
 const mapping = {
   vqNgkw4gfw7: {
     ks9YrW50xb5: AbortionDetails
@@ -34,6 +35,7 @@ const mapping = {
   }
 };
 const EventFormDialog = () => {
+  const [deleteButtonAnchorEl, setDeleteButtonAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const { trackerActions, data } = useTrackerCaptureStore(
@@ -53,7 +55,7 @@ const EventFormDialog = () => {
       actions: state.actions
     }))
   );
-  const { saveEventToState } = trackerActions;
+  const { saveEventToState, deleteEventFromList } = trackerActions;
   const { currentEnrollment, currentTei } = data;
   const { currentEvent, currentProgramStage, editing, disableIncompleteButton } = event;
   const { setEvent, changeEventProperty } = actions;
@@ -156,6 +158,59 @@ const EventFormDialog = () => {
               {t("incomplete")}
             </LoadingButton>
           )}
+          &nbsp;
+          <LoadingButton
+            loading={loading}
+            variant="outlined"
+            color="error"
+            onClick={(event) => {
+              setDeleteButtonAnchorEl(event.currentTarget);
+            }}
+          >
+            {t("delete")}
+          </LoadingButton>
+          <Popover
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+            onClose={() => {
+              setDeleteButtonAnchorEl(null);
+            }}
+            open={Boolean(deleteButtonAnchorEl)}
+            anchorEl={deleteButtonAnchorEl}
+          >
+            <div className="delete-event-confirmation">
+              <Alert severity="warning">
+                <AlertTitle>{t("warning")}</AlertTitle>
+                {t("deleteEventConfirmation")}
+              </Alert>
+              <br />
+              <Button
+                color="error"
+                onClick={async () => {
+                  setLoading(true);
+                  setDeleteButtonAnchorEl(null);
+                  const result = await deleteEvent({ event: currentEvent.event });
+                  deleteEventFromList(currentEvent.event);
+                  setLoading(false);
+                  setEvent("currentEvent", null);
+                  setEvent("editing", false);
+                  setEvent("formErrors", []);
+                }}
+              >
+                {t("delete")}
+              </Button>
+              &nbsp;
+              <Button
+                onClick={() => {
+                  setDeleteButtonAnchorEl(null);
+                }}
+              >
+                {t("cancel")}
+              </Button>
+            </div>
+          </Popover>
           <LoadingButton
             loading={loading}
             style={{ marginLeft: "auto" }}
