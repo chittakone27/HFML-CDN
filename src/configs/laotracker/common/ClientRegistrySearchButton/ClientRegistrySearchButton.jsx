@@ -32,7 +32,6 @@ import useSelectionStore from "@/state/selection";
 import { format } from "date-fns";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import ClientHealthIdField from "../ClientHealthIdField/ClientHealthIdField";
-import SelectorClientHealthIdField from "../SelectorClientHealthIdField/SelectorClientHealthIdField";
 import { pull } from "@/utils/fetch";
 const { searchTeis, saveEnrollment, getTeiById } = tracker;
 import { pickTranslation } from "@/utils/utils";
@@ -280,8 +279,8 @@ const ClientRegistrySearchButton = ({
     const foundAttribute = trackedEntityAttributes.find((tea) => tea.id === attribute);
     if (foundAttribute && foundAttribute.id === ATTRIBUTES.HEALTH_ID) {
       return (
-        <SelectorClientHealthIdField
-          // disabled={searchOption ? true : false}
+        <ClientHealthIdField
+          disabled={searchOption ? true : false}
           value={search[attribute]}
           change={(value) => {
             changeSearch(attribute, value);
@@ -303,7 +302,7 @@ const ClientRegistrySearchButton = ({
     if (foundAttribute && foundAttribute.id === ATTRIBUTES.CVID) {
       return (
         <CvidField
-          // disabled={searchOption ? true : false}
+          disabled={searchOption ? true : false}
           value={search[attribute]}
           change={(value) => {
             changeSearch(attribute, value);
@@ -362,8 +361,6 @@ const ClientRegistrySearchButton = ({
   };
 
   const searchOptions = [
-    "oPKsfqS64oE",
-    "corXnplgfQ7",
     "tQeFLjYbqzv;IBLkiaYRRL3",
     "tQeFLjYbqzv;IEE2BMhfoSc",
     "tQeFLjYbqzv;RwoKpuIgMmA",
@@ -426,7 +423,7 @@ const ClientRegistrySearchButton = ({
       >
         <DialogTitle>{t("search")}</DialogTitle>
         <div className="crsb-dialog-content-container">
-          {/* <div>{FIRST_ROW.map((row) => generateAttributeField(ATTRIBUTES[row]))}</div> */}
+          <div>{FIRST_ROW.map((row) => generateAttributeField(ATTRIBUTES[row]))}</div>
           <div>
             <div>
               {t("searchOptions")}
