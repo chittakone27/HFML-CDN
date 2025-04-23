@@ -12,9 +12,10 @@ const useDeliveryDialogRules = () => {
   const [completeDeliveryErrors, setCompleteDeliveryErrors] = useState([]);
   const data = useTrackerCaptureStore((state) => state.data);
   const { currentTei } = data;
-  const { dataElements } = useMetadataStore(
+  const { dataElements, trackedEntityAttributes } = useMetadataStore(
     useShallow((state) => ({
-      dataElements: state.dataElements
+      dataElements: state.dataElements,
+      trackedEntityAttributes: state.trackedEntityAttributes
     }))
   );
   const { event, actions } = useChrTrackerStore(
@@ -25,6 +26,8 @@ const useDeliveryDialogRules = () => {
   );
   const { currentEvent } = event;
   const { changeDataValue } = actions;
+  console.log(trackedEntityAttributes);
+  const foundSexAttribute = trackedEntityAttributes.find((tea) => tea.id === "DmuazFb368B");
   useEffect(() => {
     const currentBasicErrors = [];
     const currentCompleteDeliveryErrors = [];
@@ -46,6 +49,7 @@ const useDeliveryDialogRules = () => {
         const foundSex = findAttributeValue(child, "DmuazFb368B");
         if (!foundSex) {
           currentCompleteDeliveryErrors.push(t("sexIsMissing"));
+          mandatoryFields.push(pickTranslation(foundSexAttribute, i18n.language, "name"));
         }
       });
     }

@@ -113,7 +113,7 @@ const getOrgUnits = async () => {
 
 const getTrackedEntityAttributes = async () => {
   const result = await pull(
-    "/api/trackedEntityAttributes.json?fields=id,displayName,displayFormName,valueType,optionSet,unique,pattern&paging=false"
+    "/api/trackedEntityAttributes.json?fields=id,displayName,displayFormName,valueType,optionSet,unique,pattern,translations&paging=false"
   );
   return result.trackedEntityAttributes;
 };
