@@ -134,7 +134,7 @@ const DeliveryDialog = () => {
   };
 
   const errors = useBasicRules();
-  const { basicErrors, completeDeliveryErrors } = useDeliveryDialogRules();
+  const { basicErrors, completeDeliveryErrors } = useDeliveryDialogRules(tab);
   const finalErrors = [...errors, ...basicErrors];
   let ableToCompleteDelivery = true;
   if (completeDeliveryErrors.length > 0) {

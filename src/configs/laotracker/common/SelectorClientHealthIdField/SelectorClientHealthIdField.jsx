@@ -68,49 +68,62 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
     <div className="client-health-id-field-container ">
       <AttributeLabel attribute="oPKsfqS64oE" />
       <div className="client-health-id-fields">
-        <Input
-          customDateFormat="ddMMyyyy"
-          disabled={disabled}
-          value={formattedDob}
-          valueType="DATE"
-          accept={(value) => {
-            if (value) {
-              let splitted = value.split("-");
-              let formatted = splitted[2] + splitted[1] + splitted[0];
-              changeValue("dob", formatted);
-            } else {
-              changeValue("dob", "");
-            }
-          }}
-        />
-        <div className="client-health-id-seperator">-</div>
-        <Input
-          disabled={disabled}
-          value={sex}
-          valueType="TEXT"
-          valueSet={[
-            {
-              value: "1",
-              label: "1"
-            },
-            {
-              value: "2",
-              label: "2"
-            }
-          ]}
-          change={(value) => {
-            changeValue("sex", value);
-          }}
-        />
-        <div className="client-health-id-seperator">-</div>
-        <Input
-          disabled={disabled}
-          value={num}
-          valueType="TEXT"
-          change={(value) => {
-            changeValue("num", value);
-          }}
-        />
+        <div className="client-health-id-row">
+          <div style={{ width: 150 }}>{t("dob")}</div>
+          <div style={{ width: 150 }}>
+            <Input
+              customDateFormat="ddMMyyyy"
+              disabled={disabled}
+              value={formattedDob}
+              valueType="DATE"
+              accept={(value) => {
+                if (value) {
+                  let splitted = value.split("-");
+                  let formatted = splitted[2] + splitted[1] + splitted[0];
+                  changeValue("dob", formatted);
+                } else {
+                  changeValue("dob", "");
+                }
+              }}
+            />
+          </div>
+        </div>
+        <div className="client-health-id-row">
+          <div style={{ width: 150 }}>{t("sex")}</div>
+          <div style={{ width: 150 }}>
+            <Input
+              disabled={disabled}
+              value={sex}
+              valueType="TEXT"
+              valueSet={[
+                {
+                  value: "1",
+                  label: "1"
+                },
+                {
+                  value: "2",
+                  label: "2"
+                }
+              ]}
+              change={(value) => {
+                changeValue("sex", value);
+              }}
+            />
+          </div>
+        </div>
+        <div className="client-health-id-row">
+          <div style={{ width: 150 }}>{t("last4Digits")}</div>
+          <div style={{ width: 150 }}>
+            <Input
+              disabled={disabled}
+              value={num}
+              valueType="TEXT"
+              change={(value) => {
+                changeValue("num", value);
+              }}
+            />
+          </div>
+        </div>
       </div>
       <div className="client-health-id-field-helper">
         <Typography variant="HELPER">{t("healthIdSearchHelper")}</Typography>

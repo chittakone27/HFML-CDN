@@ -3,7 +3,14 @@
   height: 100%;
 }
 .client-health-id-fields {
+  /* display: flex; */
+  align-items: center;
+}
+
+.client-health-id-row {
   display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
   align-items: center;
 }
 .client-health-id-seperator {

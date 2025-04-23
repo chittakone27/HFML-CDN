@@ -82,7 +82,10 @@ const customLocales = {
     noErrors: "No errors, you can save this record!",
     invalidPhoneNumber: "Invalid phone number",
     addNewEventWarning: "Previous events must be completed before creating new event.",
-    editProfileConfirmation: "Are you sure you want to edit this information profile?"
+    editProfileConfirmation: "Are you sure you want to edit this information profile?",
+    last4Digits: "Last 4 digits",
+    dob: "Date of birth",
+    sex: "Sex"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -117,7 +120,10 @@ const customLocales = {
     noErrors: "ຂໍ້ມູນຖືກຕື່ມຄົບຖ້ວນແລ້ວ, ທ່ານສາມາດບັນທຶກໄດ້ເລີຍ!",
     invalidPhoneNumber: "Invalid phone number",
     addNewEventWarning: "ຕ້ອງສຳເລັດເຫດການທີ່ຜ່ານມາກ່ອນຈື່ງສາມາດສ້າງເຫດການໃໝ່ໄດ້.",
-    editProfileConfirmation: "ທ່ານໝັ້ນໃຈບໍວ່າຕ້ອງການແກ້ໄຂຂໍ້ມູນສ່ວນຕົວ?"
+    editProfileConfirmation: "ທ່ານໝັ້ນໃຈບໍວ່າຕ້ອງການແກ້ໄຂຂໍ້ມູນສ່ວນຕົວ?",
+    last4Digits: "Last 4 digits",
+    dob: "ວັນເດືອນປີເກີດ",
+    sex: "ເພດ"
   }
 };
 

@@ -6,7 +6,7 @@ import { findAttributeValue, findDataValue } from "../../common/utils";
 import { pickTranslation } from "@/utils/utils";
 import { useTranslation } from "react-i18next";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-const useDeliveryDialogRules = () => {
+const useDeliveryDialogRules = (tab) => {
   const { t, i18n } = useTranslation();
   const [basicErrors, setBasicErrors] = useState([]);
   const [completeDeliveryErrors, setCompleteDeliveryErrors] = useState([]);
@@ -26,7 +26,6 @@ const useDeliveryDialogRules = () => {
   );
   const { currentEvent } = event;
   const { changeDataValue } = actions;
-  console.log(trackedEntityAttributes);
   const foundSexAttribute = trackedEntityAttributes.find((tea) => tea.id === "DmuazFb368B");
   useEffect(() => {
     const currentBasicErrors = [];
@@ -49,7 +48,9 @@ const useDeliveryDialogRules = () => {
         const foundSex = findAttributeValue(child, "DmuazFb368B");
         if (!foundSex) {
           currentCompleteDeliveryErrors.push(t("sexIsMissing"));
-          mandatoryFields.push(pickTranslation(foundSexAttribute, i18n.language, "name"));
+          if (tab === 1) {
+            mandatoryFields.push(pickTranslation(foundSexAttribute, i18n.language, "name"));
+          }
         }
       });
     }
@@ -59,7 +60,7 @@ const useDeliveryDialogRules = () => {
     }
     setBasicErrors(currentBasicErrors);
     setCompleteDeliveryErrors(currentCompleteDeliveryErrors);
-  }, [JSON.stringify(currentEvent)]);
+  }, [JSON.stringify(currentEvent), tab]);
 
   // useEffect(() => {
   //   const childTeisValue = findDataValue(currentEvent.dataValues, "lYdXxom1BAG");
