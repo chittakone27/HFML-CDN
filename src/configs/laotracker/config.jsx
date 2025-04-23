@@ -80,7 +80,9 @@ const customLocales = {
     clientHealthIdWarning2: "You will see the Client Health ID in the next page after the registration is completed",
     cannotSaveMissingMandatoryFields: "Cannot save this record because these mandatory fields are missing",
     noErrors: "No errors, you can save this record!",
-    invalidPhoneNumber: "Invalid phone number"
+    invalidPhoneNumber: "Invalid phone number",
+    addNewEventWarning: "Previous events must be completed before creating new event.",
+    editProfileConfirmation: "Are you sure you want to edit this information profile?"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -113,7 +115,9 @@ const customLocales = {
     cannotSaveMissingMandatoryFields:
       "ລະບົບບໍ່ສາມາບດບັນທຶກຂໍ້ມູນທີ່ທ່ານປ້ອນໄດ້ເທື່ອເພາະວ່າຂໍ້ມູນທີ່ຈຳເປັນຍັງບໍ່ທັນໄດ້ຕື່ມໃສ່, ໃຫ້ທ່ານກວດຄືນເບິ່ງຕື່ມວ່າມີຂໍ້ມູນໃດທີ່ຍັງບໍ່ໄດ້ປ້ອນເທື່ອ",
     noErrors: "ຂໍ້ມູນຖືກຕື່ມຄົບຖ້ວນແລ້ວ, ທ່ານສາມາດບັນທຶກໄດ້ເລີຍ!",
-    invalidPhoneNumber: "Invalid phone number"
+    invalidPhoneNumber: "Invalid phone number",
+    addNewEventWarning: "ຕ້ອງສຳເລັດເຫດການທີ່ຜ່ານມາກ່ອນຈື່ງສາມາດສ້າງເຫດການໃໝ່ໄດ້.",
+    editProfileConfirmation: "ທ່ານໝັ້ນໃຈບໍວ່າຕ້ອງການແກ້ໄຂຂໍ້ມູນສ່ວນຕົວ?"
   }
 };
 

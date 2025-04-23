@@ -78,6 +78,19 @@ const Event = ({ title }) => {
         currentDataElements.push(foundDe);
       });
   }
+  let disableNewEventButton = false;
+  let notCompletedEvents = false;
+  currentEvents.forEach((ce) => {
+    if (ce.status !== "COMPLETED") {
+      disableNewEventButton = true;
+      notCompletedEvents = true;
+    }
+  });
+
+  if (currentEnrollment.status === "COMPLETED") {
+    disableNewEventButton = true;
+  }
+
   return (
     <div className="chr-tracker-event-container">
       <div>
@@ -178,7 +191,7 @@ const Event = ({ title }) => {
           )}
           <div style={{ padding: 5 }}>
             <Button
-              disabled={currentEnrollment.status === "COMPLETED"}
+              disabled={disableNewEventButton}
               variant="contained"
               onClick={() => {
                 const eventId = generateUid();
@@ -201,6 +214,8 @@ const Event = ({ title }) => {
             >
               {t("newEvent")}
             </Button>
+            &nbsp;
+            {notCompletedEvents && <div className="add-new-event-warning">{t("addNewEventWarning")}</div>}
           </div>
         </div>
         <EventFormDialog />

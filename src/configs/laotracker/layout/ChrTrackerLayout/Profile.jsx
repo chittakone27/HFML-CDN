@@ -24,6 +24,7 @@ const { searchTeis, saveTei, saveEnrollment, getTeiById, deleteEnrollment } = tr
 
 const Profile = ({ title }) => {
   const { t } = useTranslation();
+  const [editProfileAnchorEl, setEditProfileAnchorEl] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
   const { profile } = useChrTrackerStore(
@@ -256,8 +257,8 @@ const Profile = ({ title }) => {
           {!layout.profileFormEditing && (
             <Button
               variant="contained"
-              onClick={() => {
-                setLayout("profileFormEditing", true);
+              onClick={(event) => {
+                setEditProfileAnchorEl(event.currentTarget);
               }}
             >
               {t("edit")}
@@ -288,6 +289,49 @@ const Profile = ({ title }) => {
           >
             {t("delete")}
           </LoadingButton>
+          <Popover
+            open={Boolean(editProfileAnchorEl)}
+            anchorEl={editProfileAnchorEl}
+            onClose={(event, reason) => {
+              if (reason !== "backdropClick") {
+                setEditProfileAnchorEl(null);
+              }
+            }}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left"
+            }}
+            transformOrigin={{
+              vertical: "bottom",
+              horizontal: "left"
+            }}
+          >
+            <div className="delete-event-confirmation">
+              {t("editProfileConfirmation")}
+              <br />
+              <br />
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                onClick={async () => {
+                  setLayout("profileFormEditing", true);
+                  setEditProfileAnchorEl(null);
+                }}
+              >
+                {t("ok")}
+              </LoadingButton>
+              &nbsp;
+              <LoadingButton
+                color="error"
+                variant="contained"
+                onClick={() => {
+                  setEditProfileAnchorEl(null);
+                }}
+              >
+                {t("cancel")}
+              </LoadingButton>
+            </div>
+          </Popover>
           <Popover
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
