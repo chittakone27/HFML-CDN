@@ -250,6 +250,7 @@ const DeliveryDialog = () => {
           &nbsp;
           {!completed && (
             <LoadingButton
+              disabled={currentEnrollments.length === 1}
               loading={loading}
               variant="outlined"
               color="error"
@@ -289,7 +290,6 @@ const DeliveryDialog = () => {
                 variant="contained"
                 onClick={async () => {
                   setLoading(true);
-                  const length = currentEnrollments.length;
                   deleteEnrollmentFromList(currentEnrollment.enrollment);
                   await deleteEnrollment(currentEnrollment.enrollment);
                   setEvent("currentEnrollment", null);

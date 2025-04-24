@@ -424,8 +424,10 @@ const useTrackerCaptureStore = create((set, get) => ({
         produce((state) => {
           const foundEventIndex = state.data.currentEvents.findIndex((ev) => ev.event === event.event);
           if (foundEventIndex === -1) {
+            console.log("not found event");
             state.data.currentEvents.push(event);
           } else {
+            console.log("found event");
             state.data.currentEvents[foundEventIndex] = { ...event };
           }
         })
