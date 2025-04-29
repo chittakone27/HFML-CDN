@@ -9,7 +9,8 @@ const ipdDischargeSummaryLocales = {
     currentAddress: "Current Address",
     preConditions: "PreConditions",
     checkingClientHealthId: "Checking Client Health ID...",
-    teiList: "Tracked entity instances"
+    teiList: "Tracked entity instances",
+    admissionDateMustBeAfterDateOfBirth: "Admission date must be after Date of Birth"
   },
   lo: {
     pregnantWarning:
@@ -21,7 +22,8 @@ const ipdDischargeSummaryLocales = {
     currentAddress: "ທີ່ຢູ່ປະຈຸບັນ",
     preConditions: "ພະຍາດປະຈຳຕົວ",
     checkingClientHealthId: "Checking Client Health ID...",
-    teiList: "ລາຍການ"
+    teiList: "ລາຍການ",
+    admissionDateMustBeAfterDateOfBirth: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງຫຼັງຈາກວັນເດືອນປີເກີດ"
   }
 };
 
