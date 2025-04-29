@@ -14,10 +14,10 @@ const ipdDischargeSummaryLocales = {
   lo: {
     pregnantWarning:
       "Current sex is Male or age <= 10, therefore all the data which are related to pregnant will be cleared after you click save the profile.",
-    dateOfDeathIsMandatory: "Date of death is mandatory",
+    dateOfDeathIsMandatory: "ວັນທີ່ເສຍຊີວິດຕ້ອງປ້ອນໃສ່",
     admissionDateMustBeBeforeDischargeDate: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງກ່ອນວັນທີ່ອອກໂຮງໝໍ",
     dischargeDateMustBeAfterDateOfBirth: "ວັນທີ່ອອກໂຮງໝໍຕ້ອງແມ່ນຫຼັງຈາກວັນເດືອນປີເກີດ",
-    dateOfDeathMustNotAfterDischargeDate: "Date of Death must not after Discharge Date",
+    dateOfDeathMustNotAfterDischargeDate: "ວັນທີເສຍຊີວິດຕ້ອງບໍ່ແມ່ນຫຼັງຈາກວັນທີອອກໂຮງໝໍ",
     currentAddress: "ທີ່ຢູ່ປະຈຸບັນ",
     preConditions: "ພະຍາດປະຈຳຕົວ",
     checkingClientHealthId: "Checking Client Health ID...",
