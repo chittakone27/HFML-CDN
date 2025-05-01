@@ -15,6 +15,8 @@ import _ from "lodash";
 import IpdVisitDetails from "./eventForms/IpdVisitDetails";
 import useBasicRules from "./eventForms/useBasicRules";
 import { saveIpdVisitDetails } from "./handlers";
+import Swal from "sweetalert2";
+
 const { saveEvent } = tracker;
 const { deleteEvent } = event;
 const mapping = {
@@ -62,13 +64,30 @@ const EventFormDialog = () => {
   const Component = currentEvent && currentProgramStage && mapping[program.id][currentProgramStage.id];
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const errors = [...useBasicRules(), ...event.formErrors];
+
+  const checkValid = () => {
+    if (errors.length > 0) {
+      Swal.fire({
+        width: 800,
+        html: errors.map((error) => {
+          return `<div>- ${error}</div>`;
+        }),
+        icon: "error",
+        confirmButtonText: "OK"
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return currentEvent ? (
     <Dialog fullWidth={true} maxWidth={"xl"} open={true}>
       <div className="chr-tracker-event-form-container">
         <div className="chr-tracker-event-form">
           <Component />
         </div>
-        <div className="chr-tracker-event-form-helper">
+        {/* <div className="chr-tracker-event-form-helper">
           {errors.length > 0 ? (
             <div
               style={{ padding: 5, color: "#e53935", height: "100%", width: "100%", overflow: "auto", backgroundColor: "#ffcdd2", borderRadius: 3 }}
@@ -82,14 +101,18 @@ const EventFormDialog = () => {
               {t("noErrors")}
             </div>
           )}
-        </div>
+        </div> */}
         <div className="chr-tracker-event-form-buttons">
           {editing && (
             <LoadingButton
-              disabled={errors.length > 0}
+              // disabled={errors.length > 0}
               loading={loading}
               variant="contained"
               onClick={async () => {
+                const valid = checkValid();
+                if (!valid) {
+                  return;
+                }
                 setLoading(true);
                 setEvent("editing", false);
                 saveEventToState(currentEvent);
@@ -118,10 +141,14 @@ const EventFormDialog = () => {
           {!completed && editing && (
             <LoadingButton
               loading={loading}
-              disabled={errors.length > 0}
+              // disabled={errors.length > 0}
               variant="contained"
               color="success"
               onClick={async () => {
+                const valid = checkValid();
+                if (!valid) {
+                  return;
+                }
                 setLoading(true);
                 changeEventProperty("status", "COMPLETED");
                 const cloned = _.cloneDeep(currentEvent);

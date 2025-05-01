@@ -16,6 +16,8 @@ import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
 import { pull } from "@/utils/fetch";
+import Swal from "sweetalert2";
+
 const { saveEvent, saveEnrollment, searchTeis, saveTei, deleteEnrollment } = tracker;
 const DeliveryDialog = () => {
   const { t } = useTranslation();
@@ -150,6 +152,22 @@ const DeliveryDialog = () => {
     }
   }
 
+  const checkValid = () => {
+    if (finalErrors.length > 0) {
+      Swal.fire({
+        width: 800,
+        html: finalErrors.map((error) => {
+          return `<div>- ${error}</div>`;
+        }),
+        icon: "error",
+        confirmButtonText: "OK"
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return currentEnrollment ? (
     <Dialog fullWidth={true} maxWidth={"lg"} open={true}>
       <div className="chr-tracker-event-form-container">
@@ -173,7 +191,7 @@ const DeliveryDialog = () => {
             {tab !== 0 && <Infant childIndex={tab - 1} />}
           </div>
         </div>
-        <div className="chr-tracker-event-form-helper">
+        {/* <div className="chr-tracker-event-form-helper">
           {finalErrors.length > 0 ? (
             <div
               style={{
@@ -204,14 +222,18 @@ const DeliveryDialog = () => {
               {t("noErrors")}
             </div>
           )}
-        </div>
+        </div> */}
         <div className="chr-tracker-event-form-buttons">
           {editing && (
             <LoadingButton
-              disabled={finalErrors.length > 0}
+              // disabled={finalErrors.length > 0}
               loading={loading}
               variant="contained"
               onClick={async () => {
+                const valid = checkValid();
+                if (!valid) {
+                  return;
+                }
                 setLoading(true);
                 const toBeSavedEvent = await updateInfants(currentEvent);
                 saveEventToState(toBeSavedEvent);

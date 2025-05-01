@@ -24,6 +24,8 @@ const AncVisitDetails = () => {
   const { changeDataValue, changeEventProperty } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const { disabledFields, hiddenFields, helpers, props } = useAncRules();
+  let sequence = 1;
+
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss) => {
       return (

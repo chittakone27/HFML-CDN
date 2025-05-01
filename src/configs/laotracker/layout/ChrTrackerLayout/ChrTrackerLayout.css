@@ -139,7 +139,7 @@
 }
 .chr-tracker-event-form {
   width: 100%;
-  height: calc(100% - 150px);
+  height: calc(100% - 50px);
   padding: 5px;
   overflow: auto;
 }
