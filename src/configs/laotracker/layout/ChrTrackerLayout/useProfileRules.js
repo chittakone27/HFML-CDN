@@ -48,7 +48,7 @@ const useProfileRules = () => {
       }
     ];
     const disabledFields = ["oPKsfqS64oE", "BaiVwt8jVfg", "vJdG29KW1Et"];
-    let hiddenFields = ["I40YqLHbAvE", ...Object.values(identificationFieldMapping)];
+    let hiddenFields = ["I40YqLHbAvE", "vJdG29KW1Et", ...Object.values(identificationFieldMapping)];
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
     const foundAge = findAttributeValue(currentTei, "tQeFLjYbqzv");
     const foundMobile = findAttributeValue(currentTei, "RwoKpuIgMmA");
