@@ -6,6 +6,9 @@ const AttributeLabel = ({ variant, attribute, label, mandatory }) => {
   const program = useSelectionStore((state) => state.program);
   const trackedEntityAttributes = useMetadataStore((state) => state.trackedEntityAttributes);
   const foundPtea = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === attribute);
+  if (!foundPtea) {
+    console.log(attribute);
+  }
   const foundTea = trackedEntityAttributes.find((tea) => tea.id === attribute);
   let currentMandatory = foundPtea.mandatory || mandatory;
   return label ? (

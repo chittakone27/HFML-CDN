@@ -5,6 +5,15 @@ import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
 import { findAttributeValue } from "../../common/utils";
+const identificationFieldMapping = {
+  cvid: "FB3Ro1hJ9ht",
+  nationalid: "lRZGCESE6v2",
+  passportnumber: "pjpnF7u5PQj",
+  systemcvid: "corXnplgfQ7",
+  insurancenumber: "ebLsZHyGHYx",
+  familybooknumber: "gSImG6wxCkY",
+  laogreennationalidbottom: "E0zWSujcGQC"
+};
 
 const useProfileRules = () => {
   const { t } = useTranslation();
@@ -39,10 +48,12 @@ const useProfileRules = () => {
       }
     ];
     const disabledFields = ["oPKsfqS64oE", "BaiVwt8jVfg", "vJdG29KW1Et"];
-    const hiddenFields = ["I40YqLHbAvE"];
+    let hiddenFields = ["I40YqLHbAvE", ...Object.values(identificationFieldMapping)];
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
     const foundAge = findAttributeValue(currentTei, "tQeFLjYbqzv");
     const foundMobile = findAttributeValue(currentTei, "RwoKpuIgMmA");
+    const foundIdentificationField = findAttributeValue(currentTei, "UsQwqMatstH");
+
     if (foundAge && foundAgeInYearAttribute) {
       const currentInitialDate = new Date(currentEnrollment.enrollmentDate);
       const currentDate = new Date(foundAge);
@@ -61,6 +72,16 @@ const useProfileRules = () => {
         target: "oPKsfqS64oE",
         type: "HELPER",
         value: t("clientHealthIdWarning2")
+      });
+    }
+
+    if (foundIdentificationField) {
+      Object.keys(identificationFieldMapping).forEach((key) => {
+        if (key !== foundIdentificationField) {
+          changeAttributeValue(identificationFieldMapping[key], "");
+        } else {
+          hiddenFields = hiddenFields.filter((hf) => hf !== identificationFieldMapping[key]);
+        }
       });
     }
 

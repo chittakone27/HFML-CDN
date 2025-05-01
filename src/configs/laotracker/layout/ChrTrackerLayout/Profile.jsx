@@ -21,7 +21,10 @@ import { toast } from "react-toastify";
 import _ from "lodash";
 import { Input } from "@/ui/common";
 const { searchTeis, saveTei, saveEnrollment, getTeiById, deleteEnrollment } = tracker;
-
+const TEAS1 = "oPKsfqS64oE";
+const TEAS2 = ["IEE2BMhfoSc", "IBLkiaYRRL3", "DmuazFb368B", "tQeFLjYbqzv", "BaiVwt8jVfg", "vJdG29KW1Et", "RwoKpuIgMmA", "IdwH3mwSy2o", "UsQwqMatstH"];
+const IDENTIFICATION_TEAS = ["lRZGCESE6v2", "corXnplgfQ7", "pjpnF7u5PQj", "ebLsZHyGHYx", "gSImG6wxCkY", "E0zWSujcGQC", "FB3Ro1hJ9ht"];
+const TEAS3 = ["r8bZppSsIvR", "xbwURy2jG2K", "tJrT8GIy477", "uR9XK6AbPvE", "ERzDXXMuOdq", "UJioxXRLgpw"];
 const Profile = ({ title }) => {
   const { t } = useTranslation();
   const [editProfileAnchorEl, setEditProfileAnchorEl] = useState(null);
@@ -49,7 +52,6 @@ const Profile = ({ title }) => {
   const { helpers, disabledFields, hiddenFields } = profile;
   const { setLayout, changeAttributeValue, changeTeiProperty } = actions;
   useProfileRules();
-
   const createCurrentProgramEnrollment = (tei) => {
     const currentDate = format(new Date(), "yyyy-MM-dd");
     const newEnrollment = {
@@ -153,105 +155,127 @@ const Profile = ({ title }) => {
     }
   });
 
+  const generateField = (tea) => {
+    const teaId = tea;
+    if (hiddenFields.includes(teaId)) {
+      return null;
+    }
+    if (teaId === "oVwa5LfjnvA" || teaId === "UNiaP6Oz7Mv") {
+      return null;
+    } else if (teaId === "r8bZppSsIvR") {
+      return (
+        <Row
+          label={t("currentAddress")}
+          field={
+            <div style={{ width: "100%" }}>
+              <VillageSelectorOrgUnitNoState
+                disabled={!layout.profileFormEditing || loading}
+                VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
+                change={(values) => {
+                  changeAttributeValue("r8bZppSsIvR", values[0] ? values[0].value : "");
+                  changeAttributeValue("oVwa5LfjnvA", values[1] ? values[1].value : "");
+                  changeAttributeValue("UNiaP6Oz7Mv", values[2] ? values[2].value : "");
+                }}
+                initValues={[
+                  findAttributeValue(currentTei, "r8bZppSsIvR"),
+                  findAttributeValue(currentTei, "oVwa5LfjnvA"),
+                  findAttributeValue(currentTei, "UNiaP6Oz7Mv")
+                ]}
+                mandatoryFields={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
+              />
+              {!findAttributeValue(currentTei, "UNiaP6Oz7Mv") && <Typography variant="ERROR">{t("thisFieldIsRequired")}</Typography>}
+            </div>
+          }
+        />
+      );
+    } else if (teaId === "RwoKpuIgMmA") {
+      let currentPhoneNo = findAttributeValue(currentTei, "RwoKpuIgMmA");
+      const backNum = currentPhoneNo.substring(3);
+      const frontNum = currentPhoneNo.substring(0, 3);
+      return (
+        <Row
+          label={<AttributeLabel attribute={teaId} />}
+          field={
+            <div>
+              <div style={{ display: "flex" }}>
+                <div style={{ width: 120 }}>
+                  <Input
+                    disableClearable
+                    change={(value) => {
+                      changeAttributeValue("RwoKpuIgMmA", value + backNum);
+                    }}
+                    valueSet={[
+                      { value: "020", label: "020" },
+                      { value: "030", label: "030" }
+                    ]}
+                    value={frontNum}
+                    valueType="TEXT"
+                    disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
+                  />
+                </div>
+                &nbsp;
+                <Input
+                  change={(value) => {
+                    changeAttributeValue("RwoKpuIgMmA", frontNum + value);
+                  }}
+                  value={backNum}
+                  valueType="TEXT"
+                  disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
+                />
+              </div>
+              {helpers
+                .filter((h) => h.target === teaId)
+                .map((h) => {
+                  return <Typography variant="ERROR">{t(h.value)}</Typography>;
+                })}
+            </div>
+          }
+        />
+      );
+    } else {
+      return (
+        <Row
+          label={<AttributeLabel attribute={teaId} />}
+          field={
+            <AttributeField
+              attribute={teaId}
+              helpers={helpers.filter((h) => h.target === teaId)}
+              disabled={disabledFields.includes(teaId) || loading}
+            />
+          }
+        />
+      );
+    }
+  };
+
   return (
     <div className="chr-tracker-profile-container">
       <div>
         <div className="chr-tracker-profile-title">{title ? title : t("profile")}</div>
         <div className="chr-tracker-profile-section-content">
-          {program.programTrackedEntityAttributes
-            .filter((ptea) => {
-              const teaId = ptea.trackedEntityAttribute.id;
-              return !hiddenFields.includes(teaId);
-            })
-            .map((ptea) => {
-              const teaId = ptea.trackedEntityAttribute.id;
-              if (teaId === "oVwa5LfjnvA" || teaId === "UNiaP6Oz7Mv") {
-                return null;
-              } else if (teaId === "r8bZppSsIvR") {
-                return (
-                  <Row
-                    label={t("currentAddress")}
-                    field={
-                      <div style={{ width: "100%" }}>
-                        <VillageSelectorOrgUnitNoState
-                          disabled={!layout.profileFormEditing || loading}
-                          VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
-                          change={(values) => {
-                            changeAttributeValue("r8bZppSsIvR", values[0] ? values[0].value : "");
-                            changeAttributeValue("oVwa5LfjnvA", values[1] ? values[1].value : "");
-                            changeAttributeValue("UNiaP6Oz7Mv", values[2] ? values[2].value : "");
-                          }}
-                          initValues={[
-                            findAttributeValue(currentTei, "r8bZppSsIvR"),
-                            findAttributeValue(currentTei, "oVwa5LfjnvA"),
-                            findAttributeValue(currentTei, "UNiaP6Oz7Mv")
-                          ]}
-                          mandatoryFields={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
-                        />
-                        {!findAttributeValue(currentTei, "UNiaP6Oz7Mv") && <Typography variant="ERROR">{t("thisFieldIsRequired")}</Typography>}
-                      </div>
-                    }
-                  />
-                );
-              } else if (teaId === "RwoKpuIgMmA") {
-                let currentPhoneNo = findAttributeValue(currentTei, "RwoKpuIgMmA");
-                const backNum = currentPhoneNo.substring(3);
-                const frontNum = currentPhoneNo.substring(0, 3);
-                return (
-                  <Row
-                    label={<AttributeLabel attribute={teaId} />}
-                    field={
-                      <div>
-                        <div style={{ display: "flex" }}>
-                          <div style={{ width: 120 }}>
-                            <Input
-                              disableClearable
-                              change={(value) => {
-                                changeAttributeValue("RwoKpuIgMmA", value + backNum);
-                              }}
-                              valueSet={[
-                                { value: "020", label: "020" },
-                                { value: "030", label: "030" }
-                              ]}
-                              value={frontNum}
-                              valueType="TEXT"
-                              disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
-                            />
-                          </div>
-                          &nbsp;
-                          <Input
-                            change={(value) => {
-                              changeAttributeValue("RwoKpuIgMmA", frontNum + value);
-                            }}
-                            value={backNum}
-                            valueType="TEXT"
-                            disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
-                          />
-                        </div>
-                        {helpers
-                          .filter((h) => h.target === teaId)
-                          .map((h) => {
-                            return <Typography variant="ERROR">{t(h.value)}</Typography>;
-                          })}
-                      </div>
-                    }
-                  />
-                );
-              } else {
-                return (
-                  <Row
-                    label={<AttributeLabel attribute={teaId} />}
-                    field={
-                      <AttributeField
-                        attribute={teaId}
-                        helpers={helpers.filter((h) => h.target === teaId)}
-                        disabled={disabledFields.includes(teaId) || loading}
-                      />
-                    }
-                  />
-                );
+          <div className="chr-tracker-client-health-id-row">
+            <Row
+              label={<AttributeLabel attribute={TEAS1} />}
+              field={
+                <AttributeField
+                  attribute={TEAS1}
+                  helpers={helpers.filter((h) => h.target === TEAS1)}
+                  disabled={disabledFields.includes(TEAS1) || loading}
+                />
               }
+            />
+          </div>
+          <div style={{ overflow: "auto", height: "calc(100% - 111px)" }}>
+            {TEAS2.map((tea) => {
+              return generateField(tea);
             })}
+            {IDENTIFICATION_TEAS.map((tea) => {
+              return generateField(tea);
+            })}
+            {TEAS3.map((tea) => {
+              return generateField(tea);
+            })}
+          </div>
         </div>
         <div className="chr-tracker-section-buttons chr-tracker-profile-buttons">
           {!layout.profileFormEditing && (

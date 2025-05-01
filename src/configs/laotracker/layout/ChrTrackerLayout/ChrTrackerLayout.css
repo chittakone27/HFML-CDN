@@ -30,6 +30,7 @@
   height: 100%;
   width: 650px;
   padding: 5px 5px 5px 0px;
+  position: relative;
 }
 
 .chr-tracker-event-container {
@@ -162,4 +163,10 @@
   font-weight: bold;
   font-size: 14px;
   color: #ed6c02;
+}
+.chr-tracker-client-health-id-row {
+  height: 111px;
+}
+.chr-tracker-client-health-id-row > div {
+  height: 100%;
 }
