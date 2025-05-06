@@ -31,7 +31,9 @@ const eirLocales = {
     reportWastingStatusIsNotCorrect: "Report wasting status is not correct",
     reportStuntingStatusIsNotCorrect: "Report stunting status is not correct",
     reportUnderweightStatusIsNotCorrect: "Report underweight status is not correct",
-    livingAbroad: "Living abroad"
+    livingAbroad: "Living abroad",
+    ACTIVE: "ACTIVE",
+    COMPLETED: "COMPLETED"
   },
   lo: {
     programStage: "Program Stage",
@@ -65,7 +67,9 @@ const eirLocales = {
     reportWastingStatusIsNotCorrect: "ຄ່ານ້ຳໜັກທຽບໃສ່ລວງສູງບໍ່ຖືກຕ້ອງ",
     reportStuntingStatusIsNotCorrect: "ຄ່າລວງສູງ/ລວງຍາວບໍ່ຖືກຕ້ອງ",
     reportUnderweightStatusIsNotCorrect: "ຄ່ານ້ຳໜັກຫຼຸດເກນມາດຕະຖານບໍ່ຖືກຕ້ອງ",
-    livingAbroad: "ອາໄສຢູ່ຕ່າງປະເທດ"
+    livingAbroad: "ອາໄສຢູ່ຕ່າງປະເທດ",
+    ACTIVE: "ດຳເນີນການຢູ່",
+    COMPLETED: "ສຳເລັດແລ້ວ"
   }
 };
 

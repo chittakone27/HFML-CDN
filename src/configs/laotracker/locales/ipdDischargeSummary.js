@@ -10,7 +10,9 @@ const ipdDischargeSummaryLocales = {
     preConditions: "PreConditions",
     checkingClientHealthId: "Checking Client Health ID...",
     teiList: "Tracked entity instances",
-    admissionDateMustBeAfterDateOfBirth: "Admission date must be after Date of Birth"
+    admissionDateMustBeAfterDateOfBirth: "Admission date must be after Date of Birth",
+    ACTIVE: "ACTIVE",
+    COMPLETED: "COMPLETED"
   },
   lo: {
     pregnantWarning:
@@ -23,7 +25,9 @@ const ipdDischargeSummaryLocales = {
     preConditions: "ພະຍາດປະຈຳຕົວ",
     checkingClientHealthId: "Checking Client Health ID...",
     teiList: "ລາຍການ",
-    admissionDateMustBeAfterDateOfBirth: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງຫຼັງຈາກວັນເດືອນປີເກີດ"
+    admissionDateMustBeAfterDateOfBirth: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງຫຼັງຈາກວັນເດືອນປີເກີດ",
+    ACTIVE: "ດຳເນີນການຢູ່",
+    COMPLETED: "ສຳເລັດແລ້ວ"
   }
 };
 
