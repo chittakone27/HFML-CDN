@@ -11,8 +11,8 @@ const ipdDischargeSummaryLocales = {
     checkingClientHealthId: "Checking Client Health ID...",
     teiList: "Tracked entity instances",
     admissionDateMustBeAfterDateOfBirth: "Admission date must be after Date of Birth",
-    ACTIVE: "ACTIVE",
-    COMPLETED: "COMPLETED"
+    ACTIVE: "Alive",
+    COMPLETED: "Passed away"
   },
   lo: {
     pregnantWarning:
@@ -26,8 +26,8 @@ const ipdDischargeSummaryLocales = {
     checkingClientHealthId: "Checking Client Health ID...",
     teiList: "ລາຍການ",
     admissionDateMustBeAfterDateOfBirth: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງຫຼັງຈາກວັນເດືອນປີເກີດ",
-    ACTIVE: "ດຳເນີນການຢູ່",
-    COMPLETED: "ສຳເລັດແລ້ວ"
+    ACTIVE: "ມີຊີວິດ",
+    COMPLETED: "ເສຍຊີວິດ"
   }
 };
 

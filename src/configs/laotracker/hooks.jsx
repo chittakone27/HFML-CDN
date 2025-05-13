@@ -1027,7 +1027,6 @@ const useDisableEventCreateButtonIfThereAreUncompletedEvents = () => {
       setTimeout(() => {
         const currentProgramStageEvents = currentEvents.filter((ce) => ce.programStage === selectedProgramStage);
         const foundUncompletedEvents = currentProgramStageEvents.find((ce) => ce.status === "ACTIVE");
-        console.log(foundUncompletedEvents);
         if (foundUncompletedEvents) {
           setLayout("disableEventCreateButton", true);
         } else {

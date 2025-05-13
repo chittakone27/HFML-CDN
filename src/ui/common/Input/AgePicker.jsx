@@ -49,12 +49,28 @@ const AgePicker = (props) => {
       // months = differenceInMonths(currentEventDate, currentDate);
       // currentDate = add(currentDate, { months });
       // days = differenceInCalendarDays(currentEventDate, currentDate);
-      const currentInitialDate = new Date(initialDate);
-      currentDate = new Date(value);
-      const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
-      years = diff.getUTCFullYear() - 1970;
-      months = diff.getUTCMonth();
-      days = diff.getUTCDate() - 1;
+
+      // const currentInitialDate = new Date(initialDate);
+      // currentDate = new Date(value);
+      // const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
+      // years = diff.getUTCFullYear() - 1970;
+      // months = diff.getUTCMonth();
+      // days = diff.getUTCDate() - 1;
+      const refDate = new Date(initialDate);
+      const birth = new Date(value);
+
+      years = refDate.getFullYear() - birth.getFullYear();
+      months = refDate.getMonth() - birth.getMonth();
+      days = refDate.getDate() - birth.getDate();
+
+      if (months < 0 || (months === 0 && days < 0)) {
+        years--;
+        months += 12;
+        if (days < 0) {
+          const lastMonth = new Date(refDate.getFullYear(), refDate.getMonth() - 1, 0);
+          days += lastMonth.getDate();
+        }
+      }
     } else {
       years = "";
       months = "";
@@ -65,7 +81,7 @@ const AgePicker = (props) => {
   }, [initialDate, value]);
   return (
     <div className="age-picker-container">
-      <DateInput {...props} maxDate={format(new Date(), "yyyy-MM-dd")} />
+      <DateInput {...props} maxDate={props.maxDate ? format(new Date(props.maxDate), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")} />
       <div style={{ display: "flex", paddingTop: 5 }}>
         <div>
           <Input
