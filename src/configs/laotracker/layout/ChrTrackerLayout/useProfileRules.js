@@ -40,6 +40,9 @@ const useProfileRules = () => {
   const { currentTei, currentEnrollment } = data;
 
   useEffect(() => {
+    const props = {
+      tQeFLjYbqzv: { maxDate: currentEnrollment.enrollmentDate }
+    };
     const helpers = [
       {
         target: "oPKsfqS64oE",
@@ -50,15 +53,35 @@ const useProfileRules = () => {
     const disabledFields = ["oPKsfqS64oE", "BaiVwt8jVfg", "vJdG29KW1Et"];
     let hiddenFields = ["I40YqLHbAvE", "vJdG29KW1Et", ...Object.values(identificationFieldMapping)];
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
-    const foundAge = findAttributeValue(currentTei, "tQeFLjYbqzv");
+    const foundDob = findAttributeValue(currentTei, "tQeFLjYbqzv");
     const foundMobile = findAttributeValue(currentTei, "RwoKpuIgMmA");
     const foundIdentificationField = findAttributeValue(currentTei, "UsQwqMatstH");
 
-    if (foundAge && foundAgeInYearAttribute) {
-      const currentInitialDate = new Date(currentEnrollment.enrollmentDate);
-      const currentDate = new Date(foundAge);
-      const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
-      const years = diff.getUTCFullYear() - 1970;
+    if (foundDob && foundAgeInYearAttribute) {
+      let date1 = foundDob;
+      let date2 = currentEnrollment.enrollmentDate;
+
+      if (date1 > date2) [date1, date2] = [date2, date1];
+
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+
+      let years = d2.getFullYear() - d1.getFullYear();
+      let months = d2.getMonth() - d1.getMonth();
+      let days = d2.getDate() - d1.getDate();
+
+      // Adjust days and months if needed
+      if (days < 0) {
+        months--;
+        // Get days in previous month
+        const prevMonth = new Date(d2.getFullYear(), d2.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
       changeAttributeValue("BaiVwt8jVfg", years + "");
     }
 
@@ -116,6 +139,7 @@ const useProfileRules = () => {
     setProfile("helpers", helpers);
     setProfile("disabledFields", disabledFields);
     setProfile("hiddenFields", hiddenFields);
+    setProfile("props", props);
   }, [JSON.stringify(currentTei.attributes), currentTei.trackedEntityInstance, program.id]);
 
   useEffect(() => {

@@ -49,12 +49,37 @@ const AgePicker = (props) => {
       // months = differenceInMonths(currentEventDate, currentDate);
       // currentDate = add(currentDate, { months });
       // days = differenceInCalendarDays(currentEventDate, currentDate);
-      const currentInitialDate = new Date(initialDate);
-      currentDate = new Date(value);
-      const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
-      years = diff.getUTCFullYear() - 1970;
-      months = diff.getUTCMonth();
-      days = diff.getUTCDate() - 1;
+
+      // const currentInitialDate = new Date(initialDate);
+      // currentDate = new Date(value);
+      // const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
+      // years = diff.getUTCFullYear() - 1970;
+      // months = diff.getUTCMonth();
+      // days = diff.getUTCDate() - 1;
+      let date1 = value;
+      let date2 = initialDate;
+
+      if (date1 > date2) [date1, date2] = [date2, date1];
+
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+
+      years = d2.getFullYear() - d1.getFullYear();
+      months = d2.getMonth() - d1.getMonth();
+      days = d2.getDate() - d1.getDate();
+
+      // Adjust days and months if needed
+      if (days < 0) {
+        months--;
+        // Get days in previous month
+        const prevMonth = new Date(d2.getFullYear(), d2.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
     } else {
       years = "";
       months = "";
@@ -65,8 +90,8 @@ const AgePicker = (props) => {
   }, [initialDate, value]);
   return (
     <div className="age-picker-container">
-      <DateInput {...props} maxDate={format(new Date(), "yyyy-MM-dd")} />
-      <div style={{ display: "flex", paddingTop: 5, width: 350 }}>
+      <DateInput {...props} maxDate={props.maxDate ? format(new Date(props.maxDate), "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd")} />
+      <div style={{ display: "flex", paddingTop: 5 }}>
         <div>
           <Input
             className="age-picker-item"

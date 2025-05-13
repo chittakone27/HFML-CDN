@@ -7,7 +7,7 @@ import ancPnc from "./program-forms/antenatal-postnatal/index.js";
 import eirLocales from "./locales/eir.js";
 import fddAdrLocales from "./locales/fddAdr.js";
 import ipdDischargeSummaryLocales from "./locales/ipdDischargeSummary.js";
-import ClientRegistrySearchButton from "./common/ClientRegistrySearchButton/ClientRegistrySearchButton.jsx";
+import ClientRegistrySearchButton from "./common/ClientRegistrySearchButton/ClientRegistrySearchButtonNew.jsx";
 import MchLayout from "./program-forms/common/MchLayout/MchLayout.jsx";
 import ChrTrackerLayout from "./layout/ChrTrackerLayout/ChrTrackerLayout.jsx";
 import MccodLayout from "./program-forms/common/MccodLayout/MccodLayout.jsx";

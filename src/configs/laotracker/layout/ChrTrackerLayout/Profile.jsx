@@ -49,7 +49,7 @@ const Profile = ({ title }) => {
     }))
   );
   const { currentTei, currentEnrollments } = data;
-  const { helpers, disabledFields, hiddenFields } = profile;
+  const { helpers, disabledFields, hiddenFields, props } = profile;
   const { setLayout, changeAttributeValue, changeTeiProperty } = actions;
   useProfileRules();
   const createCurrentProgramEnrollment = (tei) => {
@@ -241,6 +241,7 @@ const Profile = ({ title }) => {
               attribute={teaId}
               helpers={helpers.filter((h) => h.target === teaId)}
               disabled={disabledFields.includes(teaId) || loading}
+              {...props[teaId]}
             />
           }
         />

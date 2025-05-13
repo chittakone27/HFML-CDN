@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { findAttributeValue } from "../utils";
 import { IDENTIFICATION_ATTRS } from "./const";
+import { format } from "date-fns";
 const useDefaultProfileRules = () => {
   const { data, actions } = useTrackerCaptureStore(
     useShallow((state) => ({
@@ -17,15 +18,39 @@ const useDefaultProfileRules = () => {
   const [props, setProps] = useState({});
 
   useEffect(() => {
-    const currentProps = { BaiVwt8jVfg: { disabled: true }, vJdG29KW1Et: { disabled: true, hidden: true } };
+    const currentProps = {
+      BaiVwt8jVfg: { disabled: true },
+      vJdG29KW1Et: { disabled: true, hidden: true },
+      tQeFLjYbqzv: { maxDate: currentEnrollment.enrollmentDate }
+    };
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
-    const foundAge = currentTei.attributes.find((attr) => attr.attribute === "tQeFLjYbqzv");
+    const foundDob = currentTei.attributes.find((attr) => attr.attribute === "tQeFLjYbqzv");
     const foundCountry = findAttributeValue(currentTei, "q4lqBvHgv7u");
-    if (foundAge && foundAgeInYearAttribute) {
-      const currentInitialDate = new Date(currentEnrollment.enrollmentDate);
-      const currentDate = new Date(foundAge.value);
-      const diff = new Date(currentInitialDate.getTime() - currentDate.getTime());
-      const years = diff.getUTCFullYear() - 1970;
+    if (foundDob && foundDob.value && foundAgeInYearAttribute) {
+      let date1 = foundDob.value;
+      let date2 = currentEnrollment.enrollmentDate;
+
+      if (date1 > date2) [date1, date2] = [date2, date1];
+
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+
+      let years = d2.getFullYear() - d1.getFullYear();
+      let months = d2.getMonth() - d1.getMonth();
+      let days = d2.getDate() - d1.getDate();
+
+      // Adjust days and months if needed
+      if (days < 0) {
+        months--;
+        // Get days in previous month
+        const prevMonth = new Date(d2.getFullYear(), d2.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
       changeAttributeValue("BaiVwt8jVfg", years + "");
     }
     if (foundCountry) {

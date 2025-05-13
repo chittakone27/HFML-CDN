@@ -5,7 +5,8 @@ const useChrTrackerStore = create((set, get) => ({
   profile: {
     helpers: [],
     disabledFields: [],
-    hiddenFields: []
+    hiddenFields: [],
+    props: {}
   },
   event: {
     currentProgramStage: null,

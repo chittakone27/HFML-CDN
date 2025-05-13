@@ -9,19 +9,25 @@ const ipdDischargeSummaryLocales = {
     currentAddress: "Current Address",
     preConditions: "PreConditions",
     checkingClientHealthId: "Checking Client Health ID...",
-    teiList: "Tracked entity instances"
+    teiList: "Tracked entity instances",
+    admissionDateMustBeAfterDateOfBirth: "Admission date must be after Date of Birth",
+    ACTIVE: "Alive",
+    COMPLETED: "Passed away"
   },
   lo: {
     pregnantWarning:
       "Current sex is Male or age <= 10, therefore all the data which are related to pregnant will be cleared after you click save the profile.",
-    dateOfDeathIsMandatory: "Date of death is mandatory",
-    admissionDateMustBeBeforeDischargeDate: "Admission Date must be before Discharge Date",
-    dischargeDateMustBeAfterDateOfBirth: "Discharge Date must be after Date Of Birth",
-    dateOfDeathMustNotAfterDischargeDate: "Date of Death must not after Discharge Date",
+    dateOfDeathIsMandatory: "ວັນທີ່ເສຍຊີວິດຕ້ອງປ້ອນໃສ່",
+    admissionDateMustBeBeforeDischargeDate: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງກ່ອນວັນທີ່ອອກໂຮງໝໍ",
+    dischargeDateMustBeAfterDateOfBirth: "ວັນທີ່ອອກໂຮງໝໍຕ້ອງແມ່ນຫຼັງຈາກວັນເດືອນປີເກີດ",
+    dateOfDeathMustNotAfterDischargeDate: "ວັນທີເສຍຊີວິດຕ້ອງບໍ່ແມ່ນຫຼັງຈາກວັນທີອອກໂຮງໝໍ",
     currentAddress: "ທີ່ຢູ່ປະຈຸບັນ",
     preConditions: "ພະຍາດປະຈຳຕົວ",
     checkingClientHealthId: "Checking Client Health ID...",
-    teiList: "ລາຍການ"
+    teiList: "ລາຍການ",
+    admissionDateMustBeAfterDateOfBirth: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງຫຼັງຈາກວັນເດືອນປີເກີດ",
+    ACTIVE: "ມີຊີວິດ",
+    COMPLETED: "ເສຍຊີວິດ"
   }
 };
 
