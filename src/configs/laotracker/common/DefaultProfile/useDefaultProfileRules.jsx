@@ -27,19 +27,29 @@ const useDefaultProfileRules = () => {
     const foundDob = currentTei.attributes.find((attr) => attr.attribute === "tQeFLjYbqzv");
     const foundCountry = findAttributeValue(currentTei, "q4lqBvHgv7u");
     if (foundDob && foundDob.value && foundAgeInYearAttribute) {
-      const refDate = new Date(currentEnrollment.enrollmentDate);
-      const birth = new Date(foundDob.value);
-      let years = refDate.getFullYear() - birth.getFullYear();
-      let months = refDate.getMonth() - birth.getMonth();
-      let days = refDate.getDate() - birth.getDate();
+      let date1 = foundDob.value;
+      let date2 = currentEnrollment.enrollmentDate;
 
-      if (months < 0 || (months === 0 && days < 0)) {
+      if (date1 > date2) [date1, date2] = [date2, date1];
+
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+
+      let years = d2.getFullYear() - d1.getFullYear();
+      let months = d2.getMonth() - d1.getMonth();
+      let days = d2.getDate() - d1.getDate();
+
+      // Adjust days and months if needed
+      if (days < 0) {
+        months--;
+        // Get days in previous month
+        const prevMonth = new Date(d2.getFullYear(), d2.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
         years--;
         months += 12;
-        if (days < 0) {
-          const lastMonth = new Date(refDate.getFullYear(), refDate.getMonth() - 1, 0);
-          days += lastMonth.getDate();
-        }
       }
       changeAttributeValue("BaiVwt8jVfg", years + "");
     }

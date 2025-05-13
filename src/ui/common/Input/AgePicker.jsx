@@ -56,20 +56,29 @@ const AgePicker = (props) => {
       // years = diff.getUTCFullYear() - 1970;
       // months = diff.getUTCMonth();
       // days = diff.getUTCDate() - 1;
-      const refDate = new Date(initialDate);
-      const birth = new Date(value);
+      let date1 = value;
+      let date2 = initialDate;
 
-      years = refDate.getFullYear() - birth.getFullYear();
-      months = refDate.getMonth() - birth.getMonth();
-      days = refDate.getDate() - birth.getDate();
+      if (date1 > date2) [date1, date2] = [date2, date1];
 
-      if (months < 0 || (months === 0 && days < 0)) {
+      const d1 = new Date(date1);
+      const d2 = new Date(date2);
+
+      years = d2.getFullYear() - d1.getFullYear();
+      months = d2.getMonth() - d1.getMonth();
+      days = d2.getDate() - d1.getDate();
+
+      // Adjust days and months if needed
+      if (days < 0) {
+        months--;
+        // Get days in previous month
+        const prevMonth = new Date(d2.getFullYear(), d2.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
         years--;
         months += 12;
-        if (days < 0) {
-          const lastMonth = new Date(refDate.getFullYear(), refDate.getMonth() - 1, 0);
-          days += lastMonth.getDate();
-        }
       }
     } else {
       years = "";
