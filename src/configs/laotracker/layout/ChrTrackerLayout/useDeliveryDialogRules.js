@@ -24,9 +24,10 @@ const useDeliveryDialogRules = (tab) => {
       actions: state.actions
     }))
   );
-  const { currentEvent } = event;
+  const { currentEvent, order } = event;
   const { changeDataValue } = actions;
   const foundSexAttribute = trackedEntityAttributes.find((tea) => tea.id === "DmuazFb368B");
+
   useEffect(() => {
     const currentBasicErrors = [];
     const currentCompleteDeliveryErrors = [];
@@ -49,19 +50,22 @@ const useDeliveryDialogRules = (tab) => {
         if (!foundSex) {
           currentCompleteDeliveryErrors.push(t("sexIsMissing"));
           if (tab === 1) {
-            mandatoryFields.push(pickTranslation(foundSexAttribute, i18n.language, "name"));
+            const foundIndex = order.findIndex((o) => o === "DmuazFb368B");
+            mandatoryFields.push(foundIndex + 1 + ". " + pickTranslation(foundSexAttribute, i18n.language, "name"));
           }
         }
       });
     }
     ///////////////////////////
     if (mandatoryFields.length > 0) {
-      currentBasicErrors.push(t("cannotSaveMissingMandatoryFields") + ": " + mandatoryFields.join(", "));
+      currentBasicErrors.push(t("cannotSaveMissingMandatoryFields"));
+      mandatoryFields.forEach((mf) => {
+        currentBasicErrors.push(mf);
+      });
     }
     setBasicErrors(currentBasicErrors);
     setCompleteDeliveryErrors(currentCompleteDeliveryErrors);
-  }, [JSON.stringify(currentEvent), tab]);
-
+  }, [JSON.stringify(currentEvent), tab, order.join(",")]);
   // useEffect(() => {
   //   const childTeisValue = findDataValue(currentEvent.dataValues, "lYdXxom1BAG");
   //   let children = [];

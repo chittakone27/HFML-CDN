@@ -134,7 +134,6 @@ const Deliveries = () => {
                 const foundEvent = currentEvents.find((ce) => ce.enrollment === fde.enrollment && ce.programStage === "YOHVx1Xmpgr");
                 const foundDataValue = foundEvent.dataValues.find((dv) => dv.dataElement === "lYdXxom1BAG");
                 const numberOfBabies = foundDataValue && foundDataValue.value ? JSON.parse(foundDataValue.value).length : 0;
-                console.log(fde);
                 return (
                   <TableRow
                     hover

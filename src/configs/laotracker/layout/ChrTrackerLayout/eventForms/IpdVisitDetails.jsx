@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import useMetadataStore from "@/state/metadata";
 import { pickTranslation } from "@/utils/utils";
 import { findDataValue } from "@/configs/laotracker/common/utils";
+import { useEffect } from "react";
 const preConditionDataElements = ["dLIPYO8wooC", "eYGlKgmZyj8", "NoXeTahc1E2", "uN8LfG3KPgZ", "ZwwgoOLFry8", "CuKwviFco3q"];
 
 const IpdVisitDetails = () => {
@@ -34,11 +35,20 @@ const IpdVisitDetails = () => {
     }))
   );
   const { currentEvent, currentProgramStage, editing } = event;
-  const { changeDataValue, changeEventProperty } = actions;
+  const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const props = useIpdVisitDetailsRules();
   const { hiddenFields, disabledFields, fieldProps } = props;
   const icd10OptionSet = optionSets.find((os) => os.id === "ZgqhnzhZZcQ");
+
+  useEffect(() => {
+    let order = [];
+    currentProgramStage.programStageDataElements.forEach((psde) => {
+      order.push(psde.dataElement.id);
+    });
+    setEvent("order", order);
+  }, []);
+
   return (
     <div>
       <Row
@@ -55,11 +65,11 @@ const IpdVisitDetails = () => {
           />
         }
       />
-      {currentProgramStage.programStageDataElements.map((psde) => {
+      {currentProgramStage.programStageDataElements.map((psde, index) => {
         if (psde.dataElement.id === "eYGlKgmZyj8") {
           return (
             <Row
-              label={t("preConditions")}
+              label={index + 1 + ". " + t("preConditions")}
               field={
                 <Select
                   multiple
@@ -120,7 +130,12 @@ const IpdVisitDetails = () => {
         } else {
           return (
             <Row
-              label={<DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />}
+              label={
+                <div style={{ display: "flex" }}>
+                  {index + 1}.&nbsp;
+                  <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
+                </div>
+              }
               field={
                 psde.dataElement.id === "vVNQoYA5RZH" ? (
                   <DataValueFieldNoBlurNoState

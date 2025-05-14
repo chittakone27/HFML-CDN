@@ -5,6 +5,7 @@ import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelN
 import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlurNoState";
 import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
+import { useEffect } from "react";
 
 const FamilyPlanning = () => {
   const { event, actions } = useChrTrackerStore(
@@ -14,8 +15,17 @@ const FamilyPlanning = () => {
     }))
   );
   const { currentEvent, currentProgramStage, editing } = event;
-  const { changeDataValue, changeEventProperty } = actions;
+  const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
+
+  useEffect(() => {
+    let order = [];
+    currentProgramStage.programStageDataElements.forEach((psde) => {
+      order.push(psde.dataElement.id);
+    });
+    setEvent("order", order);
+  }, []);
+
   return (
     <div>
       <Row
@@ -31,10 +41,15 @@ const FamilyPlanning = () => {
           />
         }
       />
-      {currentProgramStage.programStageDataElements.map((psde) => {
+      {currentProgramStage.programStageDataElements.map((psde, index) => {
         return (
           <Row
-            label={<DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />}
+            label={
+              <div style={{ display: "flex" }}>
+                {index + 1}.&nbsp;
+                <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
+              </div>
+            }
             field={
               <DataValueFieldNoBlurNoState
                 change={(value) => {

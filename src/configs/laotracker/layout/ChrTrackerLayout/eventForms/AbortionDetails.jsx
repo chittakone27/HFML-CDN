@@ -6,6 +6,7 @@ import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValue
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
+import { useEffect } from "react";
 
 const AbortionDetails = () => {
   const { event, actions } = useChrTrackerStore(
@@ -20,13 +21,24 @@ const AbortionDetails = () => {
     }))
   );
   const { currentEvent, currentProgramStage, editing } = event;
-  const { changeDataValue, changeEventProperty } = actions;
+  const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
+
+  useEffect(() => {
+    const order = currentProgramStage.programStageDataElements.map((psde, index) => {
+      return psde.dataElement.id;
+    });
+    setEvent("order", order);
+  }, []);
 
   return (
     <div>
       <Row
-        label={<EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />}
+        label={
+          <div style={{ display: "flex", alignItems: "end", justifyContent: "center" }}>
+            <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
+          </div>
+        }
         field={
           <EventDateFieldNoState
             accept={(value) => {
@@ -38,10 +50,15 @@ const AbortionDetails = () => {
           />
         }
       />
-      {currentProgramStage.programStageDataElements.map((psde) => {
+      {currentProgramStage.programStageDataElements.map((psde, index) => {
         return (
           <Row
-            label={<DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />}
+            label={
+              <div style={{ display: "flex" }}>
+                {index + 1}.&nbsp;
+                <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
+              </div>
+            }
             field={
               <DataValueFieldNoBlurNoState
                 change={(value) => {

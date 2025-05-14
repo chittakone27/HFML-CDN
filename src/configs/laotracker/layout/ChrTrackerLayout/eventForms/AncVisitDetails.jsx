@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import { useTranslation } from "react-i18next";
@@ -20,11 +21,20 @@ const AncVisitDetails = () => {
     }))
   );
 
-  const { currentEvent, currentProgramStage, editing } = event;
-  const { changeDataValue, changeEventProperty } = actions;
+  const { currentEvent, currentProgramStage, editing, order } = event;
+  const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const { disabledFields, hiddenFields, helpers, props } = useAncRules();
-  let sequence = 1;
+
+  useEffect(() => {
+    let order = [];
+    currentProgramStage.programStageSections.forEach((pss) => {
+      pss.dataElements.forEach((de) => {
+        order.push(de.id);
+      });
+    });
+    setEvent("order", order);
+  }, []);
 
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss) => {
@@ -50,6 +60,7 @@ const AncVisitDetails = () => {
             </>
           )}
           {pss.dataElements.map((de) => {
+            const index = order.findIndex((o) => o === de.id);
             if (hiddenFields.includes(de.id)) {
               return null;
             }
@@ -62,7 +73,12 @@ const AncVisitDetails = () => {
               default:
                 return (
                   <Row
-                    label={<DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />}
+                    label={
+                      <div style={{ display: "flex" }}>
+                        {index + 1}.&nbsp;
+                        <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
+                      </div>
+                    }
                     field={
                       <DataValueFieldNoBlurNoState
                         helpers={helpers[de.id]}

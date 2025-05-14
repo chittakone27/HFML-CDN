@@ -19,7 +19,7 @@ const useBasicRules = () => {
       event: state.event
     }))
   );
-  const { currentEvent, currentProgramStage } = event;
+  const { currentEvent, currentProgramStage, order } = event;
   useEffect(() => {
     const currentErrors = [];
     const mandatoryFields = [];
@@ -35,12 +35,16 @@ const useBasicRules = () => {
           const foundDataValue = findDataValue(currentEvent.dataValues, psde.dataElement.id);
           if (!foundDataValue) {
             const foundDataElement = dataElements.find((de) => de.id === psde.dataElement.id);
-            mandatoryFields.push(pickTranslation(foundDataElement, i18n.language, "formName"));
+            const foundIndex = order.findIndex((o) => o === foundDataElement.id);
+            mandatoryFields.push(foundIndex + 1 + ". " + pickTranslation(foundDataElement, i18n.language, "formName"));
           }
         });
 
       if (mandatoryFields.length > 0) {
-        currentErrors.push(t("cannotSaveMissingMandatoryFields") + ": " + mandatoryFields.join(", "));
+        currentErrors.push(t("cannotSaveMissingMandatoryFields"));
+        mandatoryFields.forEach((mf) => {
+          currentErrors.push(mf);
+        });
       }
       setErrors([...currentErrors]);
     } else {

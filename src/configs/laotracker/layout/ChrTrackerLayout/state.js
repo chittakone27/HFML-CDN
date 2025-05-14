@@ -15,7 +15,8 @@ const useChrTrackerStore = create((set, get) => ({
     currentEnrollment: null,
     currentChild: null,
     formErrors: [],
-    disableIncompleteButton: false
+    disableIncompleteButton: false,
+    order: []
   },
   actions: {
     setProfile: (key, value) => {

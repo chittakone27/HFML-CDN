@@ -10,6 +10,7 @@ import BloodPressureField from "../BloodPressureField/BloodPressureField";
 import Row from "../Row";
 import { useShallow } from "zustand/react/shallow";
 import usePncRules from "./usePncRules";
+import { useEffect } from "react";
 
 const PncDetails = () => {
   const { t } = useTranslation();
@@ -19,11 +20,20 @@ const PncDetails = () => {
       actions: state.actions
     }))
   );
-  const { currentEvent, currentProgramStage, editing } = event;
-  const { changeDataValue, changeEventProperty } = actions;
+  const { currentEvent, currentProgramStage, editing, order } = event;
+  const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const { disabledFields, hiddenFields, props } = usePncRules();
-  console.log(props);
+  useEffect(() => {
+    let order = [];
+    currentProgramStage.programStageSections.forEach((pss) => {
+      pss.dataElements.forEach((de) => {
+        order.push(de.id);
+      });
+    });
+    setEvent("order", order);
+  }, []);
+
   const generateSections = () => {
     return currentProgramStage.programStageSections.map((pss, pssIndex) => {
       return (
@@ -48,6 +58,7 @@ const PncDetails = () => {
             </>
           )}
           {pss.dataElements.map((de) => {
+            const index = order.findIndex((o) => o === de.id);
             if (hiddenFields.includes(de.id)) {
               return null;
             }
@@ -60,7 +71,12 @@ const PncDetails = () => {
               default:
                 return (
                   <Row
-                    label={<DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />}
+                    label={
+                      <div style={{ display: "flex" }}>
+                        {index + 1}.&nbsp;
+                        <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
+                      </div>
+                    }
                     field={
                       <DataValueFieldNoBlurNoState
                         change={(value) => {
@@ -90,10 +106,16 @@ const PncDetails = () => {
       {!currentEvent.eventDate && (
         <Row
           label={pickExecutionDateLabel(currentProgramStage, t)}
-          field={<EventDateFieldNoState disabled={!editing || completed} currentEvent={currentEvent} currentProgramStage={currentProgramStage} />}
-          accept={(value) => {
-            changeEventProperty("eventDate", value);
-          }}
+          field={
+            <EventDateFieldNoState
+              disabled={!editing || completed}
+              currentEvent={currentEvent}
+              currentProgramStage={currentProgramStage}
+              accept={(value) => {
+                changeEventProperty("eventDate", value);
+              }}
+            />
+          }
         />
       )}
       {currentEvent.eventDate && generateSections()}

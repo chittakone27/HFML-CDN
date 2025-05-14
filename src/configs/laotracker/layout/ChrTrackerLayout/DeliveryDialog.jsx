@@ -60,6 +60,20 @@ const DeliveryDialog = () => {
     setEvent("currentChild", null);
   }, [currentEnrollment.enrollment]);
 
+  useEffect(() => {
+    if (tab === 0) {
+      let order = [];
+      const currentProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
+      const dataElements = currentProgramStage.programStageSections[0].dataElements.map((pssDe) => pssDe.id);
+      dataElements.forEach((de) => order.push(de));
+      setEvent("order", order);
+    }
+    if (tab === 1) {
+      let order = ["DmuazFb368B"];
+      setEvent("order", order);
+    }
+  }, [tab]);
+
   const updateInfants = () => {
     if (!childTeisValue) {
       let liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
@@ -154,11 +168,14 @@ const DeliveryDialog = () => {
 
   const checkValid = () => {
     if (finalErrors.length > 0) {
+      let html = "<div>";
+      finalErrors.forEach((error) => {
+        html += "<div>" + error + "</div>";
+      });
+      html += "</div>";
       Swal.fire({
         width: 800,
-        html: finalErrors.map((error) => {
-          return `<div>- ${error}</div>`;
-        }),
+        html,
         icon: "error",
         confirmButtonText: "OK"
       });

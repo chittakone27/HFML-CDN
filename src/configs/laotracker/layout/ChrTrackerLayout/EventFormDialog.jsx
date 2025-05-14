@@ -67,11 +67,15 @@ const EventFormDialog = () => {
 
   const checkValid = () => {
     if (errors.length > 0) {
+      let html = "<div>";
+      errors.forEach((error) => {
+        html += "<div>" + error + "</div>";
+      });
+      html += "</div>";
+
       Swal.fire({
         width: 800,
-        html: errors.map((error) => {
-          return `<div>- ${error}</div>`;
-        }),
+        html,
         icon: "error",
         confirmButtonText: "OK"
       });

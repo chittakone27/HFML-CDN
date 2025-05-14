@@ -31,7 +31,7 @@ const Infant = ({ childIndex }) => {
       actions: state.actions
     }))
   );
-  const { changeDataValue } = actions;
+  const { changeDataValue, setEvent } = actions;
   const currentDeliveryEvent = event.currentEvent;
   const { editing } = event;
   const childTeisValue = findDataValue(currentDeliveryEvent.dataValues, "lYdXxom1BAG");
@@ -150,7 +150,12 @@ const Infant = ({ childIndex }) => {
       <div style={{ height: "calc(100% - 65px)", overflow: "auto" }}>
         <Row
           height={65}
-          label={<AttributeLabelNoState attribute="DmuazFb368B" mandatory={true} />}
+          label={
+            <div style={{ display: "flex", alignItems: "center" }}>
+              1.&nbsp;
+              <AttributeLabelNoState attribute="DmuazFb368B" mandatory={true} />
+            </div>
+          }
           field={
             <AttributeFieldNoState
               disabled={!editing}
@@ -163,13 +168,18 @@ const Infant = ({ childIndex }) => {
           }
           labelWidth={400}
         />
-        {dataElements.map((de) => {
+        {dataElements.map((de, index) => {
           if (props[de] && props[de].hidden) {
             return null;
           }
           return (
             <Row
-              label={<DataValueLabelNoState dataElement={de} currentProgramStage={foundBirthDetailsStage} />}
+              label={
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {index + 2}.&nbsp;
+                  <DataValueLabelNoState dataElement={de} currentProgramStage={foundBirthDetailsStage} />
+                </div>
+              }
               field={
                 <DataValueFieldNoBlurNoState
                   disabled={!editing || (props[de] && props[de].disabled)}

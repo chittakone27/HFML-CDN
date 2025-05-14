@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
 import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
 import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlurNoState";
@@ -36,9 +36,10 @@ const DeliveryDetails = () => {
   const currentProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
   const dataElements = currentProgramStage.programStageSections[0].dataElements.map((pssDe) => pssDe.id);
   const { currentEnrollment, currentEvent, editing } = event;
-  const { changeDataValue, changeEventProperty } = actions;
+  const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
   const props = useDeliveryDetailsRules();
+
   return (
     <div style={{ height: "100%" }}>
       <Row
@@ -63,13 +64,18 @@ const DeliveryDetails = () => {
           }
           labelWidth={400}
         />
-        {dataElements.map((de) => {
+        {dataElements.map((de, index) => {
           if (props[de] && props[de].hidden) {
             return null;
           }
           return (
             <Row
-              label={<DataValueLabelNoState dataElement={de} currentProgramStage={currentProgramStage} />}
+              label={
+                <div style={{ display: "flex" }}>
+                  {index + 1}.&nbsp;
+                  <DataValueLabelNoState dataElement={de} currentProgramStage={currentProgramStage} />
+                </div>
+              }
               field={
                 <DataValueFieldNoBlurNoState
                   disabled={!editing || completed || (props[de] && props[de].disabled)}
