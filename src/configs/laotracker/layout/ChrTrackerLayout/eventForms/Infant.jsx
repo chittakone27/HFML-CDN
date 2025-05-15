@@ -33,7 +33,7 @@ const Infant = ({ childIndex }) => {
   );
   const { changeDataValue, setEvent } = actions;
   const currentDeliveryEvent = event.currentEvent;
-  const { editing } = event;
+  const { editing, order } = event;
   const childTeisValue = findDataValue(currentDeliveryEvent.dataValues, "lYdXxom1BAG");
   const children = JSON.parse(childTeisValue);
   const currentChild = children[childIndex];
@@ -138,7 +138,7 @@ const Infant = ({ childIndex }) => {
     <div style={{ height: "100%" }}>
       <Row
         height={65}
-        label={<div style={{ fontWeight: "bold" }}>{t("healthIdChild")}</div>}
+        label={<div style={{ fontWeight: "bold" }}>1. {t("healthIdChild")}</div>}
         field={
           <div style={{ color: "#0277bd", fontWeight: "bold" }}>
             {foundChildHealthId ? foundChildHealthId : [<div>{t("childUniqueIdWarning1")}</div>, <div>{t("childUniqueIdWarning2")}</div>]}
@@ -146,13 +146,12 @@ const Infant = ({ childIndex }) => {
         }
         labelWidth={400}
       />
-
       <div style={{ height: "calc(100% - 65px)", overflow: "auto" }}>
         <Row
           height={65}
           label={
             <div style={{ display: "flex", alignItems: "center" }}>
-              1.&nbsp;
+              2.&nbsp;
               <AttributeLabelNoState attribute="DmuazFb368B" mandatory={true} />
             </div>
           }
@@ -172,11 +171,12 @@ const Infant = ({ childIndex }) => {
           if (props[de] && props[de].hidden) {
             return null;
           }
+
           return (
             <Row
               label={
                 <div style={{ display: "flex", alignItems: "center" }}>
-                  {index + 2}.&nbsp;
+                  {index + 3}.&nbsp;
                   <DataValueLabelNoState dataElement={de} currentProgramStage={foundBirthDetailsStage} />
                 </div>
               }

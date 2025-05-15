@@ -67,7 +67,7 @@ const EventFormDialog = () => {
 
   const checkValid = () => {
     if (errors.length > 0) {
-      let html = "<div>";
+      let html = `<div style="color: red;" />`;
       errors.forEach((error) => {
         html += "<div>" + error + "</div>";
       });

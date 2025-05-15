@@ -34,7 +34,7 @@ const IpdVisitDetails = () => {
       data: state.data
     }))
   );
-  const { currentEvent, currentProgramStage, editing } = event;
+  const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const props = useIpdVisitDetailsRules();
@@ -42,7 +42,7 @@ const IpdVisitDetails = () => {
   const icd10OptionSet = optionSets.find((os) => os.id === "ZgqhnzhZZcQ");
 
   useEffect(() => {
-    let order = [];
+    let order = ["eventDate"];
     currentProgramStage.programStageDataElements.forEach((psde) => {
       order.push(psde.dataElement.id);
     });
@@ -52,7 +52,12 @@ const IpdVisitDetails = () => {
   return (
     <div>
       <Row
-        label={<EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />}
+        label={
+          <div style={{ display: "flex", alignItems: "center", fontWeight: "bold" }}>
+            1.&nbsp;
+            <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
+          </div>
+        }
         field={
           <EventDateFieldNoState
             accept={(value) => {
@@ -66,10 +71,11 @@ const IpdVisitDetails = () => {
         }
       />
       {currentProgramStage.programStageDataElements.map((psde, index) => {
+        const foundIndex = order.findIndex((o) => o === psde.dataElement.id);
         if (psde.dataElement.id === "eYGlKgmZyj8") {
           return (
             <Row
-              label={index + 1 + ". " + t("preConditions")}
+              label={foundIndex + 1 + ". " + t("preConditions")}
               field={
                 <Select
                   multiple
@@ -132,7 +138,7 @@ const IpdVisitDetails = () => {
             <Row
               label={
                 <div style={{ display: "flex" }}>
-                  {index + 1}.&nbsp;
+                  {foundIndex + 1}.&nbsp;
                   <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
                 </div>
               }

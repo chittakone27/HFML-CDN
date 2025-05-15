@@ -25,7 +25,7 @@ const PncDetails = () => {
   const completed = currentEvent && currentEvent.status === "COMPLETED";
   const { disabledFields, hiddenFields, props } = usePncRules();
   useEffect(() => {
-    let order = [];
+    let order = ["chid", "eventDate"];
     currentProgramStage.programStageSections.forEach((pss) => {
       pss.dataElements.forEach((de) => {
         order.push(de.id);
@@ -41,9 +41,22 @@ const PncDetails = () => {
           <div>{pss.displayName}</div>
           {pssIndex === 0 && (
             <>
-              <Row label={<AttributeLabel attribute="oPKsfqS64oE" />} field={<AttributeField attribute="oPKsfqS64oE" disabled={true} />} />
               <Row
-                label={pickExecutionDateLabel(currentProgramStage, t)}
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    1.&nbsp;
+                    <AttributeLabel attribute="oPKsfqS64oE" />
+                  </div>
+                }
+                field={<AttributeField attribute="oPKsfqS64oE" disabled={true} />}
+              />
+              <Row
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    2.&nbsp;
+                    {pickExecutionDateLabel(currentProgramStage, t)}
+                  </div>
+                }
                 field={
                   <EventDateFieldNoState
                     disabled={!editing || completed}

@@ -20,13 +20,14 @@ const AbortionDetails = () => {
       data: state.data
     }))
   );
-  const { currentEvent, currentProgramStage, editing } = event;
+  const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
 
   useEffect(() => {
-    const order = currentProgramStage.programStageDataElements.map((psde, index) => {
-      return psde.dataElement.id;
+    const order = ["eventDate"];
+    currentProgramStage.programStageDataElements.map((psde, index) => {
+      order.push(psde.dataElement.id);
     });
     setEvent("order", order);
   }, []);
@@ -35,7 +36,8 @@ const AbortionDetails = () => {
     <div>
       <Row
         label={
-          <div style={{ display: "flex", alignItems: "end", justifyContent: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            1.
             <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
           </div>
         }
@@ -51,11 +53,12 @@ const AbortionDetails = () => {
         }
       />
       {currentProgramStage.programStageDataElements.map((psde, index) => {
+        const foundIndex = order.findIndex((o) => o === psde.dataElement.id);
         return (
           <Row
             label={
               <div style={{ display: "flex" }}>
-                {index + 1}.&nbsp;
+                {foundIndex + 1}.&nbsp;
                 <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
               </div>
             }

@@ -98,7 +98,7 @@ const useAncRules = () => {
   const { event, chrTrackerActions } = useChrTrackerStore(
     useShallow((state) => ({
       event: state.event,
-      chrTrackerActions: actions
+      chrTrackerActions: state.actions
     }))
   );
   const { currentEvents } = data;
@@ -308,15 +308,16 @@ const useAncRules = () => {
   useEffect(() => {
     ////////////////////////////////////////////////////////////////////
     //Calculate BMI based on first ANC visit, and make it fixed
-    const foundEvent = currentEvents.find((ce) => {
-      const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
-      const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
-      const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
-      return foundFirstVisit && foundHeight && foundWeight;
-    });
-    if (foundEvent) {
-      const foundHeight = foundEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
-      const foundWeight = foundEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
+    // const foundEvent = currentEvents.find((ce) => {
+    //   const foundFirstVisit = ce.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
+    //   const foundHeight = ce.dataValues.find((dv) => dv.dataElement === HEIGHT && dv.value);
+    //   const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
+    //   return foundFirstVisit && foundHeight && foundWeight;
+    // });
+    const isFirstVisit = currentEvent.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
+    if (isFirstVisit) {
+      const foundHeight = currentEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
+      const foundWeight = currentEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
       if (foundHeight && foundWeight) {
         const height = parseInt(foundHeight.value) / 100;
         const squareOfHeight = height * height;

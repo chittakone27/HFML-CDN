@@ -35,7 +35,7 @@ const DeliveryDetails = () => {
   );
   const currentProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
   const dataElements = currentProgramStage.programStageSections[0].dataElements.map((pssDe) => pssDe.id);
-  const { currentEnrollment, currentEvent, editing } = event;
+  const { currentEnrollment, currentEvent, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
   const props = useDeliveryDetailsRules();
@@ -43,14 +43,19 @@ const DeliveryDetails = () => {
   return (
     <div style={{ height: "100%" }}>
       <Row
-        label={<div style={{ fontWeight: "bold" }}>{t("healthIdMother")}</div>}
+        label={<div style={{ fontWeight: "bold" }}>1. {t("healthIdMother")}</div>}
         field={<div style={{ color: "#0277bd", fontWeight: "bold" }}>{findAttributeValue(currentTei, "oPKsfqS64oE")}</div>}
         labelWidth={400}
         height={65}
       />
       <div style={{ height: "calc(100% - 65px)", overflow: "auto" }}>
         <Row
-          label={<EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />}
+          label={
+            <div style={{ display: "flex", alignItems: "center", fontWeight: "bold" }}>
+              2.&nbsp;
+              <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
+            </div>
+          }
           field={
             <EventDateFieldNoState
               disabled={!editing || completed}
@@ -68,11 +73,12 @@ const DeliveryDetails = () => {
           if (props[de] && props[de].hidden) {
             return null;
           }
+          const foundIndex = order.findIndex((o) => o === de);
           return (
             <Row
               label={
                 <div style={{ display: "flex" }}>
-                  {index + 1}.&nbsp;
+                  {foundIndex + 1}.&nbsp;
                   <DataValueLabelNoState dataElement={de} currentProgramStage={currentProgramStage} />
                 </div>
               }

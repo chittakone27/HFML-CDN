@@ -62,14 +62,14 @@ const DeliveryDialog = () => {
 
   useEffect(() => {
     if (tab === 0) {
-      let order = [];
+      let order = ["chid", "eventDate"];
       const currentProgramStage = program.programStages.find((ps) => ps.id === "YOHVx1Xmpgr");
       const dataElements = currentProgramStage.programStageSections[0].dataElements.map((pssDe) => pssDe.id);
       dataElements.forEach((de) => order.push(de));
       setEvent("order", order);
     }
     if (tab === 1) {
-      let order = ["DmuazFb368B"];
+      let order = ["chid", "DmuazFb368B"];
       setEvent("order", order);
     }
   }, [tab]);
@@ -168,7 +168,7 @@ const DeliveryDialog = () => {
 
   const checkValid = () => {
     if (finalErrors.length > 0) {
-      let html = "<div>";
+      let html = `<div style="color: red;" />`;
       finalErrors.forEach((error) => {
         html += "<div>" + error + "</div>";
       });

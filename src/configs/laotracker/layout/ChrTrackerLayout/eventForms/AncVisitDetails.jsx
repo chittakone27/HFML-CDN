@@ -27,7 +27,7 @@ const AncVisitDetails = () => {
   const { disabledFields, hiddenFields, helpers, props } = useAncRules();
 
   useEffect(() => {
-    let order = [];
+    let order = ["chid", "eventDate"];
     currentProgramStage.programStageSections.forEach((pss) => {
       pss.dataElements.forEach((de) => {
         order.push(de.id);
@@ -43,9 +43,22 @@ const AncVisitDetails = () => {
           <div>{pss.displayName}</div>
           {pss.id === "IoWawA1nSJw" && (
             <>
-              <Row label={<AttributeLabel attribute="oPKsfqS64oE" />} field={<AttributeField attribute="oPKsfqS64oE" disabled={true} />} />
               <Row
-                label={pickExecutionDateLabel(currentProgramStage, t)}
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    1.&nbsp;
+                    <AttributeLabel attribute="oPKsfqS64oE" />
+                  </div>
+                }
+                field={<AttributeField attribute="oPKsfqS64oE" disabled={true} />}
+              />
+              <Row
+                label={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    2.&nbsp;
+                    {pickExecutionDateLabel(currentProgramStage, t)}
+                  </div>
+                }
                 field={
                   <EventDateFieldNoState
                     disabled={!editing || completed}
@@ -66,7 +79,17 @@ const AncVisitDetails = () => {
             }
             switch (de.id) {
               case "tVPKjkXrMSB":
-                return <Row label={t("bloodPressure")} field={<BloodPressureField disabled={!editing || completed} />} />;
+                return (
+                  <Row
+                    label={
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        {index + 1}.&nbsp;
+                        {t("bloodPressure")}
+                      </div>
+                    }
+                    field={<BloodPressureField disabled={!editing || completed} />}
+                  />
+                );
               case "TThw3XArMBK":
               case "CLon1OEoS2k":
                 return null;

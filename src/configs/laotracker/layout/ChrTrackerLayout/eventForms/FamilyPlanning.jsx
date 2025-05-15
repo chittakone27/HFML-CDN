@@ -14,12 +14,12 @@ const FamilyPlanning = () => {
       actions: state.actions
     }))
   );
-  const { currentEvent, currentProgramStage, editing } = event;
+  const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
 
   useEffect(() => {
-    let order = [];
+    let order = ["eventDate"];
     currentProgramStage.programStageDataElements.forEach((psde) => {
       order.push(psde.dataElement.id);
     });
@@ -29,7 +29,12 @@ const FamilyPlanning = () => {
   return (
     <div>
       <Row
-        label={<EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />}
+        label={
+          <div style={{ display: "flex", alignItems: "center", fontWeight: "bold" }}>
+            1.&nbsp;
+            <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
+          </div>
+        }
         field={
           <EventDateFieldNoState
             disabled={!editing || completed}
@@ -42,11 +47,12 @@ const FamilyPlanning = () => {
         }
       />
       {currentProgramStage.programStageDataElements.map((psde, index) => {
+        const foundIndex = order.findIndex((o) => o === psde.dataElement.id);
         return (
           <Row
             label={
               <div style={{ display: "flex" }}>
-                {index + 1}.&nbsp;
+                {foundIndex + 1}.&nbsp;
                 <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
               </div>
             }
