@@ -314,18 +314,18 @@ const useAncRules = () => {
     //   const foundWeight = ce.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT && dv.value);
     //   return foundFirstVisit && foundHeight && foundWeight;
     // });
-    const isFirstVisit = currentEvent.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
-    if (isFirstVisit) {
-      const foundHeight = currentEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
-      const foundWeight = currentEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
-      if (foundHeight && foundWeight) {
-        const height = parseInt(foundHeight.value) / 100;
-        const squareOfHeight = height * height;
-        const weight = parseInt(foundWeight.value);
-        const bmi = weight / squareOfHeight;
-        changeDataValue(BMI, bmi.toFixed(2));
-      }
+    // const isFirstVisit = currentEvent.dataValues.find((dv) => dv.dataElement === NUMBER_OF_ANC_VISIT && dv.value === "1");
+    // if (isFirstVisit) {
+    const foundHeight = currentEvent.dataValues.find((dv) => dv.dataElement === HEIGHT);
+    const foundWeight = currentEvent.dataValues.find((dv) => dv.dataElement === WEIGHT_BEFORE_PREGNANT);
+    if (foundHeight && foundWeight) {
+      const height = parseInt(foundHeight.value) / 100;
+      const squareOfHeight = height * height;
+      const weight = parseInt(foundWeight.value);
+      const bmi = weight / squareOfHeight;
+      changeDataValue(BMI, bmi.toFixed(2));
     }
+    // }
   }, [JSON.stringify(currentEvent), JSON.stringify(currentEvents)]);
 
   useEffect(() => {
