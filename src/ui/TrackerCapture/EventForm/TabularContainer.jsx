@@ -118,7 +118,7 @@ const TabularContainer = ({ currentProgramStage }) => {
                     }}
                   >
                     <TableCell sx={{ fontSize: 12 }} align="left">
-                      {t(ev.status)}
+                      {ev.status === "ACTIVE" ? t("EVENT_ACTIVE") : ev.status === "COMPLETED" ? t("EVENT_COMPLETED") : t(ev.status)}
                     </TableCell>
                     <TableCell sx={{ fontSize: 12 }} align="left">
                       {convertDisplayDate(ev.eventDate)}

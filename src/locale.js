@@ -171,6 +171,8 @@ const resources = {
       ACTIVE: "ACTIVE",
       COMPLETED: "COMPLETED",
       atLeastIdField: "At least one field must be filled in this section",
+      EVENT_ACTIVE: "ACTIVE",
+      EVENT_COMPLETED: "COMPLETED",
       filterInSection: "Filter in section"
     }
   },
@@ -318,7 +320,9 @@ const resources = {
       ACTIVE: "ຂໍ້ມູນຍັງບໍ່ສຳເລັດ",
       COMPLETED: "ສຳເລັດ",
       atLeastIdField: "At least one field must be filled in this section",
-      thisFieldIsRequired: "ຂໍ້ມູນນີ້ຕ້ອງຖືກຕື່ມໃສ່ຈຶ່ງສາມາດບັນທຶກໄດ້"
+      thisFieldIsRequired: "ຂໍ້ມູນນີ້ຕ້ອງຖືກຕື່ມໃສ່ຈຶ່ງສາມາດບັນທຶກໄດ້",
+      EVENT_ACTIVE: "ດຳເນີນການຢູ່",
+      EVENT_COMPLETED: "ສຳເລັດແລ້ວ"
     }
   },
   vi: {
