@@ -170,6 +170,8 @@ const resources = {
       uploadFile: "Upload file",
       ACTIVE: "ACTIVE",
       COMPLETED: "COMPLETED",
+      EVENT_ACTIVE: "ACTIVE",
+      EVENT_COMPLETED: "COMPLETED",
       filterInSection: "Filter in section"
     }
   },
@@ -315,7 +317,9 @@ const resources = {
       dragAndDrop: "Drag and drop files here or select file to upload",
       uploadFile: "Upload file",
       ACTIVE: "ຂໍ້ມູນຍັງບໍ່ສຳເລັດ",
-      COMPLETED: "ສຳເລັດ"
+      COMPLETED: "ສຳເລັດ",
+      EVENT_ACTIVE: "ດຳເນີນການຢູ່",
+      EVENT_COMPLETED: "ສຳເລັດແລ້ວ"
     }
   },
   vi: {
