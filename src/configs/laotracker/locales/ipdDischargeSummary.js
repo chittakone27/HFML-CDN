@@ -27,7 +27,8 @@ const ipdDischargeSummaryLocales = {
     teiList: "ລາຍການ",
     admissionDateMustBeAfterDateOfBirth: "ວັນທີ່ເຂົ້າໂຮງໝໍຕ້ອງຫຼັງຈາກວັນເດືອນປີເກີດ",
     ACTIVE: "ມີຊີວິດ",
-    COMPLETED: "ເສຍຊີວິດ"
+    COMPLETED: "ເສຍຊີວິດ",
+    deleteTeiConfirmation: "ທ່ານໝັ້ນໃຈແລ້ວບໍທີ່ຈະລຶບການລົງທະບຽນນີ້? ເຫດການທັງໝົດທີ່ທ່ານໄດ້ບັນທຶກຈະຖືກລຶບອອກໝົດ, ເຊິ່ງບໍ່ສາມາດກູ້ຄືນໄດ້ອີກ."
   }
 };
 
