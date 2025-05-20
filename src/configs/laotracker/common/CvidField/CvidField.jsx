@@ -56,9 +56,9 @@ const CvidField = ({ disabled, value, change }) => {
   }, [hfId, char, num]);
 
   return (
-    <div className="client-health-id-field-container ">
+    <div className="cvid-field-container">
       <AttributeLabel attribute="corXnplgfQ7" />
-      <div className="client-health-id-fields">
+      <div className="cvid-fields">
         <Input
           disabled={disabled}
           value={hfId}

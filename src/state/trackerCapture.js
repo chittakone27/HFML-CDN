@@ -168,7 +168,7 @@ const useTrackerCaptureStore = create((set, get) => ({
         })
       );
     },
-    register: (enrollmentDate, incidentDate) => {
+    register: (enrollmentDate, incidentDate, additionalTeas) => {
       set(
         produce((state) => {
           state.layout.layout = "layout2";
@@ -182,6 +182,14 @@ const useTrackerCaptureStore = create((set, get) => ({
             attributes: [],
             isNew: true
           };
+          if (additionalTeas) {
+            Object.keys(additionalTeas).forEach((tea) => {
+              state.data.currentTei.attributes.push({
+                attribute: tea,
+                value: additionalTeas[tea]
+              });
+            });
+          }
           const currentEnrollment = {
             attributes: [],
             orgUnit: orgUnit.id,

@@ -5,12 +5,25 @@ import { Input } from "@/ui/common";
 import "./SelectorClientHealthIdField.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useSelectionStore from "@/state/selection";
 
 const SelectorClientHealthIdField = ({ disabled, value, change }) => {
   const { t } = useTranslation();
   const [dob, setDob] = useState("");
   const [sex, setSex] = useState("");
   const [num, setNum] = useState("");
+  const program = useSelectionStore((state) => state.program);
+  const womenPrograms = ["vqNgkw4gfw7", "fflLsS1lm3g", "AyPkCOMmgdd", "u1Na9wCGY6d"];
+
+  useEffect(() => {
+    if (womenPrograms.includes(program.id)) {
+      if (sex !== "2") {
+        setTimeout(() => {
+          setSex("2");
+        }, 50);
+      }
+    }
+  }, [value]);
 
   const changeValue = (type, value) => {
     let newValue = value.replace(/[a-zA-Z]/g, "");

@@ -121,7 +121,7 @@ const customLocales = {
     invalidPhoneNumber: "Invalid phone number",
     addNewEventWarning: "ຕ້ອງສຳເລັດເຫດການທີ່ຜ່ານມາກ່ອນຈື່ງສາມາດສ້າງເຫດການໃໝ່ໄດ້.",
     editProfileConfirmation: "ທ່ານໝັ້ນໃຈບໍວ່າຕ້ອງການແກ້ໄຂຂໍ້ມູນສ່ວນຕົວ?",
-    last4Digits: "Last 4 digits",
+    last4Digits: "ເລກທ້າຍ 4 ຕົວຂອງລະຫັດສຸຂະພາບ",
     dob: "ວັນເດືອນປີເກີດ",
     sex: "ເພດ"
   }

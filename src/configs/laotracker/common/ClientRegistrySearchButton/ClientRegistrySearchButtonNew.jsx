@@ -604,8 +604,12 @@ const ClientRegistrySearchButton = ({
             variant="contained"
             disabled={program.readOnly}
             onClick={() => {
+              let additionalTeas = null;
+              if (search.tQeFLjYbqzv) {
+                additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv };
+              }
               const currentDate = format(new Date(), "yyyy-MM-dd");
-              register(currentDate, currentDate);
+              register(currentDate, currentDate, additionalTeas);
               setLayout("layout", "layout2");
               setDialog(false);
               setSearch({});
@@ -650,8 +654,12 @@ const ClientRegistrySearchButton = ({
             variant="contained"
             disabled={program.readOnly}
             onClick={() => {
+              let additionalTeas = null;
+              if (search.tQeFLjYbqzv) {
+                additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv };
+              }
               const currentDate = format(new Date(), "yyyy-MM-dd");
-              register(currentDate, currentDate);
+              register(currentDate, currentDate, additionalTeas);
               setLayout("layout", "layout2");
               setDialog(false);
               setSearch({});
