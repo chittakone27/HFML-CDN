@@ -31,10 +31,11 @@ const Immunization = () => {
       program: state.program
     }))
   );
-  const { actions, data } = useTrackerCaptureStore(
+  const { actions, data, layout } = useTrackerCaptureStore(
     useShallow((state) => ({
       actions: state.actions,
-      data: state.data
+      data: state.data,
+      layout: state.layout
     }))
   );
   const { currentEvents, currentEnrollment } = data;
@@ -154,7 +155,7 @@ const Immunization = () => {
       <EventDateFieldNoBlur type="dueDate" disabled={!dueDateEditing} />
       <div style={{ height: 3 }}></div>
       {!dueDateEditing && (
-        <Button disabled={program.readOnly} variant="contained" onClick={toggleDueDateEditing}>
+        <Button disabled={program.readOnly || layout.disableEventEditButton} variant="contained" onClick={toggleDueDateEditing}>
           {t("rescheduleDate")}
         </Button>
       )}
@@ -186,7 +187,7 @@ const Immunization = () => {
       <div style={{ height: 3 }}></div>
       <EventDateLabel type="eventDate" />
       <EventDateFieldNoBlur
-        disabled={program.readOnly}
+        disabled={program.readOnly || layout.disableEventEditButton}
         maxDate={format(new Date(), "yyyy-MM-dd")}
         type="eventDate"
         focus={() => {
