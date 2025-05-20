@@ -17,13 +17,13 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
 
   useEffect(() => {
     if (womenPrograms.includes(program.id)) {
-      if (sex !== "2") {
+      if (!sex) {
         setTimeout(() => {
           setSex("2");
         }, 50);
       }
     }
-  }, [value]);
+  }, []);
 
   const changeValue = (type, value) => {
     let newValue = value.replace(/[a-zA-Z]/g, "");
