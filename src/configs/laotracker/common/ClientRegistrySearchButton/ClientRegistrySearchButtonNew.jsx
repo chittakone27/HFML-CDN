@@ -608,6 +608,13 @@ const ClientRegistrySearchButton = ({
               if (search.tQeFLjYbqzv) {
                 additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv };
               }
+              if (search.oPKsfqS64oE) {
+                const dob = search.oPKsfqS64oE.split("-")[0];
+                const day = dob.substr(0, 2);
+                const month = dob.substr(2, 2);
+                const year = dob.substr(4, 4);
+                additionalTeas = { tQeFLjYbqzv: year + "-" + month + "-" + day };
+              }
               const currentDate = format(new Date(), "yyyy-MM-dd");
               register(currentDate, currentDate, additionalTeas);
               setLayout("layout", "layout2");
@@ -657,6 +664,13 @@ const ClientRegistrySearchButton = ({
               let additionalTeas = null;
               if (search.tQeFLjYbqzv) {
                 additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv };
+              }
+              if (search.oPKsfqS64oE) {
+                const dob = search.oPKsfqS64oE.split("-")[0];
+                const day = dob.substr(0, 2);
+                const month = dob.substr(2, 2);
+                const year = dob.substr(4, 4);
+                additionalTeas = { tQeFLjYbqzv: year + "-" + month + "-" + day };
               }
               const currentDate = format(new Date(), "yyyy-MM-dd");
               register(currentDate, currentDate, additionalTeas);
