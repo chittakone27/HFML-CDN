@@ -30,6 +30,9 @@ const AncVisitDetails = () => {
     let order = ["chid", "eventDate"];
     currentProgramStage.programStageSections.forEach((pss) => {
       pss.dataElements.forEach((de) => {
+        if (de.id === "TThw3XArMBK") {
+          return;
+        }
         order.push(de.id);
       });
     });
