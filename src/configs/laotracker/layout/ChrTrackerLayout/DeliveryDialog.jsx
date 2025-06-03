@@ -135,10 +135,15 @@ const DeliveryDialog = () => {
 
         changeDataValue("lYdXxom1BAG", JSON.stringify(children));
         const cloned = _.cloneDeep(currentEvent);
-        cloned.dataValues.push({
-          dataElement: "lYdXxom1BAG",
-          value: JSON.stringify(children)
-        });
+        const foundChildTeisValueIndex = cloned.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
+        if (foundChildTeisValueIndex === -1) {
+          cloned.dataValues.push({
+            dataElement: "lYdXxom1BAG",
+            value: JSON.stringify(children)
+          });
+        } else {
+          cloned.dataValues[foundChildTeisValueIndex].value = JSON.stringify(children);
+        }
         return cloned;
       } else {
         console.log("here here");

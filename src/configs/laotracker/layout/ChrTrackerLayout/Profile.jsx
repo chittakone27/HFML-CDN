@@ -198,7 +198,7 @@ const Profile = ({ title }) => {
           field={
             <div>
               <div style={{ display: "flex" }}>
-                <div style={{ width: 120 }}>
+                <div style={{ width: 160 }}>
                   <Input
                     disableClearable
                     change={(value) => {
