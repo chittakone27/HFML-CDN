@@ -52,6 +52,9 @@ const useProfileRules = () => {
     ];
     const disabledFields = ["oPKsfqS64oE", "BaiVwt8jVfg", "vJdG29KW1Et"];
     let hiddenFields = ["I40YqLHbAvE", "vJdG29KW1Et", ...Object.values(identificationFieldMapping)];
+    if (program.id === "ck0rft9jVlF") {
+      hiddenFields.push("IdwH3mwSy2o");
+    }
     const foundAgeInYearAttribute = program.programTrackedEntityAttributes.find((ptea) => ptea.trackedEntityAttribute.id === "BaiVwt8jVfg");
     const foundDob = findAttributeValue(currentTei, "tQeFLjYbqzv");
     const foundMobile = findAttributeValue(currentTei, "RwoKpuIgMmA");
