@@ -190,23 +190,42 @@ const Profile = ({ title }) => {
       );
     } else if (teaId === "RwoKpuIgMmA") {
       let currentPhoneNo = findAttributeValue(currentTei, "RwoKpuIgMmA");
-      const backNum = currentPhoneNo.substring(3);
-      const frontNum = currentPhoneNo.substring(0, 3);
+      let backNum;
+
+      let frontNum;
+      if (currentPhoneNo.includes("unknown") || currentPhoneNo.includes("dontHave")) {
+        frontNum = currentPhoneNo;
+        backNum = "";
+      } else {
+        frontNum = currentPhoneNo.substring(0, 3);
+        backNum = currentPhoneNo.substring(3);
+      }
       return (
         <Row
           label={<AttributeLabel attribute={teaId} />}
           field={
             <div>
               <div style={{ display: "flex" }}>
-                <div style={{ width: 160 }}>
+                <div style={{ width: 210 }}>
                   <Input
                     disableClearable
                     change={(value) => {
-                      changeAttributeValue("RwoKpuIgMmA", value + backNum);
+                      if (value.includes("unknown") || value.includes("dontHave")) {
+                        if (value.includes("unknown")) {
+                          changeAttributeValue("RwoKpuIgMmA", "unknown");
+                        }
+                        if (value.includes("dontHave")) {
+                          changeAttributeValue("RwoKpuIgMmA", "dontHave");
+                        }
+                      } else {
+                        changeAttributeValue("RwoKpuIgMmA", value + backNum);
+                      }
                     }}
                     valueSet={[
                       { value: "020", label: "020" },
-                      { value: "030", label: "030" }
+                      { value: "030", label: "030" },
+                      { value: "unknown", label: t("unknown") },
+                      { value: "dontHave", label: t("dontHave") }
                     ]}
                     value={frontNum}
                     valueType="TEXT"

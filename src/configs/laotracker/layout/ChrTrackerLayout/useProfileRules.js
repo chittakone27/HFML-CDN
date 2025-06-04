@@ -123,20 +123,31 @@ const useProfileRules = () => {
           });
         }
       });
-
     if (foundMobile) {
-      let newValue = foundMobile.replace(/\D/g, "");
-      if (newValue.length < 11) {
-        helpers.push({
-          target: "RwoKpuIgMmA",
-          type: "ERROR",
-          value: t("invalidPhoneNumber")
-        });
+      let newValue;
+      if (foundMobile.includes("unknown") || foundMobile.includes("dontHave")) {
+        newValue = foundMobile;
+        changeAttributeValue("RwoKpuIgMmA", newValue);
+      } else {
+        newValue = foundMobile.replace(/\D/g, "");
+        if (newValue.length < 11) {
+          helpers.push({
+            target: "RwoKpuIgMmA",
+            type: "ERROR",
+            value: t("invalidPhoneNumber")
+          });
+        }
+        if (newValue.length > 11) {
+          newValue = newValue.substring(0, 11);
+        }
+        changeAttributeValue("RwoKpuIgMmA", newValue);
       }
-      if (newValue.length > 11) {
-        newValue = newValue.substring(0, 11);
-      }
-      changeAttributeValue("RwoKpuIgMmA", newValue);
+    } else {
+      helpers.push({
+        target: "RwoKpuIgMmA",
+        type: "ERROR",
+        value: t("thisFieldIsRequired")
+      });
     }
 
     setProfile("helpers", helpers);

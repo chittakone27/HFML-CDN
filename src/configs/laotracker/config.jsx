@@ -87,7 +87,9 @@ const customLocales = {
     dob: "Date of birth",
     sex: "Sex",
     male: "Male",
-    female: "Female"
+    female: "Female",
+    unknown: "Unknown",
+    dontHave: "Don't have"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -127,7 +129,9 @@ const customLocales = {
     dob: "ວັນເດືອນປີເກີດ",
     sex: "ເພດ",
     male: "ຊາຍ",
-    female: "ຍິງ"
+    female: "ຍິງ",
+    unknown: "ບໍ່ຮູ້",
+    dontHave: "ບໍ່ມີ"
   }
 };
 
