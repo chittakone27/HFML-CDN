@@ -202,7 +202,7 @@ const Profile = ({ title }) => {
       }
       return (
         <Row
-          label={<AttributeLabel attribute={teaId} />}
+          label={<AttributeLabel attribute={teaId} mandatory={true} />}
           field={
             <div>
               <div style={{ display: "flex" }}>
@@ -233,14 +233,16 @@ const Profile = ({ title }) => {
                   />
                 </div>
                 &nbsp;
-                <Input
-                  change={(value) => {
-                    changeAttributeValue("RwoKpuIgMmA", frontNum + value);
-                  }}
-                  value={backNum}
-                  valueType="TEXT"
-                  disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
-                />
+                {frontNum !== "unknown" && frontNum !== "dontHave" && frontNum && (
+                  <Input
+                    change={(value) => {
+                      changeAttributeValue("RwoKpuIgMmA", frontNum + value);
+                    }}
+                    value={backNum}
+                    valueType="TEXT"
+                    disabled={disabledFields.includes(teaId) || loading || !layout.profileFormEditing}
+                  />
+                )}
               </div>
               {helpers
                 .filter((h) => h.target === teaId)
