@@ -111,11 +111,11 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
               valueSet={[
                 {
                   value: "1",
-                  label: "1"
+                  label: t("male")
                 },
                 {
                   value: "2",
-                  label: "2"
+                  label: t("female")
                 }
               ]}
               change={(value) => {

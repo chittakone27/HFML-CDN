@@ -85,7 +85,9 @@ const customLocales = {
     editProfileConfirmation: "Are you sure you want to edit this information profile?",
     last4Digits: "Last 4 digits",
     dob: "Date of birth",
-    sex: "Sex"
+    sex: "Sex",
+    male: "Male",
+    female: "Female"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -123,7 +125,9 @@ const customLocales = {
     editProfileConfirmation: "ທ່ານໝັ້ນໃຈບໍວ່າຕ້ອງການແກ້ໄຂຂໍ້ມູນສ່ວນຕົວ?",
     last4Digits: "ເລກທ້າຍ 4 ຕົວຂອງລະຫັດສຸຂະພາບ",
     dob: "ວັນເດືອນປີເກີດ",
-    sex: "ເພດ"
+    sex: "ເພດ",
+    male: "ຊາຍ",
+    female: "ຍິງ"
   }
 };
 
