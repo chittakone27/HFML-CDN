@@ -44,6 +44,11 @@ const ClientHealthIdField = ({ disabled, value, change }) => {
       setDob("");
       setSex("");
       setNum("");
+    } else {
+      const splitted = value.split("-");
+      setDob(splitted[0]);
+      setSex(splitted[1]);
+      setNum(splitted[2]);
     }
   }, [value]);
 
@@ -56,8 +61,10 @@ const ClientHealthIdField = ({ disabled, value, change }) => {
   }, [dob, sex, num]);
 
   return (
-    <div className="client-health-id-field-container ">
-      <AttributeLabel attribute="oPKsfqS64oE" />
+    <div className="client-health-id-field-container">
+      <strong>
+        <AttributeLabel attribute="oPKsfqS64oE" />
+      </strong>
       <div className="client-health-id-fields">
         <Input
           disabled={disabled}

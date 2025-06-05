@@ -6,6 +6,7 @@ import "./SelectorClientHealthIdField.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSelectionStore from "@/state/selection";
+import { isValid } from "date-fns";
 
 const SelectorClientHealthIdField = ({ disabled, value, change }) => {
   const { t } = useTranslation();
@@ -57,6 +58,11 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
       setDob("");
       setSex("");
       setNum("");
+    } else {
+      const splitted = value.split("-");
+      setDob(splitted[0]);
+      setSex(splitted[1]);
+      setNum(splitted[2]);
     }
   }, [value]);
 
@@ -73,14 +79,17 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
     const month = dob.substring(2, 4);
     const year = dob.substring(4, 8);
     formattedDob = year + "-" + month + "-" + day;
+    if (!isValid(new Date(formattedDob))) {
+      formattedDob = "";
+    }
   } else {
     formattedDob = "";
   }
 
   return (
     <div className="client-health-id-field-container ">
-      <AttributeLabel attribute="oPKsfqS64oE" />
-      <div className="client-health-id-fields">
+      <AttributeLabel attribute="oPKsfqS64oE" clas />
+      <div className="client-health-id-selector-fields">
         <div className="client-health-id-row">
           <div style={{ width: 150 }}>{t("dob")}</div>
           <div style={{ width: 150 }}>

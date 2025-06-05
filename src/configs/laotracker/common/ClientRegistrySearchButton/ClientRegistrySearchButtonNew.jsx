@@ -279,26 +279,36 @@ const ClientRegistrySearchButton = ({
   const generateAttributeField = (attribute) => {
     const foundAttribute = trackedEntityAttributes.find((tea) => tea.id === attribute);
     if (foundAttribute && foundAttribute.id === ATTRIBUTES.HEALTH_ID) {
+      console.log(search[attribute]);
       return (
-        <SelectorClientHealthIdField
-          // disabled={searchOption ? true : false}
-          value={search[attribute]}
-          change={(value) => {
-            changeSearch(attribute, value);
-          }}
-        />
-        // <div>
-        //   <AttributeLabelNoState attribute={attribute} />
-        //   <Input
-        //     value={search[attribute] ? search[attribute] : ""}
-        //     valueType="TEXT"
-        //     change={(value) => {
-        //       changeSearch(attribute, value);
-        //     }}
-        //     helpers={[{ type: "HELPER", value: t("healthIdSearchHelper") }]}
-        //   />
-        // </div>
+        <div>
+          <ClientHealthIdField
+            value={search[attribute]}
+            change={(value) => {
+              changeSearch(attribute, value);
+            }}
+          />
+          <SelectorClientHealthIdField
+            // disabled={searchOption ? true : false}
+            value={search[attribute]}
+            change={(value) => {
+              changeSearch(attribute, value);
+            }}
+          />
+        </div>
       );
+
+      // <div>
+      //   <AttributeLabelNoState attribute={attribute} />
+      //   <Input
+      //     value={search[attribute] ? search[attribute] : ""}
+      //     valueType="TEXT"
+      //     change={(value) => {
+      //       changeSearch(attribute, value);
+      //     }}
+      //     helpers={[{ type: "HELPER", value: t("healthIdSearchHelper") }]}
+      //   />
+      // </div>
     }
     if (foundAttribute && foundAttribute.id === ATTRIBUTES.CVID) {
       return (
