@@ -288,6 +288,11 @@ const ClientRegistrySearchButton = ({
               changeSearch(attribute, value);
             }}
           />
+          <br />
+          <div>
+            <strong>{t("or")}</strong>
+          </div>
+          <br />
           <SelectorClientHealthIdField
             // disabled={searchOption ? true : false}
             value={search[attribute]}

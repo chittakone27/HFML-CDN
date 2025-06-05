@@ -62,9 +62,7 @@ const ClientHealthIdField = ({ disabled, value, change }) => {
 
   return (
     <div className="client-health-id-field-container">
-      <strong>
-        <AttributeLabel attribute="oPKsfqS64oE" />
-      </strong>
+      <AttributeLabel attribute="oPKsfqS64oE" />
       <div className="client-health-id-fields">
         <Input
           disabled={disabled}

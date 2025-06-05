@@ -88,11 +88,11 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
 
   return (
     <div className="client-health-id-field-container ">
-      <AttributeLabel attribute="oPKsfqS64oE" clas />
+      {/* <AttributeLabel attribute="oPKsfqS64oE" clas /> */}
       <div className="client-health-id-selector-fields">
         <div className="client-health-id-row">
-          <div style={{ width: 150 }}>{t("dob")}</div>
-          <div style={{ width: 150 }}>
+          <div style={{ width: 210 }}>{t("dob")}</div>
+          <div style={{ width: 210 }}>
             <Input
               customDateFormat="ddMMyyyy"
               disabled={disabled}
@@ -111,8 +111,8 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
           </div>
         </div>
         <div className="client-health-id-row">
-          <div style={{ width: 150 }}>{t("sex")}</div>
-          <div style={{ width: 150 }}>
+          <div style={{ width: 210 }}>{t("sex")}</div>
+          <div style={{ width: 210 }}>
             <Input
               disabled={disabled}
               value={sex}
@@ -134,8 +134,8 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
           </div>
         </div>
         <div className="client-health-id-row">
-          <div style={{ width: 150 }}>{t("last4Digits")}</div>
-          <div style={{ width: 150 }}>
+          <div style={{ width: 210 }}>{t("last4Digits")}</div>
+          <div style={{ width: 210 }}>
             <Input
               disabled={disabled}
               value={num}
@@ -147,9 +147,9 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
           </div>
         </div>
       </div>
-      <div className="client-health-id-field-helper">
+      {/* <div className="client-health-id-field-helper">
         <Typography variant="HELPER">{t("healthIdSearchHelper")}</Typography>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -89,7 +89,8 @@ const customLocales = {
     male: "Male",
     female: "Female",
     unknown: "Unknown",
-    dontHave: "Don't have"
+    dontHave: "Don't have",
+    or: "Or"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -131,7 +132,8 @@ const customLocales = {
     male: "ຊາຍ",
     female: "ຍິງ",
     unknown: "ບໍ່ຮູ້",
-    dontHave: "ບໍ່ມີ"
+    dontHave: "ບໍ່ມີ",
+    or: "ຫຼື"
   }
 };
 
