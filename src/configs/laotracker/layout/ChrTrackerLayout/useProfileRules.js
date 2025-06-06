@@ -142,12 +142,6 @@ const useProfileRules = () => {
         }
         changeAttributeValue("RwoKpuIgMmA", newValue);
       }
-    } else {
-      helpers.push({
-        target: "RwoKpuIgMmA",
-        type: "ERROR",
-        value: t("thisFieldIsRequired")
-      });
     }
 
     setProfile("helpers", helpers);

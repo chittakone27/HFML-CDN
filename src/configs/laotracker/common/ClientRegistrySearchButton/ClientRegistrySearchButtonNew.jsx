@@ -34,7 +34,7 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import ClientHealthIdField from "../ClientHealthIdField/ClientHealthIdField";
 import SelectorClientHealthIdField from "../SelectorClientHealthIdField/SelectorClientHealthIdField";
 import { pull } from "@/utils/fetch";
-const { searchTeis, saveEnrollment, getTeiById } = tracker;
+const { searchTeis, saveEnrollment, getTeiById, saveTei } = tracker;
 import { pickTranslation } from "@/utils/utils";
 import CvidField from "../CvidField/CvidField";
 
@@ -270,6 +270,32 @@ const ClientRegistrySearchButton = ({
       }
     });
     if (events.length) newEnrollment.events = events;
+    const tei = await getTeiById(program.id, selectedTei.trackedEntityInstance);
+    const { FIRST_NAME, LAST_NAME, MOBILE } = ATTRIBUTES;
+    const foundMobile = tei.attributes.find((attr) => attr.attribute === MOBILE);
+    const foundFirstName = tei.attributes.find((attr) => attr.attribute === FIRST_NAME);
+    const foundLastName = tei.attributes.find((attr) => attr.attribute === LAST_NAME);
+    if (!foundMobile) {
+      tei.attributes.push({
+        attribute: MOBILE,
+        value: "unknown"
+      });
+    }
+    if (!foundFirstName) {
+      tei.attributes.push({
+        attribute: FIRST_NAME,
+        value: "ບໍ່ຮູ້"
+      });
+    }
+    if (!foundLastName) {
+      tei.attributes.push({
+        attribute: LAST_NAME,
+        value: "ບໍ່ຮູ້"
+      });
+    }
+    if (!foundMobile || !foundFirstName || !foundLastName) {
+      await saveTei(tei);
+    }
     await saveEnrollment(newEnrollment);
     const url = `/api/routes/chr/run?work=enroll&tei=${selectedTei.trackedEntityInstance}&program=${program.id}`;
     await pull(url);
@@ -621,7 +647,7 @@ const ClientRegistrySearchButton = ({
             onClick={() => {
               let additionalTeas = null;
               if (search.tQeFLjYbqzv) {
-                additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv };
+                additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv, DmuazFb368B: search.DmuazFb368B };
               }
               if (search.oPKsfqS64oE) {
                 const dob = search.oPKsfqS64oE.split("-")[0];
