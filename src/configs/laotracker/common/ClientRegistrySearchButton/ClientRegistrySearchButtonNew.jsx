@@ -645,16 +645,20 @@ const ClientRegistrySearchButton = ({
             variant="contained"
             disabled={program.readOnly}
             onClick={() => {
-              let additionalTeas = null;
+              let additionalTeas = {};
               if (search.tQeFLjYbqzv) {
-                additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv, DmuazFb368B: search.DmuazFb368B };
+                additionalTeas.tQeFLjYbqzv = search.tQeFLjYbqzv;
+              }
+              if (search.DmuazFb368B) {
+                additionalTeas.DmuazFb368B = search.DmuazFb368B;
               }
               if (search.oPKsfqS64oE) {
                 const dob = search.oPKsfqS64oE.split("-")[0];
+                const sex = search.oPKsfqS64oE.split("-")[1];
                 const day = dob.substr(0, 2);
                 const month = dob.substr(2, 2);
                 const year = dob.substr(4, 4);
-                additionalTeas = { tQeFLjYbqzv: year + "-" + month + "-" + day };
+                additionalTeas = { tQeFLjYbqzv: year + "-" + month + "-" + day, DmuazFb368B: sex === "1" ? "M" : sex === "2" ? "F" : "" };
               }
               const currentDate = format(new Date(), "yyyy-MM-dd");
               register(currentDate, currentDate, additionalTeas);
@@ -702,16 +706,20 @@ const ClientRegistrySearchButton = ({
             variant="contained"
             disabled={program.readOnly}
             onClick={() => {
-              let additionalTeas = null;
+              let additionalTeas = {};
               if (search.tQeFLjYbqzv) {
-                additionalTeas = { tQeFLjYbqzv: search.tQeFLjYbqzv };
+                additionalTeas.tQeFLjYbqzv = search.tQeFLjYbqzv;
+              }
+              if (search.DmuazFb368B) {
+                additionalTeas.DmuazFb368B = search.DmuazFb368B;
               }
               if (search.oPKsfqS64oE) {
                 const dob = search.oPKsfqS64oE.split("-")[0];
+                const sex = search.oPKsfqS64oE.split("-")[1];
                 const day = dob.substr(0, 2);
                 const month = dob.substr(2, 2);
                 const year = dob.substr(4, 4);
-                additionalTeas = { tQeFLjYbqzv: year + "-" + month + "-" + day };
+                additionalTeas = { tQeFLjYbqzv: year + "-" + month + "-" + day, DmuazFb368B: sex === "1" ? "M" : sex === "2" ? "F" : "" };
               }
               const currentDate = format(new Date(), "yyyy-MM-dd");
               register(currentDate, currentDate, additionalTeas);
