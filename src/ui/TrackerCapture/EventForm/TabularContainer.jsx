@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useMetadataStore from "@/state/metadata";
 import { useShallow } from "zustand/react/shallow";
-import { convertDisplayValue, convertDisplayDate, pickExecutionDateLabel, pickDueDateLabel } from "@/utils/utils";
+import { convertDisplayValue, convertDisplayDate, pickExecutionDateLabel, pickDueDateLabel, pickTranslation } from "@/utils/utils";
 import format from "date-fns/format";
 const LEGEND = {
   ACTIVE: "#faf3c8",
@@ -15,7 +15,7 @@ const LEGEND = {
   OVERDUE: "#ffada1"
 };
 const TabularContainer = ({ currentProgramStage }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { orgUnits, dataElements, optionSets } = useMetadataStore(
     useShallow((state) => ({
       orgUnits: state.orgUnits,
@@ -129,7 +129,7 @@ const TabularContainer = ({ currentProgramStage }) => {
                       </TableCell>
                     )}
                     <TableCell sx={{ fontSize: 12 }} align="left">
-                      {foundOu.displayName}
+                      {pickTranslation(foundOu, i18n.language, "name")}
                     </TableCell>
                     {currentDataElements.map((cde) => {
                       const foundDataValue = ev.dataValues.find((dv) => dv.dataElement === cde.id);

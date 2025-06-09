@@ -126,6 +126,7 @@ const CustomEirSearchButton = () => {
               return (
                 <div className="search-item">
                   <VillageSelectorOrgUnitNoState
+                    mandatoryFields={[]}
                     disabled={loading}
                     VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
                     initValues={search[foundTea.id] ? search[foundTea.id].split(";") : ["", "", ""]}

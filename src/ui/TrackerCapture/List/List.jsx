@@ -173,6 +173,7 @@ const List = (prop) => {
                     }}
                   >
                     {columns.map((column) => {
+                      console.log(column);
                       return <DataTableCell>{tei[column.name]}</DataTableCell>;
                     })}
                     <DataTableCell sx={{ color: colorMapping[tei.status], fontWeight: "bold" }}>{t(tei.status)}</DataTableCell>
