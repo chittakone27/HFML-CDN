@@ -26,6 +26,8 @@ import antenatalPostnatalLocales from "./locales/antenatalPostnatal.js";
 import familyPlanningLocales from "./locales/familyPlanning.js";
 import abortionDetailsLocales from "./locales/abortionDetails.js";
 import postnatalCareLocales from "./locales/postnatalCareLocales.js";
+import communityDeath from "./program-forms/community-death/index.js";
+
 const customForms = {
   u1Na9wCGY6d: postnatalCare,
   ck0rft9jVlF: ipdDischargeSummary,
@@ -34,7 +36,8 @@ const customForms = {
   AyPkCOMmgdd: deliveryRegistry,
   fflLsS1lm3g: ancPnc,
   PBLmYwloRHu: familyPlanning,
-  vqNgkw4gfw7: abortionDetails
+  vqNgkw4gfw7: abortionDetails,
+  d9eJlJsqplx: communityDeath,
 };
 
 const hooks = customHooks;
@@ -89,8 +92,7 @@ const customLocales = {
     male: "Male",
     female: "Female",
     unknown: "Unknown",
-    dontHave: "Don't have",
-    or: "Or"
+    dontHave: "Don't have"
   },
   lo: {
     searchFromClientRegistry: "ຄົ້ນຫາ ( ຈາກ Client Registry )",
@@ -132,8 +134,7 @@ const customLocales = {
     male: "ຊາຍ",
     female: "ຍິງ",
     unknown: "ບໍ່ຮູ້",
-    dontHave: "ບໍ່ມີ",
-    or: "ຫຼື"
+    dontHave: "ບໍ່ມີ"
   }
 };
 
@@ -372,10 +373,10 @@ const trackerFormTypes = {
   fflLsS1lm3g: ["noBlur", "tabStage", "tabular"],
   u1Na9wCGY6d: ["noBlur", "tabStage", "tabular"],
   PBLmYwloRHu: ["noBlur", "tabStage", "tabular"],
-  vqNgkw4gfw7: ["noBlur", "tabStage", "tabular"]
+  d9eJlJsqplx: ["noBlur", "tabStage", "tabular"]
 };
 
-const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA"];
+const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA","d9eJlJsqplx"];
 const modes = [
   //"eventCapture",
   //"dataEntry",
@@ -388,7 +389,7 @@ const customControlBarComponent = {
   fflLsS1lm3g: ClientRegistrySearchButton,
   u1Na9wCGY6d: ClientRegistrySearchButton,
   PBLmYwloRHu: ClientRegistrySearchButton,
-  vqNgkw4gfw7: ClientRegistrySearchButton
+  vqNgkw4gfw7: ClientRegistrySearchButton,
 };
 
 const customTrackerLayout = {
@@ -398,7 +399,7 @@ const customTrackerLayout = {
   vqNgkw4gfw7: ChrTrackerLayout,
   PBLmYwloRHu: ChrTrackerLayout,
   ck0rft9jVlF: ChrTrackerLayout,
-  u1Na9wCGY6d: ChrTrackerLayout
+  u1Na9wCGY6d: ChrTrackerLayout,
 };
 
 export default {
