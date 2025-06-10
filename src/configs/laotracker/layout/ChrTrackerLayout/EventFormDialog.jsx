@@ -7,6 +7,7 @@ import useSelectionStore from "@/state/selection";
 import AbortionDetails from "./eventForms/AbortionDetails";
 import FamilyPlanning from "./eventForms/FamilyPlanning";
 import AncVisitDetails from "./eventForms/AncVisitDetails";
+import NcleCommunicableDiseases from "./eventForms/NcleCommunicableDiseases";
 import PncDetails from "./eventForms/PncDetails";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { tracker, event } from "@/api";
@@ -34,6 +35,9 @@ const mapping = {
   },
   ck0rft9jVlF: {
     PuT0v7uvrDO: IpdVisitDetails
+  },
+  kPEL6aQkTCb: {
+    UxFuT7chE5U: NcleCommunicableDiseases
   }
 };
 const EventFormDialog = () => {

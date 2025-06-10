@@ -375,7 +375,17 @@ const trackerFormTypes = {
   vqNgkw4gfw7: ["noBlur", "tabStage", "tabular"]
 };
 
-const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA"];
+const allowedPrograms = [
+  "Yj9cJ34AXw6",
+  "ck0rft9jVlF",
+  "AyPkCOMmgdd",
+  "fflLsS1lm3g",
+  "PBLmYwloRHu",
+  "vqNgkw4gfw7",
+  "u1Na9wCGY6d",
+  "ogrOUKoSaWA",
+  "kPEL6aQkTCb"
+];
 const modes = [
   //"eventCapture",
   //"dataEntry",
@@ -388,7 +398,8 @@ const customControlBarComponent = {
   fflLsS1lm3g: ClientRegistrySearchButton,
   u1Na9wCGY6d: ClientRegistrySearchButton,
   PBLmYwloRHu: ClientRegistrySearchButton,
-  vqNgkw4gfw7: ClientRegistrySearchButton
+  vqNgkw4gfw7: ClientRegistrySearchButton,
+  kPEL6aQkTCb: ClientRegistrySearchButton
 };
 
 const customTrackerLayout = {
@@ -398,7 +409,8 @@ const customTrackerLayout = {
   vqNgkw4gfw7: ChrTrackerLayout,
   PBLmYwloRHu: ChrTrackerLayout,
   ck0rft9jVlF: ChrTrackerLayout,
-  u1Na9wCGY6d: ChrTrackerLayout
+  u1Na9wCGY6d: ChrTrackerLayout,
+  kPEL6aQkTCb: ChrTrackerLayout
 };
 
 export default {
