@@ -1,44 +1,11 @@
 const listTables = [
-  {
-    tableName: "basic-info",
+      {
+    tableName: "death-information ",
     tableFields: [
       [
         {
           display: "text",
-          text: "I. Basic Information",
-          cellProps: { colSpan: 2, className: "adr-table-title" }
-        }
-      ],
-      [
-        {
-          id: "HqgTB3yqJby", // Informant Name
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
-          id: "zr7r1dtULBg", // Relationship to deceased
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
-          id: "SRajXU5CS08", // Contact Number
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ]
-    ]
-  },
-  {
-    tableName: "death-details",
-    tableFields: [
-      [
-        {
-          display: "text",
-          text: "II. Death Details",
+          text: "I. Death information ",
           cellProps: { colSpan: 2, className: "adr-table-title" }
         }
       ],
@@ -65,35 +32,23 @@ const listTables = [
       ],
       [
         {
-          id: "QvX65zeRteX", // Cause of death
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
-          id: "fyDdwAMidRI", // Specify cause
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
           id: "qXRjL6YHX5l", // Please specify (other)
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
-      ]
-    ]
-  },
-  {
-    tableName: "location-details",
-    tableFields: [
+      ],
       [
         {
-          display: "text",
-          text: "III. Location Details",
-          cellProps: { colSpan: 2, className: "adr-table-title" }
+          id: "HRwRhEljEtJ", // Health Facility (orgUnit)
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
+          id: "lxr5gKfFrwC", // House number
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
         }
       ],
       [
@@ -119,7 +74,14 @@ const listTables = [
       ],
       [
         {
-          id: "lxr5gKfFrwC", // House number
+          id: "QvX65zeRteX", // Cause of death
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
+          id: "fyDdwAMidRI", // Specify cause
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
@@ -127,18 +89,32 @@ const listTables = [
     ]
   },
   {
-    tableName: "health-facility",
+    tableName: "informant-info",
     tableFields: [
       [
         {
           display: "text",
-          text: "IV. Health Facility Info",
+          text: "II. Informant Details",
           cellProps: { colSpan: 2, className: "adr-table-title" }
         }
       ],
       [
         {
-          id: "HRwRhEljEtJ", // Health Facility (orgUnit)
+          id: "HqgTB3yqJby", // Informant Name
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],,
+      [
+        {
+          id: "SRajXU5CS08", // Contact Number
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
+          id: "zr7r1dtULBg", // Relationship to deceased
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }

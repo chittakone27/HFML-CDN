@@ -7,7 +7,7 @@ import {
   withEventDate,
   withRules
 } from "@/configs/laotracker/program-forms/common/tracker";
-//import { listTables } from "./tableMapping";
+import { listTables } from "./tableMapping";
 
 const CommunityDeathDetail = () => {
   const { programs } = useMetadataStore(
