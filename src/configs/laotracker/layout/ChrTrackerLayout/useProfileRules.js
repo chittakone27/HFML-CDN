@@ -130,14 +130,25 @@ const useProfileRules = () => {
         changeAttributeValue("RwoKpuIgMmA", newValue);
       } else {
         newValue = foundMobile.replace(/\D/g, "");
-        if (newValue.length < 11) {
+
+        if (newValue.substring(0, 3) === "030" && newValue.length < 10) {
           helpers.push({
             target: "RwoKpuIgMmA",
             type: "ERROR",
             value: t("invalidPhoneNumber")
           });
         }
-        if (newValue.length > 11) {
+        if (newValue.substring(0, 3) === "020" && newValue.length < 11) {
+          helpers.push({
+            target: "RwoKpuIgMmA",
+            type: "ERROR",
+            value: t("invalidPhoneNumber")
+          });
+        }
+        if (newValue.substring(0, 3) === "030" && newValue.length > 10) {
+          newValue = newValue.substring(0, 10);
+        }
+        if (newValue.substring(0, 3) === "020" && newValue.length > 11) {
           newValue = newValue.substring(0, 11);
         }
         changeAttributeValue("RwoKpuIgMmA", newValue);
