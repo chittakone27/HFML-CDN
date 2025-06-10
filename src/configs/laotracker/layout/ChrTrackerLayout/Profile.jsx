@@ -24,7 +24,7 @@ const { searchTeis, saveTei, saveEnrollment, getTeiById, deleteEnrollment } = tr
 const TEAS1 = "oPKsfqS64oE";
 const TEAS2 = ["IEE2BMhfoSc", "IBLkiaYRRL3", "DmuazFb368B", "tQeFLjYbqzv", "BaiVwt8jVfg", "vJdG29KW1Et", "RwoKpuIgMmA", "IdwH3mwSy2o", "UsQwqMatstH"];
 const IDENTIFICATION_TEAS = ["lRZGCESE6v2", "corXnplgfQ7", "pjpnF7u5PQj", "ebLsZHyGHYx", "gSImG6wxCkY", "E0zWSujcGQC", "FB3Ro1hJ9ht"];
-const TEAS3 = ["r8bZppSsIvR", "xbwURy2jG2K", "tJrT8GIy477", "uR9XK6AbPvE", "ERzDXXMuOdq", "UJioxXRLgpw"];
+const TEAS3 = ["r8bZppSsIvR", "xbwURy2jG2K", "DtqYqC9Xr5Z", "tJrT8GIy477", "uR9XK6AbPvE", "ERzDXXMuOdq", "UJioxXRLgpw"];
 const Profile = ({ title }) => {
   const { t } = useTranslation();
   const [editProfileAnchorEl, setEditProfileAnchorEl] = useState(null);
