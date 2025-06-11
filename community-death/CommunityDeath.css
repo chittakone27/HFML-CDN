@@ -1,0 +1,86 @@
+.community-death-profile {
+  width: 100%;
+  padding: 0;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.community-death-profile table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.community-death-profile table tr {
+  border-bottom: 1px solid #cccccc;
+}
+
+.community-death-profile table td,
+.community-death-profile table th {
+  padding: 6px;
+  background-color: #ffffff;
+  vertical-align: middle;
+}
+
+.community-death-profile table td:nth-child(1) {
+  width: 15%;
+  font-weight: 500;
+  padding-left: 15px;
+  padding-right: 10px;
+  white-space: nowrap;
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+}
+
+.community-death-profile table td:nth-child(2) {
+  width: 85%;
+  padding-left: 10px;
+}
+
+.community-death-profile .Mui-disabled input,
+.community-death-profile .MuiInputBase-root.Mui-disabled {
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.community-death-section {
+  border: 2px solid #c7c7c7;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.community-death-section-title {
+  padding: 0px;
+  font-weight: bold;
+  background-color: #e3e3e3;
+  border-bottom: 1px solid #c7c7c7;
+}
+
+.community-death-section-row {
+  padding: 0px;
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #e3e3e3;
+}
+
+.community-death-section-row > div:nth-child(1) {
+  width: 500px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.community-death-section-row > div:nth-child(2) {
+  width: calc(100% - 500px);
+}
+
+.adr-table-title {
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 14px 10px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  background-color: transparent;
+  border-right: none;
+  color: #b4b4b4; /* Teal-blue */
+}
