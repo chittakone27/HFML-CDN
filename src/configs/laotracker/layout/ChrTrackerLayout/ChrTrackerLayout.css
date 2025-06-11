@@ -170,3 +170,14 @@
 .chr-tracker-client-health-id-row > div {
   height: 100%;
 }
+.ncle-symptoms-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+.ncle-symptoms-section-item {
+  flex: 1 1 400px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d5dde5;
+  padding: 5px;
+}

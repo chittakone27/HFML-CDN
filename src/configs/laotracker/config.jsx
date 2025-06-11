@@ -37,7 +37,7 @@ const customForms = {
   fflLsS1lm3g: ancPnc,
   PBLmYwloRHu: familyPlanning,
   vqNgkw4gfw7: abortionDetails,
-  d9eJlJsqplx: communityDeath,
+  d9eJlJsqplx: communityDeath
 };
 
 const hooks = customHooks;
@@ -376,7 +376,18 @@ const trackerFormTypes = {
   d9eJlJsqplx: ["noBlur", "tabStage", "tabular"]
 };
 
-const allowedPrograms = ["Yj9cJ34AXw6", "ck0rft9jVlF", "AyPkCOMmgdd", "fflLsS1lm3g", "PBLmYwloRHu", "vqNgkw4gfw7", "u1Na9wCGY6d", "ogrOUKoSaWA","d9eJlJsqplx"];
+const allowedPrograms = [
+  "Yj9cJ34AXw6",
+  "ck0rft9jVlF",
+  "AyPkCOMmgdd",
+  "fflLsS1lm3g",
+  "PBLmYwloRHu",
+  "vqNgkw4gfw7",
+  "u1Na9wCGY6d",
+  "ogrOUKoSaWA",
+  "d9eJlJsqplx",
+  "kPEL6aQkTCb"
+];
 const modes = [
   //"eventCapture",
   //"dataEntry",
@@ -390,6 +401,7 @@ const customControlBarComponent = {
   u1Na9wCGY6d: ClientRegistrySearchButton,
   PBLmYwloRHu: ClientRegistrySearchButton,
   vqNgkw4gfw7: ClientRegistrySearchButton,
+  kPEL6aQkTCb: ClientRegistrySearchButton
 };
 
 const customTrackerLayout = {
@@ -400,6 +412,7 @@ const customTrackerLayout = {
   PBLmYwloRHu: ChrTrackerLayout,
   ck0rft9jVlF: ChrTrackerLayout,
   u1Na9wCGY6d: ChrTrackerLayout,
+  kPEL6aQkTCb: ChrTrackerLayout
 };
 
 export default {

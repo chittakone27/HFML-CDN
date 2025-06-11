@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import { Tabs, Tab, Table, TableBody, TableCell, TableHead, TableRow, Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { pickTranslation, pickExecutionDateLabel, pickDueDateLabel, convertDisplayValue, convertDisplayDate, generateUid } from "@/utils/utils";
 import useChrTrackerStore from "./state";
 import useMetadataStore from "@/state/metadata";
