@@ -8,6 +8,7 @@ import {
   withRules
 } from "@/configs/laotracker/program-forms/common/tracker";
 import { listTables } from "./tableMapping";
+import "../CommunityDeath.css";
 
 const CommunityDeathDetail = () => {
   const { programs } = useMetadataStore(
@@ -27,29 +28,29 @@ const CommunityDeathDetail = () => {
     );
   }
 
-  return communityDeathProgram && programStage ? (
-    <div className="adr-details-form">
-      <div style={{ paddingBottom: "5px", display: "flex" }}>
-        <div style={{ fontSize: "0.9rem", marginRight: "10px" }}>
-          <span style={{ fontWeight: "bold" }}>1.&nbsp;</span>Event date
-        </div>
-      </div>
-      {listTables.map((table) => (
-        <Box key={table.tableName} sx={{ marginBottom: "10px" }}>
-          <Table sx={{ border: "1px solid #ccc" }}>
-            <TableBody>
-              <RowMapper
-                context="event"
-                tableName={table.tableName}
-                rows={table.tableFields}
-                editable={layout.eventFormEditing}
-              />
-            </TableBody>
-          </Table>
-        </Box>
-      ))}
+return communityDeathProgram && programStage ? (
+  <div className="community-death-profile">
+    <div style={{ paddingBottom: "5px", display: "flex" }}>
+
     </div>
-  ) : null;
+
+    {listTables.map((table) => (
+      <Box key={table.tableName} sx={{ marginBottom: "10px" }}>
+        <Table>
+          <TableBody>
+            <RowMapper
+              context="event"
+              tableName={table.tableName}
+              rows={table.tableFields}
+              editable={layout.eventFormEditing}
+            />
+          </TableBody>
+        </Table>
+      </Box>
+    ))}
+  </div>
+) : null;
+
 };
 
 export default withEventDate(withRules(CommunityDeathDetail));

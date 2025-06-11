@@ -85,12 +85,7 @@ const listTables = [
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
-      ]
-    ]
-  },
-  {
-    tableName: "informant-info",
-    tableFields: [
+      ],
       [
         {
           display: "text",

@@ -3,9 +3,11 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import { Table, TableBody, TableCell, TableRow } from "@mui/material";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useTranslation } from "react-i18next";
+import VillageSelectorOrgUnit from "../../../common/VillageSelector/VillageSelectorOrgUnit";
+import "../CommunityDeath.css";
 
 const attributes = [
-    "hHJcHtdHy1U", // system ID
+  "hHJcHtdHy1U", // system ID
   "E0zWSujcGQC", // Lao Green National ID (Bottom)
   "gSImG6wxCkY", // Family Book Number
   "oPKsfqS64oE", // Client Health ID
@@ -18,9 +20,6 @@ const attributes = [
   "OsoaGZLlAgx",  // Select the Guardian (for child below 1 year)
   "vj8fQVCfEdD", // Name of Guardian
   "DmuazFb368B", // Sex
-  //"FB3Ro1hJ9ht", // COVID-19 Vaccination ID (CVID)
-  //"corXnplgfQ7", // System CVID
-  //"lRZGCESE6v2", // National ID
   "uR9XK6AbPvE", // Nationality
   "tJrT8GIy477", // Ethnicity
   "kgszUgf3OdN", // Marital Status
@@ -28,36 +27,51 @@ const attributes = [
   "ERzDXXMuOdq", // Occupation
   "W8WZcI1SUjC", // House Number
   "xbwURy2jG2K", // Unit of Village
-  "K3T7S0c17kc", // Village
-  "bxSvU1LK2Sn", // Current Province
-  "JYpq5unNinA", // Current District
-  "rreM2sBjjoT", // Current Village
+  "UNiaP6Oz7Mv", // Village (hierarchy)
   "DtqYqC9Xr5Z", // Is Foreigner
   "q4lqBvHgv7u" // Country
 ];
-
 
 const CommunityDeathProfile = () => {
   const { t } = useTranslation();
   const { data } = useTrackerCaptureStore();
   const { currentTei } = data;
 
-  return (
+return (
+  <div className="community-death-profile" id="profile-form">
     <Table>
       <TableBody>
-        {attributes.map((attrId, index) => (
-          <TableRow key={attrId}>
-            <TableCell style={{ width: "25%" }}>
-              <AttributeLabel attribute={attrId} />
-            </TableCell>
-            <TableCell>
-              <AttributeField attribute={attrId} />
-            </TableCell>
-          </TableRow>
-        ))}
+        {attributes.map((attrId) =>
+          attrId === "UNiaP6Oz7Mv" ? (
+            <TableRow key={attrId}>
+              <TableCell>
+                <div>{t("currentAddress")}</div>
+              </TableCell>
+              <TableCell>
+                <VillageSelectorOrgUnit
+                  variant="outlined"
+                  saveGeo
+                  disabled={false}
+                  VillageSelectorIds={["r8bZppSsIvR", "oVwa5LfjnvA", "UNiaP6Oz7Mv"]}
+                />
+              </TableCell>
+            </TableRow>
+          ) : (
+            <TableRow key={attrId}>
+              <TableCell>
+                <AttributeLabel attribute={attrId} />
+              </TableCell>
+              <TableCell>
+                <AttributeField attribute={attrId} />
+              </TableCell>
+            </TableRow>
+          )
+        )}
       </TableBody>
     </Table>
-  );
+  </div>
+);
+
 };
 
 export default CommunityDeathProfile;
