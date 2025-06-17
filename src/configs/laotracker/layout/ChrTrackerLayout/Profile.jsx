@@ -154,7 +154,6 @@ const Profile = ({ title }) => {
       valid = false;
     }
   });
-
   const generateField = (tea) => {
     const teaId = tea;
     if (hiddenFields.includes(teaId)) {

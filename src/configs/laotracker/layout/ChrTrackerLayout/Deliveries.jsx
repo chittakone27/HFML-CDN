@@ -141,6 +141,9 @@ const Deliveries = () => {
                       cursor: "pointer"
                     }}
                     onClick={() => {
+                      if (foundOu.id !== orgUnit.id) {
+                        return;
+                      }
                       const newEventId = generateUid();
                       setEvent("currentEnrollment", fde);
                       setEvent("currentProgramStage", foundProgramStage);
