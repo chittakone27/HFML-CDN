@@ -91,6 +91,7 @@ const useProfileRules = () => {
     if (["vqNgkw4gfw7", "fflLsS1lm3g", "AyPkCOMmgdd", "u1Na9wCGY6d"].includes(program.id)) {
       disabledFields.push("DmuazFb368B");
       changeAttributeValue("DmuazFb368B", "F");
+      hiddenFields.push("DtqYqC9Xr5Z");
     }
 
     if (layout.layout === "layout2") {
