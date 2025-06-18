@@ -32,7 +32,13 @@ const NcleCommunicableDiseases = () => {
   const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
-  const { disabledFields, hiddenFields, helpers, props } = useNcleCommunicableDiseasesRules();
+  const {
+    disabledFields,
+    hiddenFields,
+    currDisplayingSymptoms,
+    helpers,
+    props
+  } = useNcleCommunicableDiseasesRules();
 
   useEffect(() => {
     let order = ["eventDate"];
@@ -52,9 +58,18 @@ const NcleCommunicableDiseases = () => {
           {index === 0 && (
             <Row
               label={
-                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    justifyContent: "center"
+                  }}
+                >
                   1.&nbsp;
-                  <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
+                  <EventDateLabelNoState
+                    type="eventDate"
+                    currentProgramStage={currentProgramStage}
+                  />
                 </div>
               }
               field={
@@ -72,63 +87,79 @@ const NcleCommunicableDiseases = () => {
           {pss.id === "oZPPUzgazm8" ? (
             <div className="ncle-symptoms-section">
               {pss.dataElements.map((de) => {
-                if (hiddenFields.includes(de.id)) {
-                  return null;
-                }
-                const index = order.findIndex((o) => o === de.id);
-                if (de.id === "PRrmBVwmWRj") {
-                  return (
-                    <div className="ncle-symptoms-section-item">
-                      <div style={{ display: "flex" }}>
-                        {index + 1}.&nbsp;
-                        <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
+                if (currDisplayingSymptoms.includes(de.id)) {
+                  const index = order.findIndex((o) => o === de.id);
+                  if (de.id === "PRrmBVwmWRj") {
+                    return (
+                      <div className="ncle-symptoms-section-item">
+                        <div style={{ display: "flex" }}>
+                          {index + 1}.&nbsp;
+                          <DataValueLabelNoState
+                            dataElement={de.id}
+                            currentProgramStage={currentProgramStage}
+                          />
+                        </div>
+                        &nbsp;
+                        <div>
+                          <DataValueFieldNoBlurNoState
+                            helpers={helpers[de.id]}
+                            disabled={
+                              !editing ||
+                              completed ||
+                              disabledFields.includes(de.id)
+                            }
+                            dataElement={de.id}
+                            currentProgramStage={currentProgramStage}
+                            currentEvent={currentEvent}
+                            change={(value) => {
+                              changeDataValue(de.id, value);
+                            }}
+                            accept={(value) => {
+                              changeDataValue(de.id, value);
+                            }}
+                            {...props[de.id]}
+                          />
+                        </div>
                       </div>
-                      &nbsp;
-                      <div>
-                        <DataValueFieldNoBlurNoState
-                          helpers={helpers[de.id]}
-                          disabled={!editing || completed || disabledFields.includes(de.id)}
-                          dataElement={de.id}
-                          currentProgramStage={currentProgramStage}
-                          currentEvent={currentEvent}
-                          change={(value) => {
-                            changeDataValue(de.id, value);
-                          }}
-                          accept={(value) => {
-                            changeDataValue(de.id, value);
-                          }}
-                          {...props[de.id]}
-                        />
-                      </div>
-                    </div>
-                  );
-                } else {
-                  const foundDataElement = dataElements.find((dataElement) => dataElement.id === de.id);
-                  return (
-                    <div className="ncle-symptoms-section-item">
-                      <div>
-                        <DataValueFieldNoBlurNoState
-                          label={`${index + 1}. ${pickTranslation(foundDataElement, i18n.language, "formName")}`}
-                          helpers={helpers[de.id]}
-                          disabled={!editing || completed || disabledFields.includes(de.id)}
-                          dataElement={de.id}
-                          currentProgramStage={currentProgramStage}
-                          currentEvent={currentEvent}
-                          change={(value) => {
-                            changeDataValue(de.id, value);
-                          }}
-                          accept={(value) => {
-                            changeDataValue(de.id, value);
-                          }}
-                          {...props[de.id]}
-                        />
-                      </div>
-                      {/* <div style={{ display: "flex" }}>
+                    );
+                  } else {
+                    const foundDataElement = dataElements.find(
+                      (dataElement) => dataElement.id === de.id
+                    );
+                    return (
+                      <div className="ncle-symptoms-section-item">
+                        <div>
+                          <DataValueFieldNoBlurNoState
+                            label={`${index + 1}. ${pickTranslation(
+                              foundDataElement,
+                              i18n.language,
+                              "formName"
+                            )}`}
+                            helpers={helpers[de.id]}
+                            disabled={
+                              !editing ||
+                              completed ||
+                              disabledFields.includes(de.id)
+                            }
+                            dataElement={de.id}
+                            currentProgramStage={currentProgramStage}
+                            currentEvent={currentEvent}
+                            change={(value) => {
+                              changeDataValue(de.id, value);
+                            }}
+                            accept={(value) => {
+                              changeDataValue(de.id, value);
+                            }}
+                            {...props[de.id]}
+                          />
+                        </div>
+                        {/* <div style={{ display: "flex" }}>
                         {index + 1}.&nbsp;
                         <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
                       </div> */}
-                    </div>
-                  );
+                      </div>
+                    );
+                  }
                 }
               })}
             </div>
@@ -141,13 +172,20 @@ const NcleCommunicableDiseases = () => {
                     label={
                       <div style={{ display: "flex" }}>
                         {index + 1}.&nbsp;
-                        <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
+                        <DataValueLabelNoState
+                          dataElement={de.id}
+                          currentProgramStage={currentProgramStage}
+                        />
                       </div>
                     }
                     field={
                       <DataValueFieldNoBlurNoState
                         helpers={helpers[de.id]}
-                        disabled={!editing || completed || disabledFields.includes(de.id)}
+                        disabled={
+                          !editing ||
+                          completed ||
+                          disabledFields.includes(de.id)
+                        }
                         dataElement={de.id}
                         currentProgramStage={currentProgramStage}
                         currentEvent={currentEvent}
