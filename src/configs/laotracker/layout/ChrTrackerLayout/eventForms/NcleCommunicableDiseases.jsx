@@ -13,6 +13,7 @@ import Row from "../Row";
 import { useShallow } from "zustand/react/shallow";
 import useAncRules from "./useAncRules";
 import useMetadataStore from "@/state/metadata";
+import useNcleCommunicableDiseasesRules from "./useNcleCommunicableDiseasesRules";
 
 const NcleCommunicableDiseases = () => {
   const { t, i18n } = useTranslation();
@@ -31,7 +32,7 @@ const NcleCommunicableDiseases = () => {
   const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
-  const { disabledFields, hiddenFields, helpers, props } = useAncRules();
+  const { disabledFields, hiddenFields, helpers, props } = useNcleCommunicableDiseasesRules();
 
   useEffect(() => {
     let order = ["eventDate"];
@@ -71,6 +72,9 @@ const NcleCommunicableDiseases = () => {
           {pss.id === "oZPPUzgazm8" ? (
             <div className="ncle-symptoms-section">
               {pss.dataElements.map((de) => {
+                if (hiddenFields.includes(de.id)) {
+                  return null;
+                }
                 const index = order.findIndex((o) => o === de.id);
                 if (de.id === "PRrmBVwmWRj") {
                   return (
