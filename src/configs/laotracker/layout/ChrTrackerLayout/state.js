@@ -37,7 +37,6 @@ const useChrTrackerStore = create((set, get) => ({
       set(
         produce((state) => {
           const foundDataValueIndex = state.event.currentEvent.dataValues.findIndex((dv) => dv.dataElement === dataElement);
-          console.log(foundDataValueIndex, dataElement, value);
           if (foundDataValueIndex === -1) {
             state.event.currentEvent.dataValues.push({
               dataElement,
