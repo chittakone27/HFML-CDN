@@ -50,9 +50,10 @@ const EventFormDialog = () => {
       data: state.data
     }))
   );
-  const { program } = useSelectionStore(
+  const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
-      program: state.program
+      program: state.program,
+      orgUnit: state.orgUnit
     }))
   );
   const { event, actions } = useChrTrackerStore(
@@ -88,6 +89,10 @@ const EventFormDialog = () => {
       return true;
     }
   };
+  let isDifferentOrgUnit = false;
+  if (currentEvent) {
+    isDifferentOrgUnit = currentEvent.orgUnit !== orgUnit.id;
+  }
 
   return currentEvent ? (
     <Dialog fullWidth={true} maxWidth={"xl"} open={true}>
@@ -136,6 +141,7 @@ const EventFormDialog = () => {
           )}
           {!editing && !completed && (
             <LoadingButton
+              disabled={isDifferentOrgUnit}
               loading={loading}
               variant="contained"
               onClick={() => {
@@ -148,6 +154,7 @@ const EventFormDialog = () => {
           &nbsp;
           {!completed && editing && (
             <LoadingButton
+              disabled={isDifferentOrgUnit}
               loading={loading}
               // disabled={errors.length > 0}
               variant="contained"
@@ -175,7 +182,7 @@ const EventFormDialog = () => {
           )}
           {completed && (
             <LoadingButton
-              disabled={disableIncompleteButton}
+              disabled={disableIncompleteButton || isDifferentOrgUnit}
               loading={loading}
               variant="contained"
               color="warning"
@@ -195,6 +202,7 @@ const EventFormDialog = () => {
           )}
           &nbsp;
           <LoadingButton
+            disabled={isDifferentOrgUnit}
             loading={loading}
             variant="outlined"
             color="error"
