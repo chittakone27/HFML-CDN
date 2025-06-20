@@ -1,4 +1,13 @@
-import { Box, Table, TableBody, Dialog, DialogTitle, Button, TableRow, TableCell } from "@mui/material";
+import {
+  Box,
+  Table,
+  TableBody,
+  Dialog,
+  DialogTitle,
+  Button,
+  TableRow,
+  TableCell,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { withRules, withEventDate } from "../../common/tracker";
 import { useEffect, useState } from "react";
@@ -28,19 +37,25 @@ const Immunization = () => {
   const { orgUnit, program } = useSelectionStore(
     useShallow((state) => ({
       orgUnit: state.orgUnit,
-      program: state.program
+      program: state.program,
     }))
   );
   const { actions, data, layout } = useTrackerCaptureStore(
     useShallow((state) => ({
       actions: state.actions,
       data: state.data,
-      layout: state.layout
+      layout: state.layout,
     }))
   );
   const { currentEvents, currentEnrollment } = data;
   const { currentProgramStage, currentEvent } = useCurrentEvent();
-  const { setHandlers, scheduleNewEvent, selectEvent, changeEventProperty, changeDataValue } = actions;
+  const {
+    setHandlers,
+    scheduleNewEvent,
+    selectEvent,
+    changeEventProperty,
+    changeDataValue,
+  } = actions;
 
   const eventCompleteHandler = (tei, enr, event, events) => {
     const MR2 = "n6rveUjp5h1";
@@ -55,8 +70,12 @@ const Immunization = () => {
         if (!latestDate || ce.eventDate > latestDate) {
           latestDate = ce.eventDate;
         }
-        const foundMr2Ce = ce.dataValues.find((dv) => dv.dataElement === MR2 && dv.value === "true");
-        const foundIpv2Ce = ce.dataValues.find((dv) => dv.dataElement === IPV2 && dv.value === "true");
+        const foundMr2Ce = ce.dataValues.find(
+          (dv) => dv.dataElement === MR2 && dv.value === "true"
+        );
+        const foundIpv2Ce = ce.dataValues.find(
+          (dv) => dv.dataElement === IPV2 && dv.value === "true"
+        );
         if (foundMr2Ce) {
           foundMr2 = true;
         }
@@ -74,9 +93,15 @@ const Immunization = () => {
       selectEvent("");
     } else {
       const scheduledDate = add(new Date(event.eventDate), { days: 30 });
-      const latestDatePlus1Day = latestDate ? add(new Date(latestDate), { days: 1 }) : undefined;
+      const latestDatePlus1Day = latestDate
+        ? add(new Date(latestDate), { days: 1 })
+        : undefined;
       setDueDate(format(scheduledDate, "yyyy-MM-dd"));
-      setMinDate(latestDatePlus1Day ? format(latestDatePlus1Day, "yyyy-MM-dd") : undefined);
+      setMinDate(
+        latestDatePlus1Day
+          ? format(latestDatePlus1Day, "yyyy-MM-dd")
+          : undefined
+      );
       setDialog(true);
     }
   };
@@ -155,7 +180,11 @@ const Immunization = () => {
       <EventDateFieldNoBlur type="dueDate" disabled={!dueDateEditing} />
       <div style={{ height: 3 }}></div>
       {!dueDateEditing && (
-        <Button disabled={program.readOnly || layout.disableEventEditButton} variant="contained" onClick={toggleDueDateEditing}>
+        <Button
+          disabled={program.readOnly || layout.disableEventEditButton}
+          variant="contained"
+          onClick={toggleDueDateEditing}
+        >
           {t("rescheduleDate")}
         </Button>
       )}
@@ -176,7 +205,11 @@ const Immunization = () => {
             variant="contained"
             color="error"
             onClick={() => {
-              changeEventProperty(currentEvent.event, "dueDate", currentDueDate);
+              changeEventProperty(
+                currentEvent.event,
+                "dueDate",
+                currentDueDate
+              );
               toggleDueDateEditing();
             }}
           >
@@ -217,7 +250,9 @@ const Immunization = () => {
                   hiddenOptions={hiddenOptions}
                   dataElement={de[0].id}
                   disabled={disabled}
-                  helpers={warning ? [{ type: "WARNING", value: warning }] : undefined}
+                  helpers={
+                    warning ? [{ type: "WARNING", value: warning }] : undefined
+                  }
                 />
               </div>
             )
@@ -257,7 +292,8 @@ const dataElementConfigs = [
   [{ id: "E4YaV9wahBu" }],
   [{ id: "EdCjK8sy4WH" }],
   [{ id: "n6rveUjp5h1" }],
-  [{ id: "yEMXv73bX9g" }]
+  [{ id: "yEMXv73bX9g" }],
+  [{ id: "iE68Gk2CdA7" }],
   // [{ id: "qrZ2UmofOdm" }],
 ];
 
