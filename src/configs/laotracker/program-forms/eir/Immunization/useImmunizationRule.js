@@ -3,8 +3,16 @@ import { shallow } from "zustand/shallow";
 import moment from "moment";
 import _ from "lodash";
 
-import { ALL_VACCINE, ATTRIBUTE_IDS, DATA_ELEMENT_IDS, IMMUNIZATION_STAGE_ID } from "./constants";
-import { useEventRuleEffect, convertListToObj } from "@/configs/laotracker/program-forms/common/tracker";
+import {
+  ALL_VACCINE,
+  ATTRIBUTE_IDS,
+  DATA_ELEMENT_IDS,
+  IMMUNIZATION_STAGE_ID,
+} from "./constants";
+import {
+  useEventRuleEffect,
+  convertListToObj,
+} from "@/configs/laotracker/program-forms/common/tracker";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import usePreviousEvents from "../../../common/usePreviousEvents";
 import { useShallow } from "zustand/react/shallow";
@@ -18,15 +26,15 @@ const useImmunizationRule = () => {
     assignations: {},
     disabledFields: {},
     hiddenOptions: {
-      jzT9g1EzJLd: ["mass"]
-    }
+      jzT9g1EzJLd: ["mass"],
+    },
   });
 
   const { data, actions, customState } = useTrackerCaptureStore(
     useShallow((state) => ({
       data: state.data,
       actions: state.actions,
-      customState: state.customState
+      customState: state.customState,
     }))
   );
   const { isEirVillage } = customState;
@@ -36,8 +44,12 @@ const useImmunizationRule = () => {
   const currentEvent = currentEvents.find((ev) => ev.event === selectedEvent);
   const eventDate = currentEvent?.eventDate;
 
-  const attributes = currentTei ? convertListToObj(currentTei.attributes, "attribute", "value") : null;
-  const dataValues = currentEvent ? convertListToObj(currentEvent.dataValues, "dataElement", "value") : null;
+  const attributes = currentTei
+    ? convertListToObj(currentTei.attributes, "attribute", "value")
+    : null;
+  const dataValues = currentEvent
+    ? convertListToObj(currentEvent.dataValues, "dataElement", "value")
+    : null;
   const isGiven = (dataElement) => {
     let given = false;
     if (previousEvents?.length) {
@@ -59,11 +71,12 @@ const useImmunizationRule = () => {
     const assignations = {};
     const disabledFields = {
       [DATA_ELEMENT_IDS.AGE_IN_WEEKS]: true,
-      [DATA_ELEMENT_IDS.AGE_IN_MONTHS]: true
+      [DATA_ELEMENT_IDS.AGE_IN_MONTHS]: true,
     };
 
     let ageInMonth;
     const dob = attributes?.[ATTRIBUTE_IDS.DATE_OF_BIRTH];
+    const sex = attributes?.[ATTRIBUTE_IDS.SEX];
     if (dob && eventDate) {
       //calculate age in month
       const convertDob = moment(dob, "YYYY-MM-DD");
@@ -76,28 +89,44 @@ const useImmunizationRule = () => {
       assignations[DATA_ELEMENT_IDS.AGE_IN_WEEKS] = ageInWeek;
       //If not given at birthday +1, show warning
       const ageInDay = convertEvDate.diff(convertDob, "days");
-      if (ageInDay > 1 && !isGiven(DATA_ELEMENT_IDS.BCG) && !dataValues?.[DATA_ELEMENT_IDS.BCG]) {
+      if (
+        ageInDay > 1 &&
+        !isGiven(DATA_ELEMENT_IDS.BCG) &&
+        !dataValues?.[DATA_ELEMENT_IDS.BCG]
+      ) {
         warnings[DATA_ELEMENT_IDS.BCG] = t("bcgWarning");
       }
-      if (ageInDay > 1 && (!dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] || dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] === "false")) {
+      if (
+        ageInDay > 1 &&
+        (!dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] ||
+          dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] === "false")
+      ) {
         hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] = true;
       }
-      if (ageInDay > 7 && (!dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] || dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] === "false")) {
+      if (
+        ageInDay > 7 &&
+        (!dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] ||
+          dataValues[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] === "false")
+      ) {
         hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] = true;
       }
     }
 
     const pov = dataValues?.[DATA_ELEMENT_IDS.PLACE_OF_VACCINATION];
-    if (pov !== "Provided in other facility") hiddenFields[DATA_ELEMENT_IDS.HEATH_FACILITY_NAME] = true;
+    if (pov !== "Provided in other facility")
+      hiddenFields[DATA_ELEMENT_IDS.HEATH_FACILITY_NAME] = true;
 
     const hideIfGiven = (dataElement, extCondition) => {
-      if (isGiven(dataElement) || extCondition + "" === "true") hiddenFields[dataElement] = true;
+      if (isGiven(dataElement) || extCondition + "" === "true")
+        hiddenFields[dataElement] = true;
     };
 
     //hide HB0 > 7days if HB0 > 24h is checked
-    if (dataValues?.[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H]) hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] = true;
+    if (dataValues?.[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H])
+      hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] = true;
     //hide HB0 > 24h if HB0 > 7days is checked
-    if (dataValues?.[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS]) hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] = true;
+    if (dataValues?.[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS])
+      hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H] = true;
 
     //Full Immunize
     // const haveValue = (dataElement) => dataValues?.[dataElement] === "true";
@@ -126,13 +155,27 @@ const useImmunizationRule = () => {
     // if (!fullImmunize) props.assignations[DATA_ELEMENT_IDS.FULL_IMMUNIZATION] = "";
 
     //hide IPV2 before IPV1 is given
-    if (!isGiven(DATA_ELEMENT_IDS.IPV_1) && !dataValues?.[DATA_ELEMENT_IDS.IPV_1]) hiddenFields[DATA_ELEMENT_IDS.IPV_2] = true;
+    if (
+      !isGiven(DATA_ELEMENT_IDS.IPV_1) &&
+      !dataValues?.[DATA_ELEMENT_IDS.IPV_1]
+    )
+      hiddenFields[DATA_ELEMENT_IDS.IPV_2] = true;
+
+    //hide HPV if given or ageInMonth < 120 or sex = male
+    if (isGiven(DATA_ELEMENT_IDS.HPV) || ageInMonth < 120 || sex === "M")
+      hiddenFields[DATA_ELEMENT_IDS.HPV] = true;
 
     if (previousEvents?.length) {
       //Hide HB024 if ever given or HepB0 7 days is checked
       //Hide HepB0 < 7days if ever given or HepB0 <24hrs is checked
-      hideIfGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H, isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS));
-      hideIfGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS, isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H));
+      hideIfGiven(
+        DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H,
+        isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS)
+      );
+      hideIfGiven(
+        DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS,
+        isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H)
+      );
       hideIfGiven(DATA_ELEMENT_IDS.BCG);
       hideIfGiven(DATA_ELEMENT_IDS.PENTA_1);
       hideIfGiven(DATA_ELEMENT_IDS.PENTA_2);
@@ -176,7 +219,11 @@ const useImmunizationRule = () => {
     props.assignations = assignations;
     props.disabledFields = disabledFields;
     setProps({ ...props });
-  }, [JSON.stringify(currentEvent), JSON.stringify(previousEvents), JSON.stringify(currentTei?.lastSaved)]);
+  }, [
+    JSON.stringify(currentEvent),
+    JSON.stringify(previousEvents),
+    JSON.stringify(currentTei?.lastSaved),
+  ]);
 
   useEffect(() => {
     // if (currentEvent && currentEvent.status === "SCHEDULE") {
