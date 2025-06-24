@@ -8,6 +8,7 @@ import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValue
 import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
 import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
+import VillageSelectorOrgUnitNoState from "@/configs/laotracker/common/VillageSelector/VillageSelectorOrgUnitNoState";
 import BloodPressureField from "../BloodPressureField/BloodPressureField";
 import Row from "../Row";
 import { useShallow } from "zustand/react/shallow";
@@ -15,6 +16,8 @@ import useAncRules from "./useAncRules";
 import useMetadataStore from "@/state/metadata";
 import useNcleCommunicableDiseasesRules from "./useNcleCommunicableDiseasesRules";
 import { Input } from "@/ui/common";
+import { el } from "date-fns/locale";
+import { findDataValue } from "@/configs/laotracker/common/utils";
 
 const NcleCommunicableDiseases = () => {
   const { t, i18n } = useTranslation();
@@ -40,7 +43,7 @@ const NcleCommunicableDiseases = () => {
   const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
-  const { disabledFields, hiddenSections, currDisplayingSymptoms, helpers, props } = useNcleCommunicableDiseasesRules();
+  const { disabledFields, hiddenSections, hiddenFields, currDisplayingSymptoms, helpers, props } = useNcleCommunicableDiseasesRules();
   const finalSections = [
     ...currentProgramStage.programStageSections,
     {
@@ -448,11 +451,13 @@ const NcleCommunicableDiseases = () => {
     let order = ["eventDate"];
     finalSections.forEach((pss) => {
       pss.dataElements.forEach((de) => {
-        order.push(de.id);
+        if (!hiddenFields.includes(de.id)) {
+          order.push(de.id);
+        }
       });
     });
     setEvent("order", order);
-  }, []);
+  }, [JSON.stringify(hiddenFields)]);
 
   const renderSection = (pss) => {
     if (pss.id === "oZPPUzgazm8") {
@@ -583,33 +588,70 @@ const NcleCommunicableDiseases = () => {
       );
     } else {
       return pss.dataElements.map((de) => {
+        if (hiddenFields.includes(de.id)) {
+          return null;
+        }
         const index = order.findIndex((o) => o === de.id);
-        return (
-          <Row
-            label={
-              <div style={{ display: "flex" }}>
-                {index + 1}.&nbsp;
-                <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
-              </div>
-            }
-            field={
-              <DataValueFieldNoBlurNoState
-                helpers={helpers[de.id]}
-                disabled={!editing || completed || disabledFields.includes(de.id)}
-                dataElement={de.id}
-                currentProgramStage={currentProgramStage}
-                currentEvent={currentEvent}
-                change={(value) => {
-                  changeDataValue(de.id, value);
-                }}
-                accept={(value) => {
-                  changeDataValue(de.id, value);
-                }}
-                {...props[de.id]}
-              />
-            }
-          />
-        );
+        if (de.id === "aXqAGHze483") {
+          return (
+            <Row
+              label={
+                <div style={{ display: "flex" }}>
+                  {index + 1}.&nbsp;
+                  {t("hotspotAddress")}
+                </div>
+              }
+              field={
+                <div style={{ width: "100%" }}>
+                  <VillageSelectorOrgUnitNoState
+                    type="dataElements"
+                    currentProgramStage={currentProgramStage}
+                    disabled={!editing || completed || disabledFields.includes(de.id)}
+                    VillageSelectorIds={["aXqAGHze483", "XYivjr13CXJ", "tpzN7TKwACc"]}
+                    change={(values) => {
+                      changeDataValue("aXqAGHze483", values[0] ? values[0].value : "");
+                      changeDataValue("XYivjr13CXJ", values[0] ? values[0].value : "");
+                      changeDataValue("tpzN7TKwACc", values[0] ? values[0].value : "");
+                    }}
+                    initValues={[
+                      findDataValue(currentEvent.dataValues, "aXqAGHze483"),
+                      findDataValue(currentEvent.dataValues, "XYivjr13CXJ"),
+                      findDataValue(currentEvent.dataValues, "tpzN7TKwACc")
+                    ]}
+                    mandatoryFields={["aXqAGHze483", "XYivjr13CXJ", "tpzN7TKwACc"]}
+                  />
+                </div>
+              }
+            />
+          );
+        } else {
+          return (
+            <Row
+              label={
+                <div style={{ display: "flex" }}>
+                  {index + 1}.&nbsp;
+                  <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
+                </div>
+              }
+              field={
+                <DataValueFieldNoBlurNoState
+                  helpers={helpers[de.id]}
+                  disabled={!editing || completed || disabledFields.includes(de.id)}
+                  dataElement={de.id}
+                  currentProgramStage={currentProgramStage}
+                  currentEvent={currentEvent}
+                  change={(value) => {
+                    changeDataValue(de.id, value);
+                  }}
+                  accept={(value) => {
+                    changeDataValue(de.id, value);
+                  }}
+                  {...props[de.id]}
+                />
+              }
+            />
+          );
+        }
       });
     }
   };
