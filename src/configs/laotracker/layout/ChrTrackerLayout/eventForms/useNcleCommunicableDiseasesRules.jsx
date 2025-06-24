@@ -4,6 +4,7 @@ import useChrTrackerStore from "../state";
 import { useShallow } from "zustand/react/shallow";
 
 const useNcleCommunicableDiseasesRules = () => {
+  const [hiddenFields, setHiddenFields] = useState([]);
   const [disabledFields, setDisabledFields] = useState([]);
   const [hiddenSections, setHiddenSections] = useState([]);
   const [helpers, setHelpers] = useState({});
@@ -41,6 +42,7 @@ const useNcleCommunicableDiseasesRules = () => {
 
   useEffect(() => {
     let currentHiddenSections = [];
+    let currentHiddenFields = ["XYivjr13CXJ", "tpzN7TKwACc"];
     if (dataValues["Dyq13cMGMzT"] === "19") {
       currentHiddenSections.push("oZPPUzgazm8");
       currentHiddenSections.push("lrSDktBXrtF");
@@ -49,6 +51,7 @@ const useNcleCommunicableDiseasesRules = () => {
       currentHiddenSections.push("notification");
     }
     setHiddenSections(currentHiddenSections);
+    setHiddenFields(currentHiddenFields);
   }, [JSON.stringify(dataValues)]);
 
   useEffect(() => {
@@ -62,6 +65,7 @@ const useNcleCommunicableDiseasesRules = () => {
   return {
     disabledFields,
     hiddenSections,
+    hiddenFields,
     currDisplayingSymptoms,
     helpers,
     props
