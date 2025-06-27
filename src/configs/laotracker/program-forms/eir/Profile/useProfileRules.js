@@ -9,6 +9,7 @@ import { tracker } from "@/api";
 import { useShallow } from "zustand/react/shallow";
 const { saveTei } = tracker;
 import { pull } from "@/utils/fetch";
+import { format } from "date-fns";
 const useProfileRules = () => {
   const { data, actions } = useTrackerCaptureStore(useShallow((state) => ({ data: state.data, actions: state.actions })));
   const { currentTei, currentEvents, currentEnrollment } = data;
@@ -56,7 +57,6 @@ const useProfileRules = () => {
       const dates = currentEvents.filter((ce) => ce.programStage === "hCTTxOH8FOa").map((ce) => ce.eventDate);
       const sortedDates = _.compact(dates.sort().reverse());
       const latestVaccinationDate = sortedDates[0];
-      console.log(latestVaccinationDate, attributes.zf7F68AsXEH, currentEvents);
 
       if (attributes.zf7F68AsXEH !== latestVaccinationDate) {
         changeAttributeValue("zf7F68AsXEH", latestVaccinationDate);
@@ -67,7 +67,7 @@ const useProfileRules = () => {
         } else {
           clonedTei.attributes.push({
             attribute: "zf7F68AsXEH",
-            value: latestVaccinationDate
+            value: format(new Date(latestVaccinationDate), "yyyy-MM-dd")
           });
         }
         await saveTei(clonedTei);
