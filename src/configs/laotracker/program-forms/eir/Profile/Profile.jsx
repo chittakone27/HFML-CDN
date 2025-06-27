@@ -247,6 +247,8 @@ const Profile = ({ attributeProps = {} }) => {
       await saveCurrentTei(trackedEntityInstance);
     } else {
       await saveCurrentTei(tei);
+      await pull(`/api/routes/chr/run?work=update&tei=${currentTei.trackedEntityInstance}`);
+      setLoading(false);
     }
   };
 

@@ -8,7 +8,7 @@ import { ALL_VACCINE, DATA_ELEMENT_IDS } from "../Immunization/constants";
 import { tracker } from "@/api";
 import { useShallow } from "zustand/react/shallow";
 const { saveTei } = tracker;
-
+import { pull } from "@/utils/fetch";
 const useProfileRules = () => {
   const { data, actions } = useTrackerCaptureStore(useShallow((state) => ({ data: state.data, actions: state.actions })));
   const { currentTei, currentEvents, currentEnrollment } = data;
@@ -52,23 +52,28 @@ const useProfileRules = () => {
   }, [dob, enrollmentDate]);
 
   useEffect(() => {
-    const dates = currentEvents.map((ce) => ce.eventDate);
-    const sortedDates = _.compact(dates.sort().reverse());
-    const latestVaccinationDate = sortedDates[0];
-    if (attributes.zf7F68AsXEH !== latestVaccinationDate) {
-      changeAttributeValue("zf7F68AsXEH", latestVaccinationDate);
-      const clonedTei = _.cloneDeep(currentTei);
-      const foundAttribute = clonedTei.attributes.find((attr) => attr.attribute === "zf7F68AsXEH");
-      if (foundAttribute) {
-        foundAttribute.value = latestVaccinationDate;
-      } else {
-        clonedTei.attributes.push({
-          attribute: "zf7F68AsXEH",
-          value: latestVaccinationDate
-        });
+    (async () => {
+      const dates = currentEvents.filter((ce) => ce.programStage === "hCTTxOH8FOa").map((ce) => ce.eventDate);
+      const sortedDates = _.compact(dates.sort().reverse());
+      const latestVaccinationDate = sortedDates[0];
+      console.log(latestVaccinationDate, attributes.zf7F68AsXEH, currentEvents);
+
+      if (attributes.zf7F68AsXEH !== latestVaccinationDate) {
+        changeAttributeValue("zf7F68AsXEH", latestVaccinationDate);
+        const clonedTei = _.cloneDeep(currentTei);
+        const foundAttribute = clonedTei.attributes.find((attr) => attr.attribute === "zf7F68AsXEH");
+        if (foundAttribute) {
+          foundAttribute.value = latestVaccinationDate;
+        } else {
+          clonedTei.attributes.push({
+            attribute: "zf7F68AsXEH",
+            value: latestVaccinationDate
+          });
+        }
+        await saveTei(clonedTei);
+        await pull(`/api/routes/chr/run?work=update&tei=${clonedTei.trackedEntityInstance}`);
       }
-      saveTei(clonedTei);
-    }
+    })();
   }, [currentEvents.map((ce) => ce.eventDate).join(";")]);
 
   useEffect(() => {
