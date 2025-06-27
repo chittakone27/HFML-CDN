@@ -254,7 +254,7 @@ const CustomEirSearchButton = () => {
     }
     setLoading(true);
     const newSearch = _.cloneDeep(search);
-
+    console.log(newSearch);
     if (newSearch["last34ClientHealthIdDigits"]) {
       newSearch["oPKsfqS64oE"] = "-" + newSearch["last34ClientHealthIdDigits"];
       delete newSearch["last34ClientHealthIdDigits"];
