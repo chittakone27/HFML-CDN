@@ -11,13 +11,6 @@ const listTables = [
       ],
       [
         {
-          id: "o1Nf4tv0ABp", // Date of death
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
           id: "Qh9Bw2E3wbi", // Time of death
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
@@ -47,27 +40,6 @@ const listTables = [
       [
         {
           id: "lxr5gKfFrwC", // House number
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
-          id: "J8ptEYl6IuC", // Province
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
-          id: "Dp3e82RfKhz", // District
-          labelCellProps: { className: "adr-table-cell" },
-          fieldCellProps: { className: "adr-table-cell" }
-        }
-      ],
-      [
-        {
-          id: "QE48InnEP6T", // Village
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
