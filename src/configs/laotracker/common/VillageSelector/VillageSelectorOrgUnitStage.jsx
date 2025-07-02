@@ -39,10 +39,9 @@ const VillageSelectorOrgUnitStage = ({ variant, VillageSelectorIds, saveGeo, dis
 
   const options = generateVillageSelectorOptionsById(provinces, districts, villages, i18n.language);
 
-  // Get labels for each data element ID from metadata
   const labels = useMemo(() => {
     const stage = programs
-      .find((p) => p.id === "d9eJlJsqplx") // your community death program
+      .find((p) => p.id === "d9eJlJsqplx") 
       ?.programStages.find((s) => s.id === "d7Q9zL8yYpA");
 
     const elements = stage?.programStageDataElements.map((psde) => psde.dataElement) || [];
