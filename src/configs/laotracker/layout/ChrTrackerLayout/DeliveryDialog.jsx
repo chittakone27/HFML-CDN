@@ -408,7 +408,9 @@ const DeliveryDialog = () => {
                 //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
                 for (let i = 0; i < cloned.length; i++) {
                   await saveTei(cloned[i]);
-                  await pull(`/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6`);
+                  await pull(
+                    `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6&createdProgram=AyPkCOMmgdd`
+                  );
                 }
                 setLoading(false);
               }}

@@ -302,7 +302,12 @@ const CustomEirSearchButton = () => {
         return randomNumber === newSearch["oPKsfqS64oE"].replace("-", "");
       });
     }
-    setSearchResult(transformed);
+
+    setSearchResult(
+      transformed.filter((tei) => {
+        return tei.enrolledTo && tei.enrolledTo.includes("Yj9cJ34AXw6");
+      })
+    );
     setSearchResultDialog(true);
     setLoading(false);
   };
