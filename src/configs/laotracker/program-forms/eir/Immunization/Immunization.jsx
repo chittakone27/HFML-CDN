@@ -1,13 +1,4 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  Dialog,
-  DialogTitle,
-  Button,
-  TableRow,
-  TableCell,
-} from "@mui/material";
+import { Box, Table, TableBody, Dialog, DialogTitle, Button, TableRow, TableCell } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { withRules, withEventDate } from "../../common/tracker";
 import { useEffect, useState } from "react";
@@ -37,31 +28,27 @@ const Immunization = () => {
   const { orgUnit, program } = useSelectionStore(
     useShallow((state) => ({
       orgUnit: state.orgUnit,
-      program: state.program,
+      program: state.program
     }))
   );
   const { actions, data, layout } = useTrackerCaptureStore(
     useShallow((state) => ({
       actions: state.actions,
       data: state.data,
-      layout: state.layout,
+      layout: state.layout
     }))
   );
   const { currentEvents, currentEnrollment } = data;
   const { currentProgramStage, currentEvent } = useCurrentEvent();
-  const {
-    setHandlers,
-    scheduleNewEvent,
-    selectEvent,
-    changeEventProperty,
-    changeDataValue,
-  } = actions;
+  const { setHandlers, scheduleNewEvent, selectEvent, changeEventProperty, changeDataValue } = actions;
 
   const eventCompleteHandler = (tei, enr, event, events) => {
     const MR2 = "n6rveUjp5h1";
     const IPV2 = "yEMXv73bX9g";
+    const HPV = "iE68Gk2CdA7";
     let foundMr2 = false;
     let foundIpv2 = false;
+    let foundHPV = false;
     let foundScheduledEvent = false;
     let latestDate = "";
     events
@@ -76,11 +63,17 @@ const Immunization = () => {
         const foundIpv2Ce = ce.dataValues.find(
           (dv) => dv.dataElement === IPV2 && dv.value === "true"
         );
+        const foundHPVCe = ce.dataValues.find(
+          (dv) => dv.dataElement === HPV && dv.value === "true"
+        );
         if (foundMr2Ce) {
           foundMr2 = true;
         }
         if (foundIpv2Ce) {
           foundIpv2 = true;
+        }
+        if (foundHPVCe) {
+          foundHPV = true;
         }
         if (ce.status === "SCHEDULE") {
           if (ce.event !== event.event) {
@@ -88,20 +81,14 @@ const Immunization = () => {
           }
         }
       });
-    if ((foundMr2 && foundIpv2) || foundScheduledEvent) {
+    if ((foundMr2 && foundIpv2) || foundHPV || foundScheduledEvent) {
       setDialog(false);
       selectEvent("");
     } else {
       const scheduledDate = add(new Date(event.eventDate), { days: 30 });
-      const latestDatePlus1Day = latestDate
-        ? add(new Date(latestDate), { days: 1 })
-        : undefined;
+      const latestDatePlus1Day = latestDate ? add(new Date(latestDate), { days: 1 }) : undefined;
       setDueDate(format(scheduledDate, "yyyy-MM-dd"));
-      setMinDate(
-        latestDatePlus1Day
-          ? format(latestDatePlus1Day, "yyyy-MM-dd")
-          : undefined
-      );
+      setMinDate(latestDatePlus1Day ? format(latestDatePlus1Day, "yyyy-MM-dd") : undefined);
       setDialog(true);
     }
   };
@@ -181,7 +168,7 @@ const Immunization = () => {
       <div style={{ height: 3 }}></div>
       {!dueDateEditing && (
         <Button
-          disabled={program.readOnly || layout.disableEventEditButton}
+          disabled={program.readOnly || layout.disableEventEditButton || currentEvent.status === "COMPLETED"}
           variant="contained"
           onClick={toggleDueDateEditing}
         >
@@ -205,11 +192,7 @@ const Immunization = () => {
             variant="contained"
             color="error"
             onClick={() => {
-              changeEventProperty(
-                currentEvent.event,
-                "dueDate",
-                currentDueDate
-              );
+              changeEventProperty(currentEvent.event, "dueDate", currentDueDate);
               toggleDueDateEditing();
             }}
           >
@@ -250,9 +233,7 @@ const Immunization = () => {
                   hiddenOptions={hiddenOptions}
                   dataElement={de[0].id}
                   disabled={disabled}
-                  helpers={
-                    warning ? [{ type: "WARNING", value: warning }] : undefined
-                  }
+                  helpers={warning ? [{ type: "WARNING", value: warning }] : undefined}
                 />
               </div>
             )
@@ -292,8 +273,8 @@ const dataElementConfigs = [
   [{ id: "E4YaV9wahBu" }],
   [{ id: "EdCjK8sy4WH" }],
   [{ id: "n6rveUjp5h1" }],
-  [{ id: "yEMXv73bX9g" }],
-  [{ id: "iE68Gk2CdA7" }],
+  [{ id: "yEMXv73bX9g" }]
+  // [{ id: "iE68Gk2CdA7" }],
   // [{ id: "qrZ2UmofOdm" }],
 ];
 

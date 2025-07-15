@@ -1,0 +1,12 @@
+ALTER table  chr
+ADD parentphonenumber VARCHAR(1000);
+ALTER table  chr
+ADD motherfirstname VARCHAR(1000);
+ALTER table  chr
+ADD motherlastname VARCHAR(1000);
+ALTER table  chr
+ADD fatherfirstname VARCHAR(1000);
+ALTER table  chr
+ADD fatherlastname VARCHAR(1000);
+ALTER table  chr
+ADD latestvaccinationdate VARCHAR(20);
