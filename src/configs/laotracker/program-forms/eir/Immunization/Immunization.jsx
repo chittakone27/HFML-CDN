@@ -45,8 +45,10 @@ const Immunization = () => {
   const eventCompleteHandler = (tei, enr, event, events) => {
     const MR2 = "n6rveUjp5h1";
     const IPV2 = "yEMXv73bX9g";
+    const HPV = "iE68Gk2CdA7";
     let foundMr2 = false;
     let foundIpv2 = false;
+    let foundHPV = false;
     let foundScheduledEvent = false;
     let latestDate = "";
     events
@@ -55,13 +57,23 @@ const Immunization = () => {
         if (!latestDate || ce.eventDate > latestDate) {
           latestDate = ce.eventDate;
         }
-        const foundMr2Ce = ce.dataValues.find((dv) => dv.dataElement === MR2 && dv.value === "true");
-        const foundIpv2Ce = ce.dataValues.find((dv) => dv.dataElement === IPV2 && dv.value === "true");
+        const foundMr2Ce = ce.dataValues.find(
+          (dv) => dv.dataElement === MR2 && dv.value === "true"
+        );
+        const foundIpv2Ce = ce.dataValues.find(
+          (dv) => dv.dataElement === IPV2 && dv.value === "true"
+        );
+        const foundHPVCe = ce.dataValues.find(
+          (dv) => dv.dataElement === HPV && dv.value === "true"
+        );
         if (foundMr2Ce) {
           foundMr2 = true;
         }
         if (foundIpv2Ce) {
           foundIpv2 = true;
+        }
+        if (foundHPVCe) {
+          foundHPV = true;
         }
         if (ce.status === "SCHEDULE") {
           if (ce.event !== event.event) {
@@ -69,7 +81,7 @@ const Immunization = () => {
           }
         }
       });
-    if ((foundMr2 && foundIpv2) || foundScheduledEvent) {
+    if ((foundMr2 && foundIpv2) || foundHPV || foundScheduledEvent) {
       setDialog(false);
       selectEvent("");
     } else {
