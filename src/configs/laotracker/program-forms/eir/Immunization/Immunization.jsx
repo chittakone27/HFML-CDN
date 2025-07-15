@@ -57,15 +57,9 @@ const Immunization = () => {
         if (!latestDate || ce.eventDate > latestDate) {
           latestDate = ce.eventDate;
         }
-        const foundMr2Ce = ce.dataValues.find(
-          (dv) => dv.dataElement === MR2 && dv.value === "true"
-        );
-        const foundIpv2Ce = ce.dataValues.find(
-          (dv) => dv.dataElement === IPV2 && dv.value === "true"
-        );
-        const foundHPVCe = ce.dataValues.find(
-          (dv) => dv.dataElement === HPV && dv.value === "true"
-        );
+        const foundMr2Ce = ce.dataValues.find((dv) => dv.dataElement === MR2 && dv.value === "true");
+        const foundIpv2Ce = ce.dataValues.find((dv) => dv.dataElement === IPV2 && dv.value === "true");
+        const foundHPVCe = ce.dataValues.find((dv) => dv.dataElement === HPV && dv.value === "true");
         if (foundMr2Ce) {
           foundMr2 = true;
         }
@@ -225,6 +219,7 @@ const Immunization = () => {
           const hidden = props.hiddenFields[de[0].id];
           const warning = props.warnings[de[0].id];
           const hiddenOptions = props.hiddenOptions[de[0].id];
+          console.log(de, disabled, hidden);
           return (
             !hidden && (
               <div className="eir-immunization-row">
@@ -273,8 +268,8 @@ const dataElementConfigs = [
   [{ id: "E4YaV9wahBu" }],
   [{ id: "EdCjK8sy4WH" }],
   [{ id: "n6rveUjp5h1" }],
-  [{ id: "yEMXv73bX9g" }]
-  // [{ id: "iE68Gk2CdA7" }],
+  [{ id: "yEMXv73bX9g" }],
+  [{ id: "iE68Gk2CdA7" }]
   // [{ id: "qrZ2UmofOdm" }],
 ];
 
