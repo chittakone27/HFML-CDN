@@ -16,6 +16,7 @@ import _, { random, split } from "lodash";
 import SearchResultDialog from "./SearchResultDialog";
 import ClientHealthIdField from "../ClientHealthIdField/ClientHealthIdField";
 import { findAttributeValue } from "../utils";
+import { pull } from "@/utils/fetch";
 const searchOptions = [
   ["oPKsfqS64oE"],
   ["tQeFLjYbqzv", "DmuazFb368B"],
@@ -253,23 +254,46 @@ const CustomEirSearchButton = () => {
       return;
     }
     setLoading(true);
-    const newSearch = _.cloneDeep(search);
-
-    if (newSearch["last34ClientHealthIdDigits"]) {
-      newSearch["oPKsfqS64oE"] = "-" + newSearch["last34ClientHealthIdDigits"];
-      delete newSearch["last34ClientHealthIdDigits"];
-    }
-    if (newSearch["UNiaP6Oz7Mv"]) {
-      const provinceDistrictVillage = newSearch["UNiaP6Oz7Mv"].split(";");
-      if (provinceDistrictVillage[2]) {
-        newSearch["UNiaP6Oz7Mv"] = provinceDistrictVillage[2];
+    // const newSearch = _.cloneDeep(search);
+    // if (newSearch["last34ClientHealthIdDigits"]) {
+    //   newSearch["oPKsfqS64oE"] = "-" + newSearch["last34ClientHealthIdDigits"];
+    //   delete newSearch["last34ClientHealthIdDigits"];
+    // }
+    // if (newSearch["UNiaP6Oz7Mv"]) {
+    //   const provinceDistrictVillage = newSearch["UNiaP6Oz7Mv"].split(";");
+    //   if (provinceDistrictVillage[2]) {
+    //     newSearch["UNiaP6Oz7Mv"] = provinceDistrictVillage[2];
+    //   } else {
+    //     newSearch["oVwa5LfjnvA"] = provinceDistrictVillage[1];
+    //     delete newSearch["UNiaP6Oz7Mv"];
+    //   }
+    // }
+    const newSearch = {};
+    Object.keys(search).forEach((key) => {
+      if (key === "last34ClientHealthIdDigits") {
+        newSearch["oPKsfqS64oE"] = "-" + search[key];
+      } else if (newSearch["UNiaP6Oz7Mv"]) {
+        const provinceDistrictVillage = newSearch["UNiaP6Oz7Mv"].split(";");
+        if (provinceDistrictVillage[2]) {
+          newSearch["UNiaP6Oz7Mv"] = provinceDistrictVillage[2];
+        } else {
+          newSearch["oVwa5LfjnvA"] = provinceDistrictVillage[1];
+          delete newSearch["UNiaP6Oz7Mv"];
+        }
       } else {
-        newSearch["oVwa5LfjnvA"] = provinceDistrictVillage[1];
-        delete newSearch["UNiaP6Oz7Mv"];
+        newSearch[key] = search[key];
       }
-    }
-
-    const result = await searchTeis(newSearch, program.id, "IWp9dQGM0bS");
+    });
+    let filterString = [];
+    Object.keys(newSearch).forEach((key) => {
+      if (newSearch[key]) {
+        filterString.push(key + ":" + newSearch[key]);
+      }
+    });
+    // const url = `:8000?work=search&filter=${filterString.join(";")}`;
+    const url = `/api/routes/chr/run?work=search&filter=${filterString.join(";")}`;
+    const result = await pull(url);
+    // const result = await searchTeis(newSearch, program.id, "IWp9dQGM0bS");
     let transformed = result.trackedEntityInstances;
     if (selectedSo === "last34ClientHealthIdDigits") {
       transformed = transformed.filter((tei) => {
@@ -278,7 +302,12 @@ const CustomEirSearchButton = () => {
         return randomNumber === newSearch["oPKsfqS64oE"].replace("-", "");
       });
     }
-    setSearchResult(transformed);
+
+    setSearchResult(
+      transformed.filter((tei) => {
+        return tei.enrolledTo && tei.enrolledTo.includes("Yj9cJ34AXw6");
+      })
+    );
     setSearchResultDialog(true);
     setLoading(false);
   };

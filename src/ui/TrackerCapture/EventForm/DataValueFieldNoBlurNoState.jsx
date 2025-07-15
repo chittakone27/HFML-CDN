@@ -12,6 +12,7 @@ import { pickTranslation } from "@/utils/utils";
 import { useTranslation } from "react-i18next";
 const { saveEvent } = event;
 const { VITE_MODE } = import.meta.env;
+import _ from "lodash";
 
 const DataValueFieldNoBlurNoState = (props) => {
   const { i18n } = useTranslation();
@@ -37,7 +38,7 @@ const DataValueFieldNoBlurNoState = (props) => {
   foundDe.allowFutureDate = foundPde.allowFutureDate;
   const foundOptionSet = foundDe.optionSetValue ? optionSets.find((os) => os.id === foundDe.optionSet.id) : null;
   let valueSet = foundOptionSet
-    ? foundOptionSet.options.map((o) => ({
+    ? _.sortBy(foundOptionSet.options, "sortOrder").map((o) => ({
         label: pickTranslation(o, i18n.language, "name"),
         value: o.code
       }))

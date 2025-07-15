@@ -6,6 +6,7 @@ import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValue
 import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
 import { useEffect } from "react";
+import useSelectionStore from "@/state/selection";
 
 const FamilyPlanning = () => {
   const { event, actions } = useChrTrackerStore(
@@ -14,14 +15,16 @@ const FamilyPlanning = () => {
       actions: state.actions
     }))
   );
+  const program = useSelectionStore((state) => state.program);
+  const programStageSection = program.programStages[0].programStageSections[0];
   const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
 
   useEffect(() => {
     let order = ["eventDate"];
-    currentProgramStage.programStageDataElements.forEach((psde) => {
-      order.push(psde.dataElement.id);
+    programStageSection.dataElements.forEach((de) => {
+      order.push(de.id);
     });
     setEvent("order", order);
   }, []);
@@ -46,26 +49,26 @@ const FamilyPlanning = () => {
           />
         }
       />
-      {currentProgramStage.programStageDataElements.map((psde, index) => {
-        const foundIndex = order.findIndex((o) => o === psde.dataElement.id);
+      {programStageSection.dataElements.map((de, index) => {
+        const foundIndex = order.findIndex((o) => o === de.id);
         return (
           <Row
             label={
               <div style={{ display: "flex" }}>
                 {foundIndex + 1}.&nbsp;
-                <DataValueLabelNoState dataElement={psde.dataElement.id} currentProgramStage={currentProgramStage} />
+                <DataValueLabelNoState dataElement={de.id} currentProgramStage={currentProgramStage} />
               </div>
             }
             field={
               <DataValueFieldNoBlurNoState
                 change={(value) => {
-                  changeDataValue(psde.dataElement.id, value);
+                  changeDataValue(de.id, value);
                 }}
                 accept={(value) => {
-                  changeDataValue(psde.dataElement.id, value);
+                  changeDataValue(de.id, value);
                 }}
                 disabled={!editing || completed}
-                dataElement={psde.dataElement.id}
+                dataElement={de.id}
                 currentProgramStage={currentProgramStage}
                 currentEvent={currentEvent}
               />

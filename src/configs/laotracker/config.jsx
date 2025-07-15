@@ -26,6 +26,7 @@ import antenatalPostnatalLocales from "./locales/antenatalPostnatal.js";
 import familyPlanningLocales from "./locales/familyPlanning.js";
 import abortionDetailsLocales from "./locales/abortionDetails.js";
 import postnatalCareLocales from "./locales/postnatalCareLocales.js";
+import ncleTrackerLocales from "./locales/ncleTracker.js";
 const customForms = {
   u1Na9wCGY6d: postnatalCare,
   ck0rft9jVlF: ipdDischargeSummary,
@@ -47,7 +48,8 @@ const locales = {
   AyPkCOMmgdd: deliveryRegistryLocales,
   fflLsS1lm3g: antenatalPostnatalLocales,
   PBLmYwloRHu: familyPlanningLocales,
-  vqNgkw4gfw7: abortionDetailsLocales
+  vqNgkw4gfw7: abortionDetailsLocales,
+  kPEL6aQkTCb: ncleTrackerLocales
 };
 
 const customLocales = {

@@ -182,14 +182,11 @@ const Profile = ({ attributeProps = {} }) => {
 
   const doEnroll = async (tei) => {
     const currentProgramEnrollment = createCurrentProgramEnrollment(tei);
-    // const clientRegistryEnrollment = createClientRegistryEnrollment(tei);
     const currProgramEnrResult = await saveEnrollment(currentProgramEnrollment);
-    // const clientRegistryEnrResult = await saveEnrollment(clientRegistryEnrollment);
-
-    if (
-      currProgramEnrResult.ok
-      // && clientRegistryEnrResult.ok
-    ) {
+    const chrEnrollmentResult = await pull(
+      `/api/routes/chr/run?work=register&tei=${currentProgramEnrollment.trackedEntityInstance}&program=${program.id}`
+    );
+    if (chrEnrollmentResult && currProgramEnrResult.ok) {
       const result = await getTeiById(program.id, currentTei.trackedEntityInstance);
       actions.initData(result, program.id, orgUnit.id);
       actions.setLayout("layout", "layout3");
@@ -250,6 +247,8 @@ const Profile = ({ attributeProps = {} }) => {
       await saveCurrentTei(trackedEntityInstance);
     } else {
       await saveCurrentTei(tei);
+      await pull(`/api/routes/chr/run?work=update&tei=${currentTei.trackedEntityInstance}`);
+      setLoading(false);
     }
   };
 
