@@ -32,7 +32,7 @@ const useGrowthMonitorRules = () => {
       changeDataValue(currentEvent.event, "MV1yoC7BfnG", ageInMonths);
       if (ageInMonths < 6 ) {
         tempHiddenFields.push("bTz0sXjXF4I","VUn6z5bss2H","fwerjuyn3QC");
-      } else if (ageInMonths >= 6 && ageInWeeks < 60) {
+      } else if (ageInMonths >= 6 && ageInMonths< 60) {
         tempHiddenFields.push("GVHTqqwolWD");
       } else if (ageInMonths >= 60){
         tempHiddenFields.push("bTz0sXjXF4I","VUn6z5bss2H","fwerjuyn3QC","GVHTqqwolWD");
