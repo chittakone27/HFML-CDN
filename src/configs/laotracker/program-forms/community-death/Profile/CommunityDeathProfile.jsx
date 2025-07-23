@@ -30,7 +30,6 @@ const attributes = [
   "q4lqBvHgv7u",  // Country 
   "OsoaGZLlAgx", // Guardian selection (shown for <1 year)
   "vj8fQVCfEdD", // Name of Guardian
-  "XmZ0lTX3dku" // age of the Guardian
 ];
 
 const CommunityDeathProfile = () => {
