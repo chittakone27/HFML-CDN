@@ -11,6 +11,7 @@ const useCommunityDeathProfileRules = () => {
 
   const dateOfBirth = getAttributeValue("tQeFLjYbqzv"); // DOB
   const isForeigner = getAttributeValue("DtqYqC9Xr5Z") === "true";
+  const guardianType = getAttributeValue("OsoaGZLlAgx"); // Guardian type
 
   let derivedAgeYears = "";
   let derivedAgeMonths = "";
@@ -19,7 +20,7 @@ const useCommunityDeathProfileRules = () => {
     const dob = new Date(dateOfBirth);
     const today = new Date();
 
-    // Calculate years
+    // Calculate years and months
     let years = today.getFullYear() - dob.getFullYear();
     let months = today.getMonth() - dob.getMonth();
     if (months < 0 || (months === 0 && today.getDate() < dob.getDate())) {
@@ -43,8 +44,11 @@ const useCommunityDeathProfileRules = () => {
     (derivedAgeYears === "" || derivedAgeYears === "0") &&
     (derivedAgeMonths !== "");
 
+  const shouldShowGuardianAge = guardianType == "Others";
+
   return {
     shouldShowGuardianFields,
+    shouldShowGuardianAge,
     shouldShowCountryField: isForeigner,
     derivedAgeYears,
     derivedAgeMonths,
