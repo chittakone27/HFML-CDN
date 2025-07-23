@@ -5,7 +5,7 @@ const listTables = [
       [
         {
           display: "text",
-          text: "I. Death information ",
+          text: "2. ການເສຍຊີວິດ / Death information ",
           cellProps: { colSpan: 2, className: "adr-table-title" }
         }
       ],
@@ -30,6 +30,20 @@ const listTables = [
           fieldCellProps: { className: "adr-table-cell" }
         }
       ],
+            [
+        {
+          id: "QvX65zeRteX", // Cause of death
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
+          id: "fyDdwAMidRI", // Specify cause
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
       [
         {
           id: "HRwRhEljEtJ", // Health Facility (orgUnit)
@@ -46,22 +60,22 @@ const listTables = [
       ],
       [
         {
-          id: "QvX65zeRteX", // Cause of death
+          id: "YOU5UrERj6L", // is foreigner
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
       ],
       [
         {
-          id: "fyDdwAMidRI", // Specify cause
+          id: "kXRyqHLsX8b", // country
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
-      ],
+      ],      
       [
         {
           display: "text",
-          text: "II. Informant Details",
+          text: "3. ຜູ້ໃຫ້ຂໍ້ມູນການເສຍຊີວິດ (ຜູ້ຖືກຖາມ) / Informant Details",
           cellProps: { colSpan: 2, className: "adr-table-title" }
         }
       ],
@@ -82,6 +96,13 @@ const listTables = [
       [
         {
           id: "zr7r1dtULBg", // Relationship to deceased
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
+          id: "JxA90BwDj2H", // Relationship to deceased if other selected
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }

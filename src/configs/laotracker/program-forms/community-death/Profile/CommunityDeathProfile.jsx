@@ -15,22 +15,22 @@ const attributes = [
   "pjpnF7u5PQj", // Passport Number
   "IEE2BMhfoSc", // First Name
   "IBLkiaYRRL3", // Last Name
+  "DmuazFb368B", // Sex
   "tQeFLjYbqzv", // Date of Birth
   "BaiVwt8jVfg", // Age in Years (computed)
   "qqIRVyMw68b", // Age in Months (computed)
-  "OsoaGZLlAgx", // Guardian selection (shown for <1 year)
-  "vj8fQVCfEdD", // Name of Guardian
-  "DmuazFb368B", // Sex
-  "uR9XK6AbPvE", // Nationality
   "tJrT8GIy477", // Ethnicity
   "kgszUgf3OdN", // Marital Status
-  "UJioxXRLgpw", // Education
+  "aUKCRTkqOFh", //CDN education
   "ERzDXXMuOdq", // Occupation
   "W8WZcI1SUjC", // House Number
   "xbwURy2jG2K", // Unit of Village
   "UNiaP6Oz7Mv", // Village (hierarchy)
   "DtqYqC9Xr5Z", // Is Foreigner
-  "q4lqBvHgv7u"  // Country
+  "q4lqBvHgv7u",  // Country 
+  "OsoaGZLlAgx", // Guardian selection (shown for <1 year)
+  "vj8fQVCfEdD", // Name of Guardian
+  "XmZ0lTX3dku" // age of the Guardian
 ];
 
 const CommunityDeathProfile = () => {
@@ -44,7 +44,7 @@ const CommunityDeathProfile = () => {
         <TableBody>
           {attributes.map((attrId) => {
             if (
-              ["OsoaGZLlAgx", "vj8fQVCfEdD"].includes(attrId) &&
+              ["OsoaGZLlAgx", "vj8fQVCfEdD","XmZ0lTX3dku"].includes(attrId) &&
               !shouldShowGuardianFields
             ) return null;
 
