@@ -28,8 +28,8 @@ const attributes = [
   "UNiaP6Oz7Mv", // Village (hierarchy)
   "DtqYqC9Xr5Z", // Is Foreigner
   "q4lqBvHgv7u", // Country 
+  "vj8fQVCfEdD", // Name of Guardian  
   "OsoaGZLlAgx", // Guardian selection (shown for <1 year)
-  "vj8fQVCfEdD", // Name of Guardian
   "XmZ0lTX3dku" // Relationship please specify 
 ];
 
