@@ -268,12 +268,13 @@ const CustomEirSearchButton = () => {
     //     delete newSearch["UNiaP6Oz7Mv"];
     //   }
     // }
+    console.log(search);
     const newSearch = {};
     Object.keys(search).forEach((key) => {
       if (key === "last34ClientHealthIdDigits") {
         newSearch["oPKsfqS64oE"] = "-" + search[key];
-      } else if (newSearch["UNiaP6Oz7Mv"]) {
-        const provinceDistrictVillage = newSearch["UNiaP6Oz7Mv"].split(";");
+      } else if (key === "UNiaP6Oz7Mv") {
+        const provinceDistrictVillage = search["UNiaP6Oz7Mv"].split(";");
         if (provinceDistrictVillage[2]) {
           newSearch["UNiaP6Oz7Mv"] = provinceDistrictVillage[2];
         } else {
