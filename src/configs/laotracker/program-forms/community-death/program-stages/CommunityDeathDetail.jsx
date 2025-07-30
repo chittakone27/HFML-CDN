@@ -56,7 +56,7 @@ const CommunityDeathDetail = () => {
                       editable={layout.eventFormEditing}
                     />
 
-                    {row.some((field) => field.id === "lxr5gKfFrwC") && (
+                    {row.some((field) => field.id === "QvX65zeRteX") && (
                       <>
                         <TableRow>
                           <TableCell>{t("currentAddress")}</TableCell>

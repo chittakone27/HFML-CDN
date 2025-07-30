@@ -23,14 +23,14 @@ const attributes = [
   "kgszUgf3OdN", // Marital Status
   "aUKCRTkqOFh", // CDN education
   "ERzDXXMuOdq", // Occupation
-  "W8WZcI1SUjC", // House Number
-  "xbwURy2jG2K", // Unit of Village
   "UNiaP6Oz7Mv", // Village (hierarchy)
+  "xbwURy2jG2K", // Unit of Village
+  "W8WZcI1SUjC", // House Number
   "DtqYqC9Xr5Z", // Is Foreigner
   "q4lqBvHgv7u", // Country 
   "vj8fQVCfEdD", // Name of Guardian  
   "OsoaGZLlAgx", // Guardian selection (shown for <1 year)
-  "XmZ0lTX3dku" // Relationship please specify 
+  "XmZ0lTX3dku" // Age of Guardian
 ];
 
 const CommunityDeathProfile = () => {
