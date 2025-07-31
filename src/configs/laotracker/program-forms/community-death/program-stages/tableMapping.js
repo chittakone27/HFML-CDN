@@ -46,14 +46,14 @@ const listTables = [
       ],
       [
         {
-          id: "HRwRhEljEtJ", // Health Facility (orgUnit)
+          id: "HRwRhEljEtJ", // House Number
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
       ],
       [
         {
-          id: "lxr5gKfFrwC", // House number
+          id: "lxr5gKfFrwC", // Unit
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
@@ -85,7 +85,7 @@ const listTables = [
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
-      ],,
+      ],
       [
         {
           id: "SRajXU5CS08", // Contact Number
@@ -106,7 +106,21 @@ const listTables = [
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
-      ]
+      ],
+      [
+        {
+          display: "text",
+          text: "4. ອສບ ຜູ້ລາຍງານ / Responsible VHV",
+          cellProps: { colSpan: 2, className: "adr-table-title" }
+        }
+      ],
+      [
+        {
+          id: "Pmy32RqodmK", // Informant Name
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
     ]
   }
 ];
