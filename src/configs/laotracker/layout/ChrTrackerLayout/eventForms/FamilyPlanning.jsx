@@ -71,7 +71,7 @@ const FamilyPlanning = () => {
                 dataElement={de.id}
                 currentProgramStage={currentProgramStage}
                 currentEvent={currentEvent}
-                maxDate={currentEvent.eventDate ? add(new Date(currentEvent.eventDate), { years: 1 }) : null}
+                maxDate={currentEvent.eventDate ? add(new Date(currentEvent.eventDate), { years: 11 }) : null}
               />
             }
           />
