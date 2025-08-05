@@ -1,4 +1,3 @@
-// CommunityDeathDetail.jsx
 import React from "react";
 import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -36,7 +35,7 @@ const CommunityDeathDetail = () => {
   }
 
   const shouldDisplayRow = (row) => {
-    return !row.some(field => hiddenFields.includes(field.id));
+    return !row.some((field) => hiddenFields.includes(field.id));
   };
 
   return communityDeathProgram && programStage ? (
@@ -45,38 +44,52 @@ const CommunityDeathDetail = () => {
         <Box key={table.tableName} sx={{ marginBottom: "10px" }}>
           <Table>
             <TableBody>
-              {table.tableFields
-                .filter(shouldDisplayRow)
-                .map((row, index) => (
-                  <React.Fragment key={index}>
-                    <RowMapper
-                      context="event"
-                      tableName={table.tableName}
-                      rows={[row]}
-                      editable={layout.eventFormEditing}
-                    />
+              {table.tableFields.map((row, index) => {
+                // Current Address before HRwRhEljEtJ
+                if (row.some((field) => field.id === "HRwRhEljEtJ")) {
+                  return (
+                    <React.Fragment key={index}>
+                      {/* Current Address Row */}
+                      <TableRow>
+                        <TableCell>{t("currentAddress")}</TableCell>
+                        <TableCell>
+                          <VillageSelectorOrgUnitStage
+                            variant="outlined"
+                            saveGeo={true}
+                            disabled={false}
+                            VillageSelectorIds={[
+                              "J8ptEYl6IuC",
+                              "Dp3e82RfKhz",
+                              "QE48InnEP6T"
+                            ]}
+                          />
+                        </TableCell>
+                      </TableRow>
 
-                    {row.some((field) => field.id === "fyDdwAMidRI") && (
-                      <>
-                        <TableRow>
-                          <TableCell>{t("currentAddress")}</TableCell>
-                          <TableCell>
-                            <VillageSelectorOrgUnitStage
-                              variant="outlined"
-                              saveGeo={true}
-                              disabled={false}
-                              VillageSelectorIds={[
-                                "J8ptEYl6IuC",
-                                "Dp3e82RfKhz",
-                                "QE48InnEP6T"
-                              ]}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      </>
-                    )}
-                  </React.Fragment>
-                ))}
+                      {/* HRwRhEljEtJ Field */}
+                      {shouldDisplayRow(row) && (
+                        <RowMapper
+                          context="event"
+                          tableName={table.tableName}
+                          rows={[row]}
+                          editable={layout.eventFormEditing}
+                        />
+                      )}
+                    </React.Fragment>
+                  );
+                }
+
+                // Regular fields rendering
+                return shouldDisplayRow(row) ? (
+                  <RowMapper
+                    key={index}
+                    context="event"
+                    tableName={table.tableName}
+                    rows={[row]}
+                    editable={layout.eventFormEditing}
+                  />
+                ) : null;
+              })}
             </TableBody>
           </Table>
         </Box>
