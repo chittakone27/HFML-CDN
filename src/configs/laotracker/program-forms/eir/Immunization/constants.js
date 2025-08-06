@@ -16,7 +16,7 @@ export const ALL_VACCINE = [
   "EdCjK8sy4WH",
   "n6rveUjp5h1",
   "yEMXv73bX9g",
-  "iE68Gk2CdA7",
+  "iE68Gk2CdA7"
 ];
 
 export const ALL_VACCINE_FOR_FULL_IMMUNIZED = [
@@ -35,11 +35,12 @@ export const ALL_VACCINE_FOR_FULL_IMMUNIZED = [
   "EdCjK8sy4WH",
   "n6rveUjp5h1",
   "yEMXv73bX9g",
+  "iE68Gk2CdA7"
 ];
 
 export const ATTRIBUTE_IDS = {
   DATE_OF_BIRTH: "tQeFLjYbqzv",
-  SEX: "DmuazFb368B",
+  SEX: "DmuazFb368B"
 };
 
 export const DATA_ELEMENT_IDS = {
@@ -66,7 +67,7 @@ export const DATA_ELEMENT_IDS = {
   IPV_2: "yEMXv73bX9g",
   IPV_1: "wQNvIFAlWdA",
   HPV: "iE68Gk2CdA7",
-  FULL_IMMUNIZATION: "qrZ2UmofOdm",
+  FULL_IMMUNIZATION: "qrZ2UmofOdm"
 };
 
 export const IMMUNIZATION_STAGE_ID = "hCTTxOH8FOa";
