@@ -11,6 +11,13 @@ const listTables = [
       ],
       [
         {
+          id: "uQ9r3BuELco", // Date of death above is corrected
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
           id: "Qh9Bw2E3wbi", // Time of death
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
@@ -46,14 +53,14 @@ const listTables = [
       ],
       [
         {
-          id: "HRwRhEljEtJ", // House Number
+          id: "HRwRhEljEtJ", // Unit
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
       ],
       [
         {
-          id: "lxr5gKfFrwC", // Unit
+          id: "lxr5gKfFrwC", //  House Number
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
         }
