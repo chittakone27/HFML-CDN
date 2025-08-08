@@ -219,6 +219,7 @@ const Immunization = () => {
           const hidden = props.hiddenFields[de[0].id];
           const warning = props.warnings[de[0].id];
           const hiddenOptions = props.hiddenOptions[de[0].id];
+          console.log(de, disabled, hidden);
           return (
             !hidden && (
               <div className="eir-immunization-row">

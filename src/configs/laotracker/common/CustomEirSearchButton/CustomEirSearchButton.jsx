@@ -268,7 +268,6 @@ const CustomEirSearchButton = () => {
     //     delete newSearch["UNiaP6Oz7Mv"];
     //   }
     // }
-    console.log(search);
     const newSearch = {};
     Object.keys(search).forEach((key) => {
       if (key === "last34ClientHealthIdDigits") {

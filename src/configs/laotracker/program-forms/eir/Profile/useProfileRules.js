@@ -80,14 +80,14 @@ const useProfileRules = () => {
     if (!nationality) changeAttributeValue("uR9XK6AbPvE", "LA");
   }, []);
 
-  useEffect(() => {
-    let fullImmunize = true;
-    ALL_VACCINE.filter((id) => ![DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS, DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H].includes(id)).forEach((id) => {
-      if (!isGiven(id)) fullImmunize = false;
-    });
-    if (!isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H) && !isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS)) fullImmunize = false;
-    setLayout("disableEventCreateButton", fullImmunize);
-  }, [currentEvents]);
+  // useEffect(() => {
+  //   let fullImmunize = true;
+  //   ALL_VACCINE.filter((id) => ![DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS, DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H].includes(id)).forEach((id) => {
+  //     if (!isGiven(id)) fullImmunize = false;
+  //   });
+  //   if (!isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_24H) && !isGiven(DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS)) fullImmunize = false;
+  //   setLayout("disableEventCreateButton", fullImmunize);
+  // }, [currentEvents]);
 
   useEffect(() => {
     const isForeigner = attributes.DtqYqC9Xr5Z;
