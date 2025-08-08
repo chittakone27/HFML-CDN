@@ -7,7 +7,7 @@ import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelN
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
 import { useEffect } from "react";
 import useSelectionStore from "@/state/selection";
-
+import { add } from "date-fns";
 const FamilyPlanning = () => {
   const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
@@ -71,6 +71,7 @@ const FamilyPlanning = () => {
                 dataElement={de.id}
                 currentProgramStage={currentProgramStage}
                 currentEvent={currentEvent}
+                maxDate={currentEvent.eventDate ? add(new Date(currentEvent.eventDate), { years: 11 }) : null}
               />
             }
           />
