@@ -231,7 +231,7 @@ const resources = {
       saveAndAddNew: "ບັນທຶກ ແລະ ເພີ່ມໃໝ່",
       saveAndClose: "ບັນທຶກ ແລະ ອອກ",
       goBack: "ກັບໄປໜ້າຫຼັກ",
-      register: "ລົງທະບຽນເດັກ",
+      register: "ລົງທະບຽນ",
       teiList: "ລາຍຊື່ເດັກ",
       previousPage: "ໜ້າກ່ອນ",
       nextPage: "ໜ້າຕໍ່ໄປ",

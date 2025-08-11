@@ -3,11 +3,7 @@ import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { Box, Table, TableBody, TableCell, TableRow } from "@mui/material";
-import {
-  RowMapper,
-  withEventDate,
-  withRules
-} from "@/configs/laotracker/program-forms/common/tracker";
+import { RowMapper, withEventDate, withRules } from "@/configs/laotracker/program-forms/common/tracker";
 import { listTables } from "./tableMapping";
 import "../CommunityDeath.css";
 import VillageSelectorOrgUnitStage from "../../../common/VillageSelector/VillageSelectorOrgUnitStage";
@@ -16,12 +12,8 @@ import useCommunityDeathDetailRules from "./useCommunityDeathDetailRules";
 
 const CommunityDeathDetail = () => {
   const { t } = useTranslation();
-  const { programs } = useMetadataStore(
-    useShallow((state) => ({ programs: state.programs }))
-  );
-  const { layout } = useTrackerCaptureStore(
-    useShallow((state) => ({ layout: state.layout }))
-  );
+  const { programs } = useMetadataStore(useShallow((state) => ({ programs: state.programs })));
+  const { layout } = useTrackerCaptureStore(useShallow((state) => ({ layout: state.layout })));
 
   const { hiddenFields } = useCommunityDeathDetailRules();
 
@@ -29,9 +21,7 @@ const CommunityDeathDetail = () => {
   let programStage = null;
 
   if (communityDeathProgram) {
-    programStage = communityDeathProgram.programStages.find(
-      (e) => e.id === "d7Q9zL8yYpA"
-    );
+    programStage = communityDeathProgram.programStages.find((e) => e.id === "d7Q9zL8yYpA");
   }
 
   const shouldDisplayRow = (row) => {
@@ -57,23 +47,15 @@ const CommunityDeathDetail = () => {
                             variant="outlined"
                             saveGeo={true}
                             disabled={false}
-                            VillageSelectorIds={[
-                              "J8ptEYl6IuC",
-                              "Dp3e82RfKhz",
-                              "QE48InnEP6T"
-                            ]}
+                            labels={["hello", "hello2", "hello3"]}
+                            VillageSelectorIds={["J8ptEYl6IuC", "Dp3e82RfKhz", "QE48InnEP6T"]}
                           />
                         </TableCell>
                       </TableRow>
 
                       {/* HRwRhEljEtJ Field */}
                       {shouldDisplayRow(row) && (
-                        <RowMapper
-                          context="event"
-                          tableName={table.tableName}
-                          rows={[row]}
-                          editable={layout.eventFormEditing}
-                        />
+                        <RowMapper context="event" tableName={table.tableName} rows={[row]} editable={layout.eventFormEditing} />
                       )}
                     </React.Fragment>
                   );
@@ -81,13 +63,7 @@ const CommunityDeathDetail = () => {
 
                 // Regular fields rendering
                 return shouldDisplayRow(row) ? (
-                  <RowMapper
-                    key={index}
-                    context="event"
-                    tableName={table.tableName}
-                    rows={[row]}
-                    editable={layout.eventFormEditing}
-                  />
+                  <RowMapper key={index} context="event" tableName={table.tableName} rows={[row]} editable={layout.eventFormEditing} />
                 ) : null;
               })}
             </TableBody>

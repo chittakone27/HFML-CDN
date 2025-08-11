@@ -6,11 +6,17 @@ import Cascader from "@/ui/common/Cascader/Cascader";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useTranslation } from "react-i18next";
+import { pickTranslation } from "@/utils/utils";
 
 const VillageSelectorOrgUnitStage = ({ variant, VillageSelectorIds, saveGeo, disabled }) => {
   const { i18n } = useTranslation();
-  const orgUnits = useMetadataStore((state) => state.orgUnits, shallow);
-  const programs = useMetadataStore((state) => state.programs, shallow);
+  const { orgUnits, programs, dataElements } = useMetadataStore(
+    useShallow((state) => ({
+      orgUnits: state.orgUnits,
+      programs: state.programs,
+      dataElements: state.dataElements
+    }))
+  );
 
   const { actions, layout, data } = useTrackerCaptureStore(
     useShallow((state) => ({
@@ -40,15 +46,9 @@ const VillageSelectorOrgUnitStage = ({ variant, VillageSelectorIds, saveGeo, dis
   const options = generateVillageSelectorOptionsById(provinces, districts, villages, i18n.language);
 
   const labels = useMemo(() => {
-    const stage = programs
-      .find((p) => p.id === "d9eJlJsqplx") 
-      ?.programStages.find((s) => s.id === "d7Q9zL8yYpA");
-
-    const elements = stage?.programStageDataElements.map((psde) => psde.dataElement) || [];
-
     return VillageSelectorIds.map((id) => {
-      const match = elements.find((de) => de.id === id);
-      return match?.displayFormName || id;
+      const match = dataElements.find((de) => de.id === id);
+      return match ? pickTranslation(match, i18n.language, "FORM_NAME") : "";
     });
   }, [programs, VillageSelectorIds]);
 
