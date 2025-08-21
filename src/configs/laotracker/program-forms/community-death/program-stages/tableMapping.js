@@ -53,6 +53,13 @@ const listTables = [
       ],
       [
         {
+          id: "HwYXxOEKkVm", // Details of cause of death
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
+      [
+        {
           id: "HRwRhEljEtJ", // Unit
           labelCellProps: { className: "adr-table-cell" },
           fieldCellProps: { className: "adr-table-cell" }
@@ -131,5 +138,6 @@ const listTables = [
     ]
   }
 ];
+
 
 export { listTables };
