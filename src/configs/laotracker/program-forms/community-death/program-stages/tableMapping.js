@@ -37,7 +37,7 @@ const listTables = [
           fieldCellProps: { className: "adr-table-cell" }
         }
       ],
-            [
+      [
         {
           id: "QvX65zeRteX", // Cause of death
           labelCellProps: { className: "adr-table-cell" },
