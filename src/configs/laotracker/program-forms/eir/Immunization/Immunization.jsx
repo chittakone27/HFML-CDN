@@ -133,7 +133,7 @@ const Immunization = () => {
         <div style={{ padding: "0px 25px 25px 25px" }}>
           <Input
             minDate={minDate}
-            maxDate={format(add(new Date(), { years: 1 }), "yyyy-MM-dd")}
+            maxDate={format(add(new Date(), { years: 2 }), "yyyy-MM-dd")}
             value={dueDate}
             label={pickDueDateLabel(currentProgramStage)}
             valueType="DATE"
