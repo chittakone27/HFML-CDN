@@ -31,12 +31,14 @@ const useGrowthMonitorRules = () => {
       changeDataValue(currentEvent.event, "DxOqZZgVQhF", ageInWeeks);
       changeDataValue(currentEvent.event, "MV1yoC7BfnG", ageInMonths);
       if (ageInMonths < 6 ) {
+        tempHiddenFields.push("GVHTqqwolWD","bTz0sXjXF4I","VUn6z5bss2H","fwerjuyn3QC");
+      } else if (ageInMonths >= 6 && ageInMonths < 12) {
         tempHiddenFields.push("bTz0sXjXF4I","VUn6z5bss2H","fwerjuyn3QC");
-      } else if (ageInMonths >= 6 && ageInMonths< 60) {
+      }else if (ageInMonths >= 12 && ageInMonths < 60) {
         tempHiddenFields.push("GVHTqqwolWD");
       } else if (ageInMonths >= 60){
         tempHiddenFields.push("bTz0sXjXF4I","VUn6z5bss2H","fwerjuyn3QC","GVHTqqwolWD");
-      } else if (ageInMonths < 12 || ageInMonths > 59) {
+      } else if (ageInMonths < 12 || ageInMonths > 60) {
         tempHiddenFields.push("DzNWdRvRB11");
       }
       for (const hiddenField of tempHiddenFields) {
