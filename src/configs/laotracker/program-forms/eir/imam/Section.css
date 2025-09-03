@@ -1,0 +1,59 @@
+/* =========================
+   Card-like section wrapper
+   ========================= */
+.imam-section-container {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #e1e1e1;
+  border-radius: 6px;
+  overflow: hidden; /* ensures rounded corners for header/table */
+  background: #fff;
+}
+
+/* Header bar */
+.imam-section-header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  background-color: #ededed;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+
+
+
+/* Label column look (scoped) */
+.imam-section-body .field-row .label,
+.imam-section-body .FieldRow .label {
+  width: 320px;
+  background: #fafafa;
+}
+
+
+.imam-childstatus-grid {
+  padding: 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two equal columns */
+  column-gap: 20px;
+  row-gap: 0;
+}
+
+.imam-childstatus-grid > .imam-grid-subheader {
+  padding: 6px 10px;
+  font-weight: 600;
+  background: #efefef;
+  border: 1px solid #e3e3e3;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+}
+
+.imam-childstatus-grid > .imam-grid-cell {
+  padding-left: 0;
+  background: #fff;
+  border-bottom: 0;
+  border: 1px solid #e3e3e3;
+}
+
