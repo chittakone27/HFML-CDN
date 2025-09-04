@@ -166,7 +166,7 @@ const Stage = () => {
                 </FieldRow>,
                 currentEvent.eventDate && (
                   <FieldRow
-                    key="NtnqZYgVfZ5" // type of visit
+                    key="NtnqZYgVfZ5"
                     type="dataElement"
                     id={"NtnqZYgVfZ5"}
                     {...props["NtnqZYgVfZ5"]}

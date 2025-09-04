@@ -25,3 +25,8 @@ export const BG_COLORS = {
   YELLOW: "#f8d66d",
   ORANGE: "#ffb54c"
 };
+export const MIN_LIMIT = {
+  HEIGHT: 30,   // cm
+  WEIGHT: 1,    // kg
+  MUAC: 2       // cm
+};

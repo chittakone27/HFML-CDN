@@ -1,4 +1,4 @@
-import { Box, Table, TableBody, Alert, Typography } from "@mui/material";
+import { Box, Table, TableBody, TableRow, TableCell, Typography, Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
@@ -17,17 +17,17 @@ import { CHILD_NUTRI_SECTION_UI } from "./mapping";
 import "./GrowthMonitoring.css";
 import "../eir.css";
 
-const AGE_IN_MONTHS_ID = "MV1yoC7BfnG";
-const AGE_IN_WEEKS_ID = "DxOqZZgVQhF";
+const NOTE_AFTER_ID = "ATIQuAZ9lU0";
+const NOTE_TEXT =
+  'ຈໍານວນຢາ/ອາຫານເສີມ ທີ່ສະຖານທີ່ບໍລິການຈ່າຍໃຫ້ແກ່ຜູ້ປ່ວຍ ບໍ່ລວມຈຳນວນຢາທີ່ຂຽນໃບສັ່ງໃຫ້ຜູ້ປ່ວຍໄປຊື້ຢູ່ນອກ.';
 
-const GrowthMonitoring = () => {
+const SickChild = () => {
   const { t } = useTranslation();
   const { program } = useSelectionStore(
     useShallow((state) => ({
       program: state.program
     }))
   );
-
   const growthMonitorStage = program.programStages.find(
     (progState) => progState.id === GROWTH_MONITOR_ID
   );
@@ -37,39 +37,10 @@ const GrowthMonitoring = () => {
   useDetailSectionRules();
   const childNutriDeProps = useChildNutritionStatusRules();
 
-  // helper: does this section contain either of the age fields?
-  const sectionHasAgeFields = (pss) =>
-    pss?.dataElements?.some((de) =>
-      [AGE_IN_MONTHS_ID, AGE_IN_WEEKS_ID].includes(de.id)
-    );
-
-  // the message block to show above age fields
-  const AgeNotice = () => (
-    <Alert
-      severity="info"
-      icon={false}
-      sx={{
-        mb: 1.5,
-        borderRadius: 2,
-        "& .MuiAlert-message": { width: "100%" },
-      }}
-    >
-      <Typography variant="body2">
-        ອາຍຸຂອງເດັກ ແມ່ນໄລ່ຈາກວັນເດືອນປີເກີດ ຮອດວັນທີມາຮັບການບໍລິການ. ຖ້າຫາກວ່າອາຍຸປາກົດວ່າບໍ່ຖືກຕ້ອງ,
-        ກະລຸນາກວດສອບວັນທີມາຮັບການບໍລິການ ແລະ ວັນເດືອນປີເກີດຂອງເດັກ
-      </Typography>
-    </Alert>
-  );
-
   return (
     <Box className="eir-growth-monitor-form">
       {programStageSections.map((pss) => {
-        const visibleDes = pss.dataElements.filter(
-          (de) => !hiddenFields.includes(de.id)
-        );
-
-        // Build default table rows
-        const tableConfigs = visibleDes.map((de) => [{ id: de.id }]);
+        const visibleDes = pss.dataElements.filter((de) => !hiddenFields.includes(de.id));
 
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
@@ -92,7 +63,6 @@ const GrowthMonitoring = () => {
                     };
                     return [newConfigObj];
                   });
-
                   return (
                     <SectionCollapse
                       key={col["colTitle"]}
@@ -117,8 +87,9 @@ const GrowthMonitoring = () => {
           );
         }
 
-        // Non-child-nutrition sections
-        const showAgeNotice = sectionHasAgeFields(pss);
+        // default sections: inject an Alert row after NOTE_AFTER_ID if visible
+        const tableConfigs = visibleDes.map((de) => [{ id: de.id }]);
+        const noteIndex = visibleDes.findIndex((de) => de.id === NOTE_AFTER_ID);
 
         return (
           <SectionCollapse
@@ -127,16 +98,40 @@ const GrowthMonitoring = () => {
             disabledCollapse
             sx={{ marginBottom: "10px" }}
           >
-            {/* Inject the notice above the table if this section has age fields */}
-            {showAgeNotice && <AgeNotice />}
-
             <Table>
               <TableBody>
-                <RowMapper
-                  rows={tableConfigs}
-                  tableName={pss.displayName}
-                  context="event"
-                />
+                {noteIndex === -1 ? (
+                  <RowMapper rows={tableConfigs} tableName={pss.displayName} context="event" />
+                ) : (
+                  <>
+                    <RowMapper
+                      rows={tableConfigs.slice(0, noteIndex + 1)}
+                      tableName={pss.displayName}
+                      context="event"
+                    />
+                    <TableRow>
+                      <TableCell sx={{ border: 0, pt: 0, pb: 1 }} colSpan={1000}>
+                        <Alert
+                          severity="info"
+                          icon={false}
+                          sx={{
+                            borderRadius: 2,
+                            "& .MuiAlert-message": { width: "100%" },
+                            py: 0.75,
+                            px: 1.25,
+                          }}
+                        >
+                          <Typography variant="body2">{NOTE_TEXT}</Typography>
+                        </Alert>
+                      </TableCell>
+                    </TableRow>
+                    <RowMapper
+                      rows={tableConfigs.slice(noteIndex + 1)}
+                      tableName={pss.displayName}
+                      context="event"
+                    />
+                  </>
+                )}
               </TableBody>
             </Table>
           </SectionCollapse>
@@ -146,4 +141,4 @@ const GrowthMonitoring = () => {
   );
 };
 
-export default withEventDate(GrowthMonitoring, "eventDate");
+export default withEventDate(SickChild, "eventDate");

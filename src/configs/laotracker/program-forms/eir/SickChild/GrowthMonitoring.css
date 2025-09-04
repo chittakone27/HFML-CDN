@@ -1,0 +1,29 @@
+.eir-growth-monitor-form {
+  padding: 10px 0;
+}
+
+.eir-growth-monitor-form table td,
+.eir-growth-monitor-form table th {
+  padding: 6px 10px;
+}
+
+.eir-growth-monitor-form table tr:last-child td {
+  border-bottom: 0;
+}
+
+.eir-growth-monitor-form table td:nth-child(1) {
+  width: 300px;
+}
+
+.eir-growth-monitor-form .child-nutri-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .child-nutri-container .MuiBox-root {
+    padding: 5px;
+} */
+
+.eir-growth-monitor-form .child-nutri-container .MuiTypography-body2 {
+  font-size: 0.8rem;
+}

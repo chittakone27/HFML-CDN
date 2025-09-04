@@ -1,14 +1,44 @@
-div#ecd-container .MuiTable-root {
+/* Scope everything to ECD container */
+#ecd-container.eir-growth-monitor-form {
+  padding: 10px 0;
+}
+
+/* Override MUI cell padding */
+#ecd-container.eir-growth-monitor-form .MuiTableCell-root {
+  padding: 6px 10px !important;
+}
+
+/* Remove bottom border on the last row */
+#ecd-container.eir-growth-monitor-form .MuiTableRow-root:last-child .MuiTableCell-root {
+  border-bottom: 0 !important;
+}
+
+/* First column width */
+#ecd-container.eir-growth-monitor-form .MuiTableRow-root > .MuiTableCell-root:first-of-type {
+  width: 300px !important;
+}
+
+/* Optional: container used in your form layout */
+#ecd-container.eir-growth-monitor-form .child-nutri-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Tighter helper text */
+#ecd-container.eir-growth-monitor-form .child-nutri-container .MuiTypography-body2 {
+  font-size: 0.8rem;
+}
+
+/* Keep your existing rounded table look */
+#ecd-container .MuiTable-root {
   border-radius: 5px;
   border-collapse: separate !important;
 }
-
-div#ecd-container .MuiTableRow-root td:first-child {
+#ecd-container .MuiTableRow-root td:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
 }
-
-div#ecd-container .MuiTableRow-root td:last-child {
+#ecd-container .MuiTableRow-root td:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
