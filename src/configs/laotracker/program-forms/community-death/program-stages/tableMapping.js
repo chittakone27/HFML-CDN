@@ -135,10 +135,25 @@ const listTables = [
           fieldCellProps: { className: "adr-table-cell" }
         }
       ],
+      [
+        {
+          display: "text",
+          text: "5. ການລົງສໍາພາດຄົວເຮືອນ ເພື່ອຊອກຫາສາເຫດການເສຍຊີວິດ / Verbal Autopsy",
+          cellProps: { colSpan: 2, className: "adr-table-title" }
+        }
+      ],
+      [
+        {
+          id: "bGtSTEprQfa", // Tentative date of Verbal Autopsy
+          labelCellProps: { className: "adr-table-cell" },
+          fieldCellProps: { className: "adr-table-cell" }
+        }
+      ],
     ]
   }
 ];
 
 
 export { listTables };
+
 
