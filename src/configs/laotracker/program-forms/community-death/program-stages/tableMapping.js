@@ -152,8 +152,4 @@ const listTables = [
     ]
   }
 ];
-
-
 export { listTables };
-
-
