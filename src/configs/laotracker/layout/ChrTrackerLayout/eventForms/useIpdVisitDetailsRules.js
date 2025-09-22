@@ -2,7 +2,10 @@ import { useShallow } from "zustand/react/shallow";
 import useChrTrackerStore from "../state";
 import { useEffect, useState } from "react";
 import { DATA_ELEMENTS, ATTRIBUTES } from "./ipdVisitDetailsConst";
-import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
+import {
+  findAttributeValue,
+  findDataValue,
+} from "@/configs/laotracker/common/utils";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { isAfter, isBefore, format } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -18,7 +21,7 @@ const {
   OUTSIDE_DISTRICT,
   IPD_MAIN_DIAGNOSIS_ICD10,
   IDC10_CAUSE_GROUP,
-  IPD_TREATMENT_TYPE
+  IPD_TREATMENT_TYPE,
 } = DATA_ELEMENTS;
 const { DOB, SEX, VILLAGE } = ATTRIBUTES;
 
@@ -27,12 +30,12 @@ const useIpdVisitDetailsRules = () => {
   const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
       event: state.event,
-      actions: state.actions
+      actions: state.actions,
     }))
   );
   const { data } = useTrackerCaptureStore(
     useShallow((state) => ({
-      data: state.data
+      data: state.data,
     }))
   );
 
@@ -43,13 +46,13 @@ const useIpdVisitDetailsRules = () => {
     hiddenFields: [],
     fieldProps: {
       [DATE_OF_DEATH]: {},
-      eventDate: {},
-      preConditions: { [IS_PREGNANT_ID]: {} }
-    }
+      eventDate: { helpers: [] },
+      preConditions: { [IS_PREGNANT_ID]: {} },
+    },
   });
   const { orgUnits } = useMetadataStore(
     useShallow((state) => ({
-      orgUnits: state.orgUnits
+      orgUnits: state.orgUnits,
     }))
   );
   const { currentTei } = data;
@@ -57,7 +60,9 @@ const useIpdVisitDetailsRules = () => {
   const { setEvent, changeDataValue, changeEventProperty } = actions;
 
   const findCustomAttributeValue = (attribute, attributes) => {
-    const foundAttributeValue = attributes.find((attr) => attr.attribute.id === attribute);
+    const foundAttributeValue = attributes.find(
+      (attr) => attr.attribute.id === attribute
+    );
 
     return foundAttributeValue ? foundAttributeValue.value : "";
   };
@@ -70,7 +75,10 @@ const useIpdVisitDetailsRules = () => {
       ageInYears = dischargeDateValue.getFullYear() - dobValue.getFullYear();
       const m = dischargeDateValue.getMonth() - dobValue.getMonth();
 
-      if (m < 0 || (m === 0 && dischargeDateValue.getDate() < dobValue.getDate())) {
+      if (
+        m < 0 ||
+        (m === 0 && dischargeDateValue.getDate() < dobValue.getDate())
+      ) {
         ageInYears--;
       }
     }
@@ -83,8 +91,14 @@ const useIpdVisitDetailsRules = () => {
     const sex = findAttributeValue(currentTei, SEX);
     const ageAtVisit = calculateAgeInYears(dob, eventDate);
     const village = findAttributeValue(currentTei, VILLAGE);
-    const admissionDate = findDataValue(currentEvent.dataValues, IPD_ADMISSION_DATE);
-    const ipdStatusAtDischarge = findDataValue(currentEvent.dataValues, IPD_STATUS_AT_DISCHARGE);
+    const admissionDate = findDataValue(
+      currentEvent.dataValues,
+      IPD_ADMISSION_DATE
+    );
+    const ipdStatusAtDischarge = findDataValue(
+      currentEvent.dataValues,
+      IPD_STATUS_AT_DISCHARGE
+    );
     const dateOfDeath = findDataValue(currentEvent.dataValues, DATE_OF_DEATH);
     const currentHiddenFields = [
       "dLIPYO8wooC",
@@ -94,19 +108,19 @@ const useIpdVisitDetailsRules = () => {
       "ZwwgoOLFry8",
       "CuKwviFco3q",
       "NqPZMFyhtkj",
-      "myFEAEFK8SR"
+      "myFEAEFK8SR",
     ];
     const currentDisabledFields = [];
     const currentFieldProps = {
       [DATE_OF_DEATH]: {},
-      eventDate: {},
-      preConditions: { [IS_PREGNANT_ID]: {} }
+      eventDate: { helpers: [] },
+      preConditions: { [IS_PREGNANT_ID]: {} },
     };
 
     //Max admission date is event date
     currentFieldProps[IPD_ADMISSION_DATE] = {
       maxDate: format(new Date(eventDate), "yyyy-MM-dd"),
-      helpers: []
+      helpers: [],
     };
 
     //Assign client age at visit automatically
@@ -117,20 +131,20 @@ const useIpdVisitDetailsRules = () => {
     if (isAfter(new Date(admissionDate), new Date(eventDate))) {
       currentFieldProps[IPD_ADMISSION_DATE].helpers.push({
         type: "ERROR",
-        value: t("admissionDateMustBeBeforeDischargeDate")
+        value: t("admissionDateMustBeBeforeDischargeDate"),
       });
     }
     if (isBefore(new Date(admissionDate), new Date(dob))) {
       currentFieldProps[IPD_ADMISSION_DATE].helpers.push({
         type: "ERROR",
-        value: t("admissionDateMustBeAfterDateOfBirth")
+        value: t("admissionDateMustBeAfterDateOfBirth"),
       });
     }
     //Discharge date must be >= DOB
     if (isBefore(new Date(eventDate), new Date(dob))) {
       currentFieldProps.eventDate.helpers.push({
         type: "ERROR",
-        value: t("dischargeDateMustBeAfterDateOfBirth")
+        value: t("dischargeDateMustBeAfterDateOfBirth"),
       });
     }
 
@@ -147,16 +161,16 @@ const useIpdVisitDetailsRules = () => {
         currentFieldProps[DATE_OF_DEATH].helpers = [
           {
             type: "ERROR",
-            value: t("dateOfDeathIsMandatory")
-          }
+            value: t("dateOfDeathIsMandatory"),
+          },
         ];
       } else {
         if (isAfter(new Date(dateOfDeath), new Date(eventDate))) {
           currentFieldProps[DATE_OF_DEATH].helpers = [
             {
               type: "ERROR",
-              value: t("dateOfDeathMustNotAfterDischargeDate")
-            }
+              value: t("dateOfDeathMustNotAfterDischargeDate"),
+            },
           ];
         }
       }
@@ -167,13 +181,23 @@ const useIpdVisitDetailsRules = () => {
 
     //Assign discharge date (event date) automatically
     if (!eventDate) {
-      changeEventProperty(currentEvent.event, "eventDate", format(new Date(), "yyyy-MM-dd"));
+      changeEventProperty(
+        currentEvent.event,
+        "eventDate",
+        format(new Date(), "yyyy-MM-dd")
+      );
     }
 
     //Assign outside province/district automatically
     const foundVillage = orgUnits.find((ou) => ou.id === village);
-    const foundVillageProvince = findCustomAttributeValue("AExdcxSHkXj", foundVillage.attributeValues);
-    const foundVillageDistrict = findCustomAttributeValue("DUuCROLcoik", foundVillage.attributeValues);
+    const foundVillageProvince = findCustomAttributeValue(
+      "AExdcxSHkXj",
+      foundVillage.attributeValues
+    );
+    const foundVillageDistrict = findCustomAttributeValue(
+      "DUuCROLcoik",
+      foundVillage.attributeValues
+    );
     if (foundVillage && foundVillageProvince && foundVillageDistrict) {
       const facilityAncestors = orgUnit.ancestors.map((a) => a.id);
       const outsideProvince = !facilityAncestors.includes(foundVillageProvince);
@@ -195,7 +219,7 @@ const useIpdVisitDetailsRules = () => {
     const currentProps = {
       hiddenFields: currentHiddenFields,
       disabledFields: currentDisabledFields,
-      fieldProps: currentFieldProps
+      fieldProps: currentFieldProps,
     };
     setProps({ ...currentProps });
     const errors = [];
