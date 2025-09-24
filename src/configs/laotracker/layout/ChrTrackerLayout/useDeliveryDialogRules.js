@@ -12,10 +12,11 @@ const useDeliveryDialogRules = (tab) => {
   const [completeDeliveryErrors, setCompleteDeliveryErrors] = useState([]);
   const data = useTrackerCaptureStore((state) => state.data);
   const { currentTei } = data;
-  const { dataElements, trackedEntityAttributes } = useMetadataStore(
+  const { dataElements, trackedEntityAttributes, programs } = useMetadataStore(
     useShallow((state) => ({
       dataElements: state.dataElements,
-      trackedEntityAttributes: state.trackedEntityAttributes
+      trackedEntityAttributes: state.trackedEntityAttributes,
+      programs: state.programs
     }))
   );
   const { event, actions } = useChrTrackerStore(
@@ -27,7 +28,8 @@ const useDeliveryDialogRules = (tab) => {
   const { currentEvent, order } = event;
   const { changeDataValue } = actions;
   const foundSexAttribute = trackedEntityAttributes.find((tea) => tea.id === "DmuazFb368B");
-
+  const foundEirProgram = programs.find((p) => p.id === "Yj9cJ34AXw6");
+  const foundBirthDetailsStage = foundEirProgram.programStages.find((ps) => ps.id === "bwGkn5ebqkD");
   useEffect(() => {
     const currentBasicErrors = [];
     const currentCompleteDeliveryErrors = [];
@@ -52,6 +54,17 @@ const useDeliveryDialogRules = (tab) => {
           if (tab === 1) {
             const foundIndex = order.findIndex((o) => o === "DmuazFb368B");
             mandatoryFields.push(foundIndex + 1 + ". " + pickTranslation(foundSexAttribute, i18n.language, "name"));
+            const foundBirthDetailEvent = child.enrollments[0].events.find((ev) => ev.programStage === "bwGkn5ebqkD");
+            foundBirthDetailsStage.programStageDataElements.forEach((psde) => {
+              if (psde.compulsory) {
+                const foundIndex = order.findIndex((o) => o === psde.dataElement.id);
+                const foundValue = findDataValue(foundBirthDetailEvent.dataValues, psde.dataElement.id);
+                if (!foundValue) {
+                  const foundDataElement = dataElements.find((de) => de.id === psde.dataElement.id);
+                  mandatoryFields.push(foundIndex + 1 + ". " + pickTranslation(foundDataElement, i18n.language, "name"));
+                }
+              }
+            });
           }
         }
       });

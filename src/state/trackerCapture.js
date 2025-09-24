@@ -235,7 +235,7 @@ const useTrackerCaptureStore = create((set, get) => ({
             return enr.program === program && enr.status === "ACTIVE";
           });
 
-          const foundEnrollment = foundActiveEnrollment ? foundActiveEnrollment : foundEnrollments[0];
+          const foundEnrollment = foundActiveEnrollment ? foundActiveEnrollment : foundEnrollments[0] ? foundEnrollments[0] : {};
           const currentEvents = [];
           foundEnrollments.forEach((fe) => {
             fe.events.forEach((ev) => {
@@ -246,7 +246,9 @@ const useTrackerCaptureStore = create((set, get) => ({
           state.data.currentEvents = currentEvents;
           state.data.currentTei = tei;
           state.data.currentEnrollments = _.cloneDeep(tei.enrollments);
-          delete foundEnrollment.events;
+          if (foundEnrollment) {
+            delete foundEnrollment.events;
+          }
           state.data.currentEnrollment = foundEnrollment;
           delete tei.enrollments;
         })

@@ -15,6 +15,7 @@ import { tracker } from "@/api";
 import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
+import useMetadataStore from "@/state/metadata";
 import { pull } from "@/utils/fetch";
 import Swal from "sweetalert2";
 
@@ -43,6 +44,13 @@ const DeliveryDialog = () => {
       actions: state.actions
     }))
   );
+  const { programs } = useMetadataStore(
+    useShallow((state) => ({
+      programs: state.programs
+    }))
+  );
+
+  const foundEirProgram = programs.find((p) => p.id === "Yj9cJ34AXw6");
   const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
 
   const { setEvent, changeDataValue, changeEventProperty } = actions;
@@ -69,7 +77,10 @@ const DeliveryDialog = () => {
       setEvent("order", order);
     }
     if (tab === 1) {
-      let order = ["chid", "DmuazFb368B"];
+      const foundBirthDetailsStage = foundEirProgram.programStages.find((ps) => ps.id === "bwGkn5ebqkD");
+      const pss = foundBirthDetailsStage.programStageSections[0];
+      const dataElements = pss.dataElements.map((pssde) => pssde.id);
+      let order = ["chid", "DmuazFb368B", ...dataElements];
       setEvent("order", order);
     }
   }, [tab]);

@@ -11,6 +11,7 @@ import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { format } from "date-fns";
 import EventFormDialog from "./EventFormDialog";
+import _ from "lodash";
 const LEGEND = {
   ACTIVE: "#faf3c8",
   COMPLETED: "#e3e3e3",

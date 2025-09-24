@@ -84,15 +84,24 @@ const Profile = ({ title }) => {
   };
 
   const doEnroll = async (tei) => {
-    const currentProgramEnrollment = createCurrentProgramEnrollment(tei);
-    const currProgramEnrResult = await saveEnrollment(currentProgramEnrollment);
-    const chrEnrollmentResult = await pull(
-      `/api/routes/chr/run?work=register&tei=${currentProgramEnrollment.trackedEntityInstance}&program=${program.id}`
-    );
-    if (chrEnrollmentResult && currProgramEnrResult.ok) {
-      const result = await getTeiById(program.id, tei.trackedEntityInstance);
-      actions.initData(result, program.id, orgUnit.id);
-      actions.setLayout("layout", "layout3");
+    if (program.id === "AyPkCOMmgdd") {
+      const chrEnrollmentResult = await pull(`/api/routes/chr/run?work=register&tei=${tei.trackedEntityInstance}&program=${program.id}`);
+      if (chrEnrollmentResult) {
+        const result = await getTeiById(program.id, tei.trackedEntityInstance);
+        actions.initData(result, program.id, orgUnit.id);
+        actions.setLayout("layout", "layout3");
+      }
+    } else {
+      const currentProgramEnrollment = createCurrentProgramEnrollment(tei);
+      const currProgramEnrResult = await saveEnrollment(currentProgramEnrollment);
+      const chrEnrollmentResult = await pull(
+        `/api/routes/chr/run?work=register&tei=${currentProgramEnrollment.trackedEntityInstance}&program=${program.id}`
+      );
+      if (chrEnrollmentResult && currProgramEnrResult.ok) {
+        const result = await getTeiById(program.id, tei.trackedEntityInstance);
+        actions.initData(result, program.id, orgUnit.id);
+        actions.setLayout("layout", "layout3");
+      }
     }
   };
 
