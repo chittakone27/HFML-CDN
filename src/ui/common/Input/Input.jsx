@@ -152,6 +152,14 @@ const Input = ({
             isOptionEqualToValue={(option, value) => {
               return value ? option.value === value.value : false;
             }}
+            filterOptions={(options, { inputValue }) => {
+              const searchValues = inputValue.split(" ").filter((v) => v);
+              return options.filter((option) => {
+                return searchValues.every((sv) => {
+                  return option.label.toLowerCase().includes(sv.toLowerCase());
+                });
+              });
+            }}
             size="small"
             fullWidth
             autoComplete={false}
