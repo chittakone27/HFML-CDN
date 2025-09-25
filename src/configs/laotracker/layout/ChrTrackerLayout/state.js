@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import produce from "immer";
+import _ from "lodash";
 
 const useChrTrackerStore = create((set, get) => ({
   profile: {
@@ -45,6 +46,25 @@ const useChrTrackerStore = create((set, get) => ({
           } else {
             state.event.currentEvent.dataValues[foundDataValueIndex].value = value;
           }
+        })
+      );
+    },
+    changeDataValues: (dataValues) => {
+      set(
+        produce((state) => {
+          const currentDataValues = _.cloneDeep(state.event.currentEvent.dataValues);
+          dataValues.forEach((dv) => {
+            const foundDataValueIndex = currentDataValues.findIndex((d) => d.dataElement === dv.dataElement);
+            if (foundDataValueIndex === -1) {
+              currentDataValues.push({
+                dataElement: dv.dataElement,
+                value: dv.value
+              });
+            } else {
+              currentDataValues[foundDataValueIndex].value = dv.value;
+            }
+          });
+          state.event.currentEvent.dataValues = currentDataValues;
         })
       );
     },

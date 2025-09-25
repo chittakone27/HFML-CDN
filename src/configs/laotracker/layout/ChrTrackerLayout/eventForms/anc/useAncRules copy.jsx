@@ -6,7 +6,7 @@ import { useShallow } from "zustand/react/shallow";
 import { add, sub, format, differenceInCalendarWeeks } from "date-fns";
 import { findDataValue } from "@/configs/laotracker/common/utils";
 import _ from "lodash";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "../../state";
 const {
   DIASTOLIC_BLOOD_PRESSURE,
   SYSTOLIC_BLOOD_PRESSURE,

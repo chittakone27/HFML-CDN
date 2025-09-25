@@ -3,10 +3,10 @@ import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { DATA_ELEMENTS } from "./pncConst";
 import { useShallow } from "zustand/react/shallow";
-import usePreviousEvents from "./usePreviousEvents";
+import usePreviousEvents from "../usePreviousEvents";
 import { findDataValue } from "@/configs/laotracker/common/utils";
 import { format, add } from "date-fns";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "../../state";
 const {
   SERVICES_TYPE,
   DIASTOLIC_BLOOD_PRESSURE,

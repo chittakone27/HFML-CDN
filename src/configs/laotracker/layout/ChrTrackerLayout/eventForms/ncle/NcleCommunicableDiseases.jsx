@@ -12,7 +12,7 @@ import VillageSelectorOrgUnitNoState from "@/configs/laotracker/common/VillageSe
 import BloodPressureField from "../BloodPressureField/BloodPressureField";
 import Row from "../Row";
 import { useShallow } from "zustand/react/shallow";
-import useAncRules from "./useAncRules";
+import useAncRules from "./anc/useAncRules";
 import useMetadataStore from "@/state/metadata";
 import useNcleCommunicableDiseasesRules from "./useNcleCommunicableDiseasesRules";
 import { Input } from "@/ui/common";

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dialog, Tabs, Tab, Popover, Alert, AlertTitle } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import DeliveryDetails from "./eventForms/DeliveryDetails";
-import Infant from "./eventForms/Infant";
+import DeliveryDetails from "./eventForms/delivery/DeliveryDetails";
+import Infant from "./eventForms/delivery/Infant";
 import BirthCertificateButton from "./BirthCertificateButton";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";

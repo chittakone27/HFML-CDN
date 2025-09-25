@@ -5,9 +5,9 @@ import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValue
 import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { useTranslation } from "react-i18next";
-import Row from "../Row";
+import Row from "@/configs/laotracker/layout/ChrTrackerLayout/Row";
 import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { pickExecutionDateLabel } from "@/utils/utils";

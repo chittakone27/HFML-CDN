@@ -1,18 +1,18 @@
+import { useEffect } from "react";
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import { useTranslation } from "react-i18next";
 import { pickExecutionDateLabel } from "@/utils/utils";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlurNoState";
 import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
 import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldNoState";
-import BloodPressureField from "../BloodPressureField/BloodPressureField";
-import Row from "../Row";
+import BloodPressureField from "@/configs/laotracker/layout/ChrTrackerLayout/BloodPressureField/BloodPressureField";
+import Row from "@/configs/laotracker/layout/ChrTrackerLayout/Row";
 import { useShallow } from "zustand/react/shallow";
-import usePncRules from "./usePncRules";
-import { useEffect } from "react";
+import useAncRules from "./useAncRules";
 
-const PncDetails = () => {
+const AncVisitDetails = () => {
   const { t } = useTranslation();
   const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
@@ -20,14 +20,23 @@ const PncDetails = () => {
       actions: state.actions
     }))
   );
+
   const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
-  const { disabledFields, hiddenFields, props } = usePncRules();
+  const { disabledFields, hiddenFields, helpers, props } = useAncRules();
+  // const disabledFields = [];
+  // const hiddenFields = [];
+  // const helpers = {};
+  // const props = {};
+
   useEffect(() => {
     let order = ["chid", "eventDate"];
     currentProgramStage.programStageSections.forEach((pss) => {
       pss.dataElements.forEach((de) => {
+        if (de.id === "TThw3XArMBK") {
+          return;
+        }
         order.push(de.id);
       });
     });
@@ -35,11 +44,11 @@ const PncDetails = () => {
   }, []);
 
   const generateSections = () => {
-    return currentProgramStage.programStageSections.map((pss, pssIndex) => {
+    return currentProgramStage.programStageSections.map((pss) => {
       return (
         <div className="ancpnc-section-container">
           <div>{pss.displayName}</div>
-          {pssIndex === 0 && (
+          {pss.id === "IoWawA1nSJw" && (
             <>
               <Row
                 label={
@@ -77,7 +86,17 @@ const PncDetails = () => {
             }
             switch (de.id) {
               case "tVPKjkXrMSB":
-                return <Row label={t("bloodPressure")} field={<BloodPressureField disabled={!editing || completed} />} />;
+                return (
+                  <Row
+                    label={
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        {index + 1}.&nbsp;
+                        {t("bloodPressure")}
+                      </div>
+                    }
+                    field={<BloodPressureField disabled={!editing || completed} />}
+                  />
+                );
               case "TThw3XArMBK":
               case "CLon1OEoS2k":
                 return null;
@@ -92,16 +111,17 @@ const PncDetails = () => {
                     }
                     field={
                       <DataValueFieldNoBlurNoState
+                        helpers={helpers[de.id]}
+                        disabled={!editing || completed || disabledFields.includes(de.id)}
+                        dataElement={de.id}
+                        currentProgramStage={currentProgramStage}
+                        currentEvent={currentEvent}
                         change={(value) => {
                           changeDataValue(de.id, value);
                         }}
                         accept={(value) => {
                           changeDataValue(de.id, value);
                         }}
-                        disabled={!editing || completed || disabledFields.includes(de.id)}
-                        dataElement={de.id}
-                        currentProgramStage={currentProgramStage}
-                        currentEvent={currentEvent}
                         {...props[de.id]}
                       />
                     }
@@ -116,6 +136,7 @@ const PncDetails = () => {
 
   return (
     <div className="ancpnc-anc-container">
+      {currentEvent.eventDate && generateSections()}
       {!currentEvent.eventDate && (
         <Row
           label={pickExecutionDateLabel(currentProgramStage, t)}
@@ -131,9 +152,8 @@ const PncDetails = () => {
           }
         />
       )}
-      {currentEvent.eventDate && generateSections()}
     </div>
   );
 };
 
-export default PncDetails;
+export default AncVisitDetails;
