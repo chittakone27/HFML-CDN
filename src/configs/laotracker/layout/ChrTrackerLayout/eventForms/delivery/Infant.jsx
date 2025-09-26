@@ -6,8 +6,7 @@ import Row from "@/configs/laotracker/layout/ChrTrackerLayout/Row";
 import { useTranslation } from "react-i18next";
 import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
-import _, { clone } from "lodash";
-import { useEffect } from "react";
+import _ from "lodash";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useInfantFormRules from "./useInfantFormRules";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
@@ -77,62 +76,63 @@ const Infant = ({ childIndex }) => {
     changeDataValue("lYdXxom1BAG", JSON.stringify(children));
   };
 
-  useEffect(() => {
-    const childAttributes = [
-      {
-        deliveryDataElementId: "grMMOiF9fPj",
-        eirTeaId: "tQeFLjYbqzv"
-      },
-      {
-        deliveryTeaId: "IEE2BMhfoSc",
-        eirTeaId: "RqEyvE6zcTE"
-      },
-      {
-        deliveryTeaId: "IBLkiaYRRL3",
-        eirTeaId: "WkHHrysFy3n"
-      },
-      {
-        deliveryTeaId: "r8bZppSsIvR",
-        eirTeaId: "r8bZppSsIvR"
-      },
-      {
-        deliveryTeaId: "oVwa5LfjnvA",
-        eirTeaId: "oVwa5LfjnvA"
-      },
-      {
-        deliveryTeaId: "UNiaP6Oz7Mv",
-        eirTeaId: "UNiaP6Oz7Mv"
-      },
-      {
-        deliveryTeaId: "RwoKpuIgMmA", //lgHRdU82IJv
-        eirTeaId: "DcMyN6eoyFD"
-      }
-    ];
-    const cloned = _.cloneDeep(currentChild);
-    childAttributes.forEach((attribute) => {
-      let value = "";
-      if (attribute.deliveryDataElementId) {
-        value = findDataValue(currentDeliveryEvent.dataValues, attribute.deliveryDataElementId);
-      } else {
-        value = findAttributeValue(currentTei, attribute.deliveryTeaId);
-      }
-      const foundAttributeIndex = cloned.attributes.findIndex((attr) => attr.attribute === attribute.eirTeaId);
-      if (foundAttributeIndex === -1) {
-        cloned.attributes.push({
-          attribute: attribute.eirTeaId,
-          value
-        });
-      } else {
-        cloned.attributes[foundAttributeIndex].value = value;
-      }
-    });
-    children[childIndex] = cloned;
-    changeDataValue("lYdXxom1BAG", JSON.stringify(children));
-  }, []);
+  // useEffect(() => {
+  //   const childAttributes = [
+  //     {
+  //       deliveryDataElementId: "grMMOiF9fPj",
+  //       eirTeaId: "tQeFLjYbqzv"
+  //     },
+  //     {
+  //       deliveryTeaId: "IEE2BMhfoSc",
+  //       eirTeaId: "RqEyvE6zcTE"
+  //     },
+  //     {
+  //       deliveryTeaId: "IBLkiaYRRL3",
+  //       eirTeaId: "WkHHrysFy3n"
+  //     },
+  //     {
+  //       deliveryTeaId: "r8bZppSsIvR",
+  //       eirTeaId: "r8bZppSsIvR"
+  //     },
+  //     {
+  //       deliveryTeaId: "oVwa5LfjnvA",
+  //       eirTeaId: "oVwa5LfjnvA"
+  //     },
+  //     {
+  //       deliveryTeaId: "UNiaP6Oz7Mv",
+  //       eirTeaId: "UNiaP6Oz7Mv"
+  //     },
+  //     {
+  //       deliveryTeaId: "RwoKpuIgMmA", //lgHRdU82IJv
+  //       eirTeaId: "DcMyN6eoyFD"
+  //     }
+  //   ];
+  //   const cloned = _.cloneDeep(currentChild);
+  //   childAttributes.forEach((attribute) => {
+  //     let value = "";
+  //     if (attribute.deliveryDataElementId) {
+  //       value = findDataValue(currentDeliveryEvent.dataValues, attribute.deliveryDataElementId);
+  //     } else {
+  //       value = findAttributeValue(currentTei, attribute.deliveryTeaId);
+  //     }
+  //     const foundAttributeIndex = cloned.attributes.findIndex((attr) => attr.attribute === attribute.eirTeaId);
+  //     if (foundAttributeIndex === -1) {
+  //       cloned.attributes.push({
+  //         attribute: attribute.eirTeaId,
+  //         value
+  //       });
+  //     } else {
+  //       cloned.attributes[foundAttributeIndex].value = value;
+  //     }
+  //   });
+  //   children[childIndex] = cloned;
+  //   changeDataValue("lYdXxom1BAG", JSON.stringify(children));
+  // }, []);
 
   const foundSex = findAttributeValue(currentChild, "DmuazFb368B");
   const foundChildHealthId = findAttributeValue(currentChild, "oPKsfqS64oE");
-  const props = useInfantFormRules(birthDetailsEvent, childIndex);
+  const { props, disabledFields } = useInfantFormRules(childIndex);
+  console.log(children);
 
   return (
     <div style={{ height: "100%" }}>
@@ -168,10 +168,6 @@ const Infant = ({ childIndex }) => {
           labelWidth={400}
         />
         {dataElements.map((de, index) => {
-          if (props[de] && props[de].hidden) {
-            return null;
-          }
-
           return (
             <Row
               label={
@@ -182,7 +178,7 @@ const Infant = ({ childIndex }) => {
               }
               field={
                 <DataValueFieldNoBlurNoState
-                  disabled={!editing || (props[de] && props[de].disabled)}
+                  disabled={!editing || disabledFields.includes(de)}
                   dataElement={de}
                   currentProgramStage={foundBirthDetailsStage}
                   currentEvent={birthDetailsEvent}

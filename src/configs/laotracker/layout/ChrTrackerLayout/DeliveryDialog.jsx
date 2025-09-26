@@ -51,7 +51,7 @@ const DeliveryDialog = () => {
   );
 
   const foundEirProgram = programs.find((p) => p.id === "Yj9cJ34AXw6");
-  const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
+  const { currentEnrollment, currentProgramStage, currentEvent, editing, formErrors } = event;
 
   const { setEvent, changeDataValue, changeEventProperty } = actions;
   const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState, deleteEnrollmentFromList } = trackerActions;
@@ -86,9 +86,9 @@ const DeliveryDialog = () => {
   }, [tab]);
 
   const updateInfants = () => {
-    if (!childTeisValue) {
-      let liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
-      liveBirths = liveBirths ? parseInt(liveBirths) : null;
+    let liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
+    liveBirths = liveBirths ? parseInt(liveBirths) : null;
+    if (!childTeisValue || children.length !== liveBirths) {
       if (liveBirths && liveBirths > 0) {
         const children = [];
         for (let i = 0; i < liveBirths; i++) {
@@ -157,7 +157,6 @@ const DeliveryDialog = () => {
         }
         return cloned;
       } else {
-        console.log("here here");
         return currentEvent;
       }
     } else {
@@ -165,9 +164,9 @@ const DeliveryDialog = () => {
     }
   };
 
-  const errors = useBasicRules();
+  // const errors = useBasicRules();
   const { basicErrors, completeDeliveryErrors } = useDeliveryDialogRules(tab);
-  const finalErrors = [...errors, ...basicErrors];
+  const finalErrors = [...basicErrors, ...formErrors];
   let ableToCompleteDelivery = true;
   if (completeDeliveryErrors.length > 0) {
     ableToCompleteDelivery = false;
@@ -180,6 +179,9 @@ const DeliveryDialog = () => {
     if (!childTeisValue) {
       ableToCompleteDelivery = false;
     }
+  }
+  if (finalErrors.length > 0) {
+    ableToCompleteDelivery = false;
   }
 
   const checkValid = () => {

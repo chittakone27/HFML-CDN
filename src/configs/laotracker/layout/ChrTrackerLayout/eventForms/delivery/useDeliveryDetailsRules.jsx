@@ -141,11 +141,15 @@ const useDeliveryDetailsRules = () => {
 
     //ASSIGN GPAL FROM ANC EVENT
     const foundAncEnrollment = currentEnrollments.find((en) => en.program === ANC_PROGRAM);
-    const ancEvents = foundAncEnrollment.events.filter((e) => e.programStage === ANC_PROGRAM_STAGE); //ANC program stage
-    const GPAL = findGPAL(ancEvents);
-    Object.keys(GPAL).forEach((key) => {
-      assignations.push({ dataElement: key, value: GPAL[key] });
-    });
+    if (foundAncEnrollment) {
+      const ancEvents = foundAncEnrollment.events.filter((e) => e.programStage === ANC_PROGRAM_STAGE); //ANC program stage
+      if (ancEvents.length > 0) {
+        const GPAL = findGPAL(ancEvents);
+        Object.keys(GPAL).forEach((key) => {
+          assignations.push({ dataElement: key, value: GPAL[key] });
+        });
+      }
+    }
 
     //DONT ALLOW ZERO IN LIVE BIRTHS
     if (dataValues[LIVE_BIRTHS] && dataValues[LIVE_BIRTHS][0] === "0") {
