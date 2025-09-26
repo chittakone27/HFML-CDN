@@ -8,6 +8,7 @@ import EventDateFieldNoState from "@/ui/TrackerCapture/EventForm/EventDateFieldN
 import { useEffect } from "react";
 import useSelectionStore from "@/state/selection";
 import { add } from "date-fns";
+import useFamilyPlanningRules from "./useFamilyPlanningRules";
 const FamilyPlanning = () => {
   const { event, actions } = useChrTrackerStore(
     useShallow((state) => ({
@@ -28,6 +29,8 @@ const FamilyPlanning = () => {
     });
     setEvent("order", order);
   }, []);
+
+  const { disabledFields, hiddenFields, props, helpers } = useFamilyPlanningRules();
 
   return (
     <div>
@@ -51,6 +54,9 @@ const FamilyPlanning = () => {
       />
       {programStageSection.dataElements.map((de, index) => {
         const foundIndex = order.findIndex((o) => o === de.id);
+        if (hiddenFields.includes(de.id)) {
+          return null;
+        }
         return (
           <Row
             label={
@@ -61,6 +67,7 @@ const FamilyPlanning = () => {
             }
             field={
               <DataValueFieldNoBlurNoState
+                helpers={helpers[de.id]}
                 change={(value) => {
                   changeDataValue(de.id, value);
                 }}
@@ -72,6 +79,7 @@ const FamilyPlanning = () => {
                 currentProgramStage={currentProgramStage}
                 currentEvent={currentEvent}
                 maxDate={currentEvent.eventDate ? add(new Date(currentEvent.eventDate), { years: 11 }) : null}
+                {...props[de.id]}
               />
             }
           />

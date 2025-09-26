@@ -23,7 +23,7 @@ const PncDetails = () => {
   const { currentEvent, currentProgramStage, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEvent && currentEvent.status === "COMPLETED";
-  const { disabledFields, hiddenFields, props } = usePncRules();
+  const { disabledFields, hiddenFields, props, helpers } = usePncRules();
   useEffect(() => {
     let order = ["chid", "eventDate"];
     currentProgramStage.programStageSections.forEach((pss) => {
@@ -92,6 +92,7 @@ const PncDetails = () => {
                     }
                     field={
                       <DataValueFieldNoBlurNoState
+                        helpers={helpers[de.id]}
                         change={(value) => {
                           changeDataValue(de.id, value);
                         }}

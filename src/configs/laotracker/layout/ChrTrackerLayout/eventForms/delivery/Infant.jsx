@@ -9,7 +9,7 @@ import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/u
 import _, { clone } from "lodash";
 import { useEffect } from "react";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-import { useInfantFormRules } from "./useDeliveryDetailsRules";
+import useInfantFormRules from "./useInfantFormRules";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
 import AttributeFieldNoState from "@/ui/TrackerCapture/Profile/AttributeFieldNoState";
 const Infant = ({ childIndex }) => {
