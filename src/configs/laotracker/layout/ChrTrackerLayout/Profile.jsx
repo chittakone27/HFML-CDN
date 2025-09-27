@@ -333,6 +333,23 @@ const Profile = ({ title }) => {
             </LoadingButton>
           )}
           &nbsp;
+          {layout.profileFormEditing && (
+            <LoadingButton
+              loading={loading}
+              variant="contained"
+              color="error"
+              onClick={async (event) => {
+                setLoading(true);
+                const result = await getTeiById(program.id, currentTei.trackedEntityInstance);
+                actions.initData(result, program.id, orgUnit.id);
+                setLayout("profileFormEditing", false);
+                setLoading(false);
+              }}
+            >
+              {t("cancel")}
+            </LoadingButton>
+          )}
+          {/* &nbsp;
           <LoadingButton
             loading={loading}
             variant="outlined"
@@ -342,7 +359,7 @@ const Profile = ({ title }) => {
             }}
           >
             {t("delete")}
-          </LoadingButton>
+          </LoadingButton> */}
           <Popover
             open={Boolean(editProfileAnchorEl)}
             anchorEl={editProfileAnchorEl}

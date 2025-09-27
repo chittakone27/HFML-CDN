@@ -60,7 +60,7 @@ const getUserRoles = async () => {
 
 const getOrgUnits = async () => {
   let ouResult;
-  if (VITE_CONFIG_NAME === "laotracker") {
+  if (VITE_CONFIG_NAME === "laotrackerr") {
     ouResult = await pull("/api/routes/cacher/run?type=orgUnits");
   } else {
     const results = await Promise.all([
@@ -133,7 +133,7 @@ const getCategoryCombos = async () => {
 
 const getOptionSets = async () => {
   let optionSetResult;
-  if (VITE_CONFIG_NAME === "laotracker") {
+  if (VITE_CONFIG_NAME === "laotrackerr") {
     optionSetResult = await pull("/api/routes/cacher/run?type=optionSets");
   } else {
     optionSetResult = await pull("/api/optionSets?fields=id,displayName,translations&paging=false");
