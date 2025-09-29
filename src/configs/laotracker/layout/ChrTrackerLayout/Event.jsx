@@ -83,12 +83,20 @@ const Event = ({ title }) => {
   }
   let disableNewEventButton = false;
   let notCompletedEvents = false;
-  currentEvents.forEach((ce) => {
+  let finalCurrentEvents = _.cloneDeep(currentEvents);
+  finalCurrentEvents.forEach((ce) => {
     if (ce.status !== "COMPLETED") {
       disableNewEventButton = true;
       notCompletedEvents = true;
     }
   });
+
+  finalCurrentEvents = [
+    ...finalCurrentEvents.filter((ce) => ce.status === "COMPLETED"),
+    ...finalCurrentEvents.filter((ce) => ce.status === "ACTIVE")
+  ];
+
+  console.log(currentEvents);
 
   if (currentEnrollment.status === "COMPLETED") {
     disableNewEventButton = true;
@@ -138,7 +146,7 @@ const Event = ({ title }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentEvents
+                {finalCurrentEvents
                   .filter((ce) => ce.programStage === currentProgramStage.id)
                   .map((ev) => {
                     const foundOu = orgUnits.find((ou) => ou.id === ev.orgUnit);
