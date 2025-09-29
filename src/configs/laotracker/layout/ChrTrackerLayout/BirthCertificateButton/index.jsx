@@ -108,17 +108,14 @@ const BirthCertificateButton = ({ loading, children }) => {
     locale,
     drawConfigs
   ) => {
-    console.log(valueField);
     const { width, height, textConfigs } = drawConfigs;
     const optSet = optionSets.find((os) => os.id === valueField.optSetId);
-    console.log(optSet);
     const option = optSet.options.find((o) => o.code === valueCode);
-    console.log(option);
     const displayName =
       locale !== "en"
-        ? option.translations.find(
+        ? option?.translations.find(
             (t) => t.locale === locale && t.property === "NAME"
-          )?.value
+          )?.value ?? ""
         : option?.displayName || "";
     pdfPage.drawText(displayName, {
       x: width - valueField.xMinusCoord,
@@ -151,17 +148,22 @@ const BirthCertificateButton = ({ loading, children }) => {
               (t) => t.locale === locale && t.property === "NAME"
             )?.value
           : orgUnit.displayName;
-      pdfPage.drawText(displayName, {
+      /* Remove org unit code */
+      const formattedName = displayName
+        .split(" ")
+        .filter((x) => !/\d+/g.test(x))
+        .join(" ");
+      pdfPage.drawText(formattedName, {
         x: width - xMinusCoord,
         y: height - yMinusCoord,
-        size: 10.5,
+        size: 9.5,
         ...textConfigs
       });
       if (titleCoords) {
-        pdfPage.drawText(displayName, {
+        pdfPage.drawText(formattedName, {
           x: width - titleCoords.xMinusCoord,
           y: height - titleCoords.yMinusCoord,
-          size: 10.5,
+          size: 9.5,
           ...textConfigs
         });
       }
@@ -180,7 +182,7 @@ const BirthCertificateButton = ({ loading, children }) => {
     pdfPage.drawText(valueStr, {
       x: width - valueField["xMinusCoord"],
       y: height - valueField["yMinusCoord"],
-      size: 12,
+      size: 11.5,
       ...textConfigs
     });
   };

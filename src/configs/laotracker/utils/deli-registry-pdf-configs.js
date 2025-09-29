@@ -3,13 +3,13 @@ export const VALUE_COORDS_CONFIGS = {
     {
       ID: "IEE2BMhfoSc",
       valueType: "TEXT",
-      xMinusCoord: 420,
+      xMinusCoord: 440,
       yMinusCoord: 350
     },
     {
       ID: "IBLkiaYRRL3",
       valueType: "TEXT",
-      xMinusCoord: 350,
+      xMinusCoord: 360,
       yMinusCoord: 350
     },
     {
