@@ -108,9 +108,12 @@ const BirthCertificateButton = ({ loading, children }) => {
     locale,
     drawConfigs
   ) => {
+    console.log(valueField);
     const { width, height, textConfigs } = drawConfigs;
     const optSet = optionSets.find((os) => os.id === valueField.optSetId);
+    console.log(optSet);
     const option = optSet.options.find((o) => o.code === valueCode);
+    console.log(option);
     const displayName =
       locale !== "en"
         ? option.translations.find(
