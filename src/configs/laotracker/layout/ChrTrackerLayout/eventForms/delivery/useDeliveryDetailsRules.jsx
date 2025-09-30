@@ -151,9 +151,17 @@ const useDeliveryDetailsRules = () => {
       }
     }
 
-    //DONT ALLOW ZERO IN LIVE BIRTHS
+    //DONT ALLOW ZERO IN LIVE BIRTHS AND STILL BIRTHS
     if (dataValues[LIVE_BIRTHS] && dataValues[LIVE_BIRTHS][0] === "0") {
       currentHelpers[LIVE_BIRTHS] = [
+        {
+          type: "ERROR",
+          value: t("zeroIsNotAllowed")
+        }
+      ];
+    }
+    if (dataValues[STILL_BIRTHS] && dataValues[STILL_BIRTHS][0] === "0") {
+      currentHelpers[STILL_BIRTHS] = [
         {
           type: "ERROR",
           value: t("zeroIsNotAllowed")

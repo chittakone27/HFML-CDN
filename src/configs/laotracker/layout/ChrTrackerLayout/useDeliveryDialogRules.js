@@ -55,7 +55,6 @@ const useDeliveryDialogRules = (tab) => {
         }
       });
     }
-    console.log(currentCompleteDeliveryErrors);
 
     if (tab === 0) {
       currentProgramStage.programStageDataElements.forEach((psde) => {

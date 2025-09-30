@@ -176,11 +176,11 @@ const Event = ({ title }) => {
                         <TableCell sx={{ fontSize: 12 }} align="left">
                           {convertDisplayDate(ev.eventDate)}
                         </TableCell>
-                        {!currentProgramStage.hideDueDate && (
+                        {/* {!currentProgramStage.hideDueDate && (
                           <TableCell sx={{ fontSize: 12 }} align="left">
                             {convertDisplayDate(ev.dueDate)}
                           </TableCell>
-                        )}
+                        )} */}
                         <TableCell sx={{ fontSize: 12 }} align="left">
                           {foundOu.displayName}
                         </TableCell>
