@@ -119,7 +119,7 @@ export default function useSickChildValidation() {
    
       if (EXACT_ONE_DECIMAL_IDS.has(id) && !hasExactlyOneDecimal(raw)) {
         pushError(id, `${cfg.label} must have exactly 1 decimal (e.g., 50.0). You entered "${raw}".`);
-        continue; // skip further checks for this field
+        continue; 
       }
 
    

@@ -15,7 +15,7 @@ const useCompleteGuard = () => {
   );
 
   useEffect(() => {
-    // Defensive: if no event or no dataValues, block completing
+
     const dv = currentEvent?.dataValues ?? [];
     const height = getDataVl(dv, HEIGHT);
     const weight = getDataVl(dv, WEIGHT);

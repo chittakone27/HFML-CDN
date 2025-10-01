@@ -19,7 +19,6 @@ const MONTH_ID = "Tw0hHyhbjgF";
 const WEEK_ID = "vTci7gLTO9d";
 const DAY_ID = "AF36bOueuZB";
 
-// Hide these if Pneumonia
 const HIDE_IF_PNEUMONIA = [
   "EJ10RvCF4DK",
   "DtM9O0NrjcP",
@@ -29,7 +28,6 @@ const HIDE_IF_PNEUMONIA = [
   "fAoWiYGCuvz",
 ];
 
-// Target field
 const SHOW_IF_LAST_VISIT = "rgDuTaKYmIA"; // Next visit
 const REFERRED_ID = "yZo8WgcTvBi";       // Referred
 const HOSPITALIZED_ID = "ATIQuAZ9lU0";    // Hospitalized (true => next day)
@@ -47,10 +45,9 @@ const useGrowthMonitorRules = () => {
   const getVal = (deId) =>
     currentEvent?.dataValues?.find((d) => d.dataElement === deId)?.value ?? "";
 
-  // Track previous auto state so we don't clobber manual edits
   const lastEventDateRef = useRef(null);
   const lastAutoNextRef  = useRef(null);
-  const lastOffsetRef    = useRef(null); // <-- NEW: remember previous offset (1 vs 14)
+  const lastOffsetRef    = useRef(null); 
 
   useEffect(() => {
     if (!currentEvent?.event) return;
@@ -64,23 +61,22 @@ const useGrowthMonitorRules = () => {
 
     const toHide = new Set();
 
-    // A) If Pneumonia → hide those fields
     if (diagnosis === "pneumonia") {
       HIDE_IF_PNEUMONIA.forEach((id) => toHide.add(id));
     }
 
-    // B) Keep your existing behavior/naming as-is
+  
     const isLastVisit = visitType !== "Last visit";
     if (!isLastVisit) {
       toHide.add(SHOW_IF_LAST_VISIT);
     }
 
-    // C) If Referred is true → hide Next visit (keep existing)
+
     if (yesValues.has(referredVal)) {
       toHide.add(SHOW_IF_LAST_VISIT);
     }
 
-    // --- Auto-fill Next visit when visible; preserve manual edits ---
+
     if (isLastVisit && !toHide.has(SHOW_IF_LAST_VISIT)) {
       const baseDate   = currentEvent?.eventDate ? new Date(currentEvent.eventDate) : new Date();
       const offsetDays = yesValues.has(hospitalizedVal) ? 1 : 14;   // <-- +1 day if hospitalized, else +14
@@ -91,15 +87,11 @@ const useGrowthMonitorRules = () => {
       const offsetChanged      = lastOffsetRef.current !== offsetDays;
       const userHasOverridden  = curVal && curVal !== lastAutoNextRef.current;
 
-      // Write if user hasn't manually overridden and either:
-      //  - event date changed, or
-      //  - offset changed (hospitalized toggled), or
-      //  - field is currently blank
+
       if (!userHasOverridden && (eventDateChanged || offsetChanged || !curVal)) {
         changeDataValue?.(currentEvent.event, SHOW_IF_LAST_VISIT, autoNext);
         lastAutoNextRef.current = autoNext;
       } else {
-        // Keep tracking last auto even if we didn't write
         lastAutoNextRef.current = lastAutoNextRef.current ?? autoNext;
       }
 
