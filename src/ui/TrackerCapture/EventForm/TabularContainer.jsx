@@ -49,7 +49,7 @@ const TabularContainer = ({ currentProgramStage }) => {
     if (foundOptionSet) {
       const foundOption = foundOptionSet.options.find((o) => o.code === value);
       if (foundOption) {
-        return foundOption.displayName;
+        return pickTranslation(foundOption, i18n.language, "name");
       } else {
         return value;
       }
