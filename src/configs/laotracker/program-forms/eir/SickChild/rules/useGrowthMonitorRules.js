@@ -106,13 +106,11 @@ const useGrowthMonitorRules = () => {
       lastEventDateRef.current = currentEvent?.eventDate || "";
       lastOffsetRef.current    = offsetDays;
     } else {
-      // hidden → clear and reset auto tracking
       changeDataValue?.(currentEvent.event, SHOW_IF_LAST_VISIT, "");
       lastAutoNextRef.current = null;
       lastOffsetRef.current   = null;
     }
 
-    // Clear any other fields we hide (except Next visit already handled)
     for (const id of toHide) {
       if (id !== SHOW_IF_LAST_VISIT) {
         changeDataValue?.(currentEvent.event, id, "");
@@ -123,7 +121,6 @@ const useGrowthMonitorRules = () => {
   }, [
     currentEvent?.event,
     currentEvent?.eventDate,
-    // Re-run whenever these data values change
     JSON.stringify(
       (currentEvent?.dataValues || [])
         .filter((d) =>
@@ -133,7 +130,6 @@ const useGrowthMonitorRules = () => {
     ),
   ]);
 
-  // ---------- Calendar-accurate age autofill (unchanged) ----------
   useEffect(() => {
     const evtStr = currentEvent?.eventDate;
     const dobStr = currentTei?.attributes?.find(
