@@ -1,4 +1,3 @@
-// rules/useGrowthMonitorRules.js
 import { useEffect, useRef, useState } from "react";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
@@ -81,7 +80,6 @@ const useGrowthMonitorRules = () => {
     )
   ]);
 
-  // --- Calendar-accurate age + next visit (auto-fill only on eventDate change / empty)
   useEffect(() => {
     const dobObj = currentTei?.attributes?.find(
       (attr) => attr["attribute"] === DOB_ATTR_ID
@@ -149,7 +147,6 @@ const useGrowthMonitorRules = () => {
     currentTei?.attributes?.find((a) => a.attribute === DOB_ATTR_ID)?.value
   ]);
 
-  // --- Hide NEXT_VISIT_ID when REFERRED_ID is selected --------------------
   useEffect(() => {
     if (!currentEvent) return;
     const referredYes = isSelected(getVal(REFERRED_ID));

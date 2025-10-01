@@ -37,7 +37,6 @@ const useChildNutritionStatusRules = () => {
     }));
   };
 
-  // Nearest/clamped lookup so we always get a row even if height isn't exact
   const getSdMappingByFilterValue = (filterValue, deTypeMapping, filterProp, targetProp) => {
     const finalMapping = {};
     if (!deTypeMapping) return finalMapping;
@@ -48,7 +47,6 @@ const useChildNutritionStatusRules = () => {
 
       const sorted = entries.slice().sort((a, b) => a[filterProp] - b[filterProp]);
 
-      // exact match?
       let chosen = sorted.find((e) => e[filterProp] == filterValue);
 
       if (!chosen) {
@@ -69,7 +67,6 @@ const useChildNutritionStatusRules = () => {
     return finalMapping;
   };
 
-  // classify ONLY Weight-for-Height
   const getWfhCorrectProps = (deId, mapping, weightVal) => {
     let deValue = "";
     const props = { ...defaultProps };
@@ -122,29 +119,25 @@ const useChildNutritionStatusRules = () => {
     return props;
   };
 
-  // Load gender-specific tables
   useEffect(() => {
     const gender = getAttrVl(attributes, GENDER_ATTR_ID);
     if (GROWTH_MONITORING.hasOwnProperty(gender)) {
-      genderMapping.current = { ...GROWTH_MONITORING[gender] }; // includes WEIGHT_FOR_HEIGHT
+      genderMapping.current = { ...GROWTH_MONITORING[gender] };
     }
   }, [attributes]);
 
-  // Compute ONLY WFH_WAST_CORR from HEIGHT + WEIGHT (no age)
   useEffect(() => {
     const SD = genderMapping.current?.WEIGHT_FOR_HEIGHT;
     const height = parseFloat(getDataVl(dataValues, HEIGHT));
     const weight = parseFloat(getDataVl(dataValues, WEIGHT));
 
-    // guard
     if (!SD || Number.isNaN(height) || Number.isNaN(weight)) {
       changeDataValue(event, WFH_WAST_CORR, "");
       handleSingleDeProps(WFH_WAST_CORR, { ...defaultProps, disabled: true, readOnly: true });
       return;
     }
 
-    // choose the correct WHO table by height (length <65cm vs height ≥65cm)
-    const roundedHeight = roundNumber(height);
+      const roundedHeight = roundNumber(height);
     const table = roundedHeight < 65 ? SD["0to2"] : SD["2to5"]; // height decides the table
 
     if (!table) {
@@ -153,7 +146,6 @@ const useChildNutritionStatusRules = () => {
       return;
     }
 
-    // Nearest/clamped row for this height
     const mappingAtHeight = getSdMappingByFilterValue(roundedHeight, table, "height", "weight");
 
     if (!mappingAtHeight || Object.keys(mappingAtHeight).length === 0) {
@@ -163,7 +155,6 @@ const useChildNutritionStatusRules = () => {
     }
 
     const props = getWfhCorrectProps(WFH_WAST_CORR, mappingAtHeight, weight);
-    // Always non-editable (derived field)
     handleSingleDeProps(WFH_WAST_CORR, { ...props, disabled: true, readOnly: true });
   }, [JSON.stringify(attributes), JSON.stringify(dataValues)]);
 

@@ -1,14 +1,13 @@
-// SickChild/GrowthMonitoring.jsx
 import { Box, Table, TableBody, TableRow, TableCell, Typography, Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react"; // <-- ensure useMemo is imported
+import { useMemo } from "react"; 
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
 import useGrowthMonitorRules from "./rules/useGrowthMonitorRules";
 // import useDetailSectionRules from "./rules/useDetailSectionRules";
 import useChildNutritionStatusRules from "./rules/useChildNutritionStatusRules";
 import useSickChildValidation from "./rules/useSickChildValidation";
-import useMetadataStore from "@/state/metadata"; // <-- NEW
+import useMetadataStore from "@/state/metadata"; 
 import { RowMapper, SectionCollapse } from "@/configs/lao/program-forms/common/tracker";
 import { GROWTH_MONITOR_ID, CHILD_NUTRI_STATUS_SECTION_ID, GROWTH_MONITOR_DES } from "./const";
 import { CHILD_NUTRI_SECTION_UI } from "./mapping";
@@ -24,7 +23,6 @@ const NOTE_TEXT =
 const { AGE_YEAR, AGE_MONTH, AGE_WEEK, AGE_DAYS } = GROWTH_MONITOR_DES;
 const AGE_IDS = new Set([AGE_YEAR, AGE_MONTH, AGE_WEEK, AGE_DAYS]);
 
-// NEW: IDs to receive the ICD-10 option set
 const TARGET_DES = new Set(["nvOV3SOzeAj", "RjNMwOqFNcE"]);
 const ICD10_OPTIONSET_ID = "ZgqhnzhZZcQ";
 
@@ -40,11 +38,11 @@ const SickChild = () => {
   const { programStageSections } = growthMonitorStage;
 
   const { hiddenFields } = useGrowthMonitorRules();
-  // useDetailSectionRules();
+
   const childNutriDeProps = useChildNutritionStatusRules();
   const { fieldHelperProps } = useSickChildValidation();
 
-  // NEW: read optionSets and build Lao/English value set
+
   const { optionSets } = useMetadataStore(
     useShallow((s) => ({ optionSets: s.optionSets }))
   );
@@ -56,8 +54,8 @@ const SickChild = () => {
       const lo = o.translations?.find(
         (tr) => tr.locale === "lo" && tr.property === "NAME"
       );
-      const labels = [o.name]; // English/default
-      if (lo?.value) labels.unshift(lo.value); // Lao first if available
+      const labels = [o.name]; 
+      if (lo?.value) labels.unshift(lo.value); 
       return { value: o.code, label: labels.join(" | ") };
     });
   }, [optionSets]);
@@ -66,15 +64,13 @@ const SickChild = () => {
 
   return (
     <Box className="eir-growth-monitor-form">
-      {/* single, localized Event Date from Program Stage description */}
-      <EventDateLabel type="eventDate" />
       <EventDateFieldNoBlur type="eventDate" />
       <br />
 
       {programStageSections.map((pss) => {
         const visibleDes = pss.dataElements.filter((de) => !hiddenFields.includes(de.id));
 
-        // Child Nutrition section
+
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
             <SectionCollapse
@@ -88,7 +84,6 @@ const SickChild = () => {
                   const finalConfigs = col.colConfigs.map((de) => {
                     const curr = de[0];
 
-                    // NEW: inject customValueSet for the two target DEs
                     const extra =
                       TARGET_DES.has(curr.id) && icd10ValueSet.length
                         ? { customValueSet: icd10ValueSet }
@@ -100,7 +95,7 @@ const SickChild = () => {
                         ...curr?.fieldProps,
                         ...childNutriDeProps[curr.id],
                         ...(fieldHelperProps[curr.id] || {}),
-                        ...extra, // <-- only change
+                        ...extra, 
                       },
                     };
                     return [merged];
@@ -130,7 +125,6 @@ const SickChild = () => {
           );
         }
 
-        // Other sections
         const hasAge = sectionHasAnyAge(pss);
         const ageRow = hasAge
           ? [[
@@ -143,7 +137,6 @@ const SickChild = () => {
 
         const nonAgeDes = visibleDes.filter((de) => !AGE_IDS.has(de.id));
         const otherRows = nonAgeDes.map((de) => {
-          // NEW: inject customValueSet for the two target DEs
           const extra =
             TARGET_DES.has(de.id) && icd10ValueSet.length
               ? { customValueSet: icd10ValueSet }

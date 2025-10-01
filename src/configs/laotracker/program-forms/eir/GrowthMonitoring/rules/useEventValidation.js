@@ -1,4 +1,3 @@
-// rules/useEventValidation.js
 import { useCallback, useEffect, useState } from "react";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
@@ -43,17 +42,13 @@ const LABELS = {
   SeI2XVTYwDZ: "Next appointment date",
 };
 
-// EXACTLY one decimal for Height & Weight.
 const EXACT_ONE_DECIMAL_IDS = new Set(["xvE2z6W3wYh", "acQoZnFeVYZ"]);
 
-// ---- helpers -------------------------------------------------------------
 const isEmpty = (v) => v == null || (typeof v === "string" && v.trim() === "");
 const getDV = (ev, id) => ev?.dataValues?.find((d) => d.dataElement === id)?.value;
 
-// Accepts optional minus sign, digits, then ONE decimal digit.
 const hasExactlyOneDecimal = (raw) => /^-?\d+\.\d$/.test(String(raw).trim());
 
-// At most one decimal digit (or integer)
 const hasAtMostOneDecimal = (raw) => /^-?\d+(\.\d)?$/.test(String(raw).trim());
 
 export default function useEventValidation() {
@@ -89,7 +84,6 @@ export default function useEventValidation() {
 
     const referredYes = isSelected(getDV(ev, REFERRED_ID));
 
-    // --- Mandatory (skip NEXT_APPT_ID when referredYes) -------------------
     for (const id of MANDATORY_IDS) {
       if (id === NEXT_APPT_ID && referredYes) continue;
       if (isEmpty(getDV(ev, id))) {
@@ -97,8 +91,7 @@ export default function useEventValidation() {
       }
     }
 
-    // --- Ranges + decimal rules ------------------------------------------
-    for (const [id, cfg] of Object.entries(RANGE_RULES)) {
+     for (const [id, cfg] of Object.entries(RANGE_RULES)) {
       const raw = getDV(ev, id);
       if (isEmpty(raw)) continue;
 

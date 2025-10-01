@@ -1,10 +1,3 @@
-// Submit-time validation (Complete):
-//  - Mandatory fields
-//  - Height / Weight / MUAC ranges
-//  - Height & Weight must be exactly 1 decimal (e.g., 50.0)
-//  - Extra range checks for: fAoWiYGCuvz, qh8i5p7yZX4, EJ10RvCF4DK, DtM9O0NrjcP, F8dkD0Q07Om, rsE2q1cDpqe, Sl1BmkUV9HD
-//  - Inline helper messages under each field + Complete disabled while invalid
-
 import { useCallback, useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
@@ -38,7 +31,7 @@ const LABELS = {
   yZo8WgcTvBi: "Referred",
   rgDuTaKYmIA: "Next visit date",
 
-  // Extra range fields
+
   fAoWiYGCuvz: "ORS received (bags)",
   qh8i5p7yZX4: "Zinc received (tablets)",
   EJ10RvCF4DK: "RUTF received (Sachets)",
@@ -59,16 +52,16 @@ const RANGE_RULES = {
   qh8i5p7yZX4: {               max: 50,            label: LABELS.qh8i5p7yZX4 },
   EJ10RvCF4DK: {               max: 50,            label: LABELS.EJ10RvCF4DK },
   DtM9O0NrjcP: { min: 50,      max: 1000,          label: LABELS.DtM9O0NrjcP },
-  F8dkD0Q07Om: { min: 37.5,    max: 750,  maxDp: 2, label: LABELS.F8dkD0Q07Om }, // up to 2 decimals
+  F8dkD0Q07Om: { min: 37.5,    max: 750,  maxDp: 2, label: LABELS.F8dkD0Q07Om },
   rsE2q1cDpqe: {               max: 50,            label: LABELS.rsE2q1cDpqe },
   Sl1BmkUV9HD: {               max: 50,            label: LABELS.Sl1BmkUV9HD },
 };
 
-// Exactly one decimal for Height & Weight
+
 const EXACT_ONE_DECIMAL_IDS = new Set(["XSPP8Mk61ND", "S9XyKsAbuL9"]);
 const hasExactlyOneDecimal = (raw) => /^-?\d+\.\d$/.test(String(raw).trim());
 
-// Utility
+
 const isEmpty = (v) => v == null || (typeof v === "string" && v.trim() === "");
 const getDV = (ev, id) => ev?.dataValues?.find((d) => d.dataElement === id)?.value;
 const decimalPlaces = (raw) => {
@@ -77,7 +70,6 @@ const decimalPlaces = (raw) => {
   return i === -1 ? 0 : s.length - i - 1;
 };
 
-// 🔹 MUAC DE id for SAM notice
 const MUAC_ID = "BbPkveDfb5T";
 
 export default function useSickChildValidation() {
@@ -87,11 +79,11 @@ export default function useSickChildValidation() {
   );
   const { setLayout, setHandlers } = actions || {};
 
-  const [fieldHelperProps, setFieldHelperProps] = useState({}); // { deId: { helpers:[{type,value}], sx } }
+  const [fieldHelperProps, setFieldHelperProps] = useState({}); 
 
   const computeIssues = useCallback((ev) => {
-    const issues = [];   // ❗ errors only (these block Complete)
-    const helpers = {};  // both errors and warnings will render here
+    const issues = [];    
+    const helpers = {};  
 
     const baseSx = {
       "& .MuiFormHelperText-root": { fontSize: 12, fontStyle: "normal", fontWeight: 400 },
@@ -104,15 +96,15 @@ export default function useSickChildValidation() {
     const pushError = (id, msg) => {
       ensureSlot(id);
       helpers[id].helpers.push({ type: "ERROR", value: msg });
-      issues.push(msg); // errors block completion
+      issues.push(msg); 
     };
 
     const pushWarn = (id, msg) => {
       ensureSlot(id);
-      helpers[id].helpers.push({ type: "WARNING", value: msg }); // warnings do NOT block
+      helpers[id].helpers.push({ type: "WARNING", value: msg });
     };
 
-    // Mandatory
+
     for (const id of MANDATORY) {
       if (isEmpty(getDV(ev, id))) {
         // pushError(id, `${LABELS[id] || id} is required.`);
@@ -120,18 +112,17 @@ export default function useSickChildValidation() {
       }
     }
 
-    // Range + decimal rules (+ non-blocking SAM warning for MUAC)
     for (const [id, cfg] of Object.entries(RANGE_RULES)) {
       const raw = getDV(ev, id);
       if (isEmpty(raw)) continue;
 
-      // Height & Weight: exactly one decimal
+   
       if (EXACT_ONE_DECIMAL_IDS.has(id) && !hasExactlyOneDecimal(raw)) {
         pushError(id, `${cfg.label} must have exactly 1 decimal (e.g., 50.0). You entered "${raw}".`);
-        continue; // skip further checks for this field
+        continue; 
       }
 
-      // Up to 2 decimals (F8dkD0Q07Om)
+   
       if (cfg.maxDp != null && decimalPlaces(raw) > cfg.maxDp) {
         pushError(id, `${cfg.label} must have at most ${cfg.maxDp} decimal places. You entered "${raw}".`);
         continue;
@@ -143,7 +134,6 @@ export default function useSickChildValidation() {
         continue;
       }
 
-      // ✅ Non-blocking SAM notice for MUAC
       if (id === MUAC_ID && num < 11.5) {
         pushWarn(id, `This child is identified as SAM.`);
       }
@@ -159,18 +149,18 @@ export default function useSickChildValidation() {
     return { issues, helpers };
   }, []);
 
-  // Recompute helpers whenever the event changes
+
   useEffect(() => {
     const { issues, helpers } = computeIssues(currentEvent);
     setFieldHelperProps(helpers);
-    const hasErrors = issues.length > 0; // warnings do not contribute here
+    const hasErrors = issues.length > 0; 
     setLayout?.("disableEventCompleteButton", hasErrors);
 
-    // Block on save/complete for errors only
+
     setHandlers?.("eventSave", async () => {
       const { issues: onSaveIssues, helpers: onSaveHelpers } = computeIssues(currentEvent);
       if (onSaveIssues.length > 0) {
-        setFieldHelperProps(onSaveHelpers); // ensure inline messages are visible
+        setFieldHelperProps(onSaveHelpers); 
         alert(`Please fix the following before completing:\n\n- ${onSaveIssues.join("\n- ")}`);
         return { ok: false };
       }
