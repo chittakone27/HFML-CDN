@@ -11,7 +11,7 @@ import _, { assign } from "lodash";
 import useSelectionStore from "@/state/selection";
 import useMetadataStore from "@/state/metadata";
 import { tracker } from "@/api";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "../../state";
 const { saveEvent } = tracker;
 
 const {

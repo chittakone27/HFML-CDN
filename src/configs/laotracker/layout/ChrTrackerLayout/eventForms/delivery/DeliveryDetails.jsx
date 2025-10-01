@@ -5,13 +5,13 @@ import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValue
 import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { useTranslation } from "react-i18next";
-import Row from "../Row";
+import Row from "@/configs/laotracker/layout/ChrTrackerLayout/Row";
 import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { pickExecutionDateLabel } from "@/utils/utils";
-import { useDeliveryDetailsRules } from "./useDeliveryDetailsRules";
+import useDeliveryDetailsRules from "./useDeliveryDetailsRules";
 
 const DeliveryDetails = () => {
   const { t } = useTranslation();
@@ -38,7 +38,7 @@ const DeliveryDetails = () => {
   const { currentEnrollment, currentEvent, editing, order } = event;
   const { changeDataValue, changeEventProperty, setEvent } = actions;
   const completed = currentEnrollment && currentEnrollment.status === "COMPLETED";
-  const props = useDeliveryDetailsRules();
+  const { props, hiddenFields, disabledFields, helpers } = useDeliveryDetailsRules();
 
   return (
     <div style={{ height: "100%" }}>
@@ -70,7 +70,7 @@ const DeliveryDetails = () => {
           labelWidth={400}
         />
         {dataElements.map((de, index) => {
-          if (props[de] && props[de].hidden) {
+          if (hiddenFields.includes(de)) {
             return null;
           }
           const foundIndex = order.findIndex((o) => o === de);
@@ -84,7 +84,8 @@ const DeliveryDetails = () => {
               }
               field={
                 <DataValueFieldNoBlurNoState
-                  disabled={!editing || completed || (props[de] && props[de].disabled)}
+                  helpers={helpers[de] || []}
+                  disabled={!editing || completed || disabledFields.includes(de)}
                   change={(value) => {
                     changeDataValue(de, value);
                   }}

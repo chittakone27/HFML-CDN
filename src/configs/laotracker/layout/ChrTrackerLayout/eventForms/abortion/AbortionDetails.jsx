@@ -1,6 +1,6 @@
 import { useShallow } from "zustand/react/shallow";
-import useChrTrackerStore from "../state";
-import Row from "../Row";
+import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
+import Row from "@/configs/laotracker/layout/ChrTrackerLayout/Row";
 import DataValueLabelNoState from "@/ui/TrackerCapture/EventForm/DataValueLabelNoState";
 import DataValueFieldNoBlurNoState from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlurNoState";
 import useTrackerCaptureStore from "@/state/trackerCapture";

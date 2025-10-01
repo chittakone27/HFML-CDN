@@ -1,5 +1,5 @@
 import { useShallow } from "zustand/react/shallow";
-import useChrTrackerStore from "../state";
+import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { useEffect, useState } from "react";
 import { DATA_ELEMENTS, ATTRIBUTES } from "./ipdVisitDetailsConst";
 import { findAttributeValue, findDataValue } from "@/configs/laotracker/common/utils";
@@ -43,7 +43,7 @@ const useIpdVisitDetailsRules = () => {
     hiddenFields: [],
     fieldProps: {
       [DATE_OF_DEATH]: {},
-      eventDate: {},
+      eventDate: { helpers: [] },
       preConditions: { [IS_PREGNANT_ID]: {} }
     }
   });
@@ -99,7 +99,7 @@ const useIpdVisitDetailsRules = () => {
     const currentDisabledFields = [];
     const currentFieldProps = {
       [DATE_OF_DEATH]: {},
-      eventDate: {},
+      eventDate: { helpers: [] },
       preConditions: { [IS_PREGNANT_ID]: {} }
     };
 

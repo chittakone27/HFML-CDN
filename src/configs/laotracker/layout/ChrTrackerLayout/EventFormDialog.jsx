@@ -4,19 +4,19 @@ import { useShallow } from "zustand/react/shallow";
 import useChrTrackerStore from "./state";
 import { useTranslation } from "react-i18next";
 import useSelectionStore from "@/state/selection";
-import AbortionDetails from "./eventForms/AbortionDetails";
-import FamilyPlanning from "./eventForms/FamilyPlanning";
-import AncVisitDetails from "./eventForms/AncVisitDetails";
-import NcleCommunicableDiseases from "./eventForms/NcleCommunicableDiseases";
-import PncDetails from "./eventForms/PncDetails";
+import AbortionDetails from "./eventForms/abortion/AbortionDetails";
+import FamilyPlanning from "./eventForms/family-planning/FamilyPlanning";
+import AncVisitDetails from "./eventForms/anc/AncVisitDetails";
+// import NcleCommunicableDiseases from "./eventForms/NcleCommunicableDiseases";
+import PncDetails from "./eventForms/pnc/PncDetails";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { tracker, event } from "@/api";
 import { useState } from "react";
-import _ from "lodash";
-import IpdVisitDetails from "./eventForms/IpdVisitDetails";
+import IpdVisitDetails from "./eventForms/ipd-discharge-summary/IpdVisitDetails";
 import useBasicRules from "./eventForms/useBasicRules";
 import { saveIpdVisitDetails } from "./handlers";
 import Swal from "sweetalert2";
+import _ from "lodash";
 
 const { saveEvent } = tracker;
 const { deleteEvent } = event;
@@ -35,10 +35,10 @@ const mapping = {
   },
   ck0rft9jVlF: {
     PuT0v7uvrDO: IpdVisitDetails
-  },
-  kPEL6aQkTCb: {
-    UxFuT7chE5U: NcleCommunicableDiseases
   }
+  // kPEL6aQkTCb: {
+  //   UxFuT7chE5U: NcleCommunicableDiseases
+  // }
 };
 const EventFormDialog = () => {
   const [deleteButtonAnchorEl, setDeleteButtonAnchorEl] = useState(null);

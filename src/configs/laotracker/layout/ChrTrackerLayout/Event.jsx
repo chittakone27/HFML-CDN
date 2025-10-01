@@ -11,6 +11,7 @@ import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { format } from "date-fns";
 import EventFormDialog from "./EventFormDialog";
+import _ from "lodash";
 const LEGEND = {
   ACTIVE: "#faf3c8",
   COMPLETED: "#e3e3e3",
@@ -82,12 +83,18 @@ const Event = ({ title }) => {
   }
   let disableNewEventButton = false;
   let notCompletedEvents = false;
-  currentEvents.forEach((ce) => {
+  let finalCurrentEvents = _.cloneDeep(currentEvents);
+  finalCurrentEvents.forEach((ce) => {
     if (ce.status !== "COMPLETED") {
       disableNewEventButton = true;
       notCompletedEvents = true;
     }
   });
+
+  finalCurrentEvents = [
+    ...finalCurrentEvents.filter((ce) => ce.status === "COMPLETED"),
+    ...finalCurrentEvents.filter((ce) => ce.status === "ACTIVE")
+  ];
 
   if (currentEnrollment.status === "COMPLETED") {
     disableNewEventButton = true;
@@ -119,11 +126,11 @@ const Event = ({ title }) => {
                   <TableCell sx={{ fontSize: 12 }} align="left">
                     {pickExecutionDateLabel(currentProgramStage, t)}
                   </TableCell>
-                  {!currentProgramStage.hideDueDate && (
+                  {/* {!currentProgramStage.hideDueDate && (
                     <TableCell sx={{ fontSize: 12 }} align="left">
                       {pickDueDateLabel(currentProgramStage, t)}
                     </TableCell>
-                  )}
+                  )} */}
                   <TableCell sx={{ fontSize: 12 }} align="left">
                     {t("orgUnit")}
                   </TableCell>
@@ -137,7 +144,7 @@ const Event = ({ title }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentEvents
+                {finalCurrentEvents
                   .filter((ce) => ce.programStage === currentProgramStage.id)
                   .map((ev) => {
                     const foundOu = orgUnits.find((ou) => ou.id === ev.orgUnit);
@@ -169,11 +176,11 @@ const Event = ({ title }) => {
                         <TableCell sx={{ fontSize: 12 }} align="left">
                           {convertDisplayDate(ev.eventDate)}
                         </TableCell>
-                        {!currentProgramStage.hideDueDate && (
+                        {/* {!currentProgramStage.hideDueDate && (
                           <TableCell sx={{ fontSize: 12 }} align="left">
                             {convertDisplayDate(ev.dueDate)}
                           </TableCell>
-                        )}
+                        )} */}
                         <TableCell sx={{ fontSize: 12 }} align="left">
                           {foundOu.displayName}
                         </TableCell>

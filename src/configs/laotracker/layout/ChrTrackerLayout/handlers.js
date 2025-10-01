@@ -1,4 +1,4 @@
-import { DATA_ELEMENTS } from "./eventForms/ipdVisitDetailsConst";
+import { DATA_ELEMENTS } from "./eventForms/ipd-discharge-summary/ipdVisitDetailsConst";
 import { findDataValue } from "../../common/utils";
 import { tracker } from "@/api";
 import _ from "lodash";

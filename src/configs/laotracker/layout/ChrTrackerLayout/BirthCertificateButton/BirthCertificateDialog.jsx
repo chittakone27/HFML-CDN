@@ -1,14 +1,13 @@
 import { Box, Dialog, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Fragment, useState } from "react";
-import birthCertificateTemplate from "@/configs/laotracker/assets/example-bc.pdf";
+import birthCertificateTemplate from "./example-bc.pdf";
 const BirthCertificateDialog = ({
   isDialogOpen,
   handleDialogChange,
   children,
   childCertPdfUrls
 }) => {
-  //   console.log(childCertPdfUrls);
   const [tabValue, setTabValue] = useState("1");
   return (
     <Dialog

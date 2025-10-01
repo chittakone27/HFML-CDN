@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Dialog, Tabs, Tab, Popover, Alert, AlertTitle } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import DeliveryDetails from "./eventForms/DeliveryDetails";
-import Infant from "./eventForms/Infant";
+import DeliveryDetails from "./eventForms/delivery/DeliveryDetails";
+import Infant from "./eventForms/delivery/Infant";
 import BirthCertificateButton from "./BirthCertificateButton";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
@@ -15,6 +15,7 @@ import { tracker } from "@/api";
 import { generateUid } from "@/utils/utils";
 import useBasicRules from "./eventForms/useBasicRules";
 import useDeliveryDialogRules from "./useDeliveryDialogRules";
+import useMetadataStore from "@/state/metadata";
 import { pull } from "@/utils/fetch";
 import Swal from "sweetalert2";
 
@@ -43,7 +44,14 @@ const DeliveryDialog = () => {
       actions: state.actions
     }))
   );
-  const { currentEnrollment, currentProgramStage, currentEvent, editing } = event;
+  const { programs } = useMetadataStore(
+    useShallow((state) => ({
+      programs: state.programs
+    }))
+  );
+
+  const foundEirProgram = programs.find((p) => p.id === "Yj9cJ34AXw6");
+  const { currentEnrollment, currentProgramStage, currentEvent, editing, formErrors } = event;
 
   const { setEvent, changeDataValue, changeEventProperty } = actions;
   const { saveEventToState, changeEnrollmentProperty, saveEnrollmentToState, deleteEnrollmentFromList } = trackerActions;
@@ -69,15 +77,18 @@ const DeliveryDialog = () => {
       setEvent("order", order);
     }
     if (tab === 1) {
-      let order = ["chid", "DmuazFb368B"];
+      const foundBirthDetailsStage = foundEirProgram.programStages.find((ps) => ps.id === "bwGkn5ebqkD");
+      const pss = foundBirthDetailsStage.programStageSections[0];
+      const dataElements = pss.dataElements.map((pssde) => pssde.id);
+      let order = ["chid", "DmuazFb368B", ...dataElements];
       setEvent("order", order);
     }
   }, [tab]);
 
   const updateInfants = () => {
-    if (!childTeisValue) {
-      let liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
-      liveBirths = liveBirths ? parseInt(liveBirths) : null;
+    let liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
+    liveBirths = liveBirths ? parseInt(liveBirths) : null;
+    if (!childTeisValue || children.length !== liveBirths) {
       if (liveBirths && liveBirths > 0) {
         const children = [];
         for (let i = 0; i < liveBirths; i++) {
@@ -146,7 +157,6 @@ const DeliveryDialog = () => {
         }
         return cloned;
       } else {
-        console.log("here here");
         return currentEvent;
       }
     } else {
@@ -154,23 +164,31 @@ const DeliveryDialog = () => {
     }
   };
 
-  const errors = useBasicRules();
+  // const errors = useBasicRules();
   const { basicErrors, completeDeliveryErrors } = useDeliveryDialogRules(tab);
-  const finalErrors = [...errors, ...basicErrors];
+  const finalErrors = [...basicErrors, ...formErrors];
   let ableToCompleteDelivery = true;
+
   if (completeDeliveryErrors.length > 0) {
     ableToCompleteDelivery = false;
   }
   const liveBirths = findDataValue(currentEvent.dataValues, "OcT4N2illVT");
+  const stillBirths = findDataValue(currentEvent.dataValues, "zM7ceGjIsy4");
   if (!liveBirths) {
-    ableToCompleteDelivery = false;
+    if (stillBirths && parseInt(stillBirths) > 0) {
+      ableToCompleteDelivery = true;
+    } else {
+      ableToCompleteDelivery = false;
+    }
   }
   if (liveBirths && parseInt(liveBirths) > 0) {
     if (!childTeisValue) {
       ableToCompleteDelivery = false;
     }
   }
-
+  if (finalErrors.length > 0) {
+    ableToCompleteDelivery = false;
+  }
   const checkValid = () => {
     if (finalErrors.length > 0) {
       let html = `<div style="color: red;" />`;
@@ -365,52 +383,66 @@ const DeliveryDialog = () => {
               onClick={async () => {
                 setLoading(true);
                 setEvent("editing", false);
-                const cloned = _.cloneDeep(children);
-                for (let i = 0; i < cloned.length; i++) {
-                  const currentChild = cloned[i];
-                  while (true) {
-                    const dob = findAttributeValue(currentChild, "tQeFLjYbqzv");
-                    const splitted = dob.split("-");
-                    const sex = findAttributeValue(currentChild, "DmuazFb368B");
-                    const randomNumbers = [
-                      Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-                      Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-                      Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-                      Math.floor(Math.random() * (9 - 0 + 1)) + 0
-                    ];
-                    const number = randomNumbers.join("");
-                    const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
-                    const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
-                    const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
-                    if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
-                      cloned[i].attributes.push({
-                        attribute: "oPKsfqS64oE",
-                        value: newClientHealthId
-                      });
-                      break;
+                if (liveBirths) {
+                  const cloned = _.cloneDeep(children);
+                  for (let i = 0; i < cloned.length; i++) {
+                    const currentChild = cloned[i];
+                    while (true) {
+                      const dob = findAttributeValue(currentChild, "tQeFLjYbqzv");
+                      const splitted = dob.split("-");
+                      const sex = findAttributeValue(currentChild, "DmuazFb368B");
+                      const randomNumbers = [
+                        Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                        Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                        Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                        Math.floor(Math.random() * (9 - 0 + 1)) + 0
+                      ];
+                      const number = randomNumbers.join("");
+                      const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
+                      const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
+                      const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
+                      if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
+                        cloned[i].attributes.push({
+                          attribute: "oPKsfqS64oE",
+                          value: newClientHealthId
+                        });
+                        break;
+                      }
                     }
                   }
-                }
-                const clonedEnrollment = _.cloneDeep(currentEnrollment);
-                const toBeSavedEvent = _.cloneDeep(currentEvent);
-                const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
-                toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
-                changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
-                changeEnrollmentProperty("status", "COMPLETED");
-                changeEventProperty("status", "COMPLETED");
-                toBeSavedEvent.status = "COMPLETED";
-                clonedEnrollment.status = "COMPLETED";
-                saveEnrollmentToState(clonedEnrollment);
-                saveEventToState(toBeSavedEvent);
-                await saveEnrollment(clonedEnrollment);
-                await saveEvent(toBeSavedEvent);
-                setEvent("currentEnrollment", clonedEnrollment);
-                //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
-                for (let i = 0; i < cloned.length; i++) {
-                  await saveTei(cloned[i]);
-                  await pull(
-                    `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6&createdProgram=AyPkCOMmgdd`
-                  );
+                  const clonedEnrollment = _.cloneDeep(currentEnrollment);
+                  const toBeSavedEvent = _.cloneDeep(currentEvent);
+                  const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
+                  toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
+                  changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
+                  changeEnrollmentProperty("status", "COMPLETED");
+                  changeEventProperty("status", "COMPLETED");
+                  toBeSavedEvent.status = "COMPLETED";
+                  clonedEnrollment.status = "COMPLETED";
+                  saveEnrollmentToState(clonedEnrollment);
+                  saveEventToState(toBeSavedEvent);
+                  await saveEnrollment(clonedEnrollment);
+                  await saveEvent(toBeSavedEvent);
+                  setEvent("currentEnrollment", clonedEnrollment);
+                  //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
+                  for (let i = 0; i < cloned.length; i++) {
+                    await saveTei(cloned[i]);
+                    await pull(
+                      `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6&createdProgram=AyPkCOMmgdd`
+                    );
+                  }
+                } else {
+                  const clonedEnrollment = _.cloneDeep(currentEnrollment);
+                  const toBeSavedEvent = _.cloneDeep(currentEvent);
+                  changeEnrollmentProperty("status", "COMPLETED");
+                  changeEventProperty("status", "COMPLETED");
+                  toBeSavedEvent.status = "COMPLETED";
+                  clonedEnrollment.status = "COMPLETED";
+                  saveEnrollmentToState(clonedEnrollment);
+                  saveEventToState(toBeSavedEvent);
+                  await saveEnrollment(clonedEnrollment);
+                  await saveEvent(toBeSavedEvent);
+                  setEvent("currentEnrollment", clonedEnrollment);
                 }
                 setLoading(false);
               }}
@@ -418,7 +450,7 @@ const DeliveryDialog = () => {
               {t("completeThisDelivery")}
             </LoadingButton>
             &nbsp;
-            {completed && <BirthCertificateButton loading={loading} children={children} />}
+            {completed && liveBirths && parseInt(liveBirths) > 0 && <BirthCertificateButton loading={loading} children={children} />}
           </div>
         </div>
       </div>
