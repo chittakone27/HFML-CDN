@@ -375,80 +375,123 @@ const DeliveryDialog = () => {
             </div>
           </Popover>
           <div style={{ marginLeft: "auto" }}>
-            <LoadingButton
-              loading={loading}
-              disabled={!ableToCompleteDelivery || completed}
-              color="success"
-              variant="contained"
-              onClick={async () => {
-                setLoading(true);
-                setEvent("editing", false);
-                if (liveBirths) {
-                  const cloned = _.cloneDeep(children);
-                  for (let i = 0; i < cloned.length; i++) {
-                    const currentChild = cloned[i];
-                    while (true) {
-                      const dob = findAttributeValue(currentChild, "tQeFLjYbqzv");
-                      const splitted = dob.split("-");
-                      const sex = findAttributeValue(currentChild, "DmuazFb368B");
-                      const randomNumbers = [
-                        Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-                        Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-                        Math.floor(Math.random() * (9 - 0 + 1)) + 0,
-                        Math.floor(Math.random() * (9 - 0 + 1)) + 0
-                      ];
-                      const number = randomNumbers.join("");
-                      const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
-                      const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
-                      const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
-                      if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
-                        cloned[i].attributes.push({
-                          attribute: "oPKsfqS64oE",
-                          value: newClientHealthId
-                        });
-                        break;
+            {!completed && (
+              <LoadingButton
+                loading={loading}
+                disabled={!ableToCompleteDelivery || completed}
+                color="success"
+                variant="contained"
+                onClick={async () => {
+                  setLoading(true);
+                  setEvent("editing", false);
+                  const deliveryCompleted = findDataValue(currentEvent.dataValues, "HrVnezRbhNk");
+                  if (liveBirths) {
+                    const cloned = _.cloneDeep(children);
+                    if (!deliveryCompleted) {
+                      for (let i = 0; i < cloned.length; i++) {
+                        const currentChild = cloned[i];
+                        while (true) {
+                          const dob = findAttributeValue(currentChild, "tQeFLjYbqzv");
+                          const splitted = dob.split("-");
+                          const sex = findAttributeValue(currentChild, "DmuazFb368B");
+                          const randomNumbers = [
+                            Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                            Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                            Math.floor(Math.random() * (9 - 0 + 1)) + 0,
+                            Math.floor(Math.random() * (9 - 0 + 1)) + 0
+                          ];
+                          const number = randomNumbers.join("");
+                          const newClientHealthId = `${splitted[2]}${splitted[1]}${splitted[0]}-${sex === "M" ? "1" : "2"}-${number}`;
+                          const foundInDhis2 = await searchTeis({ oPKsfqS64oE: newClientHealthId }, null, "IWp9dQGM0bS", "MCPQUTHX1Ze");
+                          const foundInChr = await pull(`/api/routes/chr/run?work=search&filter=oPKsfqS64oE:${newClientHealthId}`);
+                          if (foundInDhis2.trackedEntityInstances.length === 0 && foundInChr.trackedEntityInstances.length === 0) {
+                            cloned[i].attributes.push({
+                              attribute: "oPKsfqS64oE",
+                              value: newClientHealthId
+                            });
+                            break;
+                          }
+                        }
                       }
                     }
+
+                    const clonedEnrollment = _.cloneDeep(currentEnrollment);
+                    const toBeSavedEvent = _.cloneDeep(currentEvent);
+                    const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
+                    toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
+                    const foundDeliveryCompletedDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "HrVnezRbhNk");
+                    if (foundDeliveryCompletedDataValueIndex === -1) {
+                      toBeSavedEvent.dataValues.push({
+                        dataElement: "HrVnezRbhNk",
+                        value: "true"
+                      });
+                    } else {
+                      toBeSavedEvent.dataValues[foundDeliveryCompletedDataValueIndex].value = "true";
+                    }
+                    changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
+                    changeDataValue("HrVnezRbhNk", "true");
+                    changeEnrollmentProperty("status", "COMPLETED");
+                    changeEventProperty("status", "COMPLETED");
+                    toBeSavedEvent.status = "COMPLETED";
+                    clonedEnrollment.status = "COMPLETED";
+                    saveEnrollmentToState(clonedEnrollment);
+                    saveEventToState(toBeSavedEvent);
+                    await saveEnrollment(clonedEnrollment);
+                    await saveEvent(toBeSavedEvent);
+                    setEvent("currentEnrollment", clonedEnrollment);
+                    //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
+                    for (let i = 0; i < cloned.length; i++) {
+                      await saveTei(cloned[i]);
+                      if (!deliveryCompleted) {
+                        await pull(
+                          `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6&createdProgram=AyPkCOMmgdd`
+                        );
+                      }
+                    }
+                  } else {
+                    const clonedEnrollment = _.cloneDeep(currentEnrollment);
+                    const toBeSavedEvent = _.cloneDeep(currentEvent);
+                    changeEnrollmentProperty("status", "COMPLETED");
+                    changeEventProperty("status", "COMPLETED");
+                    toBeSavedEvent.status = "COMPLETED";
+                    clonedEnrollment.status = "COMPLETED";
+                    saveEnrollmentToState(clonedEnrollment);
+                    saveEventToState(toBeSavedEvent);
+                    await saveEnrollment(clonedEnrollment);
+                    await saveEvent(toBeSavedEvent);
+                    setEvent("currentEnrollment", clonedEnrollment);
                   }
+                  setLoading(false);
+                }}
+              >
+                {t("completeThisDelivery")}
+              </LoadingButton>
+            )}
+            {completed && (
+              <LoadingButton
+                loading={loading}
+                color="warning"
+                variant="contained"
+                onClick={async () => {
+                  setLoading(true);
+                  setEvent("editing", false);
                   const clonedEnrollment = _.cloneDeep(currentEnrollment);
                   const toBeSavedEvent = _.cloneDeep(currentEvent);
-                  const foundDataValueIndex = toBeSavedEvent.dataValues.findIndex((dv) => dv.dataElement === "lYdXxom1BAG");
-                  toBeSavedEvent.dataValues[foundDataValueIndex].value = JSON.stringify(cloned);
-                  changeDataValue("lYdXxom1BAG", JSON.stringify(cloned));
-                  changeEnrollmentProperty("status", "COMPLETED");
-                  changeEventProperty("status", "COMPLETED");
-                  toBeSavedEvent.status = "COMPLETED";
-                  clonedEnrollment.status = "COMPLETED";
+                  changeEnrollmentProperty("status", "ACTIVE");
+                  changeEventProperty("status", "ACTIVE");
+                  toBeSavedEvent.status = "ACTIVE";
+                  clonedEnrollment.status = "ACTIVE";
                   saveEnrollmentToState(clonedEnrollment);
                   saveEventToState(toBeSavedEvent);
                   await saveEnrollment(clonedEnrollment);
                   await saveEvent(toBeSavedEvent);
                   setEvent("currentEnrollment", clonedEnrollment);
-                  //ONLY ON DEV, ENROLL CHILDREN TO EIR AND CHR
-                  for (let i = 0; i < cloned.length; i++) {
-                    await saveTei(cloned[i]);
-                    await pull(
-                      `/api/routes/chr/run?work=register&tei=${cloned[i].trackedEntityInstance}&program=Yj9cJ34AXw6&createdProgram=AyPkCOMmgdd`
-                    );
-                  }
-                } else {
-                  const clonedEnrollment = _.cloneDeep(currentEnrollment);
-                  const toBeSavedEvent = _.cloneDeep(currentEvent);
-                  changeEnrollmentProperty("status", "COMPLETED");
-                  changeEventProperty("status", "COMPLETED");
-                  toBeSavedEvent.status = "COMPLETED";
-                  clonedEnrollment.status = "COMPLETED";
-                  saveEnrollmentToState(clonedEnrollment);
-                  saveEventToState(toBeSavedEvent);
-                  await saveEnrollment(clonedEnrollment);
-                  await saveEvent(toBeSavedEvent);
-                  setEvent("currentEnrollment", clonedEnrollment);
-                }
-                setLoading(false);
-              }}
-            >
-              {t("completeThisDelivery")}
-            </LoadingButton>
+                  setLoading(false);
+                }}
+              >
+                {t("incompleteThisDelivery")}
+              </LoadingButton>
+            )}
             &nbsp;
             {completed && liveBirths && parseInt(liveBirths) > 0 && <BirthCertificateButton loading={loading} children={children} />}
           </div>

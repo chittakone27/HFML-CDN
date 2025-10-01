@@ -41,11 +41,13 @@ const {
   GESTATIONAL_UNDER_OR_EQUAL_34_WEEKS_RECEIVED_CORTICOSTERIOD,
   BLOOD_LOSS,
   BLOOD_LOSS_VOLUME,
+  MOTHER_DATE_OF_DELIVERY,
   G,
   P,
   A,
   L,
-  CHILD_TEIS
+  CHILD_TEIS,
+  DELIVERY_COMPLETED
 } = DELIVERY_DETAILS_DATA_ELEMENTS;
 const { NUMBER_OF_ANC_VISIT, HIV_TEST1, HIV_TEST2 } = ANC_DATA_ELEMENTS;
 const {
@@ -134,11 +136,6 @@ const useDeliveryDetailsRules = () => {
 
   useEffect(() => {
     const assignations = [];
-    const currentDisabledFields = [];
-    const currentHiddenFields = [CHILD_TEIS];
-    const currentHelpers = {};
-    const currentProps = {};
-
     //ASSIGN GPAL FROM ANC EVENT
     const foundAncEnrollment = currentEnrollments.find((en) => en.program === ANC_PROGRAM);
     if (foundAncEnrollment) {
@@ -146,9 +143,30 @@ const useDeliveryDetailsRules = () => {
       if (ancEvents.length > 0) {
         const GPAL = findGPAL(ancEvents);
         Object.keys(GPAL).forEach((key) => {
-          assignations.push({ dataElement: key, value: GPAL[key] });
+          if (!dataValues[key]) {
+            assignations.push({ dataElement: key, value: GPAL[key] });
+          }
+          return;
         });
       }
+    }
+    changeDataValues(assignations);
+  }, []);
+
+  useEffect(() => {
+    const assignations = [];
+    const currentDisabledFields = [];
+    const currentHiddenFields = [CHILD_TEIS];
+    const currentHelpers = {};
+    const currentProps = {};
+
+    //DISABLE SOME FIELDS IF DELIVERY IS ALREADY COMPLETED
+    const completed = dataValues[DELIVERY_COMPLETED] === "true";
+    if (completed) {
+      currentDisabledFields.push(MOTHER_DATE_OF_DELIVERY);
+      currentDisabledFields.push(LIVE_BIRTHS);
+      currentDisabledFields.push(STILL_BIRTHS);
+      currentDisabledFields.push("eventDate");
     }
 
     //DONT ALLOW ZERO IN LIVE BIRTHS AND STILL BIRTHS

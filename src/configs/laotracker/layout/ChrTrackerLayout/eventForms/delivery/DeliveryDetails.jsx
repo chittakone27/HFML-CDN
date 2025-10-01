@@ -58,7 +58,7 @@ const DeliveryDetails = () => {
           }
           field={
             <EventDateFieldNoState
-              disabled={!editing || completed}
+              disabled={!editing || completed || disabledFields.includes("eventDate")}
               currentEvent={currentEvent}
               currentProgramStage={currentProgramStage}
               accept={(value) => {
