@@ -57,7 +57,7 @@ const RANGE_RULES = {
   Sl1BmkUV9HD: {               max: 50,            label: LABELS.Sl1BmkUV9HD },
 };
 
-// Exactly one decimal for Height & Weight
+
 const EXACT_ONE_DECIMAL_IDS = new Set(["XSPP8Mk61ND", "S9XyKsAbuL9"]);
 const hasExactlyOneDecimal = (raw) => /^-?\d+\.\d$/.test(String(raw).trim());
 
@@ -79,7 +79,7 @@ export default function useSickChildValidation() {
   );
   const { setLayout, setHandlers } = actions || {};
 
-  const [fieldHelperProps, setFieldHelperProps] = useState({}); // { deId: { helpers:[{type,value}], sx } }
+  const [fieldHelperProps, setFieldHelperProps] = useState({}); 
 
   const computeIssues = useCallback((ev) => {
     const issues = [];    
@@ -101,10 +101,10 @@ export default function useSickChildValidation() {
 
     const pushWarn = (id, msg) => {
       ensureSlot(id);
-      helpers[id].helpers.push({ type: "WARNING", value: msg }); // warnings do NOT block
+      helpers[id].helpers.push({ type: "WARNING", value: msg });
     };
 
-    // Mandatory
+
     for (const id of MANDATORY) {
       if (isEmpty(getDV(ev, id))) {
         // pushError(id, `${LABELS[id] || id} is required.`);
@@ -153,14 +153,14 @@ export default function useSickChildValidation() {
   useEffect(() => {
     const { issues, helpers } = computeIssues(currentEvent);
     setFieldHelperProps(helpers);
-    const hasErrors = issues.length > 0; // warnings do not contribute here
+    const hasErrors = issues.length > 0; 
     setLayout?.("disableEventCompleteButton", hasErrors);
 
 
     setHandlers?.("eventSave", async () => {
       const { issues: onSaveIssues, helpers: onSaveHelpers } = computeIssues(currentEvent);
       if (onSaveIssues.length > 0) {
-        setFieldHelperProps(onSaveHelpers); // ensure inline messages are visible
+        setFieldHelperProps(onSaveHelpers); 
         alert(`Please fix the following before completing:\n\n- ${onSaveIssues.join("\n- ")}`);
         return { ok: false };
       }
