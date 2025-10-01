@@ -39,6 +39,7 @@ const SelectorClientHealthIdField = ({ disabled, value, change }) => {
     }
     switch (type) {
       case "dob":
+        console.log(newValue);
         if (newValue.length > 8) newValue = newValue.slice(0, 8);
         setDob(newValue);
         break;

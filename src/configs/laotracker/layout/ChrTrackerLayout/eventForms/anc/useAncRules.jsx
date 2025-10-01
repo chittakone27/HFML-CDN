@@ -146,7 +146,6 @@ const useAncRules = () => {
       const previousP = findDataValue(previousEvent.dataValues, P);
       const previousA = findDataValue(previousEvent.dataValues, A);
       const previousL = findDataValue(previousEvent.dataValues, L);
-      console.log(previousG);
       if (previousG && !dataValues[G]) assignations.push({ dataElement: G, value: previousG });
       if (previousP && !dataValues[P]) assignations.push({ dataElement: P, value: previousP });
       if (previousA && !dataValues[A]) assignations.push({ dataElement: A, value: previousA });
@@ -200,6 +199,15 @@ const useAncRules = () => {
     if (dataValues[NUMBER_OF_ANC_VISIT] && parseInt(dataValues[NUMBER_OF_ANC_VISIT]) < 4) {
       if (!dataValues[NEXT_APPOINTMENT_DATE]) {
         currentHelpers[NEXT_APPOINTMENT_DATE] = [{ type: "ERROR", value: t("thisFieldIsRequired") }];
+      }
+    }
+
+    //SET ANC VISIT AT 36 WEEKS ABOVE IF GESTATIONAL WEEK IS > 36
+    if (dataValues[GESTATIONAL_WEEK]) {
+      const gestationalWeek = parseInt(dataValues[GESTATIONAL_WEEK]);
+      console.log(gestationalWeek);
+      if (gestationalWeek > 36) {
+        assignations.push({ dataElement: ANC_VISIT_AT_36_WEEKS_ABOVE, value: "true" });
       }
     }
 

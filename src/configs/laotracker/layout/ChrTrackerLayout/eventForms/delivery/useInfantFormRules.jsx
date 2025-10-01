@@ -24,11 +24,13 @@ const {
   DATE_OF_REFERRAL,
   REASON_FOR_REFERRAL,
   SERVICE_LOCATION,
+  SERVICE_TYPE,
   MOTHERS_AGE_AT_DELIVERY,
   DATE_OF_DISCHARGE,
-  DATE_OF_DELIVERY
+  DATE_OF_DELIVERY,
+  HEIGHT
 } = INFANT_DATA_ELEMENTS;
-const { CHILD_TEIS, MOTHER_DATE_OF_DISCHARGE, MOTHER_DATE_OF_DELIVERY } = DELIVERY_DETAILS_DATA_ELEMENTS;
+const { CHILD_TEIS, MOTHER_DATE_OF_DISCHARGE, MOTHER_DATE_OF_DELIVERY, DELIVERY_COMPLETED } = DELIVERY_DETAILS_DATA_ELEMENTS;
 const { DOB, MOTHER_FIRST_NAME, MOTHER_LAST_NAME, PROVINCE, DISTRICT, VILLAGE, PARENT_PHONE_NUMBER } = EIR_ATTRIBUTES;
 const { AGE, SEX, FIRST_NAME, LAST_NAME, MOBILE } = ATTRIBUTES;
 
@@ -68,12 +70,28 @@ const useInfantFormRules = (childIndex) => {
 
   useEffect(() => {
     const assignations = [];
-    const currentDisabledFields = [MOTHERS_AGE_AT_DELIVERY, DATE_OF_DISCHARGE, DATE_OF_DELIVERY];
+    const currentDisabledFields = [MOTHERS_AGE_AT_DELIVERY, DATE_OF_DISCHARGE, DATE_OF_DELIVERY, SERVICE_LOCATION, TYPE_OF_DELIVERY];
     const currentHiddenFields = [];
     const currentHelpers = {};
     const currentProps = {};
+
+    //DISABLE SOME FIELDS IF DELIVERY IS ALREADY COMPLETED
+    const completed = deliveryDetailsDataValues[DELIVERY_COMPLETED] === "true";
+    if (completed) {
+      currentDisabledFields.push("sex");
+      currentDisabledFields.push(DATE_OF_DELIVERY);
+      currentDisabledFields.push(BIRTH_WEIGHT);
+      currentDisabledFields.push(HEIGHT);
+    }
+
     //ASSIGN DATE OF DELIVERY AUTOMATICALLY
     assignations.push({ dataElement: DATE_OF_DELIVERY, value: deliveryDetailsDataValues[DATE_OF_DELIVERY] });
+
+    //ASSIGN SERVICE LOCATION AUTOMATICALLY
+    assignations.push({ dataElement: SERVICE_LOCATION, value: deliveryDetailsDataValues[SERVICE_LOCATION] });
+
+    //ASSIGN TYPE OF DELIVERY AUTOMATICALLY
+    assignations.push({ dataElement: TYPE_OF_DELIVERY, value: deliveryDetailsDataValues[TYPE_OF_DELIVERY] });
 
     //ASSIGN MOTHER'S AGE AT DELIVERY ATTRIBUTE AUTOMATICALLY
     const mothersDob = findAttributeValue(currentTei, AGE);
