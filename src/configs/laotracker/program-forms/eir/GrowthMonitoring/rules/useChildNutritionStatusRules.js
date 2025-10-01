@@ -3,7 +3,6 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
-//
 import { getDataVl, getAttrVl, roundNumber } from "../helper";
 import { GROWTH_MONITORING } from "../mapping";
 import { GENDER_ATTR_ID, GROWTH_MONITOR_DES, BG_COLORS } from "../const";
@@ -148,7 +147,7 @@ const useChildNutritionStatusRules = () => {
             break;
           case valueForCompare < mapping["-3SD"]:
             props.backgroundColor = RED;
-            props.color = "#fff !important";
+            props.color = "#fff";
             deValue = "Below -3 SD";
             break;
           default:
@@ -158,7 +157,7 @@ const useChildNutritionStatusRules = () => {
         switch (true) {
           case valueForCompare >= mapping["3SD"] || valueForCompare < mapping["-3SD"]:
             props.backgroundColor = RED;
-            props.color = "#fff !important";
+            props.color = "#fff";
             deValue =
               valueForCompare >= mapping["3SD"]
                 ? "Over +3SD (Obese)"
@@ -196,14 +195,39 @@ const useChildNutritionStatusRules = () => {
     }
   };
 
+  /**
+   * Nearest/clamped lookup so we always return an SD mapping even if the exact
+   * key (months/height) is missing in mapping.js, or the value is slightly out of range.
+   */
   const getSdMappingByFilterValue = (filterValue, deTypeMapping, filterProp, targetProp) => {
     const finalMapping = {};
     for (const sd in deTypeMapping) {
       const entries = deTypeMapping[sd];
-      const entryWithFilterValue = entries.find((entry) => entry[filterProp] == filterValue);
-      if (entryWithFilterValue) {
-        finalMapping[sd] = entryWithFilterValue[targetProp];
+      if (!Array.isArray(entries) || !entries.length) continue;
+
+      // Sort ascending by the filter property (e.g., 'months' or 'height')
+      const sorted = entries.slice().sort((a, b) => a[filterProp] - b[filterProp]);
+
+      // Try exact match first
+      let chosen = sorted.find((e) => e[filterProp] == filterValue);
+
+      if (!chosen) {
+        // Clamp to ends
+        if (filterValue <= sorted[0][filterProp]) {
+          chosen = sorted[0];
+        } else if (filterValue >= sorted[sorted.length - 1][filterProp]) {
+          chosen = sorted[sorted.length - 1];
+        } else {
+          // Pick nearest neighbor between the two bounding points
+          const idx = sorted.findIndex((e) => e[filterProp] > filterValue);
+          const prev = sorted[idx - 1];
+          const next = sorted[idx];
+          chosen =
+            filterValue - prev[filterProp] <= next[filterProp] - filterValue ? prev : next;
+        }
       }
+
+      finalMapping[sd] = chosen[targetProp];
     }
     return finalMapping;
   };
@@ -219,13 +243,13 @@ const useChildNutritionStatusRules = () => {
     }
   };
 
-  // load gender mapping once
+  // load gender mapping once attributes are available/updated
   useEffect(() => {
     const gender = getAttrVl(attributes, GENDER_ATTR_ID);
     if (GROWTH_MONITORING.hasOwnProperty(gender)) {
       genderMapping.current = { ...GROWTH_MONITORING[gender] };
     }
-  }, []);
+  }, [attributes]);
 
   useEffect(() => {
     const SD_MAPPING = genderMapping.current;
@@ -277,15 +301,14 @@ const useChildNutritionStatusRules = () => {
       changeDataValue(event, deId, ""); // clear value
       handleSingleDeProps(deId, {
         ...defaultProps,
-        disabled: true,          // keep input rendered (layout intact)
-        readOnly: true,          // belt & suspenders
-        // no 'hidden' here
+        disabled: true,  // keep input rendered (layout intact)
+        readOnly: true   // never editable
       });
     };
 
-    // Weight-for-Age CORRECT
+    // Weight-for-Age CORRECT (always non-editable)
     if (weightForAgeReport) {
-      if (!Number.isNaN(ageInMonths) && !Number.isNaN(weight)) {
+      if (!Number.isNaN(ageInMonths) && !Number.isNaN(weight) && SD_MAPPING["WEIGHT_FOR_AGE"]) {
         const wfaMonthsMapping = getSdMappingByFilterValue(
           ageInMonths,
           SD_MAPPING["WEIGHT_FOR_AGE"],
@@ -298,7 +321,8 @@ const useChildNutritionStatusRules = () => {
           weight,
           "WEIGHT_FOR_AGE"
         );
-        handleSingleDeProps(WFA_UNDER_CORR, { ...wfaProps, disabled: false, readOnly: false });
+        // Keep disabled/readOnly even after auto-fill
+        handleSingleDeProps(WFA_UNDER_CORR, { ...wfaProps, disabled: true, readOnly: true });
       } else {
         disableCorrect(WFA_UNDER_CORR);
       }
@@ -306,9 +330,9 @@ const useChildNutritionStatusRules = () => {
       disableCorrect(WFA_UNDER_CORR);
     }
 
-    // Height-for-Age CORRECT
+    // Height-for-Age CORRECT (always non-editable)
     if (heightForAgeReport) {
-      if (!Number.isNaN(ageInMonths) && !Number.isNaN(height)) {
+      if (!Number.isNaN(ageInMonths) && !Number.isNaN(height) && SD_MAPPING["HEIGHT_FOR_AGE"]) {
         const hfaMonthsMapping = getSdMappingByFilterValue(
           ageInMonths,
           SD_MAPPING["HEIGHT_FOR_AGE"],
@@ -321,7 +345,7 @@ const useChildNutritionStatusRules = () => {
           height,
           "HEIGHT_FOR_AGE"
         );
-        handleSingleDeProps(HFA_STUNT_CORR, { ...hfaProps, disabled: false, readOnly: false });
+        handleSingleDeProps(HFA_STUNT_CORR, { ...hfaProps, disabled: true, readOnly: true });
       } else {
         disableCorrect(HFA_STUNT_CORR);
       }
@@ -329,12 +353,10 @@ const useChildNutritionStatusRules = () => {
       disableCorrect(HFA_STUNT_CORR);
     }
 
-    // Weight-for-Height CORRECT
+    // Weight-for-Height CORRECT (always non-editable)
     if (weightForHeightReport) {
-      const wfhAgeInmonthsMapping = getWastingMapping(
-        ageInMonths,
-        SD_MAPPING["WEIGHT_FOR_HEIGHT"]
-      );
+      const wfhAgeInmonthsMapping =
+        SD_MAPPING["WEIGHT_FOR_HEIGHT"] && getWastingMapping(ageInMonths, SD_MAPPING["WEIGHT_FOR_HEIGHT"]);
       if (wfhAgeInmonthsMapping && !Number.isNaN(height) && !Number.isNaN(weight)) {
         const finalHeight = roundNumber(height);
         const wfhFinalMapping = getSdMappingByFilterValue(
@@ -349,7 +371,7 @@ const useChildNutritionStatusRules = () => {
           weight,
           "WEIGHT_FOR_HEIGHT"
         );
-        handleSingleDeProps(WFH_WAST_CORR, { ...wfhProps, disabled: false, readOnly: false });
+        handleSingleDeProps(WFH_WAST_CORR, { ...wfhProps, disabled: true, readOnly: true });
       } else {
         disableCorrect(WFH_WAST_CORR);
       }

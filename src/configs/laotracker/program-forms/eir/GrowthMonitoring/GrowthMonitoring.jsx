@@ -5,55 +5,49 @@ import useSelectionStore from "@/state/selection";
 import useGrowthMonitorRules from "./rules/useGrowthMonitorRules";
 import useDetailSectionRules from "./rules/useDetailSectionRules";
 import useChildNutritionStatusRules from "./rules/useChildNutritionStatusRules";
-import {
-  withEventDate,
-  RowMapper,
-  SectionCollapse
-} from "@/configs/lao/program-forms/common/tracker";
-//
+import useEventValidation from "./rules/useEventValidation";
+import { RowMapper, SectionCollapse } from "@/configs/lao/program-forms/common/tracker";
 import { GROWTH_MONITOR_ID, CHILD_NUTRI_STATUS_SECTION_ID } from "./const";
 import { CHILD_NUTRI_SECTION_UI } from "./mapping";
-//
 import "./GrowthMonitoring.css";
 import "../eir.css";
+import EventDateLabel from "@/ui/TrackerCapture/EventForm/EventDateLabel";
+import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 
-const AGE_IN_MONTHS_ID = "MV1yoC7BfnG";
-const AGE_IN_WEEKS_ID = "DxOqZZgVQhF";
+// Age IDs (disabled + horizontal)
+const YEAR_ID = "XxJ8Ta1NoAV";
+const MONTH_ID = "MV1yoC7BfnG";
+const WEEK_ID  = "DxOqZZgVQhF";
+const DAY_ID   = "H40cGMAAnAe";
+const AGE_IDS = new Set([YEAR_ID, MONTH_ID, WEEK_ID, DAY_ID]);
+
+const mergeFieldProps = (...propsArr) => {
+  const out = Object.assign({}, ...propsArr.filter(Boolean));
+  const helpers = propsArr.flatMap(p => (p?.helpers || []));
+  if (helpers.length) out.helpers = helpers;
+  return out;
+};
 
 const GrowthMonitoring = () => {
   const { t } = useTranslation();
-  const { program } = useSelectionStore(
-    useShallow((state) => ({
-      program: state.program
-    }))
-  );
+  const { program } = useSelectionStore(useShallow((s) => ({ program: s.program })));
 
   const growthMonitorStage = program.programStages.find(
-    (progState) => progState.id === GROWTH_MONITOR_ID
+    (ps) => ps.id === GROWTH_MONITOR_ID
   );
   const { programStageSections } = growthMonitorStage;
 
   const { hiddenFields } = useGrowthMonitorRules();
   useDetailSectionRules();
   const childNutriDeProps = useChildNutritionStatusRules();
+  const { fieldHelperProps } = useEventValidation();
 
-  // helper: does this section contain either of the age fields?
   const sectionHasAgeFields = (pss) =>
-    pss?.dataElements?.some((de) =>
-      [AGE_IN_MONTHS_ID, AGE_IN_WEEKS_ID].includes(de.id)
-    );
+    pss?.dataElements?.some((de) => AGE_IDS.has(de.id));
 
-  // the message block to show above age fields
   const AgeNotice = () => (
-    <Alert
-      severity="info"
-      icon={false}
-      sx={{
-        mb: 1.5,
-        borderRadius: 2,
-        "& .MuiAlert-message": { width: "100%" },
-      }}
-    >
+    <Alert severity="info" icon={false}
+      sx={{ mb: 1.5, borderRadius: 2, "& .MuiAlert-message": { width: "100%" } }}>
       <Typography variant="body2">
         ອາຍຸຂອງເດັກ ແມ່ນໄລ່ຈາກວັນເດືອນປີເກີດ ຮອດວັນທີມາຮັບການບໍລິການ. ຖ້າຫາກວ່າອາຍຸປາກົດວ່າບໍ່ຖືກຕ້ອງ,
         ກະລຸນາກວດສອບວັນທີມາຮັບການບໍລິການ ແລະ ວັນເດືອນປີເກີດຂອງເດັກ
@@ -63,50 +57,28 @@ const GrowthMonitoring = () => {
 
   return (
     <Box className="eir-growth-monitor-form">
-      {programStageSections.map((pss) => {
-        const visibleDes = pss.dataElements.filter(
-          (de) => !hiddenFields.includes(de.id)
-        );
+      <EventDateLabel type="eventDate" />
+      <EventDateFieldNoBlur type="eventDate" />
+      <br />
 
-        // Build default table rows
-        const tableConfigs = visibleDes.map((de) => [{ id: de.id }]);
+      {programStageSections.map((pss) => {
+        const visibleDes = pss.dataElements.filter((de) => !hiddenFields.includes(de.id));
 
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
-            <SectionCollapse
-              key={pss.id}
-              title={t(pss.displayName)}
-              disabledCollapse
-              sx={{ marginBottom: "10px" }}
-            >
+            <SectionCollapse key={pss.id} title={t(pss.displayName)} disabledCollapse sx={{ mb: "10px" }}>
               <div className="child-nutri-container">
                 {CHILD_NUTRI_SECTION_UI.map((col) => {
-                  const finalConfigs = col["colConfigs"].map((de) => {
-                    const currConfigObj = de[0];
-                    const newConfigObj = {
-                      ...currConfigObj,
-                      fieldProps: {
-                        ...currConfigObj?.fieldProps,
-                        ...childNutriDeProps[currConfigObj.id]
-                      }
-                    };
-                    return [newConfigObj];
+                  const finalConfigs = col.colConfigs.map(([cfg]) => {
+                    const id = cfg.id;
+                    const fieldProps = mergeFieldProps(cfg.fieldProps, childNutriDeProps[id], fieldHelperProps[id]);
+                    return [{ ...cfg, fieldProps }];
                   });
-
                   return (
-                    <SectionCollapse
-                      key={col["colTitle"]}
-                      title={col["colTitle"]}
-                      sx={{ m: 0.5, width: "50%" }}
-                      disabledCollapse
-                    >
+                    <SectionCollapse key={col.colTitle} title={col.colTitle} sx={{ m: .5, width: "50%" }} disabledCollapse>
                       <Table sx={{ height: "auto" }}>
                         <TableBody>
-                          <RowMapper
-                            rows={finalConfigs}
-                            tableName={col["colTitle"]}
-                            context="event"
-                          />
+                          <RowMapper rows={finalConfigs} tableName={col.colTitle} context="event" />
                         </TableBody>
                       </Table>
                     </SectionCollapse>
@@ -117,26 +89,26 @@ const GrowthMonitoring = () => {
           );
         }
 
-        // Non-child-nutrition sections
-        const showAgeNotice = sectionHasAgeFields(pss);
+        const hasAge = sectionHasAgeFields(pss);
+        const ageRow = hasAge
+          ? [[
+              { id: YEAR_ID,  fieldProps: { disabled: true } },
+              { id: MONTH_ID, fieldProps: { disabled: true } },
+              { id: WEEK_ID,  fieldProps: { disabled: true } },
+              { id: DAY_ID,   fieldProps: { disabled: true } },
+            ]]
+          : [];
+
+        const otherRows = visibleDes
+          .filter((de) => !AGE_IDS.has(de.id))
+          .map((de) => [{ id: de.id, fieldProps: fieldHelperProps[de.id] }]);
 
         return (
-          <SectionCollapse
-            key={pss.id}
-            title={t(pss.displayName)}
-            disabledCollapse
-            sx={{ marginBottom: "10px" }}
-          >
-            {/* Inject the notice above the table if this section has age fields */}
-            {showAgeNotice && <AgeNotice />}
-
+          <SectionCollapse key={pss.id} title={t(pss.displayName)} disabledCollapse sx={{ mb: "10px" }}>
+            {hasAge && <AgeNotice />}
             <Table>
               <TableBody>
-                <RowMapper
-                  rows={tableConfigs}
-                  tableName={pss.displayName}
-                  context="event"
-                />
+                <RowMapper rows={[...ageRow, ...otherRows]} tableName={pss.displayName} context="event" />
               </TableBody>
             </Table>
           </SectionCollapse>
@@ -146,4 +118,4 @@ const GrowthMonitoring = () => {
   );
 };
 
-export default withEventDate(GrowthMonitoring, "eventDate");
+export default GrowthMonitoring;

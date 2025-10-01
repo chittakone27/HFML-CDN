@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+// rules/useGrowthMonitorRules.js
+import { useEffect, useRef, useState } from "react";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import { useShallow } from "zustand/react/shallow";
@@ -12,15 +13,16 @@ import {
 } from "date-fns";
 import { DOB_ATTR_ID } from "../const";
 
-// --- Age field IDs (from your note)
+// Age DEs
 const YEAR_ID = "XxJ8Ta1NoAV";
 const MONTH_ID = "MV1yoC7BfnG";
 const WEEK_ID = "DxOqZZgVQhF";
-// You mentioned Day uses the same ID as Month; if Day has its own DE, replace below:
 const DAY_ID = "H40cGMAAnAe";
 
+// Next visit & limiter
 const NEXT_VISIT_ID = "SeI2XVTYwDZ";
 const LIMIT_FIELD_ID = "tR2Yen5sUnc";
+const REFERRED_ID = "ejM2imqrnUF"; // Referred
 
 const useGrowthMonitorRules = () => {
   const [hiddenFields, setHiddenFields] = useState([]);
@@ -35,12 +37,22 @@ const useGrowthMonitorRules = () => {
   const { changeDataValue } = actions;
   const { currentTei } = data;
 
+  const lastEventDateRef = useRef(null);
+  const lastAutoNextRef = useRef(null);
+
+  const getVal = (id) =>
+    currentEvent?.dataValues?.find((d) => d.dataElement === id)?.value;
+
+  const isSelected = (v) => {
+    const n = Number(v);
+    if (Number.isFinite(n)) return n > 0;
+    const s = String(v ?? "").trim().toLowerCase();
+    return ["yes", "true", "selected", "1"].includes(s);
+  };
+
   // --- Keep your limiter for tR2Yen5sUnc
   useEffect(() => {
     if (!currentEvent) return;
-
-    const getVal = (id) =>
-      currentEvent?.dataValues?.find((d) => d.dataElement === id)?.value;
 
     const val = getVal(LIMIT_FIELD_ID);
     if (val == null) return;
@@ -69,29 +81,41 @@ const useGrowthMonitorRules = () => {
     )
   ]);
 
-  // --- Calendar-accurate age + next visit auto-update
+  // --- Calendar-accurate age + next visit (auto-fill only on eventDate change / empty)
   useEffect(() => {
     const dobObj = currentTei?.attributes?.find(
       (attr) => attr["attribute"] === DOB_ATTR_ID
     );
     const eventDateStr = currentEvent?.eventDate;
 
-    // If event date is cleared, clear next visit and stop
     if (!eventDateStr) {
       if (currentEvent?.event) changeDataValue(currentEvent.event, NEXT_VISIT_ID, "");
-      setHiddenFields([]);
+      lastEventDateRef.current = null;
+      lastAutoNextRef.current = null;
       return;
     }
 
-    // Always write next visit = eventDate + 1 month
     const evt = new Date(eventDateStr);
     if (!Number.isNaN(evt.getTime())) {
       const nextMonthDate = addMonths(evt, 1);
-      const dhisDate = format(nextMonthDate, "yyyy-MM-dd");
-      changeDataValue(currentEvent.event, NEXT_VISIT_ID, dhisDate);
+      const autoNext = format(nextMonthDate, "yyyy-MM-dd");
+
+      const currentNext =
+        currentEvent?.dataValues?.find((d) => d.dataElement === NEXT_VISIT_ID)?.value || "";
+
+      const eventDateChanged = lastEventDateRef.current !== eventDateStr;
+
+      if (
+        (eventDateChanged && (!currentNext || currentNext === lastAutoNextRef.current)) ||
+        (!currentNext && !lastAutoNextRef.current)
+      ) {
+        changeDataValue(currentEvent.event, NEXT_VISIT_ID, autoNext);
+      }
+
+      lastEventDateRef.current = eventDateStr;
+      lastAutoNextRef.current = autoNext;
     }
 
-    // Compute age only if DOB exists & is valid
     if (dobObj?.value && eventDateStr) {
       const eventDate = new Date(eventDateStr);
       const dob = new Date(dobObj.value);
@@ -101,40 +125,42 @@ const useGrowthMonitorRules = () => {
         !Number.isNaN(dob.getTime()) &&
         eventDate >= dob
       ) {
-        // 1) Years
         const years = differenceInYears(eventDate, dob);
         const dobPlusYears = addYears(dob, years);
-
-        // 2) Remaining months
         const months = differenceInMonths(eventDate, dobPlusYears);
         const dobPlusYearsMonths = addMonths(dobPlusYears, months);
-
-        // 3) Remaining days
         const remainingDays = differenceInDays(eventDate, dobPlusYearsMonths);
-
-        // 4) Split into weeks + days
         const weeks = Math.floor(remainingDays / 7);
         const days = remainingDays % 7;
 
-        // Write back to DEs
         changeDataValue(currentEvent.event, YEAR_ID, years);
         changeDataValue(currentEvent.event, MONTH_ID, months);
         changeDataValue(currentEvent.event, WEEK_ID, weeks);
         changeDataValue(currentEvent.event, DAY_ID, days);
       } else {
-        // If invalid or future DOB vs event, zero out
         changeDataValue(currentEvent.event, YEAR_ID, 0);
         changeDataValue(currentEvent.event, MONTH_ID, 0);
         changeDataValue(currentEvent.event, WEEK_ID, 0);
         changeDataValue(currentEvent.event, DAY_ID, 0);
       }
     }
-    setHiddenFields([]);
+  }, [
+    currentEvent?.eventDate,
+    currentTei?.attributes?.find((a) => a.attribute === DOB_ATTR_ID)?.value
+  ]);
+
+  // --- Hide NEXT_VISIT_ID when REFERRED_ID is selected --------------------
+  useEffect(() => {
+    if (!currentEvent) return;
+    const referredYes = isSelected(getVal(REFERRED_ID));
+    setHiddenFields(referredYes ? [NEXT_VISIT_ID] : []);
   }, [
     currentEvent?.event,
-    currentEvent?.eventDate,
-    // react when DOB changes
-    currentTei?.attributes?.find((a) => a.attribute === DOB_ATTR_ID)?.value
+    JSON.stringify(
+      (currentEvent?.dataValues || [])
+        .filter(d => d.dataElement === REFERRED_ID)
+        .map(d => [d.dataElement, d.value])
+    )
   ]);
 
   return { hiddenFields };

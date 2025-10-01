@@ -12,10 +12,10 @@ export const CHILD_NUTRI_SECTION_UI = [
     colTitle: "ສະຖານະ ການຂາດສານອາຫານກະທັນຫັນ / Wasting Status",
     colConfigs: [
       [{ id: "PpLrS8TEr0V", fieldProps: { disabled: true } }],
-      [{ id: "jBEIyV4jneP", fieldProps: { disabled: true } }],
-      [{ id: "Tw0hHyhbjgF", fieldProps: { disabled: true } }],
-      [{ id: "vTci7gLTO9d", fieldProps: { disabled: true } }],
-      [{ id: "AF36bOueuZB", fieldProps: { disabled: true } }]
+      // [{ id: "jBEIyV4jneP", fieldProps: { disabled: true } }],
+      // [{ id: "Tw0hHyhbjgF", fieldProps: { disabled: true } }],
+      // [{ id: "vTci7gLTO9d", fieldProps: { disabled: true } }],
+      // [{ id: "AF36bOueuZB", fieldProps: { disabled: true } }]
     ]
   }
 ];

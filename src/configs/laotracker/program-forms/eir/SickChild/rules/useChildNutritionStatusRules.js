@@ -37,14 +37,34 @@ const useChildNutritionStatusRules = () => {
     }));
   };
 
-  // map rows for the chosen height into { "-3SD": w, "-2SD": w, ... }
+  // Nearest/clamped lookup so we always get a row even if height isn't exact
   const getSdMappingByFilterValue = (filterValue, deTypeMapping, filterProp, targetProp) => {
     const finalMapping = {};
     if (!deTypeMapping) return finalMapping;
+
     for (const sd in deTypeMapping) {
-      const entries = deTypeMapping[sd] || [];
-      const hit = entries.find((e) => e[filterProp] == filterValue);
-      if (hit) finalMapping[sd] = hit[targetProp];
+      const entries = deTypeMapping[sd];
+      if (!Array.isArray(entries) || !entries.length) continue;
+
+      const sorted = entries.slice().sort((a, b) => a[filterProp] - b[filterProp]);
+
+      // exact match?
+      let chosen = sorted.find((e) => e[filterProp] == filterValue);
+
+      if (!chosen) {
+        if (filterValue <= sorted[0][filterProp]) {
+          chosen = sorted[0];
+        } else if (filterValue >= sorted[sorted.length - 1][filterProp]) {
+          chosen = sorted[sorted.length - 1];
+        } else {
+          const idx = sorted.findIndex((e) => e[filterProp] > filterValue);
+          const prev = sorted[idx - 1];
+          const next = sorted[idx];
+          chosen = (filterValue - prev[filterProp] <= next[filterProp] - filterValue) ? prev : next;
+        }
+      }
+
+      finalMapping[sd] = chosen[targetProp];
     }
     return finalMapping;
   };
@@ -64,7 +84,7 @@ const useChildNutritionStatusRules = () => {
       switch (true) {
         case weightVal >= mapping["3SD"] || weightVal < mapping["-3SD"]:
           props.backgroundColor = RED;
-          props.color = "#fff !important";
+          props.color = "#fff";
           deValue = weightVal >= mapping["3SD"] ? "Over +3SD (Obese)" : "less than -3SD (SAM)";
           break;
 
@@ -102,13 +122,13 @@ const useChildNutritionStatusRules = () => {
     return props;
   };
 
-  // Load gender-specific tables once
+  // Load gender-specific tables
   useEffect(() => {
     const gender = getAttrVl(attributes, GENDER_ATTR_ID);
     if (GROWTH_MONITORING.hasOwnProperty(gender)) {
       genderMapping.current = { ...GROWTH_MONITORING[gender] }; // includes WEIGHT_FOR_HEIGHT
     }
-  }, []);
+  }, [attributes]);
 
   // Compute ONLY WFH_WAST_CORR from HEIGHT + WEIGHT (no age)
   useEffect(() => {
@@ -125,8 +145,7 @@ const useChildNutritionStatusRules = () => {
 
     // choose the correct WHO table by height (length <65cm vs height ≥65cm)
     const roundedHeight = roundNumber(height);
-    const table =
-      roundedHeight < 65 ? SD["0to2"] : SD["2to5"]; // no AGE used; height decides which table
+    const table = roundedHeight < 65 ? SD["0to2"] : SD["2to5"]; // height decides the table
 
     if (!table) {
       changeDataValue(event, WFH_WAST_CORR, "");
@@ -134,16 +153,18 @@ const useChildNutritionStatusRules = () => {
       return;
     }
 
+    // Nearest/clamped row for this height
     const mappingAtHeight = getSdMappingByFilterValue(roundedHeight, table, "height", "weight");
+
     if (!mappingAtHeight || Object.keys(mappingAtHeight).length === 0) {
-      // no exact row found for that rounded height
       changeDataValue(event, WFH_WAST_CORR, "");
       handleSingleDeProps(WFH_WAST_CORR, { ...defaultProps, disabled: true, readOnly: true });
       return;
     }
 
     const props = getWfhCorrectProps(WFH_WAST_CORR, mappingAtHeight, weight);
-    handleSingleDeProps(WFH_WAST_CORR, { ...props, disabled: false, readOnly: false });
+    // Always non-editable (derived field)
+    handleSingleDeProps(WFH_WAST_CORR, { ...props, disabled: true, readOnly: true });
   }, [JSON.stringify(attributes), JSON.stringify(dataValues)]);
 
   return childNutriStatus;

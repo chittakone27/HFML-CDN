@@ -42,3 +42,50 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+/* === Lock age fields === */
+#D6GqkdzzOQE input,
+#BYM3zjvhI4i input,
+#lXHpWJigniL input,
+#ajx8hlxn2Rs input {
+  background-color: #f5f5f5 !important; /* light grey background */
+  color: #616161 !important;            /* muted text color */
+  pointer-events: none;                 /* no typing/clicks */
+  user-select: none;                    /* can't select text */
+  border: 1px solid #e0e0e0 !important; /* lighter border */
+}
+
+/* === Horizontal layout for age fields === */
+.age-fields-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  gap: 16px;
+}
+
+.age-field {
+  display: flex;
+  flex-direction: column;
+}
+/* 4 equal columns with spacing */
+.age-fields-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* label on top, input below */
+.age-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* visually read-only look */
+#D6GqkdzzOQE,
+#BYM3zjvhI4i,
+#lXHpWJigniL,
+#ajx8hlxn2Rs {
+  background-color: #f5f5f5 !important;
+  color: #616161 !important;
+  border: 1px solid #e0e0e0 !important;
+  pointer-events: none;
+  user-select: none;
+}

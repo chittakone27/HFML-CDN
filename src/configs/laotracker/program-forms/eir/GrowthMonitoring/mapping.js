@@ -2,21 +2,7 @@ export const CHILD_NUTRI_SECTION_UI = [
   {
     colTitle: "Report child status",
     colConfigs: [
-      [
-        {
-          id: "rWQgHzlRxnr"
-          // fieldProps: {
-          //   backgroundColor: "#8cd47e",
-          //   color: "#000",
-          //   helpers: [
-          //     {
-          //       type: "WARNING",
-          //       value: ""
-          //     }
-          //   ]
-          // }
-        }
-      ],
+      [{ id: "rWQgHzlRxnr" }], 
       [{ id: "nbjCuxRtsYm" }],
       [{ id: "cMhs6WKOp5f" }]
     ]

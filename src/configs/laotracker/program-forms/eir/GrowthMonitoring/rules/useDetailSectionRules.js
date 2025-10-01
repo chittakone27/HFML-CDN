@@ -7,6 +7,9 @@ import { GROWTH_MONITOR_DES, MAX_LIMIT, MIN_LIMIT } from "../const";
 
 const { HEIGHT, WEIGHT, MUAC } = GROWTH_MONITOR_DES;
 
+// Exclude these DEs from rules
+const EXCLUDED_IDS = new Set(["xvE2z6W3wYh", "acQoZnFeVYZ", "fwerjuyn3QC"]);
+
 const useDetailSectionRules = () => {
   const { actions } = useTrackerCaptureStore(
     useShallow((state) => ({
@@ -27,8 +30,9 @@ const useDetailSectionRules = () => {
     return s;
   };
 
-  // Inputs the user types while still composing a number
-  // (don’t clamp yet on these)
+
+  
+  // Inputs the user types while still composing a number (don’t clamp yet)
   const isInterim = (raw) => {
     if (raw === null || raw === undefined) return true;
     const s = String(raw).trim();
@@ -40,7 +44,6 @@ const useDetailSectionRules = () => {
   };
 
   // Only clamp to min once user has typed enough digits
-  // (so typing "3" doesn't immediately become 30)
   const typedEnoughForMin = (raw, minValue) => {
     const s = String(raw).trim();
     const digits = s.replace(/\D/g, "").length;
@@ -49,6 +52,9 @@ const useDetailSectionRules = () => {
   };
 
   const handleLimitedDataValue = (deId, deVl, minValue, maxValue) => {
+    // Skip excluded IDs entirely
+    if (EXCLUDED_IDS.has(deId)) return;
+
     if (deVl === null || deVl === undefined) return;
 
     const raw = String(deVl);
@@ -60,14 +66,22 @@ const useDetailSectionRules = () => {
 
     // Always cap immediately if above max
     if (num > maxValue) {
-      changeDataValue(currentEvent.event, deId, formatToFirstDecimalNumStr(maxValue.toString()));
+      changeDataValue(
+        currentEvent.event,
+        deId,
+        formatToFirstDecimalNumStr(maxValue.toString())
+      );
       return;
     }
 
     // For values below min: only clamp once "enough digits" are typed
     if (num < minValue) {
       if (!typedEnoughForMin(raw, minValue)) return; // let them finish typing
-      changeDataValue(currentEvent.event, deId, formatToFirstDecimalNumStr(minValue.toString()));
+      changeDataValue(
+        currentEvent.event,
+        deId,
+        formatToFirstDecimalNumStr(minValue.toString())
+      );
       return;
     }
 
@@ -79,6 +93,8 @@ const useDetailSectionRules = () => {
   };
 
   useEffect(() => {
+    if (!currentEvent || !currentEvent.dataValues) return;
+
     const height = getDataVl(currentEvent.dataValues, HEIGHT);
     const weight = getDataVl(currentEvent.dataValues, WEIGHT);
     const muac   = getDataVl(currentEvent.dataValues, MUAC);

@@ -5,11 +5,7 @@ import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import { getDataVl } from "../helper";
 import { GROWTH_MONITOR_DES } from "../const";
 
-/**
- * Blocks the global "Complete" action whenever HEIGHT or WEIGHT is missing.
- * Assumes the store exposes actions.setCompleteBlocked(flag:boolean)
- * and the footer reads ui.completeBlocked to disable the Complete button.
- */
+
 const { HEIGHT, WEIGHT } = GROWTH_MONITOR_DES;
 
 const useCompleteGuard = () => {
