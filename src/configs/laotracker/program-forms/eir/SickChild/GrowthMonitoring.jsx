@@ -1,13 +1,13 @@
 import { Box, Table, TableBody, TableRow, TableCell, Typography, Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useMemo } from "react"; // <-- ensure useMemo is imported
+import { useMemo } from "react"; 
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
 import useGrowthMonitorRules from "./rules/useGrowthMonitorRules";
 // import useDetailSectionRules from "./rules/useDetailSectionRules";
 import useChildNutritionStatusRules from "./rules/useChildNutritionStatusRules";
 import useSickChildValidation from "./rules/useSickChildValidation";
-import useMetadataStore from "@/state/metadata"; // <-- NEW
+import useMetadataStore from "@/state/metadata"; 
 import { RowMapper, SectionCollapse } from "@/configs/lao/program-forms/common/tracker";
 import { GROWTH_MONITOR_ID, CHILD_NUTRI_STATUS_SECTION_ID, GROWTH_MONITOR_DES } from "./const";
 import { CHILD_NUTRI_SECTION_UI } from "./mapping";
@@ -38,11 +38,11 @@ const SickChild = () => {
   const { programStageSections } = growthMonitorStage;
 
   const { hiddenFields } = useGrowthMonitorRules();
-  // useDetailSectionRules();
+
   const childNutriDeProps = useChildNutritionStatusRules();
   const { fieldHelperProps } = useSickChildValidation();
 
-  // NEW: read optionSets and build Lao/English value set
+
   const { optionSets } = useMetadataStore(
     useShallow((s) => ({ optionSets: s.optionSets }))
   );
@@ -54,8 +54,8 @@ const SickChild = () => {
       const lo = o.translations?.find(
         (tr) => tr.locale === "lo" && tr.property === "NAME"
       );
-      const labels = [o.name]; // English/default
-      if (lo?.value) labels.unshift(lo.value); // Lao first if available
+      const labels = [o.name]; 
+      if (lo?.value) labels.unshift(lo.value); 
       return { value: o.code, label: labels.join(" | ") };
     });
   }, [optionSets]);
@@ -70,7 +70,7 @@ const SickChild = () => {
       {programStageSections.map((pss) => {
         const visibleDes = pss.dataElements.filter((de) => !hiddenFields.includes(de.id));
 
-        // Child Nutrition section
+
         if (pss.id === CHILD_NUTRI_STATUS_SECTION_ID) {
           return (
             <SectionCollapse
