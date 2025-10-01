@@ -92,7 +92,7 @@ const useAncRules = () => {
 
   useEffect(() => {
     const assignations = [];
-    const currentDisabledFields = [HIGH_BLOOD_PRESSURE, MCH_BOOK_NUMBER, BMI, COMPLETED_ANC_4TH];
+    const currentDisabledFields = [HIGH_BLOOD_PRESSURE, MCH_BOOK_NUMBER, BMI, COMPLETED_ANC_4TH, ANC_VISIT_AT_36_WEEKS_ABOVE];
     const currentHiddenFields = [];
     const currentHelpers = {};
     //DISABLE MCH BOOK NUMBER AND COPY VALUE FROM TEI ATTRIBUTE
