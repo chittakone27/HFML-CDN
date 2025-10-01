@@ -3,9 +3,8 @@ import { useShallow } from "zustand/react/shallow";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useSelectionStore from "@/state/selection";
-// Components
 import TrackerTableSection from "../../common/TrackerTableSection";
-// Libs
+
 import {
   addMonths,
   addYears,
@@ -14,15 +13,15 @@ import {
   differenceInDays,
   format,
 } from "date-fns";
-// CSS
+
 import "./index.css";
-// const values
+
 import { ECD_STAGE_ID, DOB_ATTR_ID } from "./const";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import EventDateLabel from "@/ui/TrackerCapture/EventForm/EventDateLabel";
 import useEcdValidation from "./rules/useEcdValidation";
 
-// --- Age field IDs
+
 const YEAR_ID = "D6GqkdzzOQE"; // years
 const MONTH_ID = "BYM3zjvhI4i"; // months
 const WEEK_ID = "lXHpWJigniL";  // weeks
@@ -30,17 +29,17 @@ const DAY_ID = "ajx8hlxn2Rs";   // days
 const AGE_IDS = new Set([YEAR_ID, MONTH_ID, WEEK_ID, DAY_ID]);
 const AGE_ORDER = [YEAR_ID, MONTH_ID, WEEK_ID, DAY_ID];
 
-// Next visit
+
 const NEXT_VISIT_ID = "vdFLgi5nGWE";
 
-// Conditional show/require rule
+
 const TRIGGER_DE_ID = "O22NLnyyiN3"; // Result
 const TARGET_DE_ID = "D2o1Qh6LZHh";  // Follow-up action
 
-// Hide-next-visit flag
+
 const SKIP_FLAG_DE = "mHvlqLhgrpC";
 
-// Labels that SHOW the target and make it mandatory
+
 const SHOW_LABELS = new Set([
   "Abnormal and received stimulation",
   "Abnormal but did not receive stimulation",
@@ -52,11 +51,11 @@ const boolish = (v) => {
   return s === "true" || s === "1" || s === "yes" || s === "y";
 };
 
-// Reusable guard that truly disables inputs (no pointer, no focus, read-only)
+
 const NO_CLICK_FP = {
-  sx: { pointerEvents: "none", userSelect: "none" }, // blocks mouse & text selection
-  inputProps: { readOnly: true, tabIndex: -1 },      // blocks keyboard focus/typing
-  tabIndex: -1,                                      // belt & suspenders
+  sx: { pointerEvents: "none", userSelect: "none" }, 
+  inputProps: { readOnly: true, tabIndex: -1 },      
+  tabIndex: -1,                                      
 };
 
 const Ecd = () => {
@@ -70,7 +69,7 @@ const Ecd = () => {
   const { changeDataValue } = actions ?? {};
   const { currentTei } = data ?? {};
 
-  // Inline validation helpers + completion guard
+
   const { fieldHelperProps } = useEcdValidation({
     SHOW_LABELS,
     TRIGGER_DE_ID,
@@ -85,15 +84,14 @@ const Ecd = () => {
   const getVal = (deId) =>
     currentEvent?.dataValues?.find((d) => d.dataElement === deId)?.value ?? "";
 
-  // --- Conditional visibility: show TARGET when TRIGGER has one of the SHOW_LABELS
   const triggerLabel = String(getVal(TRIGGER_DE_ID)).trim();
   const shouldShowTarget = SHOW_LABELS.has(triggerLabel);
-  const isDidNotAssessed = triggerLabel === "Did not assessed"; // explicit hide
+  const isDidNotAssessed = triggerLabel === "Did not assessed";
 
-  // NEW: hide Next Visit when mHvlqLhgrpC is truthy
+
   const skipNextVisit = boolish(getVal(SKIP_FLAG_DE));
 
-  // If hidden, clear TARGET value
+ 
   useEffect(() => {
     if (!currentEvent?.event || !changeDataValue) return;
     if (!shouldShowTarget || isDidNotAssessed) {
@@ -102,10 +100,10 @@ const Ecd = () => {
         changeDataValue(currentEvent.event, TARGET_DE_ID, "");
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+ 
   }, [currentEvent?.event, triggerLabel, changeDataValue]);
 
-  // Next visit auto-fill (preserve manual edits unless eventDate changes)
+ 
   const lastEventDateRef = useRef(null);
   const lastAutoNextRef = useRef(null);
   useEffect(() => {
@@ -139,7 +137,7 @@ const Ecd = () => {
     lastAutoNextRef.current = autoNext;
   }, [currentEvent?.event, currentEvent?.eventDate, changeDataValue]);
 
-  // Calendar-accurate age autofill: years → months → weeks/days
+
   useEffect(() => {
     if (!currentEvent?.event) return;
 
@@ -190,7 +188,6 @@ const Ecd = () => {
     changeDataValue,
   ]);
 
-  // Enforce read-only age fields by resetting any manual edits
   useEffect(() => {
     if (!currentEvent?.event) return;
 
@@ -257,7 +254,6 @@ const Ecd = () => {
           return triggerOK && nextVisitOK;
         });
 
-        // Build the horizontal age row first (fully disabled & unclickable)
         const ageIdsPresent = AGE_ORDER.filter((id) =>
           visibleDes.some((de) => de.id === id)
         );
@@ -270,7 +266,7 @@ const Ecd = () => {
                   const mergedSx = { ...(helpers.sx || {}), ...(NO_CLICK_FP.sx || {}) };
                   return {
                     id,
-                    // Some renderers only read from fieldProps; put flags there.
+                    
                     fieldProps: {
                       ...(helpers || {}),
                       ...NO_CLICK_FP,
@@ -283,7 +279,6 @@ const Ecd = () => {
               ]
             : [];
 
-        // Then the rest, one per row
         const otherRows = visibleDes
           .filter((de) => !AGE_IDS.has(de.id))
           .map((de) => [

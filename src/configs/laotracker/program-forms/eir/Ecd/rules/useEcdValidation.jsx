@@ -32,7 +32,7 @@ const LABELS = {
 };
 
 const NEXT_APPT_DE = "vdFLgi5nGWE";
-const SKIP_FLAG_DE = "mHvlqLhgrpC"; // when true => hide NEXT_APPT_DE and make it non-mandatory
+const SKIP_FLAG_DE = "mHvlqLhgrpC"; 
 
 const isEmpty = (v) => v == null || (typeof v === "string" && v.trim() === "");
 const getDV = (ev, id) => ev?.dataValues?.find((d) => d.dataElement === id)?.value;
@@ -56,18 +56,18 @@ export default function useEcdValidation({ SHOW_LABELS, TRIGGER_DE_ID, TARGET_DE
       const errs = [];
       const skipNextAppt = boolish(getDV(ev, SKIP_FLAG_DE));
 
-      // Always-required (but conditionally skip NEXT_APPT_DE)
+
       BASE_MANDATORY.forEach((id) => {
-        if (id === NEXT_APPT_DE && skipNextAppt) return; // not mandatory when hidden
+        if (id === NEXT_APPT_DE && skipNextAppt) return; 
         if (isEmpty(getDV(ev, id))) {
           // errs.push({ deId: id, message: `${LABELS[id] || id} is required.` });
           errs.push({ deId: id, message: `` });
         }
       });
 
-      // Conditional: D2o1Qh6LZHh when O22NLnyyiN3 is NOT "Did not assessed"
+
       const triggerLabel = String(getDV(ev, TRIGGER_DE_ID) || "").trim();
-      const requireTarget = SHOW_LABELS.has(triggerLabel); // shown for normal/abnormal values
+      const requireTarget = SHOW_LABELS.has(triggerLabel); 
       if (requireTarget && isEmpty(getDV(ev, TARGET_DE_ID))) {
         errs.push({
           deId: TARGET_DE_ID,
@@ -90,13 +90,12 @@ export default function useEcdValidation({ SHOW_LABELS, TRIGGER_DE_ID, TARGET_DE
     return byId;
   }, []);
 
-  // Handle visibility of NEXT_APPT_DE and compute validation / disable Complete
+
   useEffect(() => {
     const ev = currentEvent || {};
     const skipNextAppt = boolish(getDV(ev, SKIP_FLAG_DE));
 
-    // Hide/show the field in UI
-    if (setLayout) {
+      if (setLayout) {
       setLayout("hideFields", { [NEXT_APPT_DE]: !!skipNextAppt });
     }
 
@@ -107,7 +106,7 @@ export default function useEcdValidation({ SHOW_LABELS, TRIGGER_DE_ID, TARGET_DE
     if (setLayout) setLayout("disableEventCompleteButton", errs.length > 0);
   }, [currentEvent, setLayout, buildIssues, buildHelpersByField]);
 
-  // Block completion via handler too (safety net)
+
   useEffect(() => {
     if (!setHandlers) return;
     setHandlers("eventSave", async (evArg) => {

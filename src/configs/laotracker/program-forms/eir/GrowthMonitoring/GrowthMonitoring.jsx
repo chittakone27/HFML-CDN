@@ -14,7 +14,6 @@ import "../eir.css";
 import EventDateLabel from "@/ui/TrackerCapture/EventForm/EventDateLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 
-// Age IDs (disabled + horizontal)
 const YEAR_ID = "XxJ8Ta1NoAV";
 const MONTH_ID = "MV1yoC7BfnG";
 const WEEK_ID  = "DxOqZZgVQhF";

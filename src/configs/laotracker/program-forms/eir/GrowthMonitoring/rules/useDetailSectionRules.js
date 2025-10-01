@@ -7,7 +7,7 @@ import { GROWTH_MONITOR_DES, MAX_LIMIT, MIN_LIMIT } from "../const";
 
 const { HEIGHT, WEIGHT, MUAC } = GROWTH_MONITOR_DES;
 
-// Exclude these DEs from rules
+
 const EXCLUDED_IDS = new Set(["xvE2z6W3wYh", "acQoZnFeVYZ", "fwerjuyn3QC"]);
 
 const useDetailSectionRules = () => {
@@ -19,7 +19,7 @@ const useDetailSectionRules = () => {
   const { currentEvent } = useCurrentEvent();
   const { changeDataValue } = actions;
 
-  // keep only 1 decimal if more; leave integers as-is
+
   const formatToFirstDecimalNumStr = (raw) => {
     const s = String(raw ?? "");
     const parts = s.split(".");
@@ -32,18 +32,17 @@ const useDetailSectionRules = () => {
 
 
   
-  // Inputs the user types while still composing a number (don’t clamp yet)
+
   const isInterim = (raw) => {
     if (raw === null || raw === undefined) return true;
     const s = String(raw).trim();
-    if (s === "") return true;               // empty
-    if (s === "-" || s === "+") return true; // just a sign
-    if (s.endsWith(".")) return true;        // trailing decimal point (e.g., "30.")
-    // allow partial numerics like "0.", "3.", "030", etc.
+    if (s === "") return true;               
+    if (s === "-" || s === "+") return true; 
+    if (s.endsWith(".")) return true;        
+
     return !/^[0-9]*\.?[0-9]*$/.test(s);
   };
 
-  // Only clamp to min once user has typed enough digits
   const typedEnoughForMin = (raw, minValue) => {
     const s = String(raw).trim();
     const digits = s.replace(/\D/g, "").length;
@@ -52,19 +51,18 @@ const useDetailSectionRules = () => {
   };
 
   const handleLimitedDataValue = (deId, deVl, minValue, maxValue) => {
-    // Skip excluded IDs entirely
+
     if (EXCLUDED_IDS.has(deId)) return;
 
     if (deVl === null || deVl === undefined) return;
 
     const raw = String(deVl);
-    // If still composing (partial), let the user type
+
     if (isInterim(raw)) return;
 
     const num = parseFloat(raw);
     if (Number.isNaN(num)) return;
 
-    // Always cap immediately if above max
     if (num > maxValue) {
       changeDataValue(
         currentEvent.event,
@@ -74,9 +72,8 @@ const useDetailSectionRules = () => {
       return;
     }
 
-    // For values below min: only clamp once "enough digits" are typed
     if (num < minValue) {
-      if (!typedEnoughForMin(raw, minValue)) return; // let them finish typing
+      if (!typedEnoughForMin(raw, minValue)) return; 
       changeDataValue(
         currentEvent.event,
         deId,
@@ -85,7 +82,6 @@ const useDetailSectionRules = () => {
       return;
     }
 
-    // Within range → normalize to at most 1 decimal (if any)
     const formatted = formatToFirstDecimalNumStr(num.toString());
     if (formatted !== raw) {
       changeDataValue(currentEvent.event, deId, formatted);
