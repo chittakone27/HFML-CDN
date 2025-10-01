@@ -20,7 +20,7 @@ const useCompleteGuard = () => {
     const height = getDataVl(dv, HEIGHT);
     const weight = getDataVl(dv, WEIGHT);
 
-    const missing = !height || !weight; // both required
+    const missing = !height || !weight; 
     actions?.setCompleteBlocked?.(missing);
   }, [JSON.stringify(currentEvent)]);
 };

@@ -1,4 +1,3 @@
-// SickChild/rules/useGrowthMonitorRules.js
 import { useEffect, useRef, useState } from "react";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";

@@ -52,7 +52,7 @@ const RANGE_RULES = {
   qh8i5p7yZX4: {               max: 50,            label: LABELS.qh8i5p7yZX4 },
   EJ10RvCF4DK: {               max: 50,            label: LABELS.EJ10RvCF4DK },
   DtM9O0NrjcP: { min: 50,      max: 1000,          label: LABELS.DtM9O0NrjcP },
-  F8dkD0Q07Om: { min: 37.5,    max: 750,  maxDp: 2, label: LABELS.F8dkD0Q07Om }, // up to 2 decimals
+  F8dkD0Q07Om: { min: 37.5,    max: 750,  maxDp: 2, label: LABELS.F8dkD0Q07Om },
   rsE2q1cDpqe: {               max: 50,            label: LABELS.rsE2q1cDpqe },
   Sl1BmkUV9HD: {               max: 50,            label: LABELS.Sl1BmkUV9HD },
 };

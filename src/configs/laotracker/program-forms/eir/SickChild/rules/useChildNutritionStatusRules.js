@@ -122,7 +122,7 @@ const useChildNutritionStatusRules = () => {
   useEffect(() => {
     const gender = getAttrVl(attributes, GENDER_ATTR_ID);
     if (GROWTH_MONITORING.hasOwnProperty(gender)) {
-      genderMapping.current = { ...GROWTH_MONITORING[gender] }; // includes WEIGHT_FOR_HEIGHT
+      genderMapping.current = { ...GROWTH_MONITORING[gender] };
     }
   }, [attributes]);
 
