@@ -130,7 +130,7 @@ const useFamilyPlanningRules = () => {
     }
 
     //ASSIGN NEXT APPOINTMENT DATE AUTOMATICALLY BASED ON SERVICE OPTED
-    if (dataValues[SERVICE_OPTED] && !dataValues[NEXT_APPOINTMENT_DATE]) {
+    if (dataValues[SERVICE_OPTED]) {
       let nextAppointmentDate = "";
       const numberOfDistribution = dataValues[NUMBER_OF_DISTRIBUTION] ? parseInt(dataValues[NUMBER_OF_DISTRIBUTION]) : 1;
       let timeToBeAdded = {

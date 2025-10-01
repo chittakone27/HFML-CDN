@@ -132,7 +132,6 @@ const Infant = ({ childIndex }) => {
   const foundSex = findAttributeValue(currentChild, "DmuazFb368B");
   const foundChildHealthId = findAttributeValue(currentChild, "oPKsfqS64oE");
   const { props, disabledFields } = useInfantFormRules(childIndex);
-  console.log(children);
 
   return (
     <div style={{ height: "100%" }}>
@@ -157,7 +156,7 @@ const Infant = ({ childIndex }) => {
           }
           field={
             <AttributeFieldNoState
-              disabled={!editing}
+              disabled={!editing || disabledFields.includes("sex")}
               value={foundSex}
               attribute="DmuazFb368B"
               change={(value) => {

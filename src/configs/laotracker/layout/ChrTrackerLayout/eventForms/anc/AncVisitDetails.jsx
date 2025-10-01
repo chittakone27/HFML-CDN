@@ -11,7 +11,7 @@ import BloodPressureField from "@/configs/laotracker/layout/ChrTrackerLayout/Blo
 import Row from "@/configs/laotracker/layout/ChrTrackerLayout/Row";
 import { useShallow } from "zustand/react/shallow";
 import useAncRules from "./useAncRules";
-
+import EventDateLabelNoState from "@/ui/TrackerCapture/EventForm/EventDateLabelNoState";
 const AncVisitDetails = () => {
   const { t } = useTranslation();
   const { event, actions } = useChrTrackerStore(
@@ -61,9 +61,9 @@ const AncVisitDetails = () => {
               />
               <Row
                 label={
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "start" }}>
                     2.&nbsp;
-                    {pickExecutionDateLabel(currentProgramStage, t)}
+                    <EventDateLabelNoState type="eventDate" currentProgramStage={currentProgramStage} />
                   </div>
                 }
                 field={

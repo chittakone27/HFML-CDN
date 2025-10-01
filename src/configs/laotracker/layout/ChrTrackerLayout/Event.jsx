@@ -96,8 +96,6 @@ const Event = ({ title }) => {
     ...finalCurrentEvents.filter((ce) => ce.status === "ACTIVE")
   ];
 
-  console.log(currentEvents);
-
   if (currentEnrollment.status === "COMPLETED") {
     disableNewEventButton = true;
   }
@@ -128,11 +126,11 @@ const Event = ({ title }) => {
                   <TableCell sx={{ fontSize: 12 }} align="left">
                     {pickExecutionDateLabel(currentProgramStage, t)}
                   </TableCell>
-                  {!currentProgramStage.hideDueDate && (
+                  {/* {!currentProgramStage.hideDueDate && (
                     <TableCell sx={{ fontSize: 12 }} align="left">
                       {pickDueDateLabel(currentProgramStage, t)}
                     </TableCell>
-                  )}
+                  )} */}
                   <TableCell sx={{ fontSize: 12 }} align="left">
                     {t("orgUnit")}
                   </TableCell>
@@ -178,11 +176,11 @@ const Event = ({ title }) => {
                         <TableCell sx={{ fontSize: 12 }} align="left">
                           {convertDisplayDate(ev.eventDate)}
                         </TableCell>
-                        {!currentProgramStage.hideDueDate && (
+                        {/* {!currentProgramStage.hideDueDate && (
                           <TableCell sx={{ fontSize: 12 }} align="left">
                             {convertDisplayDate(ev.dueDate)}
                           </TableCell>
-                        )}
+                        )} */}
                         <TableCell sx={{ fontSize: 12 }} align="left">
                           {foundOu.displayName}
                         </TableCell>

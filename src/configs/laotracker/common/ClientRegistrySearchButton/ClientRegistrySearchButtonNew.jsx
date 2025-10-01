@@ -169,7 +169,12 @@ const ClientRegistrySearchButton = ({
       } else {
         if (splitted[0].length !== 8) {
           valid = false;
+        } else {
+          if (splitted[0] < "01011900" || splitted[0] > "31122100") {
+            valid = false;
+          }
         }
+
         if (splitted[1].length !== 1 || isNaN(splitted[1])) {
           valid = false;
         }
