@@ -193,6 +193,12 @@ const useDeliveryDetailsRules = () => {
       assignations.push({ dataElement: HIV_POSITIVE_TREATED_WITH_ARV, value: "" });
     }
 
+    //HIDE BLOOD_LOSS_VOLUME IF NOT BLOOD LOSS
+    if (dataValues[BLOOD_LOSS] !== "true") {
+      currentHiddenFields.push(BLOOD_LOSS_VOLUME);
+      assignations.push({ dataElement: BLOOD_LOSS_VOLUME, value: "" });
+    }
+
     changeDataValues(assignations);
     setHiddenFields([...currentHiddenFields]);
     setDisabledFields([...currentDisabledFields]);

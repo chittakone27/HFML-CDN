@@ -138,7 +138,7 @@ const useFamilyPlanningRules = () => {
         months: 0,
         years: 0
       };
-      let ageAtAppointment = { days: 0, months: 0, years: 0 };
+      let nextAge = { days: 0, months: 0, years: 0 };
       switch (dataValues[SERVICE_OPTED]) {
         case "S-pill":
         case "C-pill":
@@ -149,29 +149,28 @@ const useFamilyPlanningRules = () => {
           break;
         case "IUD":
           timeToBeAdded.years = 10;
-          ageAtAppointment = calculateAge(foundDob, add(new Date(currentEvent.eventDate), timeToBeAdded));
-          console.log(ageAtAppointment);
-          if (ageAtAppointment.years > 49) {
-            timeToBeAdded.years = 0;
+          nextAge = calculateAge(foundDob, add(new Date(currentEvent.eventDate), { years: 3 }));
+          if (nextAge.years >= 49) {
+            timeToBeAdded = null;
           }
           break;
         case "Implants":
           timeToBeAdded.years = 3;
-          ageAtAppointment = calculateAge(foundDob, add(new Date(currentEvent.eventDate), timeToBeAdded));
-          console.log(ageAtAppointment);
-          if (ageAtAppointment.years > 49) {
-            timeToBeAdded.years = 0;
+          nextAge = calculateAge(foundDob, add(new Date(currentEvent.eventDate), { years: 10 }));
+          if (nextAge.years >= 49) {
+            timeToBeAdded = null;
           }
           break;
         default:
           break;
       }
-      if (timeToBeAdded.days === 0 && timeToBeAdded.months === 0 && timeToBeAdded.years === 0) {
-        nextAppointmentDate = "";
-      } else {
+      if (timeToBeAdded) {
         nextAppointmentDate = add(new Date(currentEvent.eventDate), timeToBeAdded);
+        assignations.push({ dataElement: NEXT_APPOINTMENT_DATE, value: nextAppointmentDate });
       }
-      assignations.push({ dataElement: NEXT_APPOINTMENT_DATE, value: nextAppointmentDate });
+    }
+    if (!dataValues[SERVICE_OPTED] || !dataValues[NUMBER_OF_DISTRIBUTION]) {
+      assignations.push({ dataElement: NEXT_APPOINTMENT_DATE, value: "" });
     }
 
     changeDataValues(assignations);
