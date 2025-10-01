@@ -1,4 +1,3 @@
-// SickChild/GrowthMonitoring.jsx
 import { Box, Table, TableBody, TableRow, TableCell, Typography, Alert } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react"; // <-- ensure useMemo is imported
@@ -24,7 +23,6 @@ const NOTE_TEXT =
 const { AGE_YEAR, AGE_MONTH, AGE_WEEK, AGE_DAYS } = GROWTH_MONITOR_DES;
 const AGE_IDS = new Set([AGE_YEAR, AGE_MONTH, AGE_WEEK, AGE_DAYS]);
 
-// NEW: IDs to receive the ICD-10 option set
 const TARGET_DES = new Set(["nvOV3SOzeAj", "RjNMwOqFNcE"]);
 const ICD10_OPTIONSET_ID = "ZgqhnzhZZcQ";
 
@@ -66,8 +64,6 @@ const SickChild = () => {
 
   return (
     <Box className="eir-growth-monitor-form">
-      {/* single, localized Event Date from Program Stage description */}
-      <EventDateLabel type="eventDate" />
       <EventDateFieldNoBlur type="eventDate" />
       <br />
 
@@ -88,7 +84,6 @@ const SickChild = () => {
                   const finalConfigs = col.colConfigs.map((de) => {
                     const curr = de[0];
 
-                    // NEW: inject customValueSet for the two target DEs
                     const extra =
                       TARGET_DES.has(curr.id) && icd10ValueSet.length
                         ? { customValueSet: icd10ValueSet }
@@ -100,7 +95,7 @@ const SickChild = () => {
                         ...curr?.fieldProps,
                         ...childNutriDeProps[curr.id],
                         ...(fieldHelperProps[curr.id] || {}),
-                        ...extra, // <-- only change
+                        ...extra, 
                       },
                     };
                     return [merged];
@@ -130,7 +125,6 @@ const SickChild = () => {
           );
         }
 
-        // Other sections
         const hasAge = sectionHasAnyAge(pss);
         const ageRow = hasAge
           ? [[
@@ -143,7 +137,6 @@ const SickChild = () => {
 
         const nonAgeDes = visibleDes.filter((de) => !AGE_IDS.has(de.id));
         const otherRows = nonAgeDes.map((de) => {
-          // NEW: inject customValueSet for the two target DEs
           const extra =
             TARGET_DES.has(de.id) && icd10ValueSet.length
               ? { customValueSet: icd10ValueSet }
