@@ -333,22 +333,21 @@ const Profile = ({ title }) => {
             </LoadingButton>
           )}
           &nbsp;
-          {layout.profileFormEditing && (
-            <LoadingButton
-              loading={loading}
-              variant="contained"
-              color="error"
-              onClick={async (event) => {
-                setLoading(true);
-                const result = await getTeiById(program.id, currentTei.trackedEntityInstance);
-                actions.initData(result, program.id, orgUnit.id);
-                setLayout("profileFormEditing", false);
-                setLoading(false);
-              }}
-            >
-              {t("cancel")}
-            </LoadingButton>
-          )}
+          <LoadingButton
+            loading={loading}
+            variant="contained"
+            color="error"
+            onClick={async (event) => {
+              // setLoading(true);
+              // const result = await getTeiById(program.id, currentTei.trackedEntityInstance);
+              // actions.initData(result, program.id, orgUnit.id);
+              // setLoading(false);
+              setLayout("profileFormEditing", false);
+              setLayout("layout", "layout1");
+            }}
+          >
+            {t("cancel")}
+          </LoadingButton>
           {/* &nbsp;
           <LoadingButton
             loading={loading}
