@@ -301,7 +301,9 @@ const ClientRegistrySearchButton = ({
     if (!foundMobile || !foundFirstName || !foundLastName) {
       await saveTei(tei);
     }
-    await saveEnrollment(newEnrollment);
+    if (program.id !== "AyPkCOMmgdd") {
+      await saveEnrollment(newEnrollment);
+    }
     const url = `/api/routes/chr/run?work=enroll&tei=${selectedTei.trackedEntityInstance}&program=${program.id}`;
     await pull(url);
     await load(selectedTei);
