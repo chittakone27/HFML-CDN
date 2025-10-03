@@ -30,7 +30,8 @@ const deliveryRegistry = {
     childHealthId: "Child Health ID",
     sex: "Sex",
     dateOfBirth: "Date of Birth",
-    zeroIsNotAllowed: "Zero is now allowed"
+    zeroIsNotAllowed: "Zero is now allowed",
+    incompleteThisDelivery: "Incomplete this delivery"
   },
   lo: {
     defaultProfileTitle: "ລະຫັດສຸຂະພາບ",
@@ -65,7 +66,8 @@ const deliveryRegistry = {
     sex: "ເພດ",
     dateOfBirth: "ວັນເດືອນປີເກີດ",
     deleteTeiConfirmation: "ທ່ານໝັ້ນໃຈແລ້ວບໍທີ່ຈະລຶບການລົງທະບຽນນີ້? ເຫດການທັງໝົດທີ່ທ່ານໄດ້ບັນທຶກຈະຖືກລຶບອອກໝົດ, ເຊິ່ງບໍ່ສາມາດກູ້ຄືນໄດ້ອີກ.",
-    zeroIsNotAllowed: "ບໍ່ສາມາດຕື່ມເລກ 0 ໄດ້"
+    zeroIsNotAllowed: "ບໍ່ສາມາດຕື່ມເລກ 0 ໄດ້",
+    incompleteThisDelivery: "ແກ້ໄຂຂໍ້ມູນ"
   }
 };
 
