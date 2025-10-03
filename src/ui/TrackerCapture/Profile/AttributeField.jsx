@@ -4,6 +4,7 @@ import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { shallow } from "zustand/shallow";
 import moment from "moment";
+import { format } from "date-fns";
 import { useEffect } from "react";
 import { tracker } from "@/api";
 import { pickTranslation } from "@/utils/utils";
@@ -84,6 +85,19 @@ const AttributeField = (props) => {
     })();
   }, []);
 
+  let currentInitialDate = undefined;
+  if (initialDate) {
+    currentInitialDate = initialDate;
+  } else if (foundTea.valueType === "AGE") {
+    if (currentEnrollment && currentEnrollment.enrollmentDate) {
+      currentInitialDate = currentEnrollment.enrollmentDate;
+    } else {
+      if (currentTei.created) {
+        currentInitialDate = format(new Date(currentTei.created), "yyyy-MM-dd");
+      }
+    }
+  }
+
   return (
     <div className="input-field-container">
       {VITE_MODE === "development" && foundTea.id}
@@ -101,7 +115,7 @@ const AttributeField = (props) => {
         }}
         minDate={minDate}
         maxDate={maxDate ? maxDate : foundTea.allowFutureDate ? undefined : moment().format("YYYY-MM-DD")}
-        initialDate={initialDate ? initialDate : foundTea.valueType === "AGE" ? currentEnrollment.enrollmentDate : undefined}
+        initialDate={currentInitialDate}
         accept={
           foundTea.valueType === "DATE" ||
           foundTea.valueType === "AGE" ||

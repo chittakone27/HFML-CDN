@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import useSelectionStore from "@/state/selection";
 import { findAttributeValue } from "../../common/utils";
+import { format } from "date-fns";
 const identificationFieldMapping = {
   cvid: "FB3Ro1hJ9ht",
   nationalid: "lRZGCESE6v2",
@@ -62,7 +63,12 @@ const useProfileRules = () => {
 
     if (foundDob && foundAgeInYearAttribute) {
       let date1 = foundDob;
-      let date2 = currentEnrollment.enrollmentDate;
+      let date2 = undefined;
+      if (currentEnrollment && currentEnrollment.enrollmentDate) {
+        date2 = currentEnrollment.enrollmentDate;
+      } else if (currentTei.created) {
+        date2 = format(new Date(currentTei.created), "yyyy-MM-dd");
+      }
 
       if (date1 > date2) [date1, date2] = [date2, date1];
 
