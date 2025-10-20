@@ -91,6 +91,7 @@ const useAncRules = () => {
   const previousEvents = usePreviousEvents(ANC_PROGRAM_STAGE, currentEvent);
 
   useEffect(() => {
+    const currentProps = {};
     const assignations = [];
     const currentDisabledFields = [HIGH_BLOOD_PRESSURE, MCH_BOOK_NUMBER, BMI, COMPLETED_ANC_4TH, ANC_VISIT_AT_36_WEEKS_ABOVE];
     const currentHiddenFields = [];
@@ -202,10 +203,16 @@ const useAncRules = () => {
       }
     }
 
+    //MAKE MAX FUTURE DATE FOR NEXT APPOINTMENT DATE TO BE 3 MONTHS FROM EVENT DATE
+    if (currentEvent["eventDate"]) {
+      currentProps[NEXT_APPOINTMENT_DATE] = {
+        maxDate: add(new Date(currentEvent["eventDate"]), { months: 3 })
+      };
+    }
+
     //SET ANC VISIT AT 36 WEEKS ABOVE IF GESTATIONAL WEEK IS > 36
     if (dataValues[GESTATIONAL_WEEK]) {
       const gestationalWeek = parseInt(dataValues[GESTATIONAL_WEEK]);
-      console.log(gestationalWeek);
       if (gestationalWeek > 36) {
         assignations.push({ dataElement: ANC_VISIT_AT_36_WEEKS_ABOVE, value: "true" });
       }
@@ -215,6 +222,7 @@ const useAncRules = () => {
     setHiddenFields([...currentHiddenFields]);
     setDisabledFields([...currentDisabledFields]);
     setHelpers({ ...currentHelpers });
+    setProps({ ...currentProps });
     const currentErrors = [];
     Object.keys(currentHelpers).forEach((key) => {
       const foundIndex = order.findIndex((o) => o === key);

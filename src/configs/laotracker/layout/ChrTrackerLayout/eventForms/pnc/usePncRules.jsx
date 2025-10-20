@@ -49,6 +49,7 @@ const usePncRules = () => {
   // const previousEvents = usePreviousEvents(ANC_PROGRAM_STAGE, currentEvent);
 
   useEffect(() => {
+    const currentProps = {};
     const assignations = [];
     const currentDisabledFields = [];
     const currentHiddenFields = [];
@@ -78,6 +79,12 @@ const usePncRules = () => {
         currentHelpers[NEXT_APPOINTMENT_DATE] = [{ type: "ERROR", value: t("thisFieldIsRequired") }];
       }
     }
+    //MAKE MAX FUTURE DATE FOR NEXT APPOINTMENT DATE TO BE 3 MONTHS FROM EVENT DATE
+    if (currentEvent["eventDate"]) {
+      currentProps[NEXT_APPOINTMENT_DATE] = {
+        maxDate: add(new Date(currentEvent["eventDate"]), { months: 3 })
+      };
+    }
 
     //MAKE RECEIVING PNC WIHIN 24 HOURS TO BE MANDATORY IF PNC VISIT IS 1ST VISIT
     if (dataValues[PNC_VISIT_NUMBER] === "1") {
@@ -97,6 +104,7 @@ const usePncRules = () => {
     setHiddenFields([...currentHiddenFields]);
     setDisabledFields([...currentDisabledFields]);
     setHelpers({ ...currentHelpers });
+    setProps({ ...currentProps });
     const currentErrors = [];
     Object.keys(currentHelpers).forEach((key) => {
       const foundIndex = order.findIndex((o) => o === key);
