@@ -47,8 +47,8 @@ const CONN_FIELDS = [
   "eq1FTj6Z2vT",   // included so we can hide/clear when no-conn
   WIFI_FIELD_ID,
   CABLE_FIELD_ID,
-  "tknBpZWiu89",
-  "SbpLKeVJBZd",
+  //  "tknBpZWiu89",
+  //"SbpLKeVJBZd",
 ];
 
 // ===== NEW: always-mandatory IDs (when present/visible) =====

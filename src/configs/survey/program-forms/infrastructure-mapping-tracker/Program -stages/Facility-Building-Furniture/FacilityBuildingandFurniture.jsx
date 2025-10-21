@@ -71,6 +71,17 @@ const FacilityBuildingandFurniture = () => {
         return displayName;
     }
   };
+// i18n: operator label (6.1)
+const trOperatorsLabel = t("facility.internet.operators", {
+  defaultValue: isLao ? "6.1 ເຄື່ອຄ່າຍອິນເຕີເນັດ" : "6.1 Operator",
+});
+
+// i18n: regular internet network question (8.1)
+const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
+  defaultValue: isLao
+    ? "8. ຖ້າມີ, ອິນເຕີເນັດປະຈໍາ ແມ່ນຂອງເຄື່ອຄ່າຍໃດ?"
+    : "8. What network does the regular internet belong to?",
+});
 
   const trMonthsLabel = t("facility.outreach.usualMonths", {
     defaultValue: isLao
@@ -79,7 +90,7 @@ const FacilityBuildingandFurniture = () => {
   });
 
   // Label for the NEW operator group (8.1)
-  const trNewOperatorsLabel = "8 What network does the regular internet belong to?";
+  //const trNewOperatorsLabel = "8 What network does the regular internet belong to?";
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -229,11 +240,8 @@ const FacilityBuildingandFurniture = () => {
                             textAlign: "left",
                           }}
                         >
-                          <Box
-                            component="span"
-                            sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}
-                          >
-                            Operator
+                          <Box component="span" sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>
+                            {trOperatorsLabel}
                           </Box>
                         </Box>
 
