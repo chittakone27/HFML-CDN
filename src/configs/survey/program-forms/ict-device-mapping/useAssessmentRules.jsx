@@ -1,7 +1,25 @@
-import useTrackerCaptureStore from "@/state/trackerCapture";
-import { useShallow } from "zustand/react/shallow";
+// useProfileRules.js
 import { useEffect, useState } from "react";
-const useAssessmentRules = () => {
+import { useShallow } from "zustand/react/shallow";
+import useTrackerCaptureStore from "@/state/trackerCapture";
+
+const norm = (s) => String(s ?? "").toLowerCase().trim();
+
+const useProfileRules = () => {
+  const { currentTei } = useTrackerCaptureStore(
+    useShallow((state) => state.data)
+  );
+
+  const attributes = currentTei
+    ? convertListToObj(currentTei.attributes, "attribute", "value")
+    : {};
+
+  // Source of funding (VDtUCd4xomY)
+  const sourceOfFunding = norm(attributes["VDtUCd4xomY"]);
+
+  // Device type (xQrdgnlPcC3) - keep your existing logic
+  const deviceType = norm(attributes["xQrdgnlPcC3"]);
+
   const [props, setProps] = useState({
     warnings: {},
     hiddenFields: {},
@@ -10,27 +28,42 @@ const useAssessmentRules = () => {
     hiddenOptions: {},
   });
 
-  const { data } = useTrackerCaptureStore(
-    useShallow((state) => ({
-      data: state.data,
-    }))
-  );
-  const { currentTei, currentEvents, selectedEvent } = data;
-  const currentEvent = currentEvents.find((ev) => ev.event === selectedEvent);
-
   useEffect(() => {
-    const assignations = {};
-    const deviceCondition =
-      currentEvent.dataValues.find((dv) => dv.dataElement === "OP77Sctj4TR")
-        ?.value || "";
-    if (deviceCondition === "No longer in this institution - Transfer") {
-      assignations["EHemNEq0Zaj"] = "0";
-    }
+    const hidden = {};
 
-    setProps({ ...props, assignations });
-  }, [JSON.stringify(currentEvent), JSON.stringify(currentTei?.lastSaved)]);
+    // Rule: show "Specify payer" only when funding source is 'other'
+    // tDri5optbSF will be hidden unless sourceOfFunding === 'other'
+    hidden["tDri5optbSF"] = sourceOfFunding !== "other";
+
+    // Device-type-specific hides (unchanged, just cleaned a tiny bit)
+    const hideFor = {
+      laptop: ["XRdw8EK5FJg", "azMLZ6HjJzX"],
+      tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
+      desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],
+      "smart phone": ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
+      smartphone: ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
+    };
+
+    const toHide = hideFor[deviceType] ?? [];
+    toHide.forEach((attrId) => {
+      hidden[attrId] = true;
+    });
+
+    setProps((prev) => ({
+      ...prev,
+      hiddenFields: hidden,
+    }));
+  }, [sourceOfFunding, deviceType]);
 
   return props;
 };
 
-export default useAssessmentRules;
+export default useProfileRules;
+
+const convertListToObj = (list, keyProperty, valueProperty) =>
+  Array.isArray(list)
+    ? list.reduce((acc, cur) => {
+        acc[cur[keyProperty]] = valueProperty ? cur[valueProperty] : cur;
+        return acc;
+      }, {})
+    : {};

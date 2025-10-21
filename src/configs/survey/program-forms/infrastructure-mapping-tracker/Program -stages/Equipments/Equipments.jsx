@@ -1,0 +1,375 @@
+import { Box } from "@mui/material";
+import { useShallow } from "zustand/react/shallow";
+import { format } from "date-fns";
+import { useMemo, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
+
+import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
+import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
+// Translated label (we keep our own label row):
+import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
+import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
+
+import useSelectionStore from "@/state/selection";
+import useTrackerCaptureStore from "@/state/trackerCapture";
+import Accordion from "../../../common/Accordion";
+
+const GRID_COLS = "300px repeat(2, 1fr)";
+
+// Section IDs (stable)
+const SECTION = {
+  BASIC: "ftMRtZvarWk",
+  MCH: "ipHIglCu5Z9",
+  EPI: "IFiX3F88mHg",
+  ADMIN: "Q68YZTN83dj",
+  ICT: "kVViSpknfAg",
+  MOVED_COMBINED: "XUbOnfMrc0H", // exclude from this stage if visible
+};
+
+// Lao quick-fallbacks
+const LO = {
+  usable: "ໃຊ້ໄດ້ປົກກະຕິ",
+  partiallyDamaged: "ເສຍຫາຍບາງສ່ວນ",
+  SECTION_ICT: "ອຸປະກອນ ICT",
+  SECTION_BASIC: "ອຸປະກອນການແພດພື້ນຖານ",
+  SECTION_MCH: "ອຸປະກອນ ສໍາລັບວຽກງານ ແມ່ ແລະ ເດັກ (MCH)",
+  SECTION_EPI: "ອຸປະກອນ ສໍາລັບວຽກງານ ສັກຢາກັນພະຍາດ (EPI)",
+  SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
+  "1 Oxygen concentrator": "1 ເຄື່ອງຜະລິດອົກຊີ",
+  "2 Ventilator": "2 ເຄື່ອງຊ່ວຍຫາຍໃຈ",
+  "3 Hemodialysis unit": "3 ເຄື່ອງຟອກໝາກໄຂ່ຫຼັງ",
+  "4 Hemoglobinometer": "4 ເຄື່ອງກວດເລືອດ",
+  "5 Adult sphygmomanometer": "5 ເຄື່ອງແທກຄວາມດັນເລືອດຜູ້ໃຫຍ່",
+  "6 Glucometer": "6 ເຄື່ອງວັດແທກນໍ້າຕານໃນເລືອດ",
+  "7 Adult stethoscope": "7 ກ້ອງຟັງສໍາລັບຜູ້ໃຫຍ່",
+  "8 Pediatric stethoscope": "8 ກ້ອງຟັງສໍາລັບເດັກນ້ອຍ",
+  "9 Clinical Thermometer": "9 ເຄື່ອງວັດແທກອຸນຫະພູມຮ່າງກາຍ",
+  "1 Mechanical weighing scale for adult":
+    "1 ເຄື່ອງວັດແທກນ້ຳໜັກສໍາລັບຜູ້ໃຫຍ່ ແບບມີເຂັມໜ້າປັດ",
+  "2 Digital weighing scale for adult":
+    "2 ເຄື່ອງວັດແທກນ້ຳໜັກສໍາລັບຜູ້ໃຫຍ່ ແບບດິຈິຕອນ",
+  "3 Mechanical weighing scale for newborn / infant":
+    "3 ເຄື່ອງວັດແທກນ້ຳໜັກສໍາລັບເດັກນ້ອຍ/ເດັກເກີດໃໝ່ ແບບມີເຂັມໜ້າປັດ",
+  "4 Digital weighing scale for newborn / infant":
+    "4 ເຄື່ອງວັດແທກນ້ຳໜັກສໍາລັບເດັກນ້ອຍ/ເດັກເກີດໃໝ່ ແບບດິຈິຕອນ",
+  "5 Height measure for adult": "5 ເຄື່ອງວັດແທກລວງສູງສໍາລັບ ຜູ້ໃຫຍ່",
+  "6 Height measure for newborn / infant":
+    "6 ເຄື່ອງວັດແທກລວງສູງສໍາລັບເດັກນ້ອຍ/ເດັກເກີດໃໝ່",
+  "7 Fetus Stethoscope / Traube / Doppler": "7 ກ້ອງຟັງສຽງຫົວໃຈເດັກໃນທ້ອງ",
+  "8 Autoclave for medical sterilization": "8 ຕູ້ອົບຂ້າເຊື້ອ",
+  "9 MUAC measure tape": "9 ເຊືອກວັດແທກຮອບແຂນ",
+  "10 New MCH Pink Book remaining":
+    "10 ປຶ້ມບົວ (ປຶ້ມຕິດຕາມສຸຂະພາບແມ່ ແລະ ເດັກ) ຫົວໃໝ່ ທີ່ຍັງເຫຼືອຢູ່",
+  "1 Vaccine refrigerator": "1 ຕູ້ເຢັນສະເພາະເພື່ອເກັບຮັກສາວັກຊີນ",
+  "2 Vaccine carrier": "2 ຖົງພາຍວັກຊີນ",
+  "3 Cold box": "3 ຫີບເຢັນ",
+  "4 AEFI kit": "4 ຊຸດແກ້ໄຂສຸກເສີນ ຫປພຊ",
+  "5 Icepacks": "5 ບັ້ງນໍ້າກ້ອນ",
+  "6 Fridge Tag or Thermometer": "6 ເຄື່ອງວັດແທກອຸນຫະພູມຕູ້ເຢັນ",
+};
+
+const keyFor = (label) =>
+  "equipment." +
+  String(label || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_|_$/g, "");
+
+// Rows we still render here (BASIC, MCH, EPI)
+const SECTION_ROWS = {
+  [SECTION.BASIC]: [
+    { label: "1 Oxygen concentrator", usable: "k6STi37BjK9", damaged: "NykhziIHZHH" },
+    { label: "2 Ventilator", usable: "pQr0WPezsQo", damaged: "lZAqGYJYMWS" },
+    { label: "3 Hemodialysis unit", usable: "zBZ6m4ta6Vo", damaged: "SMxb3OSjeOU" },
+    { label: "4 Hemoglobinometer", usable: "oGJe86IoO1F", damaged: "h12djK5TrqY" },
+    { label: "5 Adult sphygmomanometer", usable: "L5npEph6Ma4", damaged: "cJ7H5LeVezT" },
+    { label: "6 Glucometer", usable: "idf7CX1IHEn", damaged: "YUD4SAQhiJk" },
+    { label: "7 Adult stethoscope", usable: "F4XQkx6tIOZ", damaged: "WNhuDD4EY3i" },
+    { label: "8 Pediatric stethoscope", usable: "PMJfqiytHz9", damaged: "qhL2JRvNmBj" },
+    { label: "9 Clinical Thermometer", usable: "wFgAFRsIKF9", damaged: "Stl24YMrVhY" },
+  ],
+  [SECTION.MCH]: [
+    { label: "1 Mechanical weighing scale for adult", usable: "E4LgLRcer1T", damaged: "xKQNwzbVcp8" },
+    { label: "2 Digital weighing scale for adult", usable: "YufAR7l6iMd", damaged: "DiNZw4CAiGW" },
+    { label: "3 Mechanical weighing scale for newborn / infant", usable: "y2WKfOse3Q3", damaged: "sIVa4XMuh2P" },
+    { label: "4 Digital weighing scale for newborn / infant", usable: "TCJRo52KTmj", damaged: "I2qQThEJBtZ" },
+    { label: "5 Height measure for adult", usable: "NLmciquYBtA", damaged: "tH0RZuet4SQ" },
+    { label: "6 Height measure for newborn / infant", usable: "dq7StRq2IYF", damaged: "JMhufeXTXtJ" },
+    { label: "7 Fetus Stethoscope / Traube / Doppler", usable: "qz0RYFSqR36", damaged: "ncCBoKCq9ne" },
+    { label: "8 Autoclave for medical sterilization", usable: "prNkyfjJ45f", damaged: "UVB85154Q7J" },
+    { label: "9 MUAC measure tape", usable: "nhnzelgD6OD", damaged: "zxMdn4JiOvD" },
+    { label: "10 New MCH Pink Book remaining", usable: "zW1ir3f3KFN" },
+  ],
+  [SECTION.EPI]: [
+    { label: "1 Vaccine refrigerator", usable: "x2SHCEu9PAk", damaged: "Vb7fspxnk9C" },
+    { label: "2 Vaccine carrier", usable: "HZxJziI710Y", damaged: "cadhpfc552z" },
+    { label: "3 Cold box", usable: "YmOuSL8j03k", damaged: "D2WuLIJa8sg" },
+    { label: "4 AEFI kit", usable: "TF0Dkl68JpA", damaged: "tiF0aOGN1mC" },
+    { label: "5 Icepacks", usable: "fwL5qZQl6hF", damaged: "w33QZtCIVdE" },
+    { label: "6 Fridge Tag or Thermometer", usable: "j1hB2lmJddI", damaged: "H45XFcl92ZS" },
+  ],
+};
+
+const stripRomanOrNumber = (s) =>
+  String(s || "").replace(/^\s*((?:[IVXLCDM]+|\d+)\.)\s*/i, "");
+
+// --- helpers to read values / check emptiness ---
+const getEventDEValue = (currentEvent, deId) => {
+  if (!currentEvent) return undefined;
+  if (currentEvent.values && typeof currentEvent.values === "object") {
+    return currentEvent.values[deId];
+  }
+  if (Array.isArray(currentEvent.dataValues)) {
+    const hit = currentEvent.dataValues.find((dv) => dv.dataElement === deId);
+    return hit?.value;
+  }
+  return currentEvent[deId];
+};
+const isEmpty = (v) => {
+  if (v == null) return true;
+  if (typeof v === "string") return v.trim() === "";
+  return false;
+};
+
+const Equipments = () => {
+  const { t, i18n } = useTranslation();
+  const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
+
+  const trHeader = (key, en) =>
+    t(`equipment.${key}`, { defaultValue: isLao ? LO[key] || en : en });
+
+  const trLabel = (label) =>
+    t(keyFor(label), { defaultValue: isLao ? LO[label] || label : label });
+
+  const trSectionTitle = (displayName) => {
+    const base = stripRomanOrNumber(displayName).trim();
+    const n = base.toLowerCase();
+    if (n === "basic medical equipment") {
+      return t("equipment.sections.basic", { defaultValue: isLao ? LO.SECTION_BASIC : base });
+    }
+    if (n === "items related to mother and child health (mch)") {
+      return t("equipment.sections.mch", { defaultValue: isLao ? LO.SECTION_MCH : base });
+    }
+    if (n === "items related to immunization (epi)") {
+      return t("equipment.sections.epi", { defaultValue: isLao ? LO.SECTION_EPI : base });
+    }
+    // ICT/Admin moved out — if still present, we’ll skip them below.
+    return displayName;
+  };
+
+  const { program } = useSelectionStore(useShallow((s) => ({ program: s.program })));
+  const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
+  const { currentEvent } = useCurrentEvent();
+
+  const sections = useMemo(() => {
+    if (!program?.programStages || !currentEvent?.programStage) return [];
+    const stage = program.programStages.find((ps) => ps.id === currentEvent.programStage);
+    return stage?.programStageSections ?? [];
+  }, [program?.programStages, currentEvent?.programStage]);
+
+  // Filter OUT ICT + Admin (and the combined section if it accidentally appears in this stage)
+  const filteredSections = sections.filter(
+    (s) => ![SECTION.ICT, SECTION.ADMIN, SECTION.MOVED_COMBINED].includes(s.id)
+  );
+
+  const presentIds = useMemo(
+    () =>
+      new Set(
+        filteredSections
+          .flatMap((sec) => (sec?.dataElements ?? []).map((de) => de?.id || de?.dataElement?.id))
+          .filter(Boolean)
+      ),
+    [filteredSections]
+  );
+
+  const missing = useMemo(() => {
+    if (!currentEvent) return [];
+    const m = [];
+    presentIds.forEach((id) => {
+      const val = getEventDEValue(currentEvent, id);
+      if (isEmpty(val)) m.push(id);
+    });
+    return m;
+  }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
+
+  const disabled = missing.length > 0;
+  const prevDisabled = useRef(undefined);
+  const missingRef = useRef(missing);
+  missingRef.current = missing;
+
+  // ---------- Stage-wide compulsory guard (no rules) ----------
+  useEffect(() => {
+    if (!actions) return;
+    // Only update layout when the disabled value actually changes to avoid loops
+    if (prevDisabled.current !== disabled) {
+      prevDisabled.current = disabled;
+      try {
+        if (actions.setLayout) {
+          actions.setLayout("disableEventCompleteButton", disabled);
+        } else if (actions.setCompleteDisabled) {
+          actions.setCompleteDisabled(disabled);
+        } else if (actions.setCanComplete) {
+          actions.setCanComplete(!disabled);
+        }
+      } catch {}
+    }
+  }, [actions, disabled]);
+
+  // Register Save handler once; read latest missing via ref
+  useEffect(() => {
+    if (!actions) return;
+    const KEY = "eventSave_equipment_all_required";
+    actions.setHandlers &&
+      actions.setHandlers(KEY, async () => {
+        const isDisabled = missingRef.current.length > 0;
+        if (isDisabled) return { ok: false, message: "Please complete all required fields." };
+        return { ok: true };
+      });
+    return () => actions.setHandlers && actions.setHandlers(KEY, null);
+  }, [actions]);
+
+  const maxDate = format(new Date(), "yyyy-MM-dd");
+
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Assessment date */}
+      <Box>
+        <Box sx={{ fontWeight: 600, mb: 0.5 }}>
+          {t("equipment.assessmentDate", {
+            defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
+          })}
+        </Box>
+        <EventDateFieldNoBlur
+          maxDate={maxDate}
+          type="eventDate"
+          focus={() => {
+            if (!currentEvent?.event) return;
+            const dueDate =
+              currentEvent.dueDate && format(new Date(currentEvent.dueDate), "yyyy-MM-dd");
+            if (currentEvent.status === "SCHEDULE" && !currentEvent.eventDate) {
+              useTrackerCaptureStore.getState().actions?.changeEventProperty(
+                currentEvent.event,
+                "eventDate",
+                dueDate && dueDate > maxDate ? maxDate : dueDate || maxDate
+              );
+            }
+          }}
+        />
+      </Box>
+
+      {filteredSections.map((section, sIdx) => {
+        const rows = SECTION_ROWS[section.id] ?? [];
+
+        if (rows.length) {
+          return (
+            <Accordion key={section.id || `${section.displayName}-${sIdx}`} title={trSectionTitle(section.displayName)}>
+              <Box sx={{ border: "1px solid #d9d9d9",  overflow: "hidden" }}>
+                {/* header */}
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: GRID_COLS,
+                    alignItems: "stretch",
+                    borderBottom: "1px solid #d9d9d9",
+                    background: "#f6f7f9",
+                    fontWeight: 600,
+                  }}
+                >
+                  <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9" }} />
+                  <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9" }}>
+                    {trHeader("usable", "Usable")}
+                  </Box>
+                  <Box sx={{ p: "10px 12px" }}>
+                    {trHeader("partiallyDamaged", "Partially damaged")}
+                  </Box>
+                </Box>
+
+                {/* rows */}
+                {rows.map((r, i) => (
+                  <Box
+                    key={`${r.label}-${i}`}
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: GRID_COLS,
+                      alignItems: "stretch",
+                      borderBottom: i === rows.length - 1 ? "none" : "1px solid #e5e5e5",
+                      background: i % 2 === 1 ? "#fafafa" : "transparent",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        p: "10px 12px",
+                        borderRight: "1px solid #e5e5e5",
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: 14,
+                        lineHeight: 1.35,
+                        wordBreak: "break-word",
+                      }}
+                    >
+                      {trLabel(r.label)}
+                    </Box>
+
+                    <Box
+                      sx={{
+                        p: "6px 10px",
+                        borderRight: r.damaged ? "1px solid #e5e5e5" : "none",
+                        display: "flex",
+                        alignItems: "center",
+                        ...(r.damaged ? {} : { gridColumn: "2 / span 2" }),
+                      }}
+                    >
+                      <Box sx={{ width: "100%" }}>
+                        {/* ALL compulsory */}
+                        <DataValueFieldNoBlur dataElement={r.usable} required />
+                      </Box>
+                    </Box>
+
+                    {r.damaged && (
+                      <Box sx={{ p: "6px 10px", display: "flex", alignItems: "center" }}>
+                        <Box sx={{ width: "100%" }}>
+                          {/* ALL compulsory */}
+                          <DataValueFieldNoBlur dataElement={r.damaged} required />
+                        </Box>
+                      </Box>
+                    )}
+                  </Box>
+                ))}
+              </Box>
+            </Accordion>
+          );
+        }
+
+        // Unknown sections (should be rare now)
+        return (
+          <Accordion key={section.id || `${section.displayName}-${sIdx}`} title={trSectionTitle(section.displayName)}>
+            {(section.dataElements ?? []).map((de, dIdx) => {
+              const deId = de?.id || de?.dataElement?.id;
+              if (!deId) return null;
+              return (
+                <Box
+                  key={deId || dIdx}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    borderBottom: "1px solid #e0e0e0",
+                  }}
+                >
+                  <Box sx={{ width: "300px", padding: "10px" }}>
+                    <DataValueLabel dataElement={deId} />
+                  </Box>
+                  <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
+                    {/* ALL compulsory */}
+                    <DataValueFieldNoBlur dataElement={deId} required />
+                  </Box>
+                </Box>
+              );
+            })}
+          </Accordion>
+        );
+      })}
+    </Box>
+  );
+};
+
+export default Equipments;
