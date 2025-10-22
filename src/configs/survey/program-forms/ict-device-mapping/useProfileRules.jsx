@@ -72,11 +72,11 @@ const useProfileRules = () => {
     hidden[ID.specifyPayer] = sourceOfFunding !== "other";
 
     const hideFor = {
-      laptop: ["XRdw8EK5FJg", "azMLZ6HjJzX"],
-      tablet: ["leCxCv4ZFaX", "rIHJFrYHA27","azMLZ6HjJzX"],
+      laptop: ["XRdw8EK5FJg",],
+      tablet: ["leCxCv4ZFaX", "rIHJFrYHA27",],
       desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],
-      "smart phone": ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
-      smartphone: ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
+      "smart phone": ["rIHJFrYHA27",  "leCxCv4ZFaX"],
+      smartphone: ["rIHJFrYHA27",  "leCxCv4ZFaX"],
     };
     (hideFor[deviceType] ?? []).forEach((attrId) => {
       hidden[attrId] = true;
