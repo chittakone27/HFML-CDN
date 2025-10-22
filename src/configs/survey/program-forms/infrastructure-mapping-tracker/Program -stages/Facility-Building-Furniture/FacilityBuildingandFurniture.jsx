@@ -83,8 +83,8 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
 
   const trMonthsLabel = t("facility.outreach.usualMonths", {
     defaultValue: isLao
-      ? "ການລົງເຄື່ອນທີ່ເຊື່ອມສານ ແມ່ນໄດ້ລົງເຮັດເດືອນໃດ ?(ໝາຍທຸກເດືອນທີ່ໄດ້ລົງເຄື່ອນທີ່ເຊື່ອມສານໄປແລ້ວ ແລະ ກໍາລັງວາງແຜນຈະລົງໃນປີນີ້)"
-      : "Outreach activity usually happens in which month",
+      ? "14. ການລົງເຄື່ອນທີ່ເຊື່ອມສານ ແມ່ນໄດ້ລົງເຮັດເດືອນໃດ ?(ໝາຍທຸກເດືອນທີ່ໄດ້ລົງເຄື່ອນທີ່ເຊື່ອມສານໄປແລ້ວ ແລະ ກໍາລັງວາງແຜນຈະລົງໃນປີນີ້)"
+      : "14. Outreach activity usually happens in which month",
   });
 
 
