@@ -41,20 +41,20 @@ const rowKey = (label) =>
 
 // Lao fallbacks for row labels (left column)
 const LO_ROW = {
-  focal_point_in_statistics: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກສະຖິຕິ",
-  focal_point_in_planning: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກແຜນການ",
-  focal_point_in_administration: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກບໍລິຫານ",
-  focal_point_in_mch: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານ ແມ່ ແລະ ເດັກ",
-  focal_point_in_nutrition: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານໂພຊະນາການ",
-  focal_point_in_vaccination: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານສັກຢາກັນພະຍາດ",
-  focal_point_in_treatment_and_rehabilitation: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານປິ່ນປົວ ແລະ ຟື້ນຟູໜ້າທີ່ການ",
-  focal_point_in_nhi: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານປະກັນສຸຂະພາບ",
-  focal_point_in_malaria: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານໄຂ້ຍຸງ",
-  focal_point_in_tuberculosis: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານວັນນະໂລກ",
-  focal_point_in_hiv: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານເອດ ແລະ ພະຍາດຕິດຕໍ່ທາງເພດສໍາພັນ",
-  focal_point_in_communicable_diseases: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານລະບາດ",
-  focal_point_in_ncd: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານພະຍາດບໍ່ຕິດຕໍ່ (ມະເຮັງ, ເບົາຫວານ, ໂລກຫົວໃຈ ແລະ ອື່ນໆ)",
-  focal_point_in_wash: "ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານນໍ້າສະອາດ, ສຸຂາພິບານ ແລະ ອະນາໄມ",
+  focal_point_in_statistics: "1. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກສະຖິຕິ",
+  focal_point_in_planning: "2. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກແຜນການ",
+  focal_point_in_administration: "3. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກບໍລິຫານ",
+  focal_point_in_mch: "4. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານ ແມ່ ແລະ ເດັກ",
+  focal_point_in_nutrition: "5. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານໂພຊະນາການ",
+  focal_point_in_vaccination: "6. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານສັກຢາກັນພະຍາດ",
+  focal_point_in_treatment_and_rehabilitation: "7. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານປິ່ນປົວ ແລະ ຟື້ນຟູໜ້າທີ່ການ",
+  focal_point_in_nhi: "8. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານປະກັນສຸຂະພາບ",
+  focal_point_in_malaria: "9. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານໄຂ້ຍຸງ",
+  focal_point_in_tuberculosis: "10. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານວັນນະໂລກ",
+  focal_point_in_hiv: "11. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານເອດ ແລະ ພະຍາດຕິດຕໍ່ທາງເພດສໍາພັນ",
+  focal_point_in_communicable_diseases: "12. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານລະບາດ",
+  focal_point_in_ncd: "13. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານພະຍາດບໍ່ຕິດຕໍ່ (ມະເຮັງ, ເບົາຫວານ, ໂລກຫົວໃຈ ແລະ ອື່ນໆ)",
+  focal_point_in_wash: "14. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານນໍ້າສະອາດ, ສຸຂາພິບານ ແລະ ອະນາໄມ",
 };
 
 // Lao fallbacks for stage title, headers, and assessment date
