@@ -1,6 +1,4 @@
-// src/configs/survey/config.jsx
 
-// ---- forms ----
 import IctDeviceMapping from "./program-forms/ict-device-mapping/Profile";
 import Assessment from "./program-forms/ict-device-mapping/Assessment";
 import InfrastructureMappingTracker from "./program-forms/infrastructure-mapping-tracker/Profile";
@@ -18,16 +16,12 @@ import VillagesStage from "./program-forms/villages-catchment/VillagesStage";
 import NearbyProfile from "./program-forms/nearby/Profile";
 import NearbyStage from "./program-forms/nearby/NearbyStage";
 
-// ---- custom form mapping by program UID ----
 const customForms = {
   // ICT Device Mapping (tracker)
   D5YBg956c4L: {
     profile: IctDeviceMapping,
     unHrhF91UiU: Assessment,
   },
-
-  // Infrastructure Mapping Event (event)
-  // aGvP5brBIZl: InfrastructureMappingEvent,
 
   // Infrastructure Mapping Tracker (tracker)
   wkUHtogPKUL: {
@@ -86,16 +80,13 @@ const documents = [
   { label: "comingSoon", type: "text" },
 ];
 
-// ---- feature flags / per-program UI modes ----
 const trackerFormTypes = {
   D5YBg956c4L: ["noBlur", "tabStage", "tabular"],
   wkUHtogPKUL: ["noBlur", "tabStage", "tabular"],
-  // New tracker programs — same UX
   sBkMdki30ua: ["noBlur", "tabStage", "tabular"],
   gr24luudE0t: ["noBlur", "tabStage", "tabular"],
 };
 
-// If you don’t have program rules, leave this empty
 const customProgramRules = {
   // D5YBg956c4L: { profile: useProfileRules, unHrhF91UiU: useAssessmentRules },
 };
@@ -104,7 +95,7 @@ const config = {
   customForms,
   customEventListColumns: {},
   locales: customLocales,
-  customLocales, // kept for backward compatibility if your app reads this key
+  customLocales, 
   multiOrgUnitsDataSets: [],
   hooks: [],
   customProgramRules,
@@ -130,7 +121,7 @@ export const allowedPrograms = [
   "sBkMdki30ua",
   "gr24luudE0t",
   // events
-  "aGvP5brBIZl",
+  //"aGvP5brBIZl",
 ];
 
 export default config;
