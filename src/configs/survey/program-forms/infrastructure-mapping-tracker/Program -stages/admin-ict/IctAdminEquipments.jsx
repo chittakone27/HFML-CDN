@@ -1,4 +1,3 @@
-// src/ui/TrackerCapture/EventForm/Program -stages/Equipments/IctAdminEquipments.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -16,14 +15,12 @@ import Accordion from "../../../common/Accordion";
 
 const GRID_COLS = "300px repeat(2, 1fr)";
 
-// Lao quick-fallbacks
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   partiallyDamaged: "ເສຍຫາຍບາງສ່ວນ",
   SECTION_ICT: "ອຸປະກອນ ICT",
   SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
 
-  // Admin item fallbacks (UNNUMBERED keys)
   "1 TV screen": "1 ໜ້າຈໍ ໂທລະພາບ",
   "2 Microphone": "2 ໄມໂຄຣໂຟນ",
   "3 Mobile speaker": "3 ລໍາໂພງ ເຄື່ອນທີ່",
@@ -32,7 +29,6 @@ const LO = {
     "5 ບ່ອນເກັບມ້ຽນອຸປະກອນສື່ສານ (ເຊັ່ນ ຕູ້, ຊັ້ນວາງ)",
 };
 
-// i18n key from label
 const keyFor = (label) =>
   "equipment." +
   String(label || "")
@@ -40,13 +36,11 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
-// Normalize labels so LO fallback works with or without numbering/spaces
 const stripRomanOrNumber = (s) =>
   String(s || "").replace(/^\s*((?:[IVXLCDM]+|\d+)\.)\s*/i, "").trim();
 const normalizeLabel = (s) =>
   stripRomanOrNumber(s).replace(/\s*\/\s*/g, " / ").replace(/\s+/g, " ").trim();
 
-// Admin rows (known DEs)
 const ADMIN_ROWS = [
   { label: "1 TV screen", usable: "T6lMVJitIUM", damaged: "oVmVDoqT8HZ" },
   { label: "2 Microphone", usable: "O7cJLIKPknD", damaged: "YlyG4OiR8h8" },
@@ -55,7 +49,6 @@ const ADMIN_ROWS = [
   { label: "5 Storage for IEC materials (i.e. cabinet/cupboard)", usable: "DUI7h9EBTWN" }, // single-field
 ];
 
-// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -80,7 +73,6 @@ const IctAdminEquipments = () => {
   const trHeader = (key, en) =>
     t(`equipment.${key}`, { defaultValue: isLao ? LO[key] || en : en });
 
-  // number-agnostic label translation
   const trLabel = (label) => {
     const base = normalizeLabel(label);
     const fallback = isLao ? (LO[base] || LO[label] || base) : base;
@@ -91,7 +83,6 @@ const IctAdminEquipments = () => {
   const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
   const { currentEvent } = useCurrentEvent();
 
-  // Pull ALL DEs on this program stage (no reliance on sections)
   const stage = useMemo(() => {
     if (!program?.programStages || !currentEvent?.programStage) return null;
     return program.programStages.find((ps) => ps.id === currentEvent.programStage) || null;
@@ -104,13 +95,11 @@ const IctAdminEquipments = () => {
       .filter(Boolean);
   }, [stage?.programStageDataElements]);
 
-  // Admin rows actually available on this stage
   const adminRowsInStage = useMemo(() => {
     const set = new Set(stageDEIds);
     return ADMIN_ROWS.filter((r) => (r.usable && set.has(r.usable)) || (r.damaged && set.has(r.damaged)));
   }, [stageDEIds]);
 
-  // Mark Admin DEs as "used"
   const usedAdminDEs = useMemo(() => {
     const s = new Set();
     adminRowsInStage.forEach((r) => {
@@ -120,12 +109,10 @@ const IctAdminEquipments = () => {
     return s;
   }, [adminRowsInStage]);
 
-  // Everything else on the stage = ICT/default list
   const ictLikeDEs = useMemo(() => {
     return stageDEIds.filter((id) => !usedAdminDEs.has(id));
   }, [stageDEIds, usedAdminDEs]);
 
-  // ---- Stage-wide compulsory guard (no rules) ----
   const presentIds = useMemo(() => new Set(stageDEIds), [stageDEIds]);
 
   const missing = useMemo(() => {
@@ -175,7 +162,6 @@ const IctAdminEquipments = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>
           {t("equipment.assessmentDate", {
@@ -200,7 +186,6 @@ const IctAdminEquipments = () => {
         />
       </Box>
 
-      {/* ICT / default block (first) */}
       {ictLikeDEs.length > 0 && (
         <Accordion
           title={t("equipment.sections.ict", {
@@ -220,7 +205,6 @@ const IctAdminEquipments = () => {
                 <DataValueLabel dataElement={deId} />
               </Box>
               <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
-                {/* ALL compulsory */}
                 <DataValueFieldNoBlur dataElement={deId} required />
               </Box>
             </Box>
@@ -228,7 +212,6 @@ const IctAdminEquipments = () => {
         </Accordion>
       )}
 
-      {/* Admin block (second) */}
       {adminRowsInStage.length > 0 && (
         <Accordion
           title={t("equipment.sections.admin", {
@@ -236,7 +219,6 @@ const IctAdminEquipments = () => {
           })}
         >
           <Box sx={{ border: "1px solid #d9d9d9", borderRadius: "8px", overflow: "hidden" }}>
-            {/* header */}
             <Box
               sx={{
                 display: "grid",
@@ -267,7 +249,6 @@ const IctAdminEquipments = () => {
                   background: i % 2 === 1 ? "#fafafa" : "transparent",
                 }}
               >
-                {/* Label */}
                 <Box
                   sx={{
                     p: "10px 12px",
@@ -282,7 +263,6 @@ const IctAdminEquipments = () => {
                   {trLabel(r.label)}
                 </Box>
 
-                {/* Usable */}
                 <Box
                   sx={{
                     p: "6px 10px",
@@ -297,7 +277,6 @@ const IctAdminEquipments = () => {
                   </Box>
                 </Box>
 
-                {/* Partially damaged */}
                 {r.damaged && (
                   <Box sx={{ p: "6px 10px", display: "flex", alignItems: "center" }}>
                     <Box sx={{ width: "100%" }}>

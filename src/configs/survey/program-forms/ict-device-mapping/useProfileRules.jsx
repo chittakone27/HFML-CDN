@@ -1,4 +1,3 @@
-// useProfileRules.js
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -20,11 +19,8 @@ const pad3 = (v) => {
 };
 
 const ID = {
-  // Funding rule
   sourceOfFunding: "VDtUCd4xomY",
   specifyPayer: "tDri5optbSF",
-
-  // Device identity rules
   deviceType: "xQrdgnlPcC3", // Laptop/Tablet/Desktop/Smart Phone
   code: "y6RfdAq2zmQ",       // auto from device type (L/T/D/SET) — disabled
   hf: "odDm8AxiL1j",         // HF ID (user)
@@ -56,10 +52,8 @@ const useProfileRules = () => {
   const numRaw = String(attributes[ID.num] ?? "").trim();
   const num = pad3(numRaw);
 
-  // derive code from device type
   const codeAuto = DEVICE_CODE[deviceType] ?? "";
 
-  // compose deviceId if all parts exist
   const deviceId = hf && codeAuto && num ? `${hf}-${codeAuto}${num}` : "";
 
   const [props, setProps] = useState({
@@ -75,10 +69,8 @@ const useProfileRules = () => {
     const disabled = {};
     const assignations = {};
 
-    // Show "Specify Payer" only if Source of funding == "other"
     hidden[ID.specifyPayer] = sourceOfFunding !== "other";
 
-    // --- Device-type-specific hides (restored) ------------------------------
     const hideFor = {
       laptop: ["XRdw8EK5FJg", "azMLZ6HjJzX"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27","azMLZ6HjJzX"],
@@ -90,11 +82,9 @@ const useProfileRules = () => {
       hidden[attrId] = true;
     });
 
-    // Auto-assign code & lock it
     assignations[ID.code] = codeAuto || "";
     disabled[ID.code] = true;
 
-    // Auto-assign composed deviceId & lock it
     assignations[ID.deviceId] = deviceId;
     disabled[ID.deviceId] = true;
 

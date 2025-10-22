@@ -42,12 +42,10 @@ const FacilityBuildingandFurniture = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // i18n: assessment date label (translated)
   const trAssessmentDate = t("facility.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
-  // i18n: translate only these section headings (fallback to Lao/English)
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -71,12 +69,12 @@ const FacilityBuildingandFurniture = () => {
         return displayName;
     }
   };
-// i18n: operator label (6.1)
+
 const trOperatorsLabel = t("facility.internet.operators", {
   defaultValue: isLao ? "6.1 ເຄື່ອຄ່າຍອິນເຕີເນັດ" : "6.1 Operator",
 });
 
-// i18n: regular internet network question (8.1)
+
 const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
   defaultValue: isLao
     ? "8. ຖ້າມີ, ອິນເຕີເນັດປະຈໍາ ແມ່ນຂອງເຄື່ອຄ່າຍໃດ?"
@@ -89,8 +87,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
       : "Outreach activity usually happens in which month",
   });
 
-  // Label for the NEW operator group (8.1)
-  //const trNewOperatorsLabel = "8 What network does the regular internet belong to?";
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -129,25 +125,22 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
           state: { showServiceProvider, showOperators, showNewOperators },
         } = rules;
 
-        // 6.1 operator tiles except the service provider
+
         const OP_HSTACK = new Set(
           [...operators.ids].filter((id) => id !== keys.SERVICE_PROVIDER_ID)
         );
 
-        // NEW 8.1 operator tiles
         const NEW_OP_HSTACK = new Set([...newOperators.ids]);
 
-        // Which operator boxes are visible for this section (6.1)
+    
         const visibleOps = allDEs
           .map((de) => getDeId(de))
           .filter((id) => id && OP_HSTACK.has(id) && !hiddenFields[id]);
 
-        // Which NEW operator boxes are visible for this section (8.1)
         const visibleNewOps = allDEs
           .map((de) => getDeId(de))
           .filter((id) => id && NEW_OP_HSTACK.has(id) && !hiddenFields[id]);
 
-        // Month tiles present in this section (ordered)
         const MONTH_ORDER = [
           "NIji1vKjEsn", "ycwkJ30qjwb", "bxEtg4oxf4m", "F9lxwEAGnHE",
           "X67WGTx2djm", "t1Z7lsQ2Qte", "SO1P5eMGMSc", "L1lvlYVBaVN",
@@ -167,27 +160,23 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
               if (!deId) return null;
               if (hiddenFields[deId]) return null;
 
-              const isAnchor = deId === keys.OP_ANCHOR_ID;          // 6.1 after this
+              const isAnchor = deId === keys.OP_ANCHOR_ID;          
               const isOperator = operators.ids.has(deId);
               const isServiceProvider = deId === keys.SERVICE_PROVIDER_ID;
 
-              const isMonthAnchor = deId === keys.MONTH_ANCHOR_ID;  // months after this
+              const isMonthAnchor = deId === keys.MONTH_ANCHOR_ID;  
               const isMonthField = months.ids.has(deId);
 
-              // NEW 8.1: anchor is the connection type field
+
               const isNewOpsAnchor = deId === keys.TYPE_CONN_ID;
               const isNewOperator = newOperators.ids.has(deId);
 
-              // We custom-render 6.1 operators AFTER their ANCHOR row
               if ((isOperator || isServiceProvider) && !isAnchor) return null;
 
-              // We custom-render NEW 8.1 operators AFTER TYPE_CONN_ID row
               if (isNewOperator && !isNewOpsAnchor) return null;
 
-              // Months are rendered together after the month anchor
               if (isMonthField && !isMonthAnchor) return null;
 
-              // Standard row (unchanged layout)
               const Row = (
                 <Box
                   key={deId}
@@ -215,7 +204,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                 </Box>
               );
 
-              // ---- 6.1 Operators block injected after its anchor ----
               if (isAnchor) {
                 return (
                   <Box key={deId}>
@@ -229,7 +217,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                           borderBottom: "1px solid #e0e0e0",
                         }}
                       >
-                        {/* label cell */}
                         <Box
                           sx={{
                             width: `${LABEL_COL_W}px`,
@@ -245,7 +232,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                           </Box>
                         </Box>
 
-                        {/* value cell — horizontal strip */}
                         <Box
                           sx={{
                             flex: 1,
@@ -322,7 +308,7 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                         >
                           <DataValueFieldNoBlur
                             dataElement={keys.SERVICE_PROVIDER_ID}
-                            required={true /* required via rule */}
+                            required={true }
                           />
                         </Box>
                       </Box>
@@ -330,8 +316,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                   </Box>
                 );
               }
-
-              // ---- NEW 8.1 Operators block injected after TYPE_CONN_ID ----
               if (isNewOpsAnchor) {
                 return (
                   <Box key={deId}>
@@ -345,7 +329,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                           borderBottom: "1px solid #e0e0e0",
                         }}
                       >
-                        {/* label cell */}
                         <Box
                           sx={{
                             width: `${LABEL_COL_W}px`,
@@ -364,7 +347,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                           </Box>
                         </Box>
 
-                        {/* value cell — horizontal strip */}
                         <Box
                           sx={{
                             flex: 1,
@@ -424,13 +406,11 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                 );
               }
 
-              // ---- Months block injected after month anchor ----
               if (isMonthAnchor) {
                 return (
                   <Box key={deId}>
                     {Row}
 
-                    {/* Months grid row */}
                     <Box
                       sx={{
                         display: "flex",
@@ -438,7 +418,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                         borderBottom: "1px solid #e0e0e0",
                       }}
                     >
-                      {/* label cell */}
                       <Box
                         sx={{
                           width: `${LABEL_COL_W}px`,
@@ -453,7 +432,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                         </Box>
                       </Box>
 
-                      {/* value cell — 6 per row grid */}
                       <Box
                         sx={{
                           flex: 1,
@@ -500,7 +478,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                 );
               }
 
-              // Normal rows (including Availability & others)
               return Row;
             })}
           </Accordion>

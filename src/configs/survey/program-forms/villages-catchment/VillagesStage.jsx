@@ -15,7 +15,6 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
-// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -33,7 +32,6 @@ const isEmpty = (v) => {
   return false;
 };
 
-// Program: sBkMdki30ua | Stage: JrbpF3DG3FL
 const VillagesStage = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
@@ -51,7 +49,6 @@ const VillagesStage = () => {
     defaultValue: isLao ? "ວັນທີ່ບັນທຶກ" : "Stage date",
   });
 
-  // Auto-assignments (unchanged)
   useEffect(() => {
     if (!currentEvent?.event) return;
     if (!props?.assignations) return;
@@ -61,7 +58,7 @@ const VillagesStage = () => {
     });
   }, [actions, currentEvent?.event, props?.assignations]);
 
-  // Sections
+
   const sections = useMemo(() => {
     const stage = program?.programStages?.find(
       (ps) => ps.id === currentEvent?.programStage
@@ -69,7 +66,7 @@ const VillagesStage = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // Collect DEs present in this stage (for required checks)
+ 
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -81,7 +78,7 @@ const VillagesStage = () => {
     return Array.from(new Set(ids));
   }, [sections]);
 
-  // Compute missing (all DEs + eventDate)
+
   const missing = useMemo(() => {
     const m = [];
     for (const id of presentIds) {
@@ -94,18 +91,17 @@ const VillagesStage = () => {
     return m;
   }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // Block when missing or any rule warnings
+
   const hasWarnings = !!props?.warnings && Object.keys(props.warnings).length > 0;
   const disabled = missing.length > 0 || hasWarnings;
 
-  // Avoid update loops
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(props?.warnings || {});
   missingRef.current = missing;
   warningsRef.current = props?.warnings || {};
 
-  // Toggle Complete button only when value changes
+ 
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -122,7 +118,7 @@ const VillagesStage = () => {
     }
   }, [actions, disabled]);
 
-  // Register Save handler once
+
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_villages_all_required";
@@ -192,7 +188,6 @@ const VillagesStage = () => {
                   <DataValueLabel dataElement={deId} />
                 </Box>
                 <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", p: "10px" }}>
-                  {/* ALL fields required */}
                   <DataValueFieldNoBlur dataElement={deId} required />
                 </Box>
               </Box>

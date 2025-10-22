@@ -2,18 +2,17 @@ import { useEffect, useMemo } from "react";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
-// ------------------------- IDs -------------------------
 const AVAIL_SEL = "fszEmzFYXHU";            // Internet on-site (can connect to internet)
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";         // Anchor row to place Operators next to (6.1)
 const OTHERS_ID = "BRHYwOIZ01O";            // Operator: Others (checkbox)
 const SERVICE_PROVIDER_ID = "O5TwLn4hWFr";  // Service provider (free text below Operators)
 
-// Connection type selector + detail fields
+
 const TYPE_CONN_ID   = "eWrvOj7ZUL2";       // Wifi / Cable / Both  (8.x anchor)
 const WIFI_FIELD_ID  = "nhilsZioxC9";       // Wifi detail
 const CABLE_FIELD_ID = "xQS1owULSbL";       // Cable detail
 
-// --- Existing 6.1 operator checkboxes (multi-select) ---
+
 const OPERATOR_IDS = new Set([
   "zLgkhPBoASd", // Lao Telecom (LTH)
   "fspSJIn4Vqq", // ETL
@@ -25,7 +24,6 @@ const OPERATOR_IDS = new Set([
   "BRHYwOIZ01O", // Others
 ]);
 
-// --- NEW 8.1 operator group (regular internet network) ---
 const NEW_OPERATOR_IDS = new Set([
   "Pza84UE33Qh",
   "rMDTqJBGufz",
@@ -34,24 +32,23 @@ const NEW_OPERATOR_IDS = new Set([
   "l91Lp6CKVQW",
   "clHAviSg1NZ",
   "zxfjpZ9yziJ",
-  "khA9UFm6Qpq", // trigger
+  "khA9UFm6Qpq", 
 ]);
 
 const NEW_OP_TRIGGER_ID = "khA9UFm6Qpq"; // if selected -> show/require Zc3FhnkGI7H
 const NEW_OP_SPECIFY_ID = "Zc3FhnkGI7H"; // required when trigger checked
 
-// Connectivity group (includes type selector & details)
+
 const CONN_FIELDS = [
   TYPE_CONN_ID,
   NEW_OP_SPECIFY_ID,
-  "eq1FTj6Z2vT",   // included so we can hide/clear when no-conn
+  "eq1FTj6Z2vT",   
   WIFI_FIELD_ID,
   CABLE_FIELD_ID,
   //  "tknBpZWiu89",
   //"SbpLKeVJBZd",
 ];
 
-// ===== NEW: always-mandatory IDs (when present/visible) =====
 const GLOBAL_MANDATORY_IDS = new Set([
   "dww5EckWlhe",
   "M0klNUD2fP5",
@@ -62,18 +59,17 @@ const GLOBAL_MANDATORY_IDS = new Set([
   "Gt26xzdkt53",
 ]);
 
-// Additional fields to mark as required (when visible)
+
 const ALWAYS_REQ_IDS = new Set([
-  // existing requireds (conditional via visibility)
+
   "eq1FTj6Z2vT",
   "nhilsZioxC9",
   "tknBpZWiu89",
   "SbpLKeVJBZd",
-  // new global mandatory ids
+
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
-// -------- Months block (shown next to SVSfEQFVBUj) --------
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 const MONTH_IDS = new Set([
   "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
@@ -93,7 +89,6 @@ const isEmpty = (v) => {
   return false;
 };
 
-// Read a DE value from current event
 const getValue = (event, deId) => {
   if (!event) return undefined;
   const arr = event?.dataValues;
@@ -108,8 +103,7 @@ const presentInEvent = (event, id) =>
   Array.isArray(event?.dataValues) &&
   event.dataValues.some((d) => d?.dataElement === id);
 
-// ------------------------- Hook -------------------------
-export default function useFacilityBuildingRules(sectionDEs = []) {
+/export default function useFacilityBuildingRules(sectionDEs = []) {
   const { currentEvent } = useCurrentEvent();
   const { actions } = useTrackerCaptureStore.getState();
 
@@ -119,16 +113,13 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const typeVal      = getValue(currentEvent, TYPE_CONN_ID);
   const newTriggerVal= getValue(currentEvent, NEW_OP_TRIGGER_ID);
 
-  // --- Visibility logic (hide when availability blank or "Not available") ---
   const sel = normalize(availVal);
   const hasSel = sel !== "";
   const notAvail = sel === "not available";
 
-  // Show connectivity block only when a value is chosen AND it's not "Not available"
   const showConn = hasSel && !notAvail;
 
-  // Connection-type-specific visibility
-  const type = normalize(typeVal); // "wifi" | "cable" | "both" | ""
+  const type = normalize(typeVal); 
   const showWifi  = showConn && (type === "wifi"  || type === "both");
   const showCable = showConn && (type === "cable" || type === "both");
 
@@ -136,20 +127,18 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const showOperators = truthy(anchorVal);
   const showServiceProvider = showOperators && truthy(othersVal);
 
-  // 8.1 Operators (new group): visible whenever connection block is visible
+  // 8.1  
   const showNewOperators = showConn;
   const showNewSpecify = showNewOperators && truthy(newTriggerVal);
 
-  // Build section ID list and decide which instance is the controller
   const sectionIds = (sectionDEs || [])
     .map((de) => de?.id || de?.dataElement?.id)
     .filter(Boolean);
-  const isController = sectionIds.includes(TYPE_CONN_ID); // only this instance will gate Save/Complete
+  const isController = sectionIds.includes(TYPE_CONN_ID); 
 
   const inSection = (id) => sectionIds.includes(id);
   const visibleInSection = (id, h) => inSection(id) && !h[id];
 
-  // Hidden fields computed from rules
   const hiddenFields = useMemo(() => {
     const h = {};
     if (!showConn) {
@@ -171,14 +160,14 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     return h;
   }, [showConn, showWifi, showCable, showOperators, showServiceProvider, showNewSpecify]);
 
-  // 🔹 Required fields (single-field UI stars only)
+
   const requiredFields = useMemo(() => {
     const req = {};
     for (const de of sectionDEs) {
       const id = de?.id || de?.dataElement?.id;
       if (!id) continue;
 
-      // operators + months: optional per-checkbox; group rule will enforce
+
       if (OPERATOR_IDS.has(id) || NEW_OPERATOR_IDS.has(id) || MONTH_IDS.has(id)) {
         req[id] = false;
         continue;
@@ -189,22 +178,20 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
         continue;
       }
       if (id === NEW_OP_SPECIFY_ID) {
-        req[id] = showNewSpecify && !hiddenFields[id]; // required when trigger checked
+        req[id] = showNewSpecify && !hiddenFields[id]; 
         continue;
       }
 
       if (ALWAYS_REQ_IDS.has(id)) {
-        req[id] = !hiddenFields[id]; // required when visible/present in this section
+        req[id] = !hiddenFields[id]; 
         continue;
       }
 
-      // default: optional
       req[id] = false;
     }
     return req;
   }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify]);
 
-  // 🔹 Clear values when a field becomes hidden
   useEffect(() => {
     if (!currentEvent?.event || !actions?.changeDataValue) return;
     const evId = currentEvent.event;
@@ -216,7 +203,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     });
   }, [hiddenFields, currentEvent?.event, actions]);
 
-  // ---------------- Stage-level guard (register ONCE from controller) ----------------
   useEffect(() => {
     if (!isController || !actions) return;
     const ev = currentEvent;
@@ -230,35 +216,29 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       return false;
     };
 
-    // Evaluate stage-wide so a single month can't unlock completion.
     const selStage = normalize(getValue(ev, AVAIL_SEL));
     const showConnStage = selStage !== "" && selStage !== "not available";
     const typeStage = normalize(getValue(ev, TYPE_CONN_ID));
     const showWifiStage  = showConnStage && (typeStage === "wifi" || typeStage === "both");
 
-    // ---- group rules (stage-wide) ----
     const showOp6Stage = truthy(getValue(ev, OP_ANCHOR_ID));
     const needOneOp6   = showOp6Stage   && !anySelectedStage(Array.from(OPERATOR_IDS));
     const needOneOp8   = showConnStage  && !anySelectedStage(Array.from(NEW_OPERATOR_IDS));
     const needOneMonth =                 !anySelectedStage(Array.from(MONTH_IDS));
 
-    // ---- single-field requireds (stage-wide) ----
-    const missingSingles = [];
+      const missingSingles = [];
 
-    // conditional connectivity fields
     if (showConnStage && isEmpty(getValue(ev, "eq1FTj6Z2vT"))) missingSingles.push("eq1FTj6Z2vT");
     if (showWifiStage && isEmpty(getValue(ev, WIFI_FIELD_ID))) missingSingles.push(WIFI_FIELD_ID);
     if (showConnStage && isEmpty(getValue(ev, "tknBpZWiu89"))) missingSingles.push("tknBpZWiu89");
     if (showConnStage && isEmpty(getValue(ev, "SbpLKeVJBZd"))) missingSingles.push("SbpLKeVJBZd");
 
-    // NEW: global mandatory ids (require value whenever present in the event)
     for (const id of GLOBAL_MANDATORY_IDS) {
       if (presentInEvent(ev, id) && isEmpty(getValue(ev, id))) {
         missingSingles.push(id);
       }
     }
 
-    // NEW 8.1 specify field when trigger checked
     const trig = truthy(getValue(ev, NEW_OP_TRIGGER_ID));
     if (showConnStage && trig && isEmpty(getValue(ev, NEW_OP_SPECIFY_ID))) {
       missingSingles.push(NEW_OP_SPECIFY_ID);
@@ -266,7 +246,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
 
     const disabled = missingSingles.length > 0 || needOneOp6 || needOneOp8 || needOneMonth;
 
-    // toggle Complete button
+
     try {
       if (actions.setLayout) {
         actions.setLayout("disableEventCompleteButton", disabled);
@@ -277,7 +257,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       }
     } catch {}
 
-    // block Save with unified message
     if (actions.setHandlers) {
       const KEY = "eventSave_facilityStageGuard";
       actions.setHandlers(KEY, async () => {
@@ -297,7 +276,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       });
       return () => actions.setHandlers && actions.setHandlers(KEY, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [isController, actions, currentEvent?.event, currentEvent?.dataValues]);
   // ---------------------------------------------------------------------------
 

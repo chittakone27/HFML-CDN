@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef } from "react";
 
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
-// Removed EventDateLabel; we render a translated label ourselves:
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 
@@ -15,7 +14,6 @@ import Accordion from "../../../common/Accordion";
 
 const GRID_COLS = "300px repeat(3, 1fr)";
 
-// Rows -> three DEs (name, phone, position)
 /** @type {{label:string,name:string,phone:string,position:string}[]} */
 const ROWS = [
   { label: "1. Focal point in Statistics", name: "XdN4DiRdbT6", phone: "sMqisNzLyfQ", position: "DVSy2o704A9" },
@@ -34,12 +32,11 @@ const ROWS = [
   { label: "14. Focal point in WASH", name: "mP26BdOPq1s", phone: "OV65eBiEnl9", position: "OocjBJGGu0p" },
 ];
 
-// i18n key helper for row labels
+
 const rowKey = (label) =>
   "focal.rows." +
   String(label).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 
-// Lao fallbacks for row labels (left column)
 const LO_ROW = {
   focal_point_in_statistics: "1. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກສະຖິຕິ",
   focal_point_in_planning: "2. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກແຜນການ",
@@ -57,7 +54,6 @@ const LO_ROW = {
   focal_point_in_wash: "14. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານນໍ້າສະອາດ, ສຸຂາພິບານ ແລະ ອະນາໄມ",
 };
 
-// Lao fallbacks for stage title, headers, and assessment date
 const LO_MISC = {
   title: "ພະນັກງານຜູ້ຮັບຜິດຊອບ / ຜູ້ປະສານງານ ຢູ່ສະຖານທີ່ດັ່ງກາວ",
   name: "ຊື່ ແລະ ນາມສະກຸນ",
@@ -66,7 +62,6 @@ const LO_MISC = {
   assessmentDate: "ວັນທີປະເມີນ",
 };
 
-// --- helpers to read values / check emptiness ---
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -91,12 +86,10 @@ const FocalPoints = () => {
   const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
   const { currentEvent } = useCurrentEvent();
 
-  // keep selection in case you need stage/program elsewhere later
   useSelectionStore(useShallow((s) => ({ stage: s.stage, program: s.program })));
 
   const maxDateStr = format(new Date(), "yyyy-MM-dd");
 
-  // Translated strings (use i18n keys with Lao fallback)
   const trTitle = t("focal.title", { defaultValue: isLao ? LO_MISC.title : "Focal Points" });
   const trHeaderName = t("focal.headers.name", { defaultValue: isLao ? LO_MISC.name : "Name and Surname" });
   const trHeaderPhone = t("focal.headers.phone", { defaultValue: isLao ? LO_MISC.phone : "Phone number" });
@@ -104,12 +97,11 @@ const FocalPoints = () => {
   const trAssessmentDate = t("focal.assessmentDate", { defaultValue: isLao ? LO_MISC.assessmentDate : "Assessment date" });
 
   const trRow = (label) => {
-    const key = rowKey(label); // focal.rows.<slug>
+    const key = rowKey(label); 
     const slug = key.split(".").pop();
     return t(key, { defaultValue: isLao ? LO_ROW[slug] || label : label });
   };
 
-  // -------- stage-level mandatory guard (all fields + event date) --------
   const requiredIds = useMemo(() => {
     const ids = [];
     for (const r of ROWS) {
@@ -120,12 +112,12 @@ const FocalPoints = () => {
 
   const missing = useMemo(() => {
     const m = [];
-    // check DEs
+
     for (const id of requiredIds) {
       const v = getEventDEValue(currentEvent, id);
       if (isEmpty(v)) m.push(id);
     }
-    // check event date too
+
     if (!currentEvent?.eventDate || isEmpty(currentEvent.eventDate)) {
       m.push("__eventDate__");
     }
@@ -167,7 +159,7 @@ const FocalPoints = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {/* Event date with translated label */}
+
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -196,9 +188,9 @@ const FocalPoints = () => {
       </Box>
 
       <Accordion title={trTitle}>
-        {/* Table wrapper */}
+
         <Box sx={{ border: "1px solid #d9d9d9", overflow: "hidden" }}>
-          {/* Header row */}
+
           <Box
             sx={{
               display: "grid",
@@ -216,7 +208,6 @@ const FocalPoints = () => {
             <Box sx={{ p: "10px 12px" }}>{trHeaderPosition}</Box>
           </Box>
 
-          {/* Data rows */}
           {ROWS.map((r, i) => (
             <Box
               key={r.label}
@@ -227,7 +218,6 @@ const FocalPoints = () => {
                 borderBottom: i === ROWS.length - 1 ? "none" : "1px solid #e5e5e5",
               }}
             >
-              {/* Row label (translated) */}
               <Box
                 sx={{
                   p: "10px 12px",
@@ -241,21 +231,18 @@ const FocalPoints = () => {
                 {trRow(r.label)}
               </Box>
 
-              {/* Name & Surname */}
               <Box sx={{ p: "6px 10px", borderRight: "1px solid #e5e5e5", display: "flex", alignItems: "center" }}>
                 <Box sx={{ width: "100%" }}>
                   <DataValueFieldNoBlur dataElement={r.name} required />
                 </Box>
               </Box>
 
-              {/* Phone number */}
               <Box sx={{ p: "6px 10px", borderRight: "1px solid #e5e5e5", display: "flex", alignItems: "center" }}>
                 <Box sx={{ width: "100%" }}>
                   <DataValueFieldNoBlur dataElement={r.phone} required />
                 </Box>
               </Box>
 
-              {/* Position */}
               <Box sx={{ p: "6px 10px", display: "flex", alignItems: "center" }}>
                 <Box sx={{ width: "100%" }}>
                   <DataValueFieldNoBlur dataElement={r.position} required />

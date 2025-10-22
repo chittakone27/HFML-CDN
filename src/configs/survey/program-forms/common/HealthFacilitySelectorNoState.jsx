@@ -15,7 +15,6 @@ import ClearIcon from "@mui/icons-material/Clear";
 import useMetadataStore from "@/state/metadata";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
 
-// minimal styles (keep or remove to match your theme)
 const LABEL_SX = {};
 const SELECT_SX = { "& .MuiSelect-select": { textAlign: "left", py: 1 } };
 const ROW_GAP = 1;
@@ -50,13 +49,6 @@ const mapByParent = (list) => {
   return m;
 };
 
-/**
- * Props:
- *  - ids, init, onChange
- *  - onValidityChange?: (boolean)     // tells parent whether the selection is valid
- *  - disabled?: boolean
- *  - labelsOverride?: { level1?, level2?, level3? }
- */
 const HealthFacilitySelectorNoState = ({
   ids,
   init,
@@ -70,7 +62,6 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
-  // classify OUs
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [], districts = [], phs = [], chs = [], hcs = [], dhs = [];
     (orgUnits || []).forEach((ou) => {
@@ -105,7 +96,6 @@ const HealthFacilitySelectorNoState = ({
     return { type: "", id: "" };
   });
 
-  // sync with init (if external change)
   useEffect(() => {
     setProvId(init?.province || "");
     if (init?.ph) setL2({ type: "PH", id: init.ph });
@@ -168,13 +158,11 @@ const HealthFacilitySelectorNoState = ({
     onChange?.({ province, district, ph, ch, hc, dh });
   };
 
-  // dynamic mandatory logic
   const requireL2 = !!provId;          // province picked → L2 required
   const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
   const l2Error   = requireL2 && !l2.id;
   const l3Error   = requireL3 && !l3.id;
 
-  // valid = nothing selected at all OR (prov + l2 [+ l3 when DHO])
   const isValid =
     (!provId && !l2.id && !l3.id) ||
     (!!provId && !!l2.id && (!requireL3 || !!l3.id));
@@ -183,7 +171,6 @@ const HealthFacilitySelectorNoState = ({
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  // clear buttons
   const ClearBtn = ({ onClick, disabled }) => (
     <InputAdornment position="end">
       <IconButton size="small" onClick={onClick} disabled={disabled} edge="end" tabIndex={-1}>
@@ -192,7 +179,6 @@ const HealthFacilitySelectorNoState = ({
     </InputAdornment>
   );
 
-  // handlers
   const onProvChange = (e) => {
     const id = e.target.value || "";
     const nextL2 = { type: "", id: "" };
@@ -216,7 +202,6 @@ const HealthFacilitySelectorNoState = ({
     setL3(nextL3); emit(provId, l2, nextL3);
   };
 
-  // labels
   const l1Label = labelsOverride?.level1 ?? <AttributeLabelNoState attribute={ids.province} />;
   const l2Label = labelsOverride?.level2 ?? "CH / PH / DHO";
   const l3Label = labelsOverride?.level3 ?? "DH / HC";

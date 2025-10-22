@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
-// Translated label (we keep our own label row):
+
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 
@@ -23,10 +23,9 @@ const SECTION = {
   EPI: "IFiX3F88mHg",
   ADMIN: "Q68YZTN83dj",
   ICT: "kVViSpknfAg",
-  MOVED_COMBINED: "XUbOnfMrc0H", // exclude from this stage if visible
+  MOVED_COMBINED: "XUbOnfMrc0H", 
 };
 
-// Lao quick-fallbacks
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   partiallyDamaged: "ເສຍຫາຍບາງສ່ວນ",
@@ -75,7 +74,7 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
-// Rows we still render here (BASIC, MCH, EPI)
+
 const SECTION_ROWS = {
   [SECTION.BASIC]: [
     { label: "1 Oxygen concentrator", usable: "k6STi37BjK9", damaged: "NykhziIHZHH" },
@@ -113,7 +112,6 @@ const SECTION_ROWS = {
 const stripRomanOrNumber = (s) =>
   String(s || "").replace(/^\s*((?:[IVXLCDM]+|\d+)\.)\s*/i, "");
 
-// --- helpers to read values / check emptiness ---
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -153,7 +151,7 @@ const Equipments = () => {
     if (n === "items related to immunization (epi)") {
       return t("equipment.sections.epi", { defaultValue: isLao ? LO.SECTION_EPI : base });
     }
-    // ICT/Admin moved out — if still present, we’ll skip them below.
+
     return displayName;
   };
 
@@ -167,7 +165,7 @@ const Equipments = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // Filter OUT ICT + Admin (and the combined section if it accidentally appears in this stage)
+
   const filteredSections = sections.filter(
     (s) => ![SECTION.ICT, SECTION.ADMIN, SECTION.MOVED_COMBINED].includes(s.id)
   );
@@ -197,10 +195,9 @@ const Equipments = () => {
   const missingRef = useRef(missing);
   missingRef.current = missing;
 
-  // ---------- Stage-wide compulsory guard (no rules) ----------
   useEffect(() => {
     if (!actions) return;
-    // Only update layout when the disabled value actually changes to avoid loops
+
     if (prevDisabled.current !== disabled) {
       prevDisabled.current = disabled;
       try {
@@ -215,7 +212,6 @@ const Equipments = () => {
     }
   }, [actions, disabled]);
 
-  // Register Save handler once; read latest missing via ref
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_equipment_all_required";
@@ -232,7 +228,7 @@ const Equipments = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Assessment date */}
+
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>
           {t("equipment.assessmentDate", {
@@ -264,7 +260,7 @@ const Equipments = () => {
           return (
             <Accordion key={section.id || `${section.displayName}-${sIdx}`} title={trSectionTitle(section.displayName)}>
               <Box sx={{ border: "1px solid #d9d9d9",  overflow: "hidden" }}>
-                {/* header */}
+
                 <Box
                   sx={{
                     display: "grid",
@@ -284,7 +280,6 @@ const Equipments = () => {
                   </Box>
                 </Box>
 
-                {/* rows */}
                 {rows.map((r, i) => (
                   <Box
                     key={`${r.label}-${i}`}
@@ -320,7 +315,7 @@ const Equipments = () => {
                       }}
                     >
                       <Box sx={{ width: "100%" }}>
-                        {/* ALL compulsory */}
+
                         <DataValueFieldNoBlur dataElement={r.usable} required />
                       </Box>
                     </Box>
@@ -328,7 +323,7 @@ const Equipments = () => {
                     {r.damaged && (
                       <Box sx={{ p: "6px 10px", display: "flex", alignItems: "center" }}>
                         <Box sx={{ width: "100%" }}>
-                          {/* ALL compulsory */}
+
                           <DataValueFieldNoBlur dataElement={r.damaged} required />
                         </Box>
                       </Box>
@@ -340,7 +335,6 @@ const Equipments = () => {
           );
         }
 
-        // Unknown sections (should be rare now)
         return (
           <Accordion key={section.id || `${section.displayName}-${sIdx}`} title={trSectionTitle(section.displayName)}>
             {(section.dataElements ?? []).map((de, dIdx) => {
@@ -359,7 +353,7 @@ const Equipments = () => {
                     <DataValueLabel dataElement={deId} />
                   </Box>
                   <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
-                    {/* ALL compulsory */}
+                  
                     <DataValueFieldNoBlur dataElement={deId} required />
                   </Box>
                 </Box>

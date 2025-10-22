@@ -4,7 +4,6 @@ import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import { Box } from "@mui/material";
 
 const Profile = () => {
-  // shallow not needed here; keep it simple
   const { program } = useSelectionStore((s) => ({ program: s.program }));
 
   const attributes = program?.programTrackedEntityAttributes?.map(

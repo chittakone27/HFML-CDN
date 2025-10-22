@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
-// Removed EventDateLabel; we render a translated label ourselves:
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 
@@ -15,7 +14,6 @@ import { useMemo, useEffect } from "react";
 
 import Accordion from "../../../common/Accordion";
 
-// --- IDs & rules -------------------------------------------------------------
 const RULES = [
   {
     controller: "VmCvSADpsA1",           // If this = Other
@@ -68,7 +66,6 @@ const Wash = () => {
   );
   const { currentEvent } = useCurrentEvent();
 
-  // Prefer selection.stage; fall back to program + currentEvent.programStage
   const { stage: selStage, program } = useSelectionStore(
     useShallow((s) => ({ stage: s.stage, program: s.program }))
   );
@@ -82,12 +79,11 @@ const Wash = () => {
   const sections = stage?.programStageSections ?? [];
   const maxDateStr = format(new Date(), "yyyy-MM-dd");
 
-  // i18n: translated “Assessment date”
   const trAssessmentDate = t("wash.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
-  // i18n: translated section titles (only for these five)
+
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -116,7 +112,6 @@ const Wash = () => {
     }
   };
 
-  // helpers for rule checks
   const valueOf = (id) => normalize(getEventDEValue(currentEvent, id));
   const matchedRuleFor = (controllerId) =>
     RULES.find((r) => r.controller === controllerId);
@@ -126,19 +121,15 @@ const Wash = () => {
     return rule.matchValues.includes(v);
   };
 
-  // ---------- Stage-wide mandatory guard ----------
   useEffect(() => {
     if (!actions) return;
 
-    // collect all DE ids present in this stage
     const presentIds = new Set(
       sections.flatMap((sec) => (sec?.dataElements ?? []).map((de) => de?.id ?? de?.dataElement?.id)).filter(Boolean)
     );
 
-    // all present fields are compulsory, except dependents (they are conditional)
     const requiredNow = new Set([...presentIds].filter((id) => !DEP_SET.has(id)));
 
-    // add dependents conditionally when their controller == "other"
     for (const rule of RULES) {
       const { controller, dependents } = rule;
       if (!presentIds.has(controller)) continue;
@@ -150,7 +141,6 @@ const Wash = () => {
       }
     }
 
-    // compute missing
     const missing = [];
     requiredNow.forEach((id) => {
       const val = getEventDEValue(currentEvent, id);
@@ -183,7 +173,6 @@ const Wash = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Translated Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -221,7 +210,6 @@ const Wash = () => {
               const deId = de?.id ?? de?.dataElement?.id;
               if (!deId) return null;
 
-              // If this DE is a dependent, skip it here; it will be injected below its controller.
               if (DEP_SET.has(deId)) {
                 return null;
               }
@@ -233,18 +221,17 @@ const Wash = () => {
                     <DataValueLabel dataElement={deId} />
                   </Box>
                   <Box sx={VALUE_CELL}>
-                    {/* All fields compulsory */}
+
                     <DataValueFieldNoBlur dataElement={deId} required />
                   </Box>
                 </Box>
               );
 
               if (!rule) {
-                // Plain DE, render as-is (required)
+
                 return renderControllerRow;
               }
 
-              // This DE controls dependents; render controller, then dependents if matched
               const showDeps = shouldShowDependents(rule);
 
               return (
@@ -260,7 +247,7 @@ const Wash = () => {
                           <DataValueLabel dataElement={depId} />
                         </Box>
                         <Box sx={VALUE_CELL}>
-                          {/* Dependent is required when shown */}
+
                           <DataValueFieldNoBlur dataElement={depId} required />
                         </Box>
                       </Box>

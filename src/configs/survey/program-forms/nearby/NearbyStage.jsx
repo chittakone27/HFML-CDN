@@ -1,4 +1,3 @@
-// program-forms/nearby/NearbyStage.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -18,7 +17,6 @@ import useNearbyRules from "./useNearbyRules";
 
 const LABEL_COL_W = 300;
 
-// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -76,7 +74,6 @@ const NearbyStage = () => {
     ];
   }, [stage]);
 
-  // collect all DE IDs present on this stage (what we render) for required check
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -88,7 +85,6 @@ const NearbyStage = () => {
     return Array.from(new Set(ids));
   }, [sections]);
 
-  // find missing required values (all DEs + eventDate)
   const missing = useMemo(() => {
     const m = [];
     for (const id of presentIds) {
@@ -101,7 +97,6 @@ const NearbyStage = () => {
     return m;
   }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // disable when any missing OR any warnings
   const disabled = missing.length > 0 || hasWarnings;
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
@@ -109,7 +104,6 @@ const NearbyStage = () => {
   missingRef.current = missing;
   warningsRef.current = warnings;
 
-  // toggle Complete button only when state changes (avoid update loops)
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -126,7 +120,6 @@ const NearbyStage = () => {
     }
   }, [actions, disabled]);
 
-  // register Save handler once; block when missing or warnings
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_nearby_all_required";
@@ -140,7 +133,6 @@ const NearbyStage = () => {
           const msgs = [];
           if (m.length > 0) msgs.push("Please complete all required fields.");
           if (hasW) {
-            // include unique warning messages
             const uniq = Array.from(new Set(Object.values(w)));
             msgs.push(uniq.join(" "));
           }
@@ -155,7 +147,7 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Event date (required) */}
+
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -204,7 +196,7 @@ const NearbyStage = () => {
                     padding: "10px",
                   }}
                 >
-                  {/* ALL fields required */}
+
                   <DataValueFieldNoBlur dataElement={deId} required />
                 </Box>
               </Box>
