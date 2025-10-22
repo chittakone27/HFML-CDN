@@ -1,6 +1,7 @@
-
+//ICT
 import IctDeviceMapping from "./program-forms/ict-device-mapping/Profile";
 import Assessment from "./program-forms/ict-device-mapping/Assessment";
+//Infra
 import InfrastructureMappingTracker from "./program-forms/infrastructure-mapping-tracker/Profile";
 import FacilityBuildingandFurniture from "./program-forms/infrastructure-mapping-tracker/Program -stages/Facility-Building-Furniture/FacilityBuildingandFurniture";
 import Wash from "./program-forms/infrastructure-mapping-tracker/Program -stages/Wash/Wash";
