@@ -18,20 +18,20 @@ const GRID_COLS = "300px repeat(3, 1fr)";
 // Rows -> three DEs (name, phone, position)
 /** @type {{label:string,name:string,phone:string,position:string}[]} */
 const ROWS = [
-  { label: "Focal point in Statistics", name: "XdN4DiRdbT6", phone: "sMqisNzLyfQ", position: "DVSy2o704A9" },
-  { label: "Focal point in Planning", name: "ecsoaUOowEO", phone: "vKjd2Xbizhl", position: "wxylBb6OPr9" },
-  { label: "Focal point in Administration", name: "rxS2nT0THr4", phone: "drZ778iJ7o2", position: "rEqDdCxMD3E" },
-  { label: "Focal point in MCH", name: "JbwHiNVcmSQ", phone: "FODGOgjn8vd", position: "J4JNG7HvErr" },
-  { label: "Focal point in Nutrition", name: "gXs2SMhVjrc", phone: "Cb9nJ4gSPGN", position: "DIoi8wE1ky1" },
-  { label: "Focal point in Vaccination", name: "GR4o5L0HbCo", phone: "pPnaLSoTKeO", position: "siXKKIODhgK" },
-  { label: "Focal point in Treatment and Rehabilitation", name: "dogMKw4YQi6", phone: "IhWoKTEPA49", position: "GKwqkVL6Cjy" },
-  { label: "Focal point in NHI", name: "gfVrKxCgmZg", phone: "JHesGHVHKRc", position: "KRyUPEGRpct" },
-  { label: "Focal point in Malaria", name: "rpt2nT8IeyI", phone: "Pus81m4pqxC", position: "Hsw0zV9d5Tt" },
-  { label: "Focal point in Tuberculosis", name: "nF1Qi36Mvoh", phone: "elixGs0moWC", position: "u0dUA2WbrKo" },
-  { label: "Focal point in HIV", name: "ROR3qpzgQQ6", phone: "Pp082v0vFMV", position: "DDIqnYA3KZo" },
-  { label: "Focal point in Communicable diseases", name: "gECI3qCAG3z", phone: "tR0b3Q278Si", position: "vPxHplhPYAi" },
-  { label: "Focal point in NCD", name: "nMtlkJMhXZo", phone: "LU6bCFXTSkX", position: "cV2HtrO7So2" },
-  { label: "Focal point in WASH", name: "mP26BdOPq1s", phone: "OV65eBiEnl9", position: "OocjBJGGu0p" },
+  { label: "1. Focal point in Statistics", name: "XdN4DiRdbT6", phone: "sMqisNzLyfQ", position: "DVSy2o704A9" },
+  { label: "2. Focal point in Planning", name: "ecsoaUOowEO", phone: "vKjd2Xbizhl", position: "wxylBb6OPr9" },
+  { label: "3. Focal point in Administration", name: "rxS2nT0THr4", phone: "drZ778iJ7o2", position: "rEqDdCxMD3E" },
+  { label: "4. Focal point in MCH", name: "JbwHiNVcmSQ", phone: "FODGOgjn8vd", position: "J4JNG7HvErr" },
+  { label: "5. Focal point in Nutrition", name: "gXs2SMhVjrc", phone: "Cb9nJ4gSPGN", position: "DIoi8wE1ky1" },
+  { label: "6. Focal point in Vaccination", name: "GR4o5L0HbCo", phone: "pPnaLSoTKeO", position: "siXKKIODhgK" },
+  { label: "7. Focal point in Treatment and Rehabilitation", name: "dogMKw4YQi6", phone: "IhWoKTEPA49", position: "GKwqkVL6Cjy" },
+  { label: "8. Focal point in NHI", name: "gfVrKxCgmZg", phone: "JHesGHVHKRc", position: "KRyUPEGRpct" },
+  { label: "9. Focal point in Malaria", name: "rpt2nT8IeyI", phone: "Pus81m4pqxC", position: "Hsw0zV9d5Tt" },
+  { label: "10. Focal point in Tuberculosis", name: "nF1Qi36Mvoh", phone: "elixGs0moWC", position: "u0dUA2WbrKo" },
+  { label: "11. Focal point in HIV", name: "ROR3qpzgQQ6", phone: "Pp082v0vFMV", position: "DDIqnYA3KZo" },
+  { label: "12. Focal point in Communicable diseases", name: "gECI3qCAG3z", phone: "tR0b3Q278Si", position: "vPxHplhPYAi" },
+  { label: "13. Focal point in NCD", name: "nMtlkJMhXZo", phone: "LU6bCFXTSkX", position: "cV2HtrO7So2" },
+  { label: "14. Focal point in WASH", name: "mP26BdOPq1s", phone: "OV65eBiEnl9", position: "OocjBJGGu0p" },
 ];
 
 // i18n key helper for row labels
