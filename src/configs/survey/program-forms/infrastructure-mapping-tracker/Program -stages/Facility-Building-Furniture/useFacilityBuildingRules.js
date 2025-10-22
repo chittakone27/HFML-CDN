@@ -103,7 +103,7 @@ const presentInEvent = (event, id) =>
   Array.isArray(event?.dataValues) &&
   event.dataValues.some((d) => d?.dataElement === id);
 
-/export default function useFacilityBuildingRules(sectionDEs = []) {
+export default function useFacilityBuildingRules(sectionDEs = []) {
   const { currentEvent } = useCurrentEvent();
   const { actions } = useTrackerCaptureStore.getState();
 
