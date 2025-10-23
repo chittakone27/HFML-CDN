@@ -1,4 +1,3 @@
-// Profile.jsx
 import { Box } from "@mui/material";
 import { useMemo, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -10,21 +9,18 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 import useProfileRules from "./useProfileRules";
 
-// --- Layout knobs ------------------------------------------------------------
-const LABEL_COL_W = 210; // keep aligned with other rows
+const LABEL_COL_W = 210; 
 
-// Fixed widths (adjust here)
-const HF_W   = 180; // HF ID input width
-const CODE_W = 65; // Code input width
-const NUM_W  = 110; // Number input width
+const HF_W   = 180; 
+const CODE_W = 65; 
+const NUM_W  = 110; 
 
-// --- Attribute IDs -----------------------------------------------------------
 const ID = {
-  deviceType: "xQrdgnlPcC3", // render first
-  code: "y6RfdAq2zmQ",       // Code (auto from device type) — disabled
-  hf: "odDm8AxiL1j",         // HF ID (user input)
-  num: "KZ5D0DFEqdf",        // Number (user input)
-  deviceId: "RyN09GsWd64",   // Composed Device ID (auto, disabled)
+  deviceType: "xQrdgnlPcC3", 
+  code: "y6RfdAq2zmQ",       
+  hf: "odDm8AxiL1j",         
+  num: "KZ5D0DFEqdf",        
+  deviceId: "RyN09GsWd64",   
 };
 
 const SPECIAL = [ID.code, ID.hf, ID.num, ID.deviceId];
@@ -48,7 +44,7 @@ const Profile = () => {
 
   const props = useProfileRules();
 
-  // Clear values for hidden fields
+
   useEffect(() => {
     if (!props?.hiddenFields) return;
     const cur = toAttrMap(data?.currentTei);
@@ -57,7 +53,7 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.hiddenFields]);
 
-  // Apply auto-assignments only if changed
+
   useEffect(() => {
     if (!props?.assignations) return;
     const cur = toAttrMap(data?.currentTei);
@@ -100,7 +96,7 @@ const Profile = () => {
     );
   };
 
-  // Inline compact trio aligned like age inputs: HF | Code | Number
+
   const renderInlineTrioRow = () => {
     if (
       props?.hiddenFields?.[ID.hf] &&
@@ -117,10 +113,10 @@ const Profile = () => {
 
     return (
       <Box className="custom-tracker-profile-field-row" sx={{ alignItems: "flex-start", mb: 1 }}>
-        {/* ghost label keeps alignment with normal rows */}
+
         <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
 
-        {/* value column with three fixed-width cells */}
+
         <Box
           sx={{
             display: "grid",

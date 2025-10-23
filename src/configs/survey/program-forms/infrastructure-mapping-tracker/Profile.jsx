@@ -22,8 +22,6 @@ const Profile = () => {
         <AttributeField
           attribute={attribute}
           disabledManualFields
-          // If you later want to disable (not hide), uncomment:
-          // disabled={!!disabledFields?.[attribute]}
         />
       </Box>
     );

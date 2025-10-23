@@ -51,7 +51,7 @@ const CONN_FIELDS = [
   //"SbpLKeVJBZd",
 ];
 
-// ===== NEW: always-mandatory IDs (when present/visible) =====
+// ===== NEW: always-mandatory IDs 
 const GLOBAL_MANDATORY_IDS = new Set([
   "dww5EckWlhe",
   "M0klNUD2fP5",
@@ -64,7 +64,7 @@ const GLOBAL_MANDATORY_IDS = new Set([
 
 // Additional fields to mark as required (when visible)
 const ALWAYS_REQ_IDS = new Set([
-  // existing requireds (conditional via visibility)
+
   "eq1FTj6Z2vT",
   "nhilsZioxC9",
   "tknBpZWiu89",
@@ -73,7 +73,6 @@ const ALWAYS_REQ_IDS = new Set([
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
-// -------- Months block (shown next to SVSfEQFVBUj) --------
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 const MONTH_IDS = new Set([
   "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
@@ -81,7 +80,6 @@ const MONTH_IDS = new Set([
   "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE",
 ]);
 
-// ------------------------- Helpers -------------------------
 const truthy = (v) =>
   v === true || v === "true" || v === 1 || v === "1" || v === "Yes" || v === "YES" || v === "yes";
 
@@ -93,7 +91,6 @@ const isEmpty = (v) => {
   return false;
 };
 
-// Read a DE value from current event
 const getValue = (event, deId) => {
   if (!event) return undefined;
   const arr = event?.dataValues;
@@ -114,20 +111,17 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const { actions } = useTrackerCaptureStore.getState();
 
   const availVal     = getValue(currentEvent, AVAIL_SEL);
-  const anchorVal    = getValue(currentEvent, OP_ANCHOR_ID); // 6.1 anchor toggle
+  const anchorVal    = getValue(currentEvent, OP_ANCHOR_ID); 
   const othersVal    = getValue(currentEvent, OTHERS_ID);
   const typeVal      = getValue(currentEvent, TYPE_CONN_ID);
   const newTriggerVal= getValue(currentEvent, NEW_OP_TRIGGER_ID);
 
-  // --- Visibility logic (hide when availability blank or "Not available") ---
   const sel = normalize(availVal);
   const hasSel = sel !== "";
   const notAvail = sel === "not available";
 
-  // Show connectivity block only when a value is chosen AND it's not "Not available"
   const showConn = hasSel && !notAvail;
 
-  // Connection-type-specific visibility
   const type = normalize(typeVal); // "wifi" | "cable" | "both" | ""
   const showWifi  = showConn && (type === "wifi"  || type === "both");
   const showCable = showConn && (type === "cable" || type === "both");
@@ -140,16 +134,14 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const showNewOperators = showConn;
   const showNewSpecify = showNewOperators && truthy(newTriggerVal);
 
-  // Build section ID list and decide which instance is the controller
   const sectionIds = (sectionDEs || [])
     .map((de) => de?.id || de?.dataElement?.id)
     .filter(Boolean);
-  const isController = sectionIds.includes(TYPE_CONN_ID); // only this instance will gate Save/Complete
+  const isController = sectionIds.includes(TYPE_CONN_ID); 
 
   const inSection = (id) => sectionIds.includes(id);
   const visibleInSection = (id, h) => inSection(id) && !h[id];
 
-  // Hidden fields computed from rules
   const hiddenFields = useMemo(() => {
     const h = {};
     if (!showConn) {
@@ -171,14 +163,12 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     return h;
   }, [showConn, showWifi, showCable, showOperators, showServiceProvider, showNewSpecify]);
 
-  // 🔹 Required fields (single-field UI stars only)
   const requiredFields = useMemo(() => {
     const req = {};
     for (const de of sectionDEs) {
       const id = de?.id || de?.dataElement?.id;
       if (!id) continue;
 
-      // operators + months: optional per-checkbox; group rule will enforce
       if (OPERATOR_IDS.has(id) || NEW_OPERATOR_IDS.has(id) || MONTH_IDS.has(id)) {
         req[id] = false;
         continue;
@@ -189,22 +179,20 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
         continue;
       }
       if (id === NEW_OP_SPECIFY_ID) {
-        req[id] = showNewSpecify && !hiddenFields[id]; // required when trigger checked
+        req[id] = showNewSpecify && !hiddenFields[id]; 
         continue;
       }
 
       if (ALWAYS_REQ_IDS.has(id)) {
-        req[id] = !hiddenFields[id]; // required when visible/present in this section
+        req[id] = !hiddenFields[id]; 
         continue;
       }
 
-      // default: optional
       req[id] = false;
     }
     return req;
   }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify]);
 
-  // 🔹 Clear values when a field becomes hidden
   useEffect(() => {
     if (!currentEvent?.event || !actions?.changeDataValue) return;
     const evId = currentEvent.event;
@@ -216,7 +204,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     });
   }, [hiddenFields, currentEvent?.event, actions]);
 
-  // ---------------- Stage-level guard (register ONCE from controller) ----------------
   useEffect(() => {
     if (!isController || !actions) return;
     const ev = currentEvent;
@@ -230,35 +217,29 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       return false;
     };
 
-    // Evaluate stage-wide so a single month can't unlock completion.
     const selStage = normalize(getValue(ev, AVAIL_SEL));
     const showConnStage = selStage !== "" && selStage !== "not available";
     const typeStage = normalize(getValue(ev, TYPE_CONN_ID));
     const showWifiStage  = showConnStage && (typeStage === "wifi" || typeStage === "both");
 
-    // ---- group rules (stage-wide) ----
     const showOp6Stage = truthy(getValue(ev, OP_ANCHOR_ID));
     const needOneOp6   = showOp6Stage   && !anySelectedStage(Array.from(OPERATOR_IDS));
     const needOneOp8   = showConnStage  && !anySelectedStage(Array.from(NEW_OPERATOR_IDS));
     const needOneMonth =                 !anySelectedStage(Array.from(MONTH_IDS));
 
-    // ---- single-field requireds (stage-wide) ----
     const missingSingles = [];
 
-    // conditional connectivity fields
     if (showConnStage && isEmpty(getValue(ev, "eq1FTj6Z2vT"))) missingSingles.push("eq1FTj6Z2vT");
     if (showWifiStage && isEmpty(getValue(ev, WIFI_FIELD_ID))) missingSingles.push(WIFI_FIELD_ID);
     if (showConnStage && isEmpty(getValue(ev, "tknBpZWiu89"))) missingSingles.push("tknBpZWiu89");
     if (showConnStage && isEmpty(getValue(ev, "SbpLKeVJBZd"))) missingSingles.push("SbpLKeVJBZd");
 
-    // NEW: global mandatory ids (require value whenever present in the event)
     for (const id of GLOBAL_MANDATORY_IDS) {
       if (presentInEvent(ev, id) && isEmpty(getValue(ev, id))) {
         missingSingles.push(id);
       }
     }
 
-    // NEW 8.1 specify field when trigger checked
     const trig = truthy(getValue(ev, NEW_OP_TRIGGER_ID));
     if (showConnStage && trig && isEmpty(getValue(ev, NEW_OP_SPECIFY_ID))) {
       missingSingles.push(NEW_OP_SPECIFY_ID);
@@ -266,7 +247,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
 
     const disabled = missingSingles.length > 0 || needOneOp6 || needOneOp8 || needOneMonth;
 
-    // toggle Complete button
     try {
       if (actions.setLayout) {
         actions.setLayout("disableEventCompleteButton", disabled);
@@ -277,7 +257,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       }
     } catch {}
 
-    // block Save with unified message
     if (actions.setHandlers) {
       const KEY = "eventSave_facilityStageGuard";
       actions.setHandlers(KEY, async () => {
@@ -297,7 +276,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       });
       return () => actions.setHandlers && actions.setHandlers(KEY, null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [isController, actions, currentEvent?.event, currentEvent?.dataValues]);
   // ---------------------------------------------------------------------------
 

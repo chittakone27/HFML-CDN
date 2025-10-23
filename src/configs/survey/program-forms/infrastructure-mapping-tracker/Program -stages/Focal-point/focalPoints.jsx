@@ -12,10 +12,8 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import Accordion from "../../../common/Accordion";
 
-// columns: [Row label] [Primary/Alternate] [Name] [Phone] [Position]
 const GRID_COLS = "300px 140px repeat(3, 1fr)";
 
-// ---- primary + alternate DE mappings ----
 /** @type {Array<{label:string,name:string,phone:string,position:string, altName:string, altPhone:string, altPosition:string}>} */
 const ROWS = [
   // 1 Statistics
@@ -104,7 +102,6 @@ const ROWS = [
   },
 ];
 
-// i18n helpers/fallbacks
 const rowKey = (label) =>
   "focal.rows." + String(label).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 const LO_ROW = {
@@ -133,14 +130,12 @@ const LO_MISC = {
   alternate: "ຜູ້ສໍາຮອງ",
 };
 
-// red asterisk for headers
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
     *
   </Box>
 );
 
-// --- helpers to read values / check emptiness ---
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -180,7 +175,6 @@ const FocalPoints = () => {
     return t(key, { defaultValue: isLao ? LO_ROW[slug] || label : label });
   };
 
-  // -------- Only PRIMARY mandatory (plus event date) --------
   const requiredIds = useMemo(() => {
     const ids = [];
     for (const r of ROWS) {
@@ -232,7 +226,7 @@ const FocalPoints = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {/* Event date with translated label */}
+
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -257,7 +251,7 @@ const FocalPoints = () => {
 
       <Accordion title={trTitle}>
         <Box sx={{ border: "1px solid #d9d9d9", overflow: "hidden" }}>
-          {/* Header */}
+
           <Box
             sx={{
               display: "grid",
@@ -282,7 +276,6 @@ const FocalPoints = () => {
             </Box>
           </Box>
 
-          {/* Rows (label spans Primary + Alternate) */}
           {ROWS.map((r, i) => (
             <Box
               key={r.label}
@@ -293,7 +286,6 @@ const FocalPoints = () => {
                 borderBottom: i === ROWS.length - 1 ? "none" : "1px solid #e5e5e5",
               }}
             >
-              {/* Label cell spanning two rows */}
               <Box
                 sx={{
                   gridRow: "1 / span 2",
@@ -309,7 +301,6 @@ const FocalPoints = () => {
                 {trRow(r.label)}
               </Box>
 
-              {/* Primary */}
               <Box sx={{ p: "10px 12px", borderRight: "1px solid #e5e5e5", color: "text.secondary" }}>
                 {trPrimary}
               </Box>
@@ -323,7 +314,6 @@ const FocalPoints = () => {
                 <DataValueFieldNoBlur dataElement={r.position} required />
               </Box>
 
-              {/* Alternate (optional) */}
               <Box sx={{ p: "10px 12px", borderTop: "1px solid #f0f0f0", borderRight: "1px solid #e5e5e5", color: "text.secondary", background: i % 2 === 0 ? "#fafafa" : "transparent" }}>
                 {trAlternate}
               </Box>
