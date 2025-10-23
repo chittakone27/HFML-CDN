@@ -1,3 +1,4 @@
+// program-forms/nearby/NearbyStage.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -16,7 +17,9 @@ import Accordion from "../common/Accordion";
 import useNearbyRules from "./useNearbyRules";
 
 const LABEL_COL_W = 300;
+const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
+// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -46,13 +49,37 @@ const NearbyStage = () => {
   );
   const { currentEvent } = useCurrentEvent();
 
-  const { warnings } = useNearbyRules(); // includes the foot < car check
+  // includes: foot vs car + integer-only (now codes)
+  const { warnings } = useNearbyRules();
   const hasWarnings = Object.keys(warnings || {}).length > 0;
 
+  // i18n strings
   const trAssessmentDate = t("assessment.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
+  // translate a warning code → message (EN/LO only, not both)
+  const trWarn = (code) => {
+    switch (code) {
+      case "footVsCar":
+        return t("nearby.rules.footVsCar", {
+          defaultValue: isLao
+            ? "ເວລາເດີນທາງດ້ວຍທ້າວຕ້ອງຫຼາຍກວ່າເວລາໄປດ້ວຍລົດ."
+            : "Travel time on foot must be greater than by car.",
+        });
+      case "integerOnly":
+        return t("nearby.rules.integerOnly", {
+          defaultValue: isLao
+            ? "ກະລຸນາໃສ່ເປັນຈໍານວນເຕັມ (0–9) ເທົ່ານັ້ນ."
+            : "Only whole numbers are allowed.",
+        });
+      default:
+        // fallback: if someone passed a literal message
+        return typeof code === "string" ? code : "";
+    }
+  };
+
+  // stage / sections
   const stage = useMemo(
     () => program?.programStages?.find((ps) => ps.id === currentEvent?.programStage),
     [program?.programStages, currentEvent?.programStage]
@@ -60,7 +87,8 @@ const NearbyStage = () => {
 
   const sections = useMemo(() => {
     if (!stage) return [];
-    const hasSections = Array.isArray(stage.programStageSections) && stage.programStageSections.length > 0;
+    const hasSections =
+      Array.isArray(stage.programStageSections) && stage.programStageSections.length > 0;
     if (hasSections) return stage.programStageSections;
 
     const dataElements =
@@ -74,6 +102,7 @@ const NearbyStage = () => {
     ];
   }, [stage]);
 
+  // all DEs we render
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -85,6 +114,7 @@ const NearbyStage = () => {
     return Array.from(new Set(ids));
   }, [sections]);
 
+  // missing check (all fields + eventDate)
   const missing = useMemo(() => {
     const m = [];
     for (const id of presentIds) {
@@ -97,6 +127,7 @@ const NearbyStage = () => {
     return m;
   }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
 
+  // save/complete gating
   const disabled = missing.length > 0 || hasWarnings;
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
@@ -120,6 +151,7 @@ const NearbyStage = () => {
     }
   }, [actions, disabled]);
 
+  // Save handler (translate warning codes here too)
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_nearby_all_required";
@@ -131,23 +163,47 @@ const NearbyStage = () => {
 
         if (m.length > 0 || hasW) {
           const msgs = [];
-          if (m.length > 0) msgs.push("Please complete all required fields.");
+          if (m.length > 0) msgs.push(t("nearby.save.completeAll", {
+            defaultValue: isLao ? "ກະລຸນາກອກຂໍ້ມູນທຸກຊ່ອງທີ່ຈໍາເປັນ." : "Please complete all required fields."
+          }));
+
           if (hasW) {
-            const uniq = Array.from(new Set(Object.values(w)));
-            msgs.push(uniq.join(" "));
+            const uniqCodes = Array.from(new Set(Object.values(w)));
+            // translate each code separately, then join
+            msgs.push(uniqCodes.map(trWarn).join(" "));
           }
           return { ok: false, message: msgs.join(" ") };
         }
         return { ok: true };
       });
     return () => actions.setHandlers && actions.setHandlers(KEY, null);
-  }, [actions]);
+  }, [actions, t, isLao]); // include t/isLao so translations reflect current locale
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
+  // integer-only input guards for dBK06ybZUbT
+  const integerOnlyGuards = {
+    type: "number",
+    step: 1,
+    inputProps: { inputMode: "numeric", pattern: "[0-9]*" },
+    onKeyDown: (e) => {
+      const blocked = ["e", "E", ".", ",", "+", "-", " "];
+      if (blocked.includes(e.key)) e.preventDefault();
+    },
+    onPaste: (e) => {
+      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      if (!/^\d+$/.test(txt.trim())) e.preventDefault();
+    },
+    onInput: (e) => {
+      const s = String(e.target.value ?? "");
+      const digits = s.replace(/[^\d]/g, "");
+      if (s !== digits) e.target.value = digits;
+    },
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-
+      {/* Event date (required) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -169,26 +225,30 @@ const NearbyStage = () => {
       </Box>
 
       {sections.map((section) => (
-        <Accordion
-          key={section.id || section.displayName}
-          title={section.displayName}
-        >
+        <Accordion key={section.id || section.displayName} title={section.displayName}>
           {(section.dataElements ?? []).map((de) => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
+
+            const hasWarn = !!warnings?.[deId];
+            const helpId = `help-${deId}`;
+            const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
+            const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
 
             return (
               <Box
                 key={deId}
                 sx={{
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: "flex-start",
                   borderBottom: "1px solid #e0e0e0",
+                  backgroundColor: hasWarn ? "#fff5f5" : "transparent",
                 }}
               >
                 <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
                   <DataValueLabel dataElement={deId} />
                 </Box>
+
                 <Box
                   sx={{
                     flex: 1,
@@ -196,8 +256,28 @@ const NearbyStage = () => {
                     padding: "10px",
                   }}
                 >
+                  <DataValueFieldNoBlur
+                    dataElement={deId}
+                    required
+                    aria-invalid={hasWarn ? "true" : undefined}
+                    aria-describedby={hasWarn ? helpId : undefined}
+                    {...extra}
+                  />
 
-                  <DataValueFieldNoBlur dataElement={deId} required />
+                  {/* INLINE MESSAGE UNDER FIELD (translated; single language) */}
+                  {hasWarn && (
+                    <Box
+                      id={helpId}
+                      sx={{
+                        mt: 0.5,
+                        fontSize: 12,
+                        lineHeight: "16px",
+                        color: "#d32f2f",
+                      }}
+                    >
+                      {warnMsg}
+                    </Box>
+                  )}
                 </Box>
               </Box>
             );

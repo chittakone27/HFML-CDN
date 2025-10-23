@@ -2,20 +2,23 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState } from "react";
 
-const FOOT_ID = "ooCoZbdc3az";  
-const CAR_ID  = "bHbKBszX1LW"; 
+const FOOT_ID = "ooCoZbdc3az";  // Travel time (hour) By foot (e.g. "0:15")
+const CAR_ID  = "bHbKBszX1LW";  // Travel time (hour) By car  (e.g. "1:50")
+const INTEGER_ID = "OWAR8Vpa8IW"; // must be whole number
 
+// Normalize non-ASCII digits (Thai/Lao/Arabic etc.) to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, ch => {
     const c = ch.charCodeAt(0);
-    if (c >= 0x0E50 && c <= 0x0E59) return String(c - 0x0E50); 
-    if (c >= 0x0ED0 && c <= 0x0ED9) return String(c - 0x0ED0); 
-    if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
-    if (c >= 0x06F0 && c <= 0x06F9) return String(c - 0x06F0); 
-    if (c >= 0x0966 && c <= 0x096F) return String(c - 0x0966); 
+    if (c >= 0x0E50 && c <= 0x0E59) return String(c - 0x0E50); // Thai
+    if (c >= 0x0ED0 && c <= 0x0ED9) return String(c - 0x0ED0); // Lao
+    if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
+    if (c >= 0x06F0 && c <= 0x06F9) return String(c - 0x06F0); // Ext Arabic-Indic
+    if (c >= 0x0966 && c <= 0x096F) return String(c - 0x0966); // Devanagari
     return ch;
   });
 
+// Parse "H:MM" -> total minutes, NaN if invalid
 const parseHMToMinutes = (val) => {
   if (val == null) return NaN;
   const s = toAsciiDigits(String(val)).trim();
@@ -29,7 +32,7 @@ const parseHMToMinutes = (val) => {
 
 const useVillageRules = () => {
   const [props, setProps] = useState({
-    warnings: {},
+    warnings: {},          // { [deId]: 'warningCode' }
     hiddenFields: {},
     assignations: {},
     disabledFields: {},
@@ -46,17 +49,24 @@ const useVillageRules = () => {
     const assignations = {};
     const warnings = {};
 
+    // Helper to read a DE value
     const dv = (id) => currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
+    // ---- Rule: Foot vs Car (emit code; UI will translate) ----
     const footMin = parseHMToMinutes(dv(FOOT_ID));
     const carMin  = parseHMToMinutes(dv(CAR_ID));
-
     if (Number.isFinite(footMin) && Number.isFinite(carMin)) {
       if (!(footMin > carMin)) {
-        const msg = "Travel time by foot must be less than travel time by car (format H:MM).";
-        warnings[FOOT_ID] = msg;
-        warnings[CAR_ID]  = msg;
+        const code = "footVsCar";
+        warnings[FOOT_ID] = code;
+        warnings[CAR_ID]  = code;
       }
+    }
+
+    // ---- Rule: INTEGER ONLY for OWAR8Vpa8IW (emit code) ----
+    const rawInt = toAsciiDigits(String(dv(INTEGER_ID) ?? "").trim());
+    if (rawInt !== "" && !/^\d+$/.test(rawInt)) {
+      warnings[INTEGER_ID] = "integerOnly";
     }
 
     setProps((prev) => ({

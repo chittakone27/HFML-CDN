@@ -1,3 +1,4 @@
+// useProfileRules.js
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -13,9 +14,11 @@ const useProfileRules = () => {
     ? convertListToObj(currentTei.attributes, "attribute", "value")
     : {};
 
+  // Source of funding (VDtUCd4xomY)
   const sourceOfFunding = norm(attributes["VDtUCd4xomY"]);
 
-   const deviceType = norm(attributes["xQrdgnlPcC3"]);
+  // Device type (xQrdgnlPcC3) - keep your existing logic
+  const deviceType = norm(attributes["xQrdgnlPcC3"]);
 
   const [props, setProps] = useState({
     warnings: {},
@@ -32,12 +35,13 @@ const useProfileRules = () => {
     // tDri5optbSF will be hidden unless sourceOfFunding === 'other'
     hidden["tDri5optbSF"] = sourceOfFunding !== "other";
 
+    // Device-type-specific hides (unchanged, just cleaned a tiny bit)
     const hideFor = {
-      laptop: ["XRdw8EK5FJg"],
+      laptop: ["XRdw8EK5FJg", "azMLZ6HjJzX"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
       desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],
-      "smart phone": ["rIHJFrYHA27", "leCxCv4ZFaX"],
-      smartphone: ["rIHJFrYHA27", "leCxCv4ZFaX"],
+      "smart phone": ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
+      smartphone: ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
     };
 
     const toHide = hideFor[deviceType] ?? [];

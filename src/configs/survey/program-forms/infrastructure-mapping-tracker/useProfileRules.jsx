@@ -1,16 +1,34 @@
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-
 import useTrackerCaptureStore from "@/state/trackerCapture";
+
+// helper
+const convertListToObj = (list, keyProperty, valueProperty) =>
+  list
+    ? list.reduce((result, current) => {
+        result[current[keyProperty]] = valueProperty
+          ? current[valueProperty]
+          : current;
+        return result;
+      }, {})
+    : {};
+
+const STATUS_ATTR = "H6D3yonJvno";
+const TARGET_ATTR = "YoXa89MGtIf";
+
+const norm = (v) => String(v ?? "").trim().toLowerCase();
 
 const useProfileRules = () => {
   const { currentTei } = useTrackerCaptureStore(
     useShallow((state) => state.data)
   );
+
   const attributes = currentTei
     ? convertListToObj(currentTei.attributes, "attribute", "value")
     : {};
-  const sourceOfFunding = attributes["VDtUCd4xomY"];
+
+  const statusRaw = attributes[STATUS_ATTR];
+  const status = norm(statusRaw); // e.g., "functioning"
 
   const [props, setProps] = useState({
     warnings: {},
@@ -22,23 +40,16 @@ const useProfileRules = () => {
 
   useEffect(() => {
     const hiddenFields = {};
-    if (sourceOfFunding !== "other") {
-      hiddenFields["soRnoQqwciC"] = true;
+
+    // Hide YoXa89MGtIf when status is "Functioning" OR not set
+    if (!status || status === "functioning") {
+      hiddenFields[TARGET_ATTR] = true;
     }
-    setProps({ ...props, hiddenFields });
-  }, [sourceOfFunding]);
-  return props;
+
+    setProps((prev) => ({ ...prev, hiddenFields }));
+  }, [status]); // ✅ only depends on status
+
+  return props; // { hiddenFields, disabledFields, ... }
 };
 
 export default useProfileRules;
-
-const convertListToObj = (list, keyProperty, valueProperty) =>
-  list
-    ? list.reduce((result, current) => {
-        result[current[keyProperty]] = valueProperty
-          ? current[valueProperty]
-          : current;
-
-        return result;
-      }, {})
-    : {};

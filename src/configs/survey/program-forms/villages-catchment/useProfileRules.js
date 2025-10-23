@@ -1,3 +1,4 @@
+// src/configs/laotracker/program-forms/villages-catchment/useProfileRules.js
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState } from "react";
@@ -23,6 +24,10 @@ const useProfileRules = () => {
 
   useEffect(() => {
     const hidden = {};
+    // Example:
+    // if (String(A["ATTR_FOR_SOURCE_OF_FUNDING"]).toLowerCase() !== "other") {
+    //   hidden["ATTR_FOR_FUNDING_OTHER_TEXT"] = true;
+    // }
 
     setProps((p) => ({ ...p, hiddenFields: hidden }));
   }, [JSON.stringify(A)]);

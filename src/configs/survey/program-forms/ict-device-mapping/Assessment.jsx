@@ -40,6 +40,7 @@ const Assessment = () => {
     }
     return displayName;
   };
+
   const norm = (s) => String(s ?? "").toLowerCase().trim();
   const dataValuesArr = currentEvent?.dataValues ?? [];
 
@@ -49,9 +50,11 @@ const Assessment = () => {
   const nhQC_val = norm(getDeValue("nhQCkj3UWJK"));
   const jr3E_val = norm(getDeValue("jr3EVDUQRhX"));
 
+  // Visibility rules for dependents
   const show_ayj5xsLBA0T = nhQC_val === "other";
   const show_ZXzj7W5848O = jr3E_val === "other";
 
+  // Keep data clean: when a dependent becomes hidden, clear its value
   useEffect(() => {
     if (!currentEvent?.event) return;
 
@@ -63,6 +66,7 @@ const Assessment = () => {
     }
   }, [show_ayj5xsLBA0T, show_ZXzj7W5848O, currentEvent?.event, actions]);
 
+  // Apply auto-assignments coming from your custom rules hook (unchanged)
   useEffect(() => {
     if (!currentEvent?.event) return;
     if (!props?.assignations) return;
@@ -83,6 +87,7 @@ const Assessment = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Assessment date (translated label) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -113,9 +118,11 @@ const Assessment = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
+            // --- conditional visibility for the two dependents ---------------
             if (deId === "ayj5xsLBA0T" && !show_ayj5xsLBA0T) return null;
             if (deId === "ZXzj7W5848O" && !show_ZXzj7W5848O) return null;
 
+            // (Optional) also honor any hidden flags coming from useAssessmentRules
             if (props?.hiddenFields?.[deId]) return null;
 
             return (

@@ -19,7 +19,6 @@ const LABEL_SX = {};
 const SELECT_SX = { "& .MuiSelect-select": { textAlign: "left", py: 1 } };
 const ROW_GAP = 1;
 
-// OU group IDs
 const G = {
   PHO: "jblbYwuvO33",   // Province
   DHO: "Zh1inFu0Z2O",   // District
@@ -62,6 +61,7 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
+  // classify OUs
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [], districts = [], phs = [], chs = [], hcs = [], dhs = [];
     (orgUnits || []).forEach((ou) => {
@@ -96,6 +96,7 @@ const HealthFacilitySelectorNoState = ({
     return { type: "", id: "" };
   });
 
+  // sync with init (if external change)
   useEffect(() => {
     setProvId(init?.province || "");
     if (init?.ph) setL2({ type: "PH", id: init.ph });
@@ -144,7 +145,7 @@ const HealthFacilitySelectorNoState = ({
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [l2, hcByDist, dhByDist, language]);
 
-  // propagate selection to parent
+
   const emit = (nextProv, nextL2, nextL3) => {
     const province = nextProv || "";
     let district = "", ph = "", ch = "", hc = "", dh = "";
@@ -158,10 +159,12 @@ const HealthFacilitySelectorNoState = ({
     onChange?.({ province, district, ph, ch, hc, dh });
   };
 
+
   const requireL2 = !!provId;          // province picked → L2 required
   const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
   const l2Error   = requireL2 && !l2.id;
   const l3Error   = requireL3 && !l3.id;
+
 
   const isValid =
     (!provId && !l2.id && !l3.id) ||
@@ -171,13 +174,21 @@ const HealthFacilitySelectorNoState = ({
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  const ClearBtn = ({ onClick, disabled }) => (
-    <InputAdornment position="end">
-      <IconButton size="small" onClick={onClick} disabled={disabled} edge="end" tabIndex={-1}>
-        <ClearIcon fontSize="small" />
-      </IconButton>
-    </InputAdornment>
-  );
+  // clear buttons
+const ClearBtn = ({ onClick, disabled }) => (
+  <InputAdornment position="end" sx={{ mr: 2 /* ~4px */ }}>
+    <IconButton
+      size="small"
+      onClick={onClick}
+      disabled={disabled}
+      edge="end"
+      sx={{ p: 0.5 }}  
+    >
+      <ClearIcon fontSize="small" />
+    </IconButton>
+  </InputAdornment>
+);
+
 
   const onProvChange = (e) => {
     const id = e.target.value || "";
@@ -202,6 +213,7 @@ const HealthFacilitySelectorNoState = ({
     setL3(nextL3); emit(provId, l2, nextL3);
   };
 
+  // labels
   const l1Label = labelsOverride?.level1 ?? <AttributeLabelNoState attribute={ids.province} />;
   const l2Label = labelsOverride?.level2 ?? "CH / PH / DHO";
   const l3Label = labelsOverride?.level3 ?? "DH / HC";
