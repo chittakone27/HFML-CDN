@@ -34,7 +34,7 @@ const LO = {
   SECTION_EPI: "ອຸປະກອນ ສໍາລັບວຽກງານ ສັກຢາກັນພະຍາດ (EPI)",
   SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
   "1 Oxygen concentrator": "1 ເຄື່ອງຜະລິດອົກຊີ",
-  "2 Ventilator": "2 ເຄື່ອງຊ່ວຍຫາຍໃຈ",
+  "2 Ventilator (Inhaler)": "2 ເຄື່ອງຊ່ວຍຫາຍໃຈ",
   "3 Hemodialysis unit": "3 ເຄື່ອງຟອກໝາກໄຂ່ຫຼັງ",
   "4 Hemoglobinometer": "4 ເຄື່ອງກວດເລືອດ",
   "5 Adult sphygmomanometer": "5 ເຄື່ອງແທກຄວາມດັນເລືອດຜູ້ໃຫຍ່",
@@ -76,7 +76,7 @@ const keyFor = (label) =>
 const SECTION_ROWS = {
   [SECTION.BASIC]: [
     { label: "1 Oxygen concentrator", usable: "k6STi37BjK9", damaged: "NykhziIHZHH" },
-    { label: "2 Ventilator", usable: "pQr0WPezsQo", damaged: "lZAqGYJYMWS" },
+    { label: "2 Ventilator (Inhaler)", usable: "pQr0WPezsQo", damaged: "lZAqGYJYMWS" },
     { label: "3 Hemodialysis unit", usable: "zBZ6m4ta6Vo", damaged: "SMxb3OSjeOU" },
     { label: "4 Hemoglobinometer", usable: "oGJe86IoO1F", damaged: "h12djK5TrqY" },
     { label: "5 Adult sphygmomanometer", usable: "L5npEph6Ma4", damaged: "cJ7H5LeVezT" },
