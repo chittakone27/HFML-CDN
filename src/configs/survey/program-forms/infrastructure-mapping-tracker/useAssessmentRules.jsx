@@ -4,8 +4,10 @@ import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { getOrgUnitNameById } from "@/api/icapture/metadata";
 
+// 👉 TEA that should receive the Org Unit NAME (testing)
 const TEA_ORGUNIT_NAME = "Z9V1f5YzXXj";
 
+// --- helpers ---
 const convertListToObj = (list, keyProperty, valueProperty) =>
   Array.isArray(list)
     ? list.reduce((result, current) => {
@@ -19,11 +21,13 @@ const useProfileRules = () => {
     useShallow((state) => state.data)
   );
 
+  // Remap TEI attributes after saves
   const attributes = useMemo(
     () => (currentTei ? convertListToObj(currentTei.attributes, "attribute", "value") : {}),
     [currentTei?.lastSaved]
   );
 
+  // Your existing logic
   const sourceOfFunding = attributes["VDtUCd4xomY"];
 
   const [props, setProps] = useState({
@@ -34,6 +38,7 @@ const useProfileRules = () => {
     hiddenOptions: {},
   });
 
+  // Hide rule (safe functional update)
   useEffect(() => {
     setProps((prev) => {
       const hiddenFields = { ...prev.hiddenFields };
@@ -43,9 +48,11 @@ const useProfileRules = () => {
     });
   }, [sourceOfFunding]);
 
+  // --- Map Org Unit NAME -> TEA Z9V1f5YzXXj (and optionally lock it) ---
   useEffect(() => {
     let cancelled = false;
 
+    // Prefer enrollment OU; fall back to TEI.orgUnit if present
     const orgUnitId =
       currentTei?.enrollments?.[0]?.orgUnit || currentTei?.orgUnit || null;
 
@@ -60,9 +67,9 @@ const useProfileRules = () => {
           ...prev,
           assignations: {
             ...prev.assignations,
-            [TEA_ORGUNIT_NAME]: ouName, 
+            [TEA_ORGUNIT_NAME]: ouName, // ✅ fill the attribute with OU name
           },
-
+          // Make it read-only in the UI; remove this block if you want it editable.
           disabledFields: {
             ...prev.disabledFields,
             [TEA_ORGUNIT_NAME]: true,

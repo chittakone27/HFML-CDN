@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
@@ -17,35 +17,79 @@ import useFacilityBuildingRules from "./useFacilityBuildingRules";
 
 const LABEL_COL_W = 300;
 const getDeId = (de) => de?.id || de?.dataElement?.id;
-
 const normalize = (s) => String(s || "").trim().toLowerCase();
+
+// Integer-only fields for this stage (same three)
+const INTEGER_ONLY_IDS = new Set(["bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53"]);
+
+// Normalize localized numerals to ASCII
+const toAsciiDigits = (str = "") =>
+  String(str).replace(
+    /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
+    (ch) => {
+      const c = ch.charCodeAt(0);
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      return ch;
+    }
+  );
+
+// Read a DE value from current event (handles both shapes)
+const getEventDEValue = (currentEvent, deId) => {
+  if (!currentEvent) return undefined;
+  if (currentEvent.values && typeof currentEvent.values === "object") {
+    return currentEvent.values[deId];
+  }
+  if (Array.isArray(currentEvent.dataValues)) {
+    const hit = currentEvent.dataValues.find((dv) => dv.dataElement === deId);
+    return hit?.value;
+  }
+  return currentEvent[deId];
+};
 
 const FacilityBuildingandFurniture = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  const { program } = useSelectionStore(
-    useShallow((state) => ({ program: state.program }))
-  );
-  const { actions } = useTrackerCaptureStore(
-    useShallow((state) => ({ actions: state.actions }))
-  );
+  const { program } = useSelectionStore(useShallow((s) => ({ program: s.program })));
+  const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
   const { currentEvent } = useCurrentEvent();
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
   const sections = useMemo(() => {
     if (!program?.programStages || !currentEvent?.programStage) return [];
-    const stage = program.programStages.find(
-      (ps) => ps.id === currentEvent.programStage
-    );
+    const stage = program.programStages.find((ps) => ps.id === currentEvent.programStage);
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
+  // i18n strings
   const trAssessmentDate = t("facility.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
+  const trOperatorsLabel = t("facility.internet.operators", {
+    defaultValue: isLao ? "6.1 ເຄື່ອຄ່າຍອິນເຕີເນັດ" : "6.1. Mobile Operator",
+  });
+  const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
+    defaultValue: isLao
+      ? "8. ຖ້າມີ, ອິນເຕີເນັດປະຈໍາ ແມ່ນຂອງເຄື່ອຄ່າຍໃດ?"
+      : "8. On-site internet operator",
+  });
+  const trMonthsLabel = t("facility.outreach.usualMonths", {
+    defaultValue: isLao
+      ? "14. ການລົງເຄື່ອນທີ່ເຊື່ອມສານ ແມ່ນໄດ້ລົງເຮັດເດືອນໃດ ?(ໝາຍທຸກເດືອນທີ່ໄດ້ລົງເຄື່ອນທີ່ເຊື່ອມສານໄປແລ້ວ ແລະ ກໍາລັງວາງແຜນຈະລົງໃນປີນີ້)"
+      : "14. Indicate the months during which outreach activities were conducted or are planned to be conducted (Tick all applicable months)",
+  });
+  const trIntOnly = t("equipment.error.integerOnly", {
+    defaultValue: isLao
+      ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
+      : "Only whole numbers are allowed (no decimals).",
+  });
 
+  // section titles mapping
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -54,13 +98,9 @@ const FacilityBuildingandFurniture = () => {
           defaultValue: isLao ? "ຕຽງ ແລະ ຕູ້ເຢັນ" : "Beds and Refrigerator",
         });
       case "electricity":
-        return t("facility.sections.electricity", {
-          defaultValue: isLao ? "ໄຟຟ້າ" : "Electricity",
-        });
+        return t("facility.sections.electricity", { defaultValue: isLao ? "ໄຟຟ້າ" : "Electricity" });
       case "internet":
-        return t("facility.sections.internet", {
-          defaultValue: isLao ? "ອິນເຕີເນັດ" : "Internet",
-        });
+        return t("facility.sections.internet", { defaultValue: isLao ? "ອິນເຕີເນັດ" : "Internet" });
       case "outreach activity":
         return t("facility.sections.outreach_activity", {
           defaultValue: isLao ? "ການລົງເຄື່ອນທີ່ເຊື່ອມສານ" : "Outreach activity",
@@ -70,22 +110,34 @@ const FacilityBuildingandFurniture = () => {
     }
   };
 
-const trOperatorsLabel = t("facility.internet.operators", {
-  defaultValue: isLao ? "6.1 ເຄື່ອຄ່າຍອິນເຕີເນັດ" : "6.1 Operator",
-});
+  // Integer-only warnings (inline), same pattern as Wash
+  const warnings = useMemo(() => {
+    const w = {};
+    INTEGER_ONLY_IDS.forEach((id) => {
+      const raw = toAsciiDigits(String(getEventDEValue(currentEvent, id) ?? "").trim());
+      if (raw !== "" && !/^\d+$/.test(raw)) w[id] = "integerOnly";
+    });
+    return w;
+  }, [currentEvent?.dataValues]);
 
-
-const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
-  defaultValue: isLao
-    ? "8. ຖ້າມີ, ອິນເຕີເນັດປະຈໍາ ແມ່ນຂອງເຄື່ອຄ່າຍໃດ?"
-    : "8. What network does the regular internet belong to?",
-});
-
-  const trMonthsLabel = t("facility.outreach.usualMonths", {
-    defaultValue: isLao
-      ? "14. ການລົງເຄື່ອນທີ່ເຊື່ອມສານ ແມ່ນໄດ້ລົງເຮັດເດືອນໃດ ?(ໝາຍທຸກເດືອນທີ່ໄດ້ລົງເຄື່ອນທີ່ເຊື່ອມສານໄປແລ້ວ ແລະ ກໍາລັງວາງແຜນຈະລົງໃນປີນີ້)"
-      : "14. Outreach activity usually happens in which month",
-  });
+  const integerOnlyGuards = {
+    type: "number",
+    step: 1,
+    inputProps: { inputMode: "numeric", pattern: "[0-9]*" },
+    onKeyDown: (e) => {
+      const blocked = ["e", "E", ".", ",", "+", "-", " "];
+      if (blocked.includes(e.key)) e.preventDefault();
+    },
+    onPaste: (e) => {
+      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      if (!/^\d+$/.test(toAsciiDigits(txt).trim())) e.preventDefault();
+    },
+    onInput: (e) => {
+      const s = String(e.target.value ?? "");
+      const digits = toAsciiDigits(s).replace(/[^\d]/g, "");
+      if (s !== digits) e.target.value = digits;
+    },
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -97,8 +149,7 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
           focus={() => {
             if (!currentEvent?.event) return;
             const dueDate =
-              currentEvent.dueDate &&
-              format(new Date(currentEvent.dueDate), "yyyy-MM-dd");
+              currentEvent.dueDate && format(new Date(currentEvent.dueDate), "yyyy-MM-dd");
             if (currentEvent.status === "SCHEDULE" && !currentEvent.eventDate) {
               actions.changeEventProperty(
                 currentEvent.event,
@@ -127,7 +178,6 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
         const OP_HSTACK = new Set(
           [...operators.ids].filter((id) => id !== keys.SERVICE_PROVIDER_ID)
         );
-
         const NEW_OP_HSTACK = new Set([...newOperators.ids]);
 
         const visibleOps = allDEs
@@ -139,63 +189,57 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
           .filter((id) => id && NEW_OP_HSTACK.has(id) && !hiddenFields[id]);
 
         const MONTH_ORDER = [
-          "NIji1vKjEsn", "ycwkJ30qjwb", "bxEtg4oxf4m", "F9lxwEAGnHE",
-          "X67WGTx2djm", "t1Z7lsQ2Qte", "SO1P5eMGMSc", "L1lvlYVBaVN",
-          "K3q2Vgo6p6P", "N3dIyivSvSo", "kMHppy04I0O", "BkK10QaD8FE",
+          "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
+          "X67WGTx2djm","t1Z7lsQ2Qte","SO1P5eMGMSc","L1lvlYVBaVN",
+          "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE",
         ];
         const visibleMonths = MONTH_ORDER.filter(
           (id) => months.ids.has(id) && !hiddenFields[id]
         );
 
         return (
-          <Accordion
-            key={section.id || section.displayName}
-            title={trSectionTitle(section.displayName)}
-          >
+          <Accordion key={section.id || section.displayName} title={trSectionTitle(section.displayName)}>
             {allDEs.map((de) => {
               const deId = getDeId(de);
               if (!deId) return null;
               if (hiddenFields[deId]) return null;
 
-              const isAnchor = deId === keys.OP_ANCHOR_ID;          // 6.1 after this
+              const isAnchor = deId === keys.OP_ANCHOR_ID;
               const isOperator = operators.ids.has(deId);
               const isServiceProvider = deId === keys.SERVICE_PROVIDER_ID;
 
-              const isMonthAnchor = deId === keys.MONTH_ANCHOR_ID;  // months after this
+              const isMonthAnchor = deId === keys.MONTH_ANCHOR_ID;
               const isMonthField = months.ids.has(deId);
 
               const isNewOpsAnchor = deId === keys.TYPE_CONN_ID;
               const isNewOperator = newOperators.ids.has(deId);
 
               if ((isOperator || isServiceProvider) && !isAnchor) return null;
-
               if (isNewOperator && !isNewOpsAnchor) return null;
-
               if (isMonthField && !isMonthAnchor) return null;
 
+              const hasWarn = warnings[deId] === "integerOnly";
+              const helpId = hasWarn ? `help-${deId}` : undefined;
+              const intGuards = INTEGER_ONLY_IDS.has(deId) ? integerOnlyGuards : {};
+
               const Row = (
-                <Box
-                  key={deId}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    borderBottom: "1px solid #e0e0e0",
-                  }}
-                >
+                <Box key={deId} sx={{ display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" }}>
                   <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
                     <DataValueLabel dataElement={deId} />
                   </Box>
-                  <Box
-                    sx={{
-                      flex: 1,
-                      borderLeft: "1px solid #e0e0e0",
-                      padding: "10px",
-                    }}
-                  >
+                  <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                     <DataValueFieldNoBlur
                       dataElement={deId}
                       required={!!requiredFields[deId]}
+                      aria-invalid={hasWarn ? "true" : undefined}
+                      aria-describedby={helpId}
+                      {...intGuards}
                     />
+                    {hasWarn && (
+                      <Box id={helpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                        {trIntOnly}
+                      </Box>
+                    )}
                   </Box>
                 </Box>
               );
@@ -206,77 +250,44 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                     {Row}
 
                     {showOperators && visibleOps.length > 0 && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "stretch",
-                          borderBottom: "1px solid #e0e0e0",
-                        }}
-                      >
-                        {/* label cell */}
-                        <Box
-                          sx={{
-                            width: `${LABEL_COL_W}px`,
-                            px: "10px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-start",
-                            textAlign: "left",
-                          }}
-                        >
+                      <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
+                        <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
                           <Box component="span" sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>
                             {trOperatorsLabel}
                           </Box>
                         </Box>
 
-                        {/* value cell — horizontal strip */}
-                        <Box
-                          sx={{
-                            flex: 1,
-                            borderLeft: "1px solid #e0e0e0",
-                            padding: "10px",
-                          }}
-                        >
+                        <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                           <Box sx={{ flex: 1, padding: "10px" }}>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexWrap: "nowrap",
-                                overflowX: "auto",
-                                gap: 3,
-                                alignItems: "stretch",
-                                py: 0.5,
-                              }}
-                            >
+                            <Box sx={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 3, alignItems: "stretch", py: 0.5 }}>
                               {allDEs.map((hde) => {
                                 const hId = getDeId(hde);
                                 if (!hId || !OP_HSTACK.has(hId)) return null;
                                 if (hiddenFields[hId]) return null;
 
+                                const hWarn = warnings[hId] === "integerOnly";
+                                const hHelpId = hWarn ? `help-${hId}` : undefined;
+                                const hGuards = INTEGER_ONLY_IDS.has(hId) ? integerOnlyGuards : {};
+
                                 return (
                                   <Box
                                     key={hId}
-                                    sx={{
-                                      flex: "0 0 auto",
-                                      minWidth: 100,
-                                      display: "inline-flex",
-                                      flexDirection: "column",
-                                      alignItems: "flex-start",
-                                      justifyContent: "center",
-                                      whiteSpace: "nowrap",
-                                    }}
+                                    sx={{ flex: "0 0 auto", minWidth: 100, display: "inline-flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", whiteSpace: "nowrap" }}
                                   >
-                                    <Box
-                                      sx={{
-                                        mb: 0.5,
-                                        fontWeight: 600,
-                                        fontSize: 12,
-                                        color: "text.secondary",
-                                      }}
-                                    >
+                                    <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary" }}>
                                       <DataValueLabel dataElement={hId} />
                                     </Box>
-                                    <DataValueFieldNoBlur dataElement={hId} />
+                                    <DataValueFieldNoBlur
+                                      dataElement={hId}
+                                      aria-invalid={hWarn ? "true" : undefined}
+                                      aria-describedby={hHelpId}
+                                      {...hGuards}
+                                    />
+                                    {hWarn && (
+                                      <Box id={hHelpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                                        {trIntOnly}
+                                      </Box>
+                                    )}
                                   </Box>
                                 );
                               })}
@@ -287,27 +298,12 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                     )}
 
                     {showServiceProvider && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          borderBottom: "1px solid #e0e0e0",
-                        }}
-                      >
+                      <Box sx={{ display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" }}>
                         <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
                           <DataValueLabel dataElement={keys.SERVICE_PROVIDER_ID} />
                         </Box>
-                        <Box
-                          sx={{
-                            flex: 1,
-                            borderLeft: "1px solid #e0e0e0",
-                            padding: "10px",
-                          }}
-                        >
-                          <DataValueFieldNoBlur
-                            dataElement={keys.SERVICE_PROVIDER_ID}
-                            required={true /* required via rule */}
-                          />
+                        <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
+                          <DataValueFieldNoBlur dataElement={keys.SERVICE_PROVIDER_ID} required />
                         </Box>
                       </Box>
                     )}
@@ -321,80 +317,41 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                     {Row}
 
                     {showNewOperators && visibleNewOps.length > 0 && (
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "stretch",
-                          borderBottom: "1px solid #e0e0e0",
-                        }}
-                      >
-                        {/* label cell */}
-                        <Box
-                          sx={{
-                            width: `${LABEL_COL_W}px`,
-                            px: "10px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-start",
-                            textAlign: "left",
-                          }}
-                        >
-                          <Box
-                            component="span"
-                            sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}
-                          >
+                      <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
+                        <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
+                          <Box component="span" sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>
                             {trNewOperatorsLabel}
                           </Box>
                         </Box>
 
-                        {/* value cell — horizontal strip */}
-                        <Box
-                          sx={{
-                            flex: 1,
-                            borderLeft: "1px solid #e0e0e0",
-                            padding: "10px",
-                          }}
-                        >
+                        <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                           <Box sx={{ flex: 1, padding: "10px" }}>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexWrap: "nowrap",
-                                overflowX: "auto",
-                                gap: 3,
-                                alignItems: "stretch",
-                                py: 0.5,
-                              }}
-                            >
+                            <Box sx={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 3, alignItems: "stretch", py: 0.5 }}>
                               {allDEs.map((hde) => {
                                 const hId = getDeId(hde);
                                 if (!hId || !NEW_OP_HSTACK.has(hId)) return null;
                                 if (hiddenFields[hId]) return null;
 
+                                const hWarn = warnings[hId] === "integerOnly";
+                                const hHelpId = hWarn ? `help-${hId}` : undefined;
+                                const hGuards = INTEGER_ONLY_IDS.has(hId) ? integerOnlyGuards : {};
+
                                 return (
-                                  <Box
-                                    key={hId}
-                                    sx={{
-                                      flex: "0 0 auto",
-                                      minWidth: 100,
-                                      display: "inline-flex",
-                                      flexDirection: "column",
-                                      alignItems: "flex-start",
-                                      justifyContent: "center",
-                                      whiteSpace: "nowrap",
-                                    }}
-                                  >
-                                    <Box
-                                      sx={{
-                                        mb: 0.5,
-                                        fontWeight: 600,
-                                        fontSize: 12,
-                                        color: "text.secondary",
-                                      }}
-                                    >
+                                  <Box key={hId} sx={{ flex: "0 0 auto", minWidth: 100, display: "inline-flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", whiteSpace: "nowrap" }}>
+                                    <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary" }}>
                                       <DataValueLabel dataElement={hId} />
                                     </Box>
-                                    <DataValueFieldNoBlur dataElement={hId} />
+                                    <DataValueFieldNoBlur
+                                      dataElement={hId}
+                                      aria-invalid={hWarn ? "true" : undefined}
+                                      aria-describedby={hHelpId}
+                                      {...hGuards}
+                                    />
+                                    {hWarn && (
+                                      <Box id={hHelpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                                        {trIntOnly}
+                                      </Box>
+                                    )}
                                   </Box>
                                 );
                               })}
@@ -411,64 +368,15 @@ const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
                 return (
                   <Box key={deId}>
                     {Row}
-
-                    {/* Months grid row */}
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "stretch",
-                        borderBottom: "1px solid #e0e0e0",
-                      }}
-                    >
-
-                      <Box
-                        sx={{
-                          width: `${LABEL_COL_W}px`,
-                          px: "10px",
-                          py: "10px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Box component="span" sx={{ fontWeight: 400, fontSize: 16 }}>
-                          {trMonthsLabel}
-                        </Box>
+                    <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
+                      <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", py: "10px", display: "flex", alignItems: "center" }}>
+                        <Box component="span" sx={{ fontWeight: 400, fontSize: 16 }}>{trMonthsLabel}</Box>
                       </Box>
-
-                      <Box
-                        sx={{
-                          flex: 1,
-                          borderLeft: "1px solid #e0e0e0",
-                          padding: "10px",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(6, minmax(120px, 1fr))",
-                            gap: 2,
-                            alignItems: "start",
-                          }}
-                        >
+                      <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
+                        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(120px, 1fr))", gap: 2, alignItems: "start" }}>
                           {visibleMonths.map((mId) => (
-                            <Box
-                              key={mId}
-                              sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "flex-start",
-                                minWidth: 0,
-                              }}
-                            >
-                              <Box
-                                sx={{
-                                  mb: 0.5,
-                                  fontWeight: 600,
-                                  fontSize: 12,
-                                  color: "text.secondary",
-                                  lineHeight: 1.2,
-                                }}
-                              >
+                            <Box key={mId} sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", minWidth: 0 }}>
+                              <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary", lineHeight: 1.2 }}>
                                 <DataValueLabel dataElement={mId} />
                               </Box>
                               <DataValueFieldNoBlur dataElement={mId} />

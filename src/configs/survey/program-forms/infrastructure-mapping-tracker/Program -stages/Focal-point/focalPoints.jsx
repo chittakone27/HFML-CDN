@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import { format, parseISO, isValid } from "date-fns";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useRef } from "react";
 
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
@@ -12,8 +11,10 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import Accordion from "../../../common/Accordion";
 
+// columns: [Row label] [Primary/Alternate] [Name] [Phone] [Position]
 const GRID_COLS = "300px 140px repeat(3, 1fr)";
 
+// ---- primary + alternate DE mappings ----
 /** @type {Array<{label:string,name:string,phone:string,position:string, altName:string, altPhone:string, altPosition:string}>} */
 const ROWS = [
   // 1 Statistics
@@ -78,13 +79,13 @@ const ROWS = [
   },
   // 11 HIV
   {
-    label: "11. Focal point in HIV",
+    label: "11. Focal point in HIV and STI",
     name: "ROR3qpzgQQ6", phone: "Pp082v0vFMV", position: "DDIqnYA3KZo",
     altName: "jACOzQ0mJWB", altPhone: "De3fPfrH7h3", altPosition: "I153dA0KCXb",
   },
   // 12 Communicable diseases
   {
-    label: "12. Focal point in Communicable diseases",
+    label: "12. Focal point in Communicable Diseases",
     name: "gECI3qCAG3z", phone: "tR0b3Q278Si", position: "vPxHplhPYAi",
     altName: "q5ShhkNS5Ui", altPhone: "KOymMBU0r70", altPosition: "ZYeLggpgG6N",
   },
@@ -102,6 +103,7 @@ const ROWS = [
   },
 ];
 
+// i18n helpers/fallbacks
 const rowKey = (label) =>
   "focal.rows." + String(label).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 const LO_ROW = {
@@ -130,29 +132,6 @@ const LO_MISC = {
   alternate: "ຜູ້ສໍາຮອງ",
 };
 
-const RedStar = () => (
-  <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
-    *
-  </Box>
-);
-
-const getEventDEValue = (currentEvent, deId) => {
-  if (!currentEvent) return undefined;
-  if (currentEvent.values && typeof currentEvent.values === "object") {
-    return currentEvent.values[deId];
-  }
-  if (Array.isArray(currentEvent.dataValues)) {
-    const hit = currentEvent.dataValues.find((dv) => dv.dataElement === deId);
-    return hit?.value;
-  }
-  return currentEvent[deId];
-};
-const isEmpty = (v) => {
-  if (v == null) return true;
-  if (typeof v === "string") return v.trim() === "";
-  return false;
-};
-
 const FocalPoints = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
@@ -175,58 +154,9 @@ const FocalPoints = () => {
     return t(key, { defaultValue: isLao ? LO_ROW[slug] || label : label });
   };
 
-  const requiredIds = useMemo(() => {
-    const ids = [];
-    for (const r of ROWS) {
-      ids.push(r.name, r.phone, r.position); // only primary
-    }
-    return ids;
-  }, []);
-
-  const missing = useMemo(() => {
-    const m = [];
-    for (const id of requiredIds) {
-      const v = getEventDEValue(currentEvent, id);
-      if (isEmpty(v)) m.push(id);
-    }
-    if (!currentEvent?.eventDate || isEmpty(currentEvent.eventDate)) {
-      m.push("__eventDate__");
-    }
-    return m;
-  }, [requiredIds, currentEvent?.dataValues, currentEvent?.eventDate]);
-
-  const disabled = missing.length > 0;
-  const prevDisabled = useRef(undefined);
-  const missingRef = useRef(missing);
-  missingRef.current = missing;
-
-  useEffect(() => {
-    if (!actions) return;
-    if (prevDisabled.current !== disabled) {
-      prevDisabled.current = disabled;
-      try {
-        if (actions.setLayout) actions.setLayout("disableEventCompleteButton", disabled);
-        else if (actions.setCompleteDisabled) actions.setCompleteDisabled(disabled);
-        else if (actions.setCanComplete) actions.setCanComplete(!disabled);
-      } catch {}
-    }
-  }, [actions, disabled]);
-
-  useEffect(() => {
-    if (!actions) return;
-    const KEY = "eventSave_focal_primary_required";
-    actions.setHandlers &&
-      actions.setHandlers(KEY, async () => {
-        const isDisabled = missingRef.current.length > 0;
-        if (isDisabled) return { ok: false, message: "Please complete all required fields." };
-        return { ok: true };
-      });
-    return () => actions.setHandlers && actions.setHandlers(KEY, null);
-  }, [actions]);
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-
+      {/* Event date with translated label */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -251,7 +181,7 @@ const FocalPoints = () => {
 
       <Accordion title={trTitle}>
         <Box sx={{ border: "1px solid #d9d9d9", overflow: "hidden" }}>
-
+          {/* Header */}
           <Box
             sx={{
               display: "grid",
@@ -266,16 +196,17 @@ const FocalPoints = () => {
             <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9" }} />
             <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9" }} />
             <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9", display: "flex", alignItems: "center" }}>
-              <RedStar /> {trHeaderName}
+              {trHeaderName}
             </Box>
             <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9", display: "flex", alignItems: "center" }}>
-              <RedStar /> {trHeaderPhone}
+              {trHeaderPhone}
             </Box>
             <Box sx={{ p: "10px 12px", display: "flex", alignItems: "center" }}>
-              <RedStar /> {trHeaderPosition}
+              {trHeaderPosition}
             </Box>
           </Box>
 
+          {/* Rows (label spans Primary + Alternate) */}
           {ROWS.map((r, i) => (
             <Box
               key={r.label}
@@ -286,6 +217,7 @@ const FocalPoints = () => {
                 borderBottom: i === ROWS.length - 1 ? "none" : "1px solid #e5e5e5",
               }}
             >
+              {/* Label cell spanning two rows */}
               <Box
                 sx={{
                   gridRow: "1 / span 2",
@@ -293,7 +225,7 @@ const FocalPoints = () => {
                   borderRight: "1px solid #e5e5e5",
                   display: "flex",
                   alignItems: "center",
-                  fontSize: 14,
+                  fontSize: 16,
                   lineHeight: 1.35,
                   background: i % 2 === 0 ? "#fafafa" : "transparent",
                 }}
@@ -301,29 +233,59 @@ const FocalPoints = () => {
                 {trRow(r.label)}
               </Box>
 
+              {/* Primary */}
               <Box sx={{ p: "10px 12px", borderRight: "1px solid #e5e5e5", color: "text.secondary" }}>
                 {trPrimary}
               </Box>
               <Box sx={{ p: "6px 10px", borderRight: "1px solid #e5e5e5" }}>
-                <DataValueFieldNoBlur dataElement={r.name} required />
+                <DataValueFieldNoBlur dataElement={r.name} />
               </Box>
               <Box sx={{ p: "6px 10px", borderRight: "1px solid #e5e5e5" }}>
-                <DataValueFieldNoBlur dataElement={r.phone} required />
+                <DataValueFieldNoBlur dataElement={r.phone} />
               </Box>
               <Box sx={{ p: "6px 10px" }}>
-                <DataValueFieldNoBlur dataElement={r.position} required />
+                <DataValueFieldNoBlur dataElement={r.position} />
               </Box>
 
-              <Box sx={{ p: "10px 12px", borderTop: "1px solid #f0f0f0", borderRight: "1px solid #e5e5e5", color: "text.secondary", background: i % 2 === 0 ? "#fafafa" : "transparent" }}>
+              {/* Alternate (optional) */}
+              <Box
+                sx={{
+                  p: "10px 12px",
+                  borderTop: "1px solid #f0f0f0",
+                  borderRight: "1px solid #e5e5e5",
+                  color: "text.secondary",
+                  background: i % 2 === 0 ? "#fafafa" : "transparent",
+                }}
+              >
                 {trAlternate}
               </Box>
-              <Box sx={{ p: "6px 10px", borderTop: "1px solid #f0f0f0", borderRight: "1px solid #e5e5e5", background: i % 2 === 0 ? "#fafafa" : "transparent" }}>
+              <Box
+                sx={{
+                  p: "6px 10px",
+                  borderTop: "1px solid #f0f0f0",
+                  borderRight: "1px solid #e5e5e5",
+                  background: i % 2 === 0 ? "#fafafa" : "transparent",
+                }}
+              >
                 <DataValueFieldNoBlur dataElement={r.altName} />
               </Box>
-              <Box sx={{ p: "6px 10px", borderTop: "1px solid #f0f0f0", borderRight: "1px solid #e5e5e5", background: i % 2 === 0 ? "#fafafa" : "transparent" }}>
+              <Box
+                sx={{
+                  p: "6px 10px",
+                  borderTop: "1px solid #f0f0f0",
+                  borderRight: "1px solid #e5e5e5",
+                  background: i % 2 === 0 ? "#fafafa" : "transparent",
+                }}
+              >
                 <DataValueFieldNoBlur dataElement={r.altPhone} />
               </Box>
-              <Box sx={{ p: "6px 10px", borderTop: "1px solid #f0f0f0", background: i % 2 === 0 ? "#fafafa" : "transparent" }}>
+              <Box
+                sx={{
+                  p: "6px 10px",
+                  borderTop: "1px solid #f0f0f0",
+                  background: i % 2 === 0 ? "#fafafa" : "transparent",
+                }}
+              >
                 <DataValueFieldNoBlur dataElement={r.altPosition} />
               </Box>
             </Box>

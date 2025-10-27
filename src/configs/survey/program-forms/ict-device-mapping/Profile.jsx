@@ -1,3 +1,4 @@
+// Profile.jsx
 import { Box } from "@mui/material";
 import { useMemo, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -9,21 +10,29 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 import useProfileRules from "./useProfileRules";
 
-const LABEL_COL_W = 210; 
+// --- Layout knobs ------------------------------------------------------------
+const LABEL_COL_W = 210; // keep aligned with other rows
 
-const HF_W   = 180; 
-const CODE_W = 65; 
-const NUM_W  = 110; 
+// Fixed widths (adjust here)
+const HF_W   = 80; // HF ID input width
+const HFSEQUENCE_W = 50; // HF sequence number input width
+const HFTYPE_W = 80; // HF type input width
+const CODE_W = 50; // Code input width
+const NUM_W  = 65; // Number input width
 
+
+// --- Attribute IDs -----------------------------------------------------------
 const ID = {
-  deviceType: "xQrdgnlPcC3", 
-  code: "y6RfdAq2zmQ",       
-  hf: "odDm8AxiL1j",         
-  num: "KZ5D0DFEqdf",        
-  deviceId: "RyN09GsWd64",   
+  deviceType: "xQrdgnlPcC3", // render first
+  code: "y6RfdAq2zmQ",       // Code (auto from device type) — disabled
+  hf: "odDm8AxiL1j",         // HF ID (user input)
+  hftype: "STdn1v1AxLa",    // HF type (user)
+  hfSequence: "xgb9vCptedt", // HF sequence number (user)
+  num: "KZ5D0DFEqdf",        // Number (user input)
+  deviceId: "RyN09GsWd64",   // Composed Device ID (auto, disabled)
 };
 
-const SPECIAL = [ID.code, ID.hf, ID.num, ID.deviceId];
+const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
 
 const toAttrMap = (tei) =>
   Array.isArray(tei?.attributes)
@@ -44,7 +53,7 @@ const Profile = () => {
 
   const props = useProfileRules();
 
-
+  // Clear values for hidden fields
   useEffect(() => {
     if (!props?.hiddenFields) return;
     const cur = toAttrMap(data?.currentTei);
@@ -53,7 +62,7 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.hiddenFields]);
 
-
+  // Apply auto-assignments only if changed
   useEffect(() => {
     if (!props?.assignations) return;
     const cur = toAttrMap(data?.currentTei);
@@ -96,10 +105,12 @@ const Profile = () => {
     );
   };
 
-
+  // Inline compact trio aligned like age inputs: HF | Code | Number
   const renderInlineTrioRow = () => {
     if (
       props?.hiddenFields?.[ID.hf] &&
+      props?.hiddenFields?.[ID.hftype] &&
+      props?.hiddenFields?.[ID.hfSequence] &&
       props?.hiddenFields?.[ID.code] &&
       props?.hiddenFields?.[ID.num]
     )
@@ -107,25 +118,27 @@ const Profile = () => {
 
     const widths = {
       [ID.hf]: HF_W,
+      [ID.hftype]: HFTYPE_W,
+      [ID.hfSequence]: HFSEQUENCE_W,
       [ID.code]: CODE_W,
       [ID.num]: NUM_W,
     };
 
     return (
       <Box className="custom-tracker-profile-field-row" sx={{ alignItems: "flex-start", mb: 1 }}>
-
+        {/* ghost label keeps alignment with normal rows */}
         <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
 
-
+        {/* value column with three fixed-width cells */}
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: `${HF_W}px ${CODE_W}px ${NUM_W}px`,
+            gridTemplateColumns: `${HF_W}px ${HFTYPE_W}px ${HFSEQUENCE_W}px ${CODE_W}px ${NUM_W}px`,
             gap: 1.5,
             alignItems: "start",
           }}
         >
-          {[ID.hf, ID.code, ID.num].map((attribute) =>
+          {[ID.hf, ID.hftype, ID.hfSequence, ID.code, ID.num].map((attribute) =>
             props?.hiddenFields?.[attribute] ? null : (
               <Box key={attribute} sx={{ display: "grid", gap: 0.5, width: widths[attribute] }}>
                 <AttributeLabel attribute={attribute} />

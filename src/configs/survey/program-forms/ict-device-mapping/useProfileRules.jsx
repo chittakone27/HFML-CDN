@@ -1,3 +1,4 @@
+// useProfileRules.js
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -12,6 +13,12 @@ const convertListToObj = (list, keyProperty, valueProperty) =>
       }, {})
     : {};
 
+const pad2 = (v) => {
+  const s = String(v ?? "").replace(/\D/g, "");
+  if (!s) return "";
+  return s.padStart(2, "0");
+};
+
 const pad3 = (v) => {
   const s = String(v ?? "").replace(/\D/g, "");
   if (!s) return "";
@@ -19,16 +26,18 @@ const pad3 = (v) => {
 };
 
 const ID = {
-
+  // Funding rule
   sourceOfFunding: "VDtUCd4xomY",
   specifyPayer: "tDri5optbSF",
 
-
-  deviceType: "xQrdgnlPcC3", 
-  code: "y6RfdAq2zmQ",       
-  hf: "odDm8AxiL1j",         
-  num: "KZ5D0DFEqdf",        
-  deviceId: "RyN09GsWd64",   
+  // Device identity rules
+  deviceType: "xQrdgnlPcC3", // Laptop/Tablet/Desktop/Smart Phone
+  code: "y6RfdAq2zmQ",       // auto from device type (L/T/D/SET) — disabled
+  hf: "odDm8AxiL1j",         // HF ID (user)
+  hftype: "STdn1v1AxLa",    // HF type (user)
+  hfSequence: "xgb9vCptedt", // HF sequence number (user)
+  num: "KZ5D0DFEqdf",        // Number (user, 3-digit)
+  deviceId: "RyN09GsWd64",   // <hf>-<code><num> — disabled
 };
 
 const DEVICE_CODE = {
@@ -52,12 +61,17 @@ const useProfileRules = () => {
   const deviceType = norm(attributes[ID.deviceType]);
 
   const hf = String(attributes[ID.hf] ?? "").trim();
+  const hftype = String(attributes[ID.hftype] ?? "").trim();
+  const hfSequence = String(attributes[ID.hfSequence] ?? "").trim();
+  const hfSequencePadded = pad2(hfSequence);
   const numRaw = String(attributes[ID.num] ?? "").trim();
   const num = pad3(numRaw);
 
+  // derive code from device type
   const codeAuto = DEVICE_CODE[deviceType] ?? "";
 
-  const deviceId = hf && codeAuto && num ? `${hf}-${codeAuto}${num}` : "";
+  // compose deviceId if all parts exist
+  const deviceId = hf && hftype && hfSequencePadded && codeAuto && num ? `${hf}${hftype}${hfSequencePadded}-${codeAuto}${num}` : "";
 
   const [props, setProps] = useState({
     warnings: {},
@@ -72,22 +86,26 @@ const useProfileRules = () => {
     const disabled = {};
     const assignations = {};
 
+    // Show "Specify Payer" only if Source of funding == "other"
     hidden[ID.specifyPayer] = sourceOfFunding !== "other";
 
+    // --- Device-type-specific hides (restored) ------------------------------
     const hideFor = {
-      laptop: ["XRdw8EK5FJg", "azMLZ6HjJzX"],
-      tablet: ["leCxCv4ZFaX", "rIHJFrYHA27","azMLZ6HjJzX"],
+      laptop: ["XRdw8EK5FJg"],
+      tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
       desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],
-      "smart phone": ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
-      smartphone: ["rIHJFrYHA27", "azMLZ6HjJzX", "leCxCv4ZFaX"],
+      "smart phone": ["rIHJFrYHA27","leCxCv4ZFaX"],
+      smartphone: ["rIHJFrYHA27","leCxCv4ZFaX"],
     };
     (hideFor[deviceType] ?? []).forEach((attrId) => {
       hidden[attrId] = true;
     });
 
+    // Auto-assign code & lock it
     assignations[ID.code] = codeAuto || "";
     disabled[ID.code] = true;
 
+    // Auto-assign composed deviceId & lock it
     assignations[ID.deviceId] = deviceId;
     disabled[ID.deviceId] = true;
 

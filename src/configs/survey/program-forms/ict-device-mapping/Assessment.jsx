@@ -41,12 +41,14 @@ const Assessment = () => {
     return displayName;
   };
 
+  // ---- helpers --------------------------------------------------------------
   const norm = (s) => String(s ?? "").toLowerCase().trim();
   const dataValuesArr = currentEvent?.dataValues ?? [];
 
   const getDeValue = (deId) =>
     dataValuesArr.find((dv) => dv?.dataElement === deId)?.value;
 
+  // Controller values (normalized)
   const nhQC_val = norm(getDeValue("nhQCkj3UWJK"));
   const jr3E_val = norm(getDeValue("jr3EVDUQRhX"));
 

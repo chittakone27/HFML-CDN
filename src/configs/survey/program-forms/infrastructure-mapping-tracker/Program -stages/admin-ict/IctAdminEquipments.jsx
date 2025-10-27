@@ -1,3 +1,4 @@
+// src/ui/TrackerCapture/EventForm/Program -stages/Equipments/IctAdminEquipments.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -16,23 +17,23 @@ import Accordion from "../../../common/Accordion";
 const GRID_COLS = "300px repeat(2, 1fr)";
 const ALLOW_DECIMAL_ID = "DUI7h9EBTWN"; // the ONLY field that may accept decimals
 
-
+// Lao quick-fallbacks
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   partiallyDamaged: "ເສຍຫາຍບາງສ່ວນ",
   SECTION_ICT: "ອຸປະກອນ ICT",
   SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
 
-  // Admin item 
-  "1 TV screen": "1 ໜ້າຈໍ ໂທລະພາບ",
-  "2 Wireless Microphone": "2 ໄມໂຄຣໂຟນ ເຄື່ອນທີ່",
-  "3 Mobile speaker": "3 ລໍາໂພງ ເຄື່ອນທີ່",
-  "4 White / Black board": "4 ກະດານດຳ/ກະດານຂາວ",
-  "5 Storage for IEC materials (i.e. cabinet/cupboard)":
-    "5 ບ່ອນເກັບມ້ຽນອຸປະກອນສື່ສານ (ເຊັ່ນ ຕູ້, ຊັ້ນວາງ)",
+  // Admin item fallbacks (UNNUMBERED keys)
+  "TV screen": "1. ໜ້າຈໍ ໂທລະພາບ",
+  "2. Wireless Microphone": "2. ໄມໂຄຣໂຟນ ເຄື່ອນທີ່",
+  "3. Mobile speaker": "3. ລໍາໂພງ ເຄື່ອນທີ່",
+  "4. White / Black board": "4. ກະດານດຳ/ກະດານຂາວ",
+  "5. Storage for IEC materials (i.e. cabinet/cupboard)":
+  "5. ບ່ອນເກັບມ້ຽນອຸປະກອນສື່ສານ (ເຊັ່ນ ຕູ້, ຊັ້ນວາງ)",
 };
 
-
+// i18n key from label
 const keyFor = (label) =>
   "equipment." +
   String(label || "")
@@ -40,22 +41,22 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
-
+// Normalize labels so LO fallback works with or without numbering/spaces
 const stripRomanOrNumber = (s) =>
   String(s || "").replace(/^\s*((?:[IVXLCDM]+|\d+)\.)\s*/i, "").trim();
 const normalizeLabel = (s) =>
   stripRomanOrNumber(s).replace(/\s*\/\s*/g, " / ").replace(/\s+/g, " ").trim();
 
-
+// Admin rows (known DEs)
 const ADMIN_ROWS = [
-  { label: "1 TV screen", usable: "T6lMVJitIUM", damaged: "oVmVDoqT8HZ" },
-  { label: "2 Wireless Microphone", usable: "O7cJLIKPknD", damaged: "YlyG4OiR8h8" },
-  { label: "3 Mobile speaker", usable: "gTWZK4S28jH", damaged: "IPVXRMKjXGK" },
-  { label: "4 White / Black board", usable: "b8eicE9ogrb", damaged: "yXeBNJ4lS3A" },
-  { label: "5 Storage for IEC materials (i.e. cabinet/cupboard)", usable: "DUI7h9EBTWN" }, // single-field (exception)
+  { label: "1.1. TV screen", usable: "T6lMVJitIUM", damaged: "oVmVDoqT8HZ" },
+  { label: "2.2. Wireless Microphone", usable: "O7cJLIKPknD", damaged: "YlyG4OiR8h8" },
+  { label: "3.3.  Mobile speaker", usable: "gTWZK4S28jH", damaged: "IPVXRMKjXGK" },
+  { label: "4.4.  White / Black board", usable: "b8eicE9ogrb", damaged: "yXeBNJ4lS3A" },
+  { label: "5.5.  Storage for IEC materials (i.e. cabinet/cupboard)", usable: "DUI7h9EBTWN" }, // single-field (exception)
 ];
 
-
+// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -73,7 +74,7 @@ const isEmpty = (v) => {
   return false;
 };
 
-
+// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic, etc.)
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, (ch) => {
     const c = ch.charCodeAt(0);
@@ -85,7 +86,7 @@ const toAsciiDigits = (str = "") =>
     return ch;
   });
 
-
+// Reusable red asterisk
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
     *
@@ -99,13 +100,14 @@ const IctAdminEquipments = () => {
   const trHeader = (key, en) =>
     t(`equipment.${key}`, { defaultValue: isLao ? LO[key] || en : en });
 
-
+  // number-agnostic label translation
   const trLabel = (label) => {
     const base = normalizeLabel(label);
     const fallback = isLao ? (LO[base] || LO[label] || base) : base;
     return t(keyFor(base), { defaultValue: fallback });
   };
 
+  // Bilingual integer-only message (handled like other strings)
   const trIntOnly = t("equipment.error.integerOnly", {
     defaultValue: isLao
       ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
@@ -116,6 +118,7 @@ const IctAdminEquipments = () => {
   const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
   const { currentEvent } = useCurrentEvent();
 
+  // Pull ALL DEs on this program stage (no reliance on sections)
   const stage = useMemo(() => {
     if (!program?.programStages || !currentEvent?.programStage) return null;
     return program.programStages.find((ps) => ps.id === currentEvent.programStage) || null;
@@ -128,6 +131,7 @@ const IctAdminEquipments = () => {
       .filter(Boolean);
   }, [stage?.programStageDataElements]);
 
+  // Admin rows actually available on this stage
   const adminRowsInStage = useMemo(() => {
     const set = new Set(stageDEIds);
     return ADMIN_ROWS.filter(
@@ -135,6 +139,7 @@ const IctAdminEquipments = () => {
     );
   }, [stageDEIds]);
 
+  // Mark Admin DEs as "used"
   const usedAdminDEs = useMemo(() => {
     const s = new Set();
     adminRowsInStage.forEach((r) => {
@@ -144,18 +149,19 @@ const IctAdminEquipments = () => {
     return s;
   }, [adminRowsInStage]);
 
-
+  // Everything else on the stage = ICT/default list
   const ictLikeDEs = useMemo(() => {
     return stageDEIds.filter((id) => !usedAdminDEs.has(id));
   }, [stageDEIds, usedAdminDEs]);
 
+  // ---- Missing + validation (whole number for all except ALLOW_DECIMAL_ID) ----
   const presentIds = useMemo(() => new Set(stageDEIds), [stageDEIds]);
 
   const warnings = useMemo(() => {
     if (!currentEvent) return {};
     const w = {};
     presentIds.forEach((id) => {
-      if (id === ALLOW_DECIMAL_ID) return; 
+      if (id === ALLOW_DECIMAL_ID) return; // skip integer-only validation for exception
       const raw = getEventDEValue(currentEvent, id);
       if (raw == null) return;
       const s = toAsciiDigits(String(raw)).trim();
@@ -224,6 +230,7 @@ const IctAdminEquipments = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
+  // integer-only input guards (apply to ALL, except ALLOW_DECIMAL_ID)
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -249,6 +256,7 @@ const IctAdminEquipments = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>
           {t("equipment.assessmentDate", {
@@ -273,6 +281,7 @@ const IctAdminEquipments = () => {
         />
       </Box>
 
+      {/* ICT / default block (first) */}
       {ictLikeDEs.length > 0 && (
         <Accordion
           title={t("equipment.sections.ict", {
@@ -299,7 +308,7 @@ const IctAdminEquipments = () => {
                   <Box sx={{ ml: 0.5 }}>
                     <DataValueLabel dataElement={deId} />
                   </Box>
-                  <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
+                    <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
                     *
                   </Box>
                 </Box>
@@ -323,6 +332,7 @@ const IctAdminEquipments = () => {
         </Accordion>
       )}
 
+      {/* Admin block (second) */}
       {adminRowsInStage.length > 0 && (
         <Accordion
           title={t("equipment.sections.admin", {
@@ -330,6 +340,7 @@ const IctAdminEquipments = () => {
           })}
         >
           <Box sx={{ border: "1px solid #d9d9d9", borderRadius: "8px", overflow: "hidden" }}>
+            {/* header */}
             <Box
               sx={{
                 display: "grid",
@@ -337,7 +348,7 @@ const IctAdminEquipments = () => {
                 alignItems: "stretch",
                 borderBottom: "1px solid #d9d9d9",
                 background: "#f6f7f9",
-                fontWeight: 600,
+                fontWeight: 400,
               }}
             >
               <Box sx={{ p: "10px 12px", borderRight: "1px solid #d9d9d9" }} />
@@ -376,7 +387,7 @@ const IctAdminEquipments = () => {
                       borderRight: "1px solid #e5e5e5",
                       display: "flex",
                       alignItems: "center",
-                      fontSize: 14,
+                      fontSize: 16,
                       lineHeight: 1.35,
                       wordBreak: "break-word",
                     }}
@@ -388,6 +399,7 @@ const IctAdminEquipments = () => {
                     </Box>
                   </Box>
 
+                  {/* Usable */}
                   <Box
                     sx={{
                       p: "6px 10px",
@@ -421,6 +433,7 @@ const IctAdminEquipments = () => {
                     </Box>
                   </Box>
 
+                  {/* Partially damaged */}
                   {r.damaged && (
                     <Box
                       sx={{
