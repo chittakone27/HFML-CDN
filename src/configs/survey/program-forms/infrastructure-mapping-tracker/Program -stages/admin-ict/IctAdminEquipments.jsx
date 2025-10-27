@@ -1,4 +1,4 @@
-// src/ui/TrackerCapture/EventForm/Program -stages/Equipments/IctAdminEquipments.jsx
+// src/ui/TrackerCapture/EventForm/Program-stages/Equipments/IctAdminEquipments.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -25,13 +25,13 @@ const LO = {
   SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
 
   // Admin item fallbacks (UNNUMBERED keys)
-  "Printer" : "5. ເຄື່ອງພິມເອກະສານທີ່ໃຊ້ໄດ້",
+  "5. Printer": "5. ເຄື່ອງພິມເອກະສານທີ່ໃຊ້ໄດ້",
   "1. TV screen": "1. ໜ້າຈໍ ໂທລະພາບ",
   "2. Wireless Microphone": "2. ໄມໂຄຣໂຟນ ເຄື່ອນທີ່",
   "3. Mobile speaker": "3. ລໍາໂພງ ເຄື່ອນທີ່",
   "4. White / Black board": "4. ກະດານດຳ/ກະດານຂາວ",
-  "5. Storage for IEC materials (i.e. cabinet/cupboard)":
-  "5. ບ່ອນເກັບມ້ຽນອຸປະກອນສື່ສານ (ເຊັ່ນ ຕູ້, ຊັ້ນວາງ)",
+  "5. Storage for IEC materials":
+    "5. ບ່ອນເກັບມ້ຽນອຸປະກອນສື່ສານ (ເຊັ່ນ ຕູ້, ຊັ້ນວາງ)",
 };
 
 // i18n key from label
@@ -50,12 +50,14 @@ const normalizeLabel = (s) =>
 
 // Admin rows (known DEs)
 const ADMIN_ROWS = [
-  {label: "5. 5. Printer", usable: "tKUezh4lk7d" },
+  { label: "5. 5. Printer", usable: "tKUezh4lk7d" },
   { label: "1.1. TV screen", usable: "T6lMVJitIUM", damaged: "oVmVDoqT8HZ" },
   { label: "2.2. Wireless Microphone", usable: "O7cJLIKPknD", damaged: "YlyG4OiR8h8" },
   { label: "3.3.  Mobile speaker", usable: "gTWZK4S28jH", damaged: "IPVXRMKjXGK" },
   { label: "4.4.  White / Black board", usable: "b8eicE9ogrb", damaged: "yXeBNJ4lS3A" },
-  { label: "5.5.  Storage for IEC materials (i.e. cabinet/cupboard)", usable: "DUI7h9EBTWN" }, // single-field (exception)
+  { label: "5.5. Storage for IEC materials",
+    usable: "DUI7h9EBTWN", // single-field (exception, decimals allowed)
+  },
 ];
 
 // helpers to read values / check emptiness
@@ -78,19 +80,22 @@ const isEmpty = (v) => {
 
 // normalize non-ASCII digits to ASCII (Thai/Lao/Arabic, etc.)
 const toAsciiDigits = (str = "") =>
-  String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, (ch) => {
-    const c = ch.charCodeAt(0);
-    if (c >= 0x0E50 && c <= 0x0E59) return String(c - 0x0E50);
-    if (c >= 0x0ED0 && c <= 0x0ED9) return String(c - 0x0ED0);
-    if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660);
-    if (c >= 0x06F0 && c <= 0x06F9) return String(c - 0x06F0);
-    if (c >= 0x0966 && c <= 0x096F) return String(c - 0x0966);
-    return ch;
-  });
+  String(str).replace(
+    /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
+    (ch) => {
+      const c = ch.charCodeAt(0);
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      return ch;
+    }
+  );
 
 // Reusable red asterisk
 const RedStar = () => (
-  <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
+  <Box component="span" sx={{ color: "#d32f2f", ml: 0.5 }} aria-hidden="true">
     *
   </Box>
 );
@@ -105,11 +110,11 @@ const IctAdminEquipments = () => {
   // number-agnostic label translation
   const trLabel = (label) => {
     const base = normalizeLabel(label);
-    const fallback = isLao ? (LO[base] || LO[label] || base) : base;
+    const fallback = isLao ? LO[base] || LO[label] || base : base;
     return t(keyFor(base), { defaultValue: fallback });
   };
 
-  // Bilingual integer-only message (handled like other strings)
+  // Bilingual integer-only message
   const trIntOnly = t("equipment.error.integerOnly", {
     defaultValue: isLao
       ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
@@ -243,16 +248,46 @@ const IctAdminEquipments = () => {
     },
     onPaste: (e) => {
       const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
-      if (!/^\d+$/.test(txt.trim())) {
+      const ascii = toAsciiDigits(txt).trim();
+      if (!/^\d+$/.test(ascii)) {
         e.preventDefault();
       }
     },
     onInput: (e) => {
       const s = String(e.target.value ?? "");
-      const digits = s.replace(/[^\d]/g, "");
+      const ascii = toAsciiDigits(s);
+      const digits = ascii.replace(/[^\d]/g, "");
       if (s !== digits) {
         e.target.value = digits;
       }
+    },
+  };
+
+  // decimal-allowed guards (ONLY for ALLOW_DECIMAL_ID)
+  const decimalGuards = {
+    type: "number",
+    step: "any",
+    inputProps: { inputMode: "decimal" },
+    onKeyDown: (e) => {
+      // allow a single dot, block scientific notation & signs
+      const blocked = ["e", "E", "+", "-", " "];
+      if (blocked.includes(e.key)) e.preventDefault();
+      if (e.key === ".") {
+        const v = e.currentTarget.value || "";
+        if (v.includes(".")) e.preventDefault();
+      }
+    },
+    onPaste: (e) => {
+      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const ascii = toAsciiDigits(txt).trim();
+      if (!/^\d+(\.\d+)?$/.test(ascii)) e.preventDefault();
+    },
+    onInput: (e) => {
+      const s = String(e.target.value ?? "");
+      const ascii = toAsciiDigits(s);
+      // strip everything except digits and a single dot
+      const cleaned = ascii.replace(/[^\d.]/g, "").replace(/\.(?=.*\.)/g, "");
+      if (s !== cleaned) e.target.value = cleaned;
     },
   };
 
@@ -287,14 +322,16 @@ const IctAdminEquipments = () => {
       {ictLikeDEs.length > 0 && (
         <Accordion
           title={t("equipment.sections.ict", {
-            defaultValue: isLao ? LO.SECTION_ICT : "All ICT devices (including those no longer functional)",
+            defaultValue: isLao
+              ? LO.SECTION_ICT
+              : "All ICT devices (including those no longer functional)",
           })}
         >
           {ictLikeDEs.map((deId, idx) => {
             const hasWarn = !!warnings[deId];
             const helpId = `help-${deId}`;
             const isIntegerOnly = deId !== ALLOW_DECIMAL_ID;
-            const extra = isIntegerOnly ? integerOnlyGuards : {};
+            const extra = isIntegerOnly ? integerOnlyGuards : decimalGuards;
 
             return (
               <Box
@@ -306,13 +343,11 @@ const IctAdminEquipments = () => {
                   backgroundColor: hasWarn ? "#fff5f5" : "transparent",
                 }}
               >
-                <Box sx={{ width: "300px", padding: "10px", display: "flex", alignItems: "center" }}>
-                  <Box sx={{ ml: 0.5 }}>
-                    <DataValueLabel dataElement={deId} />
-                  </Box>
-                    <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
-                    *
-                  </Box>
+                <Box
+                  sx={{ width: "300px", padding: "10px", display: "flex", alignItems: "center" }}
+                >
+                  <DataValueLabel dataElement={deId} />
+                  <RedStar />
                 </Box>
                 <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                   <DataValueFieldNoBlur
@@ -323,7 +358,10 @@ const IctAdminEquipments = () => {
                     {...extra}
                   />
                   {hasWarn && (
-                    <Box id={helpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                    <Box
+                      id={helpId}
+                      sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
+                    >
                       {warnings[deId]}
                     </Box>
                   )}
@@ -378,7 +416,8 @@ const IctAdminEquipments = () => {
                     display: "grid",
                     gridTemplateColumns: GRID_COLS,
                     alignItems: "stretch",
-                    borderBottom: i === adminRowsInStage.length - 1 ? "none" : "1px solid #e5e5e5",
+                    borderBottom:
+                      i === adminRowsInStage.length - 1 ? "none" : "1px solid #e5e5e5",
                     background: i % 2 === 1 ? "#fafafa" : "transparent",
                   }}
                 >
@@ -394,11 +433,8 @@ const IctAdminEquipments = () => {
                       wordBreak: "break-word",
                     }}
                   >
-
                     {trLabel(r.label)}
-                   <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
-                      *
-                    </Box>
+                    <RedStar />
                   </Box>
 
                   {/* Usable */}
@@ -420,12 +456,17 @@ const IctAdminEquipments = () => {
                             required
                             aria-invalid={usableWarn ? "true" : undefined}
                             aria-describedby={usableWarn ? usableHelpId : undefined}
-                            {...(usableIntegerOnly ? integerOnlyGuards : {})}
+                            {...(usableIntegerOnly ? integerOnlyGuards : decimalGuards)}
                           />
                           {usableWarn && (
                             <Box
                               id={usableHelpId}
-                              sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
+                              sx={{
+                                mt: 0.5,
+                                fontSize: 12,
+                                lineHeight: "16px",
+                                color: "#d32f2f",
+                              }}
                             >
                               {warnings[r.usable]}
                             </Box>
@@ -451,11 +492,11 @@ const IctAdminEquipments = () => {
                           required
                           aria-invalid={damagedWarn ? "true" : undefined}
                           aria-describedby={damagedWarn ? damagedHelpId : undefined}
-                          {...(damagedIntegerOnly ? integerOnlyGuards : {})}
+                          {...(damagedIntegerOnly ? integerOnlyGuards : decimalGuards)}
                         />
                         {damagedWarn && (
                           <Box
-                            id={damagedHelpId}
+                            id={damagedHelpId || undefined}
                             sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
                           >
                             {warnings[r.damaged]}
