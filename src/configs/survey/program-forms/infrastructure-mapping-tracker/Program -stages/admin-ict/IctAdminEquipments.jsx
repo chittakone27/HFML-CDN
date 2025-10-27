@@ -25,7 +25,8 @@ const LO = {
   SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
 
   // Admin item fallbacks (UNNUMBERED keys)
-  "TV screen": "1. ໜ້າຈໍ ໂທລະພາບ",
+  "Printer" : "5. ເຄື່ອງພິມເອກະສານທີ່ໃຊ້ໄດ້",
+  "1. TV screen": "1. ໜ້າຈໍ ໂທລະພາບ",
   "2. Wireless Microphone": "2. ໄມໂຄຣໂຟນ ເຄື່ອນທີ່",
   "3. Mobile speaker": "3. ລໍາໂພງ ເຄື່ອນທີ່",
   "4. White / Black board": "4. ກະດານດຳ/ກະດານຂາວ",
@@ -49,6 +50,7 @@ const normalizeLabel = (s) =>
 
 // Admin rows (known DEs)
 const ADMIN_ROWS = [
+  {label: "5. 5. Printer", usable: "tKUezh4lk7d" },
   { label: "1.1. TV screen", usable: "T6lMVJitIUM", damaged: "oVmVDoqT8HZ" },
   { label: "2.2. Wireless Microphone", usable: "O7cJLIKPknD", damaged: "YlyG4OiR8h8" },
   { label: "3.3.  Mobile speaker", usable: "gTWZK4S28jH", damaged: "IPVXRMKjXGK" },
@@ -285,7 +287,7 @@ const IctAdminEquipments = () => {
       {ictLikeDEs.length > 0 && (
         <Accordion
           title={t("equipment.sections.ict", {
-            defaultValue: isLao ? LO.SECTION_ICT : "ICT devices",
+            defaultValue: isLao ? LO.SECTION_ICT : "All ICT devices (including those no longer functional)",
           })}
         >
           {ictLikeDEs.map((deId, idx) => {
