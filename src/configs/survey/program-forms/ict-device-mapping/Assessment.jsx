@@ -13,7 +13,7 @@ import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
 import Accordion from "../common/Accordion";
-import useAssessmentRules from "./useAssessmentRules";
+//import useAssessmentRules from "./useAssessmentRules";
 
 const Assessment = () => {
   const { t, i18n } = useTranslation();

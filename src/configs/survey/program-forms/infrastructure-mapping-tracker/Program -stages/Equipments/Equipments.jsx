@@ -43,8 +43,8 @@ const LO = {
   "6. Glucometer": "6. ເຄື່ອງວັດແທກນໍ້າຕານໃນເລືອດ",
   "7. Adult stethoscope": "7. ກ້ອງຟັງສໍາລັບຜູ້ໃຫຍ່",
   "8. Pediatric stethoscope": "8. ກ້ອງຟັງສໍາລັບເດັກນ້ອຍ",
-  "9 Clinical Thermometer": "9. ເຄື່ອງວັດແທກອຸນຫະພູມຮ່າງກາຍ",
-  "1 Mechanical weighing scale for adult":
+  "9. Clinical Thermometer": "9. ເຄື່ອງວັດແທກອຸນຫະພູມຮ່າງກາຍ",
+  "1. Mechanical weighing scale for adult":
     "1. ເຄື່ອງວັດແທກນ້ຳໜັກສໍາລັບຜູ້ໃຫຍ່ ແບບມີເຂັມໜ້າປັດ",
   "2. Digital weighing scale for adult":
     "2. ເຄື່ອງວັດແທກນ້ຳໜັກສໍາລັບຜູ້ໃຫຍ່ ແບບດິຈິຕອນ",
