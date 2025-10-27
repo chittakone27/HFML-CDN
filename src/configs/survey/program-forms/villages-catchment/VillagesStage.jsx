@@ -73,6 +73,22 @@ const VillagesStage = () => {
     }
   };
 
+  // ---- SECTION title (not stage): "Details of catchment area" ----
+  const SECTION_EN = "Details of catchment area";
+  const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ"; // adjust if you prefer a different Lao phrasing
+  const trCatchmentSectionTitle = t("village.section.details", {
+    defaultValue: isLao ? SECTION_LO : SECTION_EN,
+  });
+  const isCatchmentSection = (name) => {
+    const s = String(name || "").trim();
+    if (!s) return false;
+    const enMatch =
+      s.toLowerCase().replace(/\s+/g, " ") === SECTION_EN.toLowerCase().replace(/\s+/g, " ");
+    const loMatch = s === SECTION_LO;
+    return enMatch || loMatch;
+  };
+  const trSectionTitle = (name) => (isCatchmentSection(name) ? trCatchmentSectionTitle : name);
+
   // Sections
   const sections = useMemo(() => {
     const stage = program?.programStages?.find(
@@ -211,7 +227,10 @@ const VillagesStage = () => {
       </Box>
 
       {sections.map((section) => (
-        <Accordion key={section.id || section.displayName} title={section.displayName}>
+        <Accordion
+          key={section.id || section.displayName}
+          title={trSectionTitle(section.displayName)}
+        >
           {(section.dataElements ?? []).map((de) => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
