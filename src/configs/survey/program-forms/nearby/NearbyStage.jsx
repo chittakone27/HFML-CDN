@@ -58,6 +58,22 @@ const NearbyStage = () => {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
+  // SECTION title (not stage)
+  const SECTION_EN = "Details of nearby health facilities";
+  const SECTION_LO = "ຂໍ້ມູນຂອງສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
+  const trNearbySectionTitle = t("nearby.section.details", {
+    defaultValue: isLao ? SECTION_LO : SECTION_EN,
+  });
+  const isNearbySection = (name) => {
+    const s = String(name || "").trim();
+    if (!s) return false;
+    const enMatch =
+      s.toLowerCase().replace(/\s+/g, " ") === SECTION_EN.toLowerCase().replace(/\s+/g, " ");
+    const loMatch = s === SECTION_LO;
+    return enMatch || loMatch;
+  };
+  const trSectionTitle = (name) => (isNearbySection(name) ? trNearbySectionTitle : name);
+
   // translate a warning code → message (EN/LO only, not both)
   const trWarn = (code) => {
     switch (code) {
@@ -225,7 +241,10 @@ const NearbyStage = () => {
       </Box>
 
       {sections.map((section) => (
-        <Accordion key={section.id || section.displayName} title={section.displayName}>
+        <Accordion
+          key={section.id || section.displayName}
+          title={trSectionTitle(section.displayName)}
+        >
           {(section.dataElements ?? []).map((de) => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;

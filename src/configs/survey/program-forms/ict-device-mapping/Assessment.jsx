@@ -147,7 +147,7 @@ const Assessment = () => {
 
   const disabled = missing.length > 0;
 
-  // keep previous disabled state like other stage
+  // keep previous disabled state like other
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   missingRef.current = missing;
