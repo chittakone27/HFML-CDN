@@ -21,8 +21,8 @@ const ALLOW_DECIMAL_ID = "DUI7h9EBTWN"; // the ONLY field that may accept decima
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   partiallyDamaged: "ເສຍຫາຍບາງສ່ວນ",
-  SECTION_ICT: "ອຸປະກອນ ICT",
-  SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
+  SECTION_ICT: "ຈໍານວນ ອຸປະກອນ ICT (ອຸປະກອນທັງໝົດໃນສະຖານທີ່ ລວມທັງໂຕທີ່ນໍາໃຊ້ບໍ່ໄດ້ແລ້ວ)",
+  SECTION_ADMIN: "ຈໍານວນ ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
 
   // Admin item fallbacks (UNNUMBERED keys)
   "5. Printer": "5. ເຄື່ອງພິມເອກະສານທີ່ໃຊ້ໄດ້",

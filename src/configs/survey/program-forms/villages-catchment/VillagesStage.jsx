@@ -66,7 +66,12 @@ const VillagesStage = () => {
         return t("village.rules.integerOnly", {
           defaultValue: isLao
             ? "ກະລຸນາໃສ່ເປັນຈໍານວນເຕັມ (0–9) ເທົ່ານັ້ນ."
-            : "Only whole numbers are allowed.",
+            : "Please enter a whole number (digits 0–9 only).",
+        });
+      case "min1000":
+        return t("village.rules.min1000", {
+          min: 1000,
+          defaultValue: isLao ? "ຄ່າຕ້ອງຢ່າງນ້ອຍ 1000." : "Value must be at least 1000.",
         });
       default:
         return typeof code === "string" ? code : "";
@@ -75,7 +80,7 @@ const VillagesStage = () => {
 
   // ---- SECTION title (not stage): "Details of catchment area" ----
   const SECTION_EN = "Details of catchment area";
-  const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ"; // adjust if you prefer a different Lao phrasing
+  const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ";
   const trCatchmentSectionTitle = t("village.section.details", {
     defaultValue: isLao ? SECTION_LO : SECTION_EN,
   });

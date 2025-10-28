@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const FOOT_ID = "ooCoZbdc3az";  // Travel time (hour) By foot (e.g. "0:15")
 const CAR_ID  = "bHbKBszX1LW";  // Travel time (hour) By car  (e.g. "1:50")
-const INTEGER_ID = "OWAR8Vpa8IW"; // must be whole number
+const INTEGER_ID = "OWAR8Vpa8IW"; // must be whole number >= 1000
 
 // Normalize non-ASCII digits (Thai/Lao/Arabic etc.) to ASCII
 const toAsciiDigits = (str = "") =>
@@ -63,10 +63,17 @@ const useVillageRules = () => {
     //   }
     // }
 
-    // ---- Rule: INTEGER ONLY for OWAR8Vpa8IW (emit code) ----
+    // ---- Rule: INTEGER ONLY + MIN >= 1000 for OWAR8Vpa8IW ----
     const rawInt = toAsciiDigits(String(dv(INTEGER_ID) ?? "").trim());
-    if (rawInt !== "" && !/^\d+$/.test(rawInt)) {
-      warnings[INTEGER_ID] = "integerOnly";
+    if (rawInt !== "") {
+      if (!/^\d+$/.test(rawInt)) {
+        warnings[INTEGER_ID] = "integerOnly";
+      } else {
+        const num = Number(rawInt);
+        if (!Number.isFinite(num) || num < 1000) {
+          warnings[INTEGER_ID] = "min1000";
+        }
+      }
     }
 
     setProps((prev) => ({

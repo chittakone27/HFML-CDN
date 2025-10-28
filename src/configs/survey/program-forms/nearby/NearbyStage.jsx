@@ -87,7 +87,12 @@ const NearbyStage = () => {
         return t("nearby.rules.integerOnly", {
           defaultValue: isLao
             ? "ກະລຸນາໃສ່ເປັນຈໍານວນເຕັມ (0–9) ເທົ່ານັ້ນ."
-            : "Only whole numbers are allowed.",
+            : "Please enter a whole number (digits 0–9 only).",
+        });
+      case "min1000":
+        return t("nearby.rules.min1000", {
+          min: 1000,
+          defaultValue: isLao ? "ຄ່າຕ້ອງຢ່າງນ້ອຍ 1000" : "Value must be at least 1000",
         });
       default:
         // fallback: if someone passed a literal message
@@ -179,13 +184,17 @@ const NearbyStage = () => {
 
         if (m.length > 0 || hasW) {
           const msgs = [];
-          if (m.length > 0) msgs.push(t("nearby.save.completeAll", {
-            defaultValue: isLao ? "ກະລຸນາກອກຂໍ້ມູນທຸກຊ່ອງທີ່ຈໍາເປັນ." : "Please complete all required fields."
-          }));
+          if (m.length > 0)
+            msgs.push(
+              t("nearby.save.completeAll", {
+                defaultValue: isLao
+                  ? "ກະລຸນາກອກຂໍ້ມູນທຸກຊ່ອງທີ່ຈໍາເປັນ."
+                  : "Please complete all required fields.",
+              })
+            );
 
           if (hasW) {
             const uniqCodes = Array.from(new Set(Object.values(w)));
-            // translate each code separately, then join
             msgs.push(uniqCodes.map(trWarn).join(" "));
           }
           return { ok: false, message: msgs.join(" ") };
@@ -233,7 +242,7 @@ const NearbyStage = () => {
               actions.changeEventProperty(
                 currentEvent.event,
                 "eventDate",
-                dueDate && dueDate > maxDate ? maxDate : (dueDate || maxDate)
+                dueDate && dueDate > maxDate ? maxDate : dueDate || maxDate
               );
             }
           }}

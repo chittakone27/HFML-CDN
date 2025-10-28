@@ -4,7 +4,6 @@ import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
 const norm = (s) => String(s ?? "").toLowerCase().trim();
-
 const convertListToObj = (list, keyProperty, valueProperty) =>
   Array.isArray(list)
     ? list.reduce((acc, cur) => {
@@ -25,53 +24,58 @@ const pad3 = (v) => {
   return s.padStart(3, "0");
 };
 
+// NEW: normalize Thai/Lao/Arabic numerals -> ASCII
+const toAsciiDigits = (str = "") =>
+  String(str).replace(
+    /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
+    (ch) => {
+      const c = ch.charCodeAt(0);
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      return ch;
+    }
+  );
+
 const ID = {
-  // Funding rule
   sourceOfFunding: "VDtUCd4xomY",
   specifyPayer: "tDri5optbSF",
 
-  // Device identity rules
-  deviceType: "xQrdgnlPcC3", // Laptop/Tablet/Desktop/Smart Phone
-  code: "y6RfdAq2zmQ",       // auto from device type (L/T/D/SET) — disabled
-  hf: "odDm8AxiL1j",         // HF ID (user)
-  hftype: "STdn1v1AxLa",    // HF type (user)
-  hfSequence: "xgb9vCptedt", // HF sequence number (user)
-  num: "KZ5D0DFEqdf",        // Number (user, 3-digit)
-  deviceId: "RyN09GsWd64",   // <hf>-<code><num> — disabled
+  deviceType: "xQrdgnlPcC3",
+  code: "y6RfdAq2zmQ",
+  hf: "odDm8AxiL1j",          // HF ID (user)
+  hftype: "STdn1v1AxLa",
+  hfSequence: "xgb9vCptedt",
+  num: "KZ5D0DFEqdf",
+  deviceId: "RyN09GsWd64",
 };
 
-const DEVICE_CODE = {
-  laptop: "L",
-  tablet: "T",
-  desktop: "D",
-  "smart phone": "S",
-  // smartphone: "S",
-};
+const DEVICE_CODE = { laptop: "L", tablet: "T", desktop: "D", "smart phone": "S" };
 
 const useProfileRules = () => {
-  const { currentTei } = useTrackerCaptureStore(
-    useShallow((state) => state.data)
-  );
-
-  const attributes = currentTei
-    ? convertListToObj(currentTei.attributes, "attribute", "value")
-    : {};
+  const { currentTei } = useTrackerCaptureStore(useShallow((state) => state.data));
+  const attributes =
+    currentTei ? convertListToObj(currentTei.attributes, "attribute", "value") : {};
 
   const sourceOfFunding = norm(attributes[ID.sourceOfFunding]);
   const deviceType = norm(attributes[ID.deviceType]);
 
-  const hf = String(attributes[ID.hf] ?? "").trim();
+  // NEW: sanitize HF to ASCII digits, keep max 4 chars (UI enforces too)
+  const hf = toAsciiDigits(String(attributes[ID.hf] ?? "")).replace(/\D/g, "").slice(0, 4);
+
   const hftype = String(attributes[ID.hftype] ?? "").trim();
   const hfSequence = String(attributes[ID.hfSequence] ?? "").trim();
   const hfSequencePadded = pad2(hfSequence);
   const numRaw = String(attributes[ID.num] ?? "").trim();
   const num = pad3(numRaw);
 
-  // derive code from device type
   const codeAuto = DEVICE_CODE[deviceType] ?? "";
-
-  // compose deviceId if all parts exist
-  const deviceId = hf && hftype && hfSequencePadded && codeAuto && num ? `${hf}${hftype}${hfSequencePadded}-${codeAuto}${num}` : "";
+  const deviceId =
+    hf && hftype && hfSequencePadded && codeAuto && num
+      ? `${hf}${hftype}${hfSequencePadded}-${codeAuto}${num}`
+      : "";
 
   const [props, setProps] = useState({
     warnings: {},
@@ -86,26 +90,20 @@ const useProfileRules = () => {
     const disabled = {};
     const assignations = {};
 
-    // Show "Specify Payer" only if Source of funding == "other"
     hidden[ID.specifyPayer] = sourceOfFunding !== "other";
 
-    // --- Device-type-specific hides (restored) ------------------------------
     const hideFor = {
       laptop: ["XRdw8EK5FJg"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
       desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],
-      "smart phone": ["rIHJFrYHA27","leCxCv4ZFaX"],
-      smartphone: ["rIHJFrYHA27","leCxCv4ZFaX"],
+      "smart phone": ["rIHJFrYHA27", "leCxCv4ZFaX"],
+      smartphone: ["rIHJFrYHA27", "leCxCv4ZFaX"],
     };
-    (hideFor[deviceType] ?? []).forEach((attrId) => {
-      hidden[attrId] = true;
-    });
+    (hideFor[deviceType] ?? []).forEach((attrId) => (hidden[attrId] = true));
 
-    // Auto-assign code & lock it
     assignations[ID.code] = codeAuto || "";
     disabled[ID.code] = true;
 
-    // Auto-assign composed deviceId & lock it
     assignations[ID.deviceId] = deviceId;
     disabled[ID.deviceId] = true;
 

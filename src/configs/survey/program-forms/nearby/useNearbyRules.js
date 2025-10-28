@@ -2,10 +2,11 @@
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const FOOT_ID = "Bokim7QLnF8"; // Travel time by foot (H:MM)
 const CAR_ID  = "bcnCvxfxNeF"; // Travel time by car  (H:MM)
-const INTEGER_ONLY_ID = "dBK06ybZUbT"; // MUST be integer (non-negative)
+const INTEGER_ONLY_ID = "dBK06ybZUbT"; // MUST be integer (non-negative, >= 1000)
 
 // normalize non-ASCII digits to ASCII
 const toAsciiDigits = (str = "") =>
@@ -31,8 +32,10 @@ const parseHMToMinutes = (val) => {
 };
 
 const useNearbyRules = () => {
+  const { t } = useTranslation();
   const [props, setProps] = useState({
-    warnings: {},          // { [deId]: 'warningCode' }
+    warnings: {},       // { [deId]: 'warningCode' }
+    warningTexts: {},   // { [deId]: 'localized message' }
     hiddenFields: {},
     assignations: {},
     disabledFields: {},
@@ -47,36 +50,57 @@ const useNearbyRules = () => {
 
   useEffect(() => {
     const assignations = {};
-    const warnings = {}; // store *codes*; translate in the UI
+    const warnings = {};
+    const warningTexts = {};
 
     const dv = (id) => currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
-    // // 1) Foot (minutes) should be GREATER than Car (minutes)
+    // // 1) Optional: Foot > Car rule (kept commented as in your file)
     // const footMin = parseHMToMinutes(dv(FOOT_ID));
     // const carMin  = parseHMToMinutes(dv(CAR_ID));
     // if (Number.isFinite(footMin) && Number.isFinite(carMin)) {
     //   if (!(footMin > carMin)) {
-    //     const code = "footVsCar";      // <-- translate later
+    //     const code = "footVsCar";
     //     warnings[FOOT_ID] = code;
     //     warnings[CAR_ID]  = code;
+    //     const msg = t("nearby.warnings.footVsCar", {
+    //       defaultValue: "Travel time by foot should be greater than travel time by car.",
+    //     });
+    //     warningTexts[FOOT_ID] = msg;
+    //     warningTexts[CAR_ID]  = msg;
     //   }
     // }
 
-    // 2) Integer-only guard for dBK06ybZUbT (non-negative integers only)
+    // 2) Integer-only + minimum (>= 1000) guard for dBK06ybZUbT
     const intRaw = toAsciiDigits(String(dv(INTEGER_ONLY_ID) ?? "").trim());
-    if (intRaw !== "" && !/^\d+$/.test(intRaw)) {
-      warnings[INTEGER_ONLY_ID] = "integerOnly"; // <-- translate later
+    if (intRaw !== "") {
+      if (!/^\d+$/.test(intRaw)) {
+        warnings[INTEGER_ONLY_ID] = "integerOnly";
+        warningTexts[INTEGER_ONLY_ID] = t("nearby.warnings.integerOnly", {
+          defaultValue: "Please enter a whole number (digits 0–9 only).",
+        });
+      } else {
+        const num = Number(intRaw);
+        if (!Number.isFinite(num) || num < 1000) {
+          warnings[INTEGER_ONLY_ID] = "min1000";
+          warningTexts[INTEGER_ONLY_ID] = t("nearby.warnings.min1000", {
+            min: 1000,
+            defaultValue: "Value must be at least 1000.",
+          });
+        }
+      }
     }
 
     setProps((prev) => ({
       ...prev,
       assignations,
       warnings,
+      warningTexts,
       hiddenFields: prev.hiddenFields || {},
       disabledFields: prev.disabledFields || {},
       hiddenOptions: prev.hiddenOptions || {},
     }));
-  }, [JSON.stringify(currentEvent), JSON.stringify(currentTei?.lastSaved)]);
+  }, [JSON.stringify(currentEvent), JSON.stringify(currentTei?.lastSaved), t]);
 
   return props;
 };

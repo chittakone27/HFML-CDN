@@ -50,6 +50,13 @@ const getEventDEValue = (currentEvent, deId) => {
   return currentEvent[deId];
 };
 
+// --- small reusable red asterisk (matches your Equipments pattern) ---
+const RedStar = () => (
+  <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
+    *
+  </Box>
+);
+
 const FacilityBuildingandFurniture = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
@@ -71,7 +78,7 @@ const FacilityBuildingandFurniture = () => {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
   const trOperatorsLabel = t("facility.internet.operators", {
-    defaultValue: isLao ? "6.1 ເຄື່ອຄ່າຍອິນເຕີເນັດ" : "6.1. Mobile Operator",
+    defaultValue: isLao ? "6.1. ເຄື່ອຄ່າຍໂທລະສັບ" : "6.1. Mobile Operator",
   });
   const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
     defaultValue: isLao
@@ -252,8 +259,13 @@ const FacilityBuildingandFurniture = () => {
                     {showOperators && visibleOps.length > 0 && (
                       <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
                         <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
-                          <Box component="span" sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>
+                          {/* red * before Operators label */}
+                          <Box
+                            component="span"
+                            sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4, display: "inline-flex", alignItems: "center" }}
+                          >
                             {trOperatorsLabel}
+                            <RedStar />
                           </Box>
                         </Box>
 
@@ -319,8 +331,13 @@ const FacilityBuildingandFurniture = () => {
                     {showNewOperators && visibleNewOps.length > 0 && (
                       <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
                         <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
-                          <Box component="span" sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4 }}>
-                            {trNewOperatorsLabel}
+                          {/* red * before On-site internet operator label */}
+                          <Box
+                            component="span"
+                            sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4, display: "inline-flex", alignItems: "center" }}
+                          >
+                           {trNewOperatorsLabel} 
+                           <RedStar />
                           </Box>
                         </Box>
 
@@ -370,7 +387,11 @@ const FacilityBuildingandFurniture = () => {
                     {Row}
                     <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
                       <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", py: "10px", display: "flex", alignItems: "center" }}>
-                        <Box component="span" sx={{ fontWeight: 400, fontSize: 16 }}>{trMonthsLabel}</Box>
+                        {/* red * before Months label */}
+                        <Box component="span" sx={{ fontWeight: 400, fontSize: 16, display: "inline-flex", alignItems: "center" }}>
+                          {trMonthsLabel}
+                          <RedStar />
+                        </Box>
                       </Box>
                       <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(120px, 1fr))", gap: 2, alignItems: "start" }}>

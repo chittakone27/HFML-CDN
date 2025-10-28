@@ -35,10 +35,13 @@ const isEmpty = (v) => {
   return false;
 };
 
+// NEW: list any DEs that should NOT be mandatory in this stage
+const NOT_REQUIRED = new Set(["audIElWyoJP"]);
+
 // tiny red asterisk like other stages
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", ml: 0.5 }} aria-hidden="true">
-    
+   
   </Box>
 );
 
@@ -112,7 +115,7 @@ const Assessment = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // Build the set of VISIBLE DEs (like we’d do if a stage had hides)
+  // Build the set of VISIBLE DEs
   const visibleDeIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -133,12 +136,12 @@ const Assessment = () => {
     return ids;
   }, [sections, show_ayj5xsLBA0T, show_ZXzj7W5848O, props?.hiddenFields]);
 
-  // ---- ALL MANDATORY (pattern from IctAdminEquipments) ----------------------
-  // Only require the *visible* DEs for this stage
+  // ---- ALL MANDATORY *except* NOT_REQUIRED ----------------------------------
   const missing = useMemo(() => {
     if (!currentEvent) return [];
     const m = [];
     visibleDeIds.forEach((id) => {
+      if (NOT_REQUIRED.has(id)) return;        // NEW: skip optional DEs
       const val = getEventDEValue(currentEvent, id);
       if (isEmpty(val)) m.push(id);
     });
@@ -147,12 +150,12 @@ const Assessment = () => {
 
   const disabled = missing.length > 0;
 
-  // keep previous disabled state like other
+  // keep previous disabled state like other stage
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   missingRef.current = missing;
 
-  // Disable/enable Complete button using the same fallbacks
+  // Disable/enable Complete button
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -169,7 +172,7 @@ const Assessment = () => {
     }
   }, [actions, disabled]);
 
-  // Register save/complete guard handler (exact same pattern)
+  // Save/complete guard
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_assessment_all_required";
@@ -191,7 +194,7 @@ const Assessment = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Assessment date (kept like other stages; not forcing required here) */}
+      {/* Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -213,7 +216,7 @@ const Assessment = () => {
         />
       </Box>
 
-      {/* Sections & fields — show a red * like the other stage */}
+      {/* Sections & fields — red * for required ones only */}
       {sections.map((section) => (
         <Accordion
           key={section.id || section.displayName}
@@ -228,6 +231,8 @@ const Assessment = () => {
             if (deId === "ZXzj7W5848O" && !show_ZXzj7W5848O) return null;
             if (props?.hiddenFields?.[deId]) return null;
 
+            const optional = NOT_REQUIRED.has(deId); // NEW
+
             return (
               <Box
                 key={deId}
@@ -240,10 +245,13 @@ const Assessment = () => {
               >
                 <Box sx={{ padding: "10px", display: "flex", alignItems: "center" }}>
                   <DataValueLabel dataElement={deId} />
-                  <RedStar />
+                  {!optional && <RedStar />}{/* NEW: star only if required */}
                 </Box>
                 <Box sx={{ borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
-                  <DataValueFieldNoBlur dataElement={deId} required />
+                  <DataValueFieldNoBlur
+                    dataElement={deId}
+                    required={!optional}         // NEW: not required for audIElWyoJP
+                  />
                 </Box>
               </Box>
             );

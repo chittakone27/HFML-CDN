@@ -2,6 +2,7 @@
 import { Box } from "@mui/material";
 import { useMemo, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { useTranslation } from "react-i18next";
 
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -14,22 +15,21 @@ import useProfileRules from "./useProfileRules";
 const LABEL_COL_W = 210; // keep aligned with other rows
 
 // Fixed widths (adjust here)
-const HF_W   = 80; // HF ID input width
-const HFSEQUENCE_W = 50; // HF sequence number input width
-const HFTYPE_W = 80; // HF type input width
-const CODE_W = 50; // Code input width
-const NUM_W  = 65; // Number input width
-
+const HF_W = 80;           // HF ID input width
+const HFSEQUENCE_W = 50;   // HF sequence number input width
+const HFTYPE_W = 80;       // HF type input width
+const CODE_W = 50;         // Code input width
+const NUM_W = 65;          // Number input width
 
 // --- Attribute IDs -----------------------------------------------------------
 const ID = {
-  deviceType: "xQrdgnlPcC3", // render first
-  code: "y6RfdAq2zmQ",       // Code (auto from device type) — disabled
-  hf: "odDm8AxiL1j",         // HF ID (user input)
-  hftype: "STdn1v1AxLa",    // HF type (user)
-  hfSequence: "xgb9vCptedt", // HF sequence number (user)
-  num: "KZ5D0DFEqdf",        // Number (user input)
-  deviceId: "RyN09GsWd64",   // Composed Device ID (auto, disabled)
+  deviceType: "xQrdgnlPcC3",  // render first
+  code: "y6RfdAq2zmQ",        // Code (auto from device type) — disabled
+  hf: "odDm8AxiL1j",          // HF ID (user input)
+  hftype: "STdn1v1AxLa",      // HF type (user)
+  hfSequence: "xgb9vCptedt",  // HF sequence number (user)
+  num: "KZ5D0DFEqdf",         // Number (user input)
+  deviceId: "RyN09GsWd64",    // Composed Device ID (auto, disabled)
 };
 
 const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
@@ -43,6 +43,9 @@ const toAttrMap = (tei) =>
     : {};
 
 const Profile = () => {
+  const { t, i18n } = useTranslation();
+  const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
+
   const { program } = useSelectionStore(
     useShallow((s) => ({ program: s.program }))
   );
@@ -85,11 +88,15 @@ const Profile = () => {
 
   const deviceIdx = allAttributes.indexOf(ID.deviceType);
 
-  const beforeDevice = (deviceIdx > -1 ? allAttributes.slice(0, deviceIdx) : [])
-    .filter((a) => !SPECIAL.includes(a));
+  const beforeDevice = (deviceIdx > -1
+    ? allAttributes.slice(0, deviceIdx)
+    : []
+  ).filter((a) => !SPECIAL.includes(a));
 
-  const afterDevice = (deviceIdx > -1 ? allAttributes.slice(deviceIdx + 1) : allAttributes)
-    .filter((a) => !SPECIAL.includes(a));
+  const afterDevice = (deviceIdx > -1
+    ? allAttributes.slice(deviceIdx + 1)
+    : allAttributes
+  ).filter((a) => !SPECIAL.includes(a));
 
   const renderRow = (attribute) => {
     if (props?.hiddenFields?.[attribute]) return null;
@@ -105,7 +112,59 @@ const Profile = () => {
     );
   };
 
-  // Inline compact trio aligned like age inputs: HF | Code | Number
+  // ---- EXACTLY 4 digits for HF (stop typing after 4, and require min 4) ----
+  const currentAttrMap = toAttrMap(data?.currentTei);
+  const hfValue = String(currentAttrMap[ID.hf] ?? "");
+  const hfValid = /^\d{4}$/.test(hfValue);
+
+  // Bilingual help text
+  const trHFExact4 = t("profile.hf.exact4digits", {
+    defaultValue: isLao ? "ກະລຸນາໃສ່ເລກ 4 ໂຕແນ່ນອນ" : "Enter exactly 4 digits.",
+  });
+
+  // Strict guards: digits only; hard-stop at 4 chars; clamp paste; keep as text input
+  const HF_DIGIT_GUARDS = {
+    inputProps: {
+      inputMode: "numeric",
+      pattern: "[0-9]*",
+      maxLength: 4,
+      placeholder: "####",
+      "aria-invalid": !hfValid ? "true" : undefined,
+      "aria-describedby": !hfValid ? "hf-help" : undefined,
+    },
+    onKeyDown: (e) => {
+      if (["e", "E", "+", "-", ".", ",", " "].includes(e.key)) return e.preventDefault();
+      if (/^\d$/.test(e.key)) {
+        const el = e.target;
+        const val = String(el.value ?? "").replace(/\D/g, "");
+        const hasSelection = (el.selectionEnd ?? 0) - (el.selectionStart ?? 0) > 0;
+        if (!hasSelection && val.length >= 4) return e.preventDefault();
+      }
+    },
+    onPaste: (e) => {
+      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const clean = txt.replace(/\D/g, "");
+      if (!clean) return e.preventDefault();
+
+      e.preventDefault();
+      const el = e.target;
+      const start = el.selectionStart ?? 0;
+      const end = el.selectionEnd ?? 0;
+      const next =
+        String(el.value ?? "").slice(0, start) +
+        clean +
+        String(el.value ?? "").slice(end);
+      el.value = next.replace(/\D/g, "").slice(0, 4);
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    },
+    onInput: (e) => {
+      const s = String(e.target.value ?? "");
+      const digits4 = s.replace(/\D/g, "").slice(0, 4);
+      if (s !== digits4) e.target.value = digits4;
+    },
+  };
+
+  // Inline compact row: HF | HF Type | HF Seq | Code | Number
   const renderInlineTrioRow = () => {
     if (
       props?.hiddenFields?.[ID.hf] &&
@@ -125,11 +184,14 @@ const Profile = () => {
     };
 
     return (
-      <Box className="custom-tracker-profile-field-row" sx={{ alignItems: "flex-start", mb: 1 }}>
+      <Box
+        className="custom-tracker-profile-field-row"
+        sx={{ alignItems: "flex-start", mb: 1 }}
+      >
         {/* ghost label keeps alignment with normal rows */}
         <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
 
-        {/* value column with three fixed-width cells */}
+        {/* value column with five fixed-width cells */}
         <Box
           sx={{
             display: "grid",
@@ -140,19 +202,42 @@ const Profile = () => {
         >
           {[ID.hf, ID.hftype, ID.hfSequence, ID.code, ID.num].map((attribute) =>
             props?.hiddenFields?.[attribute] ? null : (
-              <Box key={attribute} sx={{ display: "grid", gap: 0.5, width: widths[attribute] }}>
+              <Box
+                key={attribute}
+                sx={{ display: "grid", gap: 0.5, width: widths[attribute] }}
+              >
                 <AttributeLabel attribute={attribute} />
                 <Box sx={{ width: widths[attribute] }}>
                   <AttributeField
                     attribute={attribute}
                     disabledManualFields
-                    disabled={attribute === ID.code || !!props?.disabledFields?.[attribute]} // Code locked
+                    disabled={
+                      attribute === ID.code || !!props?.disabledFields?.[attribute]
+                    } // Code locked
                     size="small"
+                    {...(attribute === ID.hf ? HF_DIGIT_GUARDS : {})}
                     sx={{
-                      "& .MuiInputBase-root": { height: 36, width: widths[attribute] },
-                      "& .MuiInputBase-input, & .MuiSelect-select": { py: 0.5, fontSize: "0.9rem" },
+                      "& .MuiInputBase-root": {
+                        height: 36,
+                        width: widths[attribute],
+                        ...(attribute === ID.hf && !hfValid
+                          ? { borderColor: "#d32f2f", borderWidth: 1, borderStyle: "solid" }
+                          : {}),
+                      },
+                      "& .MuiInputBase-input, & .MuiSelect-select": {
+                        py: 0.5,
+                        fontSize: "0.9rem",
+                      },
                     }}
                   />
+                  {attribute === ID.hf && !hfValid && (
+                    <Box
+                      id="hf-help"
+                      sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
+                    >
+                      {trHFExact4}
+                    </Box>
+                  )}
                 </Box>
               </Box>
             )
@@ -164,7 +249,11 @@ const Profile = () => {
 
   const renderDeviceId = () =>
     props?.hiddenFields?.[ID.deviceId] ? null : (
-      <Box key={ID.deviceId} className="custom-tracker-profile-field-row" sx={{ mb: 1.5 }}>
+      <Box
+        key={ID.deviceId}
+        className="custom-tracker-profile-field-row"
+        sx={{ mb: 1.5 }}
+      >
         <AttributeLabel attribute={ID.deviceId} />
         <AttributeField
           attribute={ID.deviceId}
