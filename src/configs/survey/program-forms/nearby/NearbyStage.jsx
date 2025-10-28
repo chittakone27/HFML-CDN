@@ -92,7 +92,7 @@ const NearbyStage = () => {
       case "min1000":
         return t("nearby.rules.min1000", {
           min: 1000,
-          defaultValue: isLao ? "ຄ່າຕ້ອງຢ່າງນ້ອຍ 1000" : "Value must be at least 1000",
+          defaultValue: isLao ? "ຄ່າຂ້າມເຮືອບໍ່ຄວນຕໍ່າກວ່າ 1000 ກີບ" : "Value must be at least 1000",
         });
       default:
         // fallback: if someone passed a literal message

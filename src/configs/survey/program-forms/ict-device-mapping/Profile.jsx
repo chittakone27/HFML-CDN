@@ -119,7 +119,7 @@ const Profile = () => {
 
   // Bilingual help text
   const trHFExact4 = t("profile.hf.exact4digits", {
-    defaultValue: isLao ? "ກະລຸນາໃສ່ເລກ 4 ໂຕແນ່ນອນ" : "Enter exactly 4 digits.",
+    defaultValue: isLao ? "ລະຫັດອຸປະກອນແມ່ນສາມາດຕື່ມໄດ້ພຽງ 4 ຕົວເລກ" : "Enter exactly 4 digits.",
   });
 
   // Strict guards: digits only; hard-stop at 4 chars; clamp paste; keep as text input
