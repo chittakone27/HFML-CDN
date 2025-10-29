@@ -233,7 +233,7 @@ const FacilityBuildingandFurniture = () => {
                 <Box key={deId} sx={{ display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" }}>
                   <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
                     <DataValueLabel dataElement={deId} />
-                  </Box>
+                  </Box><RedStar />
                   <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                     <DataValueFieldNoBlur
                       dataElement={deId}
