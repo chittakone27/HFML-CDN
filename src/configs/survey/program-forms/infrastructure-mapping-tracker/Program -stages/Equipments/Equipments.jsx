@@ -6,7 +6,6 @@ import { useTranslation } from "react-i18next";
 
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
-// Translated label (we keep our own label row):
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 
@@ -16,17 +15,15 @@ import Accordion from "../../../common/Accordion";
 
 const GRID_COLS = "300px repeat(2, 1fr)";
 
-// Section IDs (stable)
 const SECTION = {
   BASIC: "ftMRtZvarWk",
   MCH: "ipHIglCu5Z9",
   EPI: "IFiX3F88mHg",
   ADMIN: "Q68YZTN83dj",
   ICT: "kVViSpknfAg",
-  MOVED_COMBINED: "XUbOnfMrc0H", // exclude from this stage if visible
+  MOVED_COMBINED: "XUbOnfMrc0H", 
 };
 
-// Lao quick-fallbacks
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   partiallyDamaged: "ເສຍຫາຍບາງສ່ວນ",
@@ -75,7 +72,6 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
-// Rows we still render here (BASIC, MCH, EPI)
 const SECTION_ROWS = {
   [SECTION.BASIC]: [
     { label: "1. Oxygen concentrator", usable: "k6STi37BjK9", damaged: "NykhziIHZHH" },
@@ -113,7 +109,6 @@ const SECTION_ROWS = {
 const stripRomanOrNumber = (s) =>
   String(s || "").replace(/^\s*((?:[IVXLCDM]+|\d+)\.)\s*/i, "");
 
-// --- helpers to read values / check emptiness ---
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -131,7 +126,6 @@ const isEmpty = (v) => {
   return false;
 };
 
-// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic, etc.)
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, ch => {
     const c = ch.charCodeAt(0);
@@ -168,7 +162,6 @@ const Equipments = () => {
     return displayName;
   };
 
-  // Bilingual integer-only message (falls back like other strings)
   const trIntOnly = t("equipment.error.integerOnly", {
     defaultValue: isLao
       ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
@@ -185,12 +178,10 @@ const Equipments = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // Filter OUT ICT + Admin (and the combined section if it accidentally appears in this stage)
   const filteredSections = sections.filter(
     (s) => ![SECTION.ICT, SECTION.ADMIN, SECTION.MOVED_COMBINED].includes(s.id)
   );
 
-  // Collect all DEs we render (for missing + validation)
   const presentIds = useMemo(
     () =>
       new Set(
@@ -201,7 +192,6 @@ const Equipments = () => {
     [filteredSections]
   );
 
-  // Build warnings map: any non-empty, non-integer value gets an inline error
   const warnings = useMemo(() => {
     if (!currentEvent) return {};
     const w = {};
@@ -229,14 +219,12 @@ const Equipments = () => {
   const hasWarnings = Object.keys(warnings).length > 0;
   const disabled = missing.length > 0 || hasWarnings;
 
-  // Keep latest for save handler
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(warnings);
   missingRef.current = missing;
   warningsRef.current = warnings;
 
-  // ---------- Stage-wide compulsory + validation guard ----------
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -253,7 +241,6 @@ const Equipments = () => {
     }
   }, [actions, disabled]);
 
-  // Register Save handler once; read latest via refs
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_equipment_all_required";
@@ -277,7 +264,6 @@ const Equipments = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
-  // integer-only input guards (apply to ALL fields)
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -301,7 +287,6 @@ const Equipments = () => {
     },
   };
 
-  // Reusable red asterisk
   const RedStar = () => (
     <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
       *
@@ -310,7 +295,7 @@ const Equipments = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Assessment date */}
+
       <Box>
         <Box sx={{ fontWeight: 400, mb: 0.5 }}>
           {t("equipment.assessmentDate", {
@@ -362,7 +347,6 @@ const Equipments = () => {
                   </Box>
                 </Box>
 
-                {/* rows */}
                 {rows.map((r, i) => {
                   const usableWarn = !!warnings[r.usable];
                   const damagedWarn = r.damaged ? !!warnings[r.damaged] : false;
@@ -380,7 +364,6 @@ const Equipments = () => {
                         background: i % 2 === 1 ? "#fafafa" : "transparent",
                       }}
                     >
-                      {/* label cell with red * */}
                       <Box
                         sx={{
                           p: "10px 12px",
@@ -396,7 +379,6 @@ const Equipments = () => {
                         <RedStar />
                       </Box>
 
-                      {/* usable */}
                       <Box
                         sx={{
                           p: "6px 10px",
@@ -426,7 +408,6 @@ const Equipments = () => {
                         </Box>
                       </Box>
 
-                      {/* damaged (if present) */}
                       {r.damaged && (
                         <Box
                           sx={{
@@ -463,7 +444,6 @@ const Equipments = () => {
           );
         }
 
-        // Unknown sections (rare) — still enforce integer-only + red *
         return (
           <Accordion key={section.id || `${section.displayName}-${sIdx}`} title={trSectionTitle(section.displayName)}>
             {(section.dataElements ?? []).map((de, dIdx) => {

@@ -1,4 +1,3 @@
-// Profile.jsx
 import { Box } from "@mui/material";
 import { useMemo, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -12,7 +11,7 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import useProfileRules from "./useProfileRules";
 
 // --- Layout knobs ------------------------------------------------------------
-const LABEL_COL_W = 210; // keep aligned with other rows
+const LABEL_COL_W = 210; 
 
 // Fixed widths (adjust here)
 const HF_W = 80;           // HF ID input width
@@ -24,12 +23,12 @@ const NUM_W = 65;          // Number input width
 // --- Attribute IDs -----------------------------------------------------------
 const ID = {
   deviceType: "xQrdgnlPcC3",  // render first
-  code: "y6RfdAq2zmQ",        // Code (auto from device type) — disabled
+  code: "y6RfdAq2zmQ",        // Code  — disabled
   hf: "odDm8AxiL1j",          // HF ID (user input)
   hftype: "STdn1v1AxLa",      // HF type (user)
   hfSequence: "xgb9vCptedt",  // HF sequence number (user)
   num: "KZ5D0DFEqdf",         // Number (user input)
-  deviceId: "RyN09GsWd64",    // Composed Device ID (auto, disabled)
+  deviceId: "RyN09GsWd64",    // Composed Device ID 
 };
 
 const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
@@ -56,7 +55,6 @@ const Profile = () => {
 
   const props = useProfileRules();
 
-  // Clear values for hidden fields
   useEffect(() => {
     if (!props?.hiddenFields) return;
     const cur = toAttrMap(data?.currentTei);
@@ -65,7 +63,6 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.hiddenFields]);
 
-  // Apply auto-assignments only if changed
   useEffect(() => {
     if (!props?.assignations) return;
     const cur = toAttrMap(data?.currentTei);
@@ -112,17 +109,14 @@ const Profile = () => {
     );
   };
 
-  // ---- EXACTLY 4 digits for HF (stop typing after 4, and require min 4) ----
   const currentAttrMap = toAttrMap(data?.currentTei);
   const hfValue = String(currentAttrMap[ID.hf] ?? "");
   const hfValid = /^\d{4}$/.test(hfValue);
 
-  // Bilingual help text
   const trHFExact4 = t("profile.hf.exact4digits", {
-    defaultValue: isLao ? "ລະຫັດອຸປະກອນແມ່ນສາມາດຕື່ມໄດ້ພຽງ 4 ຕົວເລກ" : "Enter exactly 4 digits.",
+    defaultValue: isLao ? "ກະລຸນາໃສ່ເລກ 4 ໂຕແນ່ນອນ" : "Enter exactly 4 digits.",
   });
 
-  // Strict guards: digits only; hard-stop at 4 chars; clamp paste; keep as text input
   const HF_DIGIT_GUARDS = {
     inputProps: {
       inputMode: "numeric",
@@ -164,7 +158,6 @@ const Profile = () => {
     },
   };
 
-  // Inline compact row: HF | HF Type | HF Seq | Code | Number
   const renderInlineTrioRow = () => {
     if (
       props?.hiddenFields?.[ID.hf] &&
@@ -188,10 +181,9 @@ const Profile = () => {
         className="custom-tracker-profile-field-row"
         sx={{ alignItems: "flex-start", mb: 1 }}
       >
-        {/* ghost label keeps alignment with normal rows */}
+
         <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
 
-        {/* value column with five fixed-width cells */}
         <Box
           sx={{
             display: "grid",
@@ -213,7 +205,7 @@ const Profile = () => {
                     disabledManualFields
                     disabled={
                       attribute === ID.code || !!props?.disabledFields?.[attribute]
-                    } // Code locked
+                    } 
                     size="small"
                     {...(attribute === ID.hf ? HF_DIGIT_GUARDS : {})}
                     sx={{
@@ -258,7 +250,7 @@ const Profile = () => {
         <AttributeField
           attribute={ID.deviceId}
           disabledManualFields
-          disabled // always disabled; auto-composed
+          disabled 
           size="small"
           sx={{
             "& .MuiInputBase-root": { height: 36 },

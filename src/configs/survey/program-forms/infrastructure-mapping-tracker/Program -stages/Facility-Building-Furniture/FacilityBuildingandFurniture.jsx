@@ -19,25 +19,22 @@ const LABEL_COL_W = 300;
 const getDeId = (de) => de?.id || de?.dataElement?.id;
 const normalize = (s) => String(s || "").trim().toLowerCase();
 
-// Integer-only fields for this stage (same three)
 const INTEGER_ONLY_IDS = new Set(["bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53"]);
 
-// Normalize localized numerals to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0);
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
 
-// Read a DE value from current event (handles both shapes)
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -50,7 +47,6 @@ const getEventDEValue = (currentEvent, deId) => {
   return currentEvent[deId];
 };
 
-// --- small reusable red asterisk (matches your Equipments pattern) ---
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
     *
@@ -73,7 +69,6 @@ const FacilityBuildingandFurniture = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // i18n strings
   const trAssessmentDate = t("facility.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
@@ -96,7 +91,6 @@ const FacilityBuildingandFurniture = () => {
       : "Only whole numbers are allowed (no decimals).",
   });
 
-  // section titles mapping
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -117,7 +111,6 @@ const FacilityBuildingandFurniture = () => {
     }
   };
 
-  // Integer-only warnings (inline), same pattern as Wash
   const warnings = useMemo(() => {
     const w = {};
     INTEGER_ONLY_IDS.forEach((id) => {
@@ -259,7 +252,6 @@ const FacilityBuildingandFurniture = () => {
                     {showOperators && visibleOps.length > 0 && (
                       <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
                         <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
-                          {/* red * before Operators label */}
                           <Box
                             component="span"
                             sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4, display: "inline-flex", alignItems: "center" }}
@@ -287,7 +279,7 @@ const FacilityBuildingandFurniture = () => {
                                     sx={{ flex: "0 0 auto", minWidth: 100, display: "inline-flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", whiteSpace: "nowrap" }}
                                   >
                                     <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary" }}>
-                                      <DataValueLabel dataElement={hId} />
+                                      <DataValueLabel dataElement={hId} /> 
                                     </Box>
                                     <DataValueFieldNoBlur
                                       dataElement={hId}
@@ -313,7 +305,7 @@ const FacilityBuildingandFurniture = () => {
                       <Box sx={{ display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" }}>
                         <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
                           <DataValueLabel dataElement={keys.SERVICE_PROVIDER_ID} />
-                        </Box>
+                        </Box><RedStar />
                         <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                           <DataValueFieldNoBlur dataElement={keys.SERVICE_PROVIDER_ID} required />
                         </Box>

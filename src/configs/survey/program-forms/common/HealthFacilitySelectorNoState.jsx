@@ -32,7 +32,7 @@ const G = {
 const getName = (ou, language) => {
   const tx = (ou?.translations || []).find(
     (t) =>
-      (t.property === "NAME" || t.property === "SHORT_NAME") &&
+      (t.property === "NAME") &&
       (t.locale || "").toLowerCase().startsWith((language || "en").slice(0, 2).toLowerCase())
   );
   return tx?.value || ou?.displayName || ou?.name || "";
@@ -61,7 +61,6 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
-  // classify OUs
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [], districts = [], phs = [], chs = [], hcs = [], dhs = [];
     (orgUnits || []).forEach((ou) => {
@@ -75,14 +74,12 @@ const HealthFacilitySelectorNoState = ({
     return { provinces, districts, phs, chs, hcs, dhs };
   }, [orgUnits]);
 
-  // parent maps
   const dhoByProv = useMemo(() => mapByParent(districts), [districts]);
   const phByProv  = useMemo(() => mapByParent(phs),       [phs]);
   const chByProv  = useMemo(() => mapByParent(chs),       [chs]);
   const hcByDist  = useMemo(() => mapByParent(hcs),       [hcs]);
   const dhByDist  = useMemo(() => mapByParent(dhs),       [dhs]);
 
-  // state
   const [provId, setProvId] = useState(init?.province || "");
   const [l2, setL2] = useState(() => {
     if (init?.ph)       return { type: "PH",  id: init.ph };
@@ -96,7 +93,6 @@ const HealthFacilitySelectorNoState = ({
     return { type: "", id: "" };
   });
 
-  // sync with init (if external change)
   useEffect(() => {
     setProvId(init?.province || "");
     if (init?.ph) setL2({ type: "PH", id: init.ph });
@@ -109,7 +105,6 @@ const HealthFacilitySelectorNoState = ({
     else setL3({ type: "", id: "" });
   }, [init?.province, init?.district, init?.ph, init?.ch, init?.hc, init?.dh]);
 
-  // options
   const provOptions = useMemo(
     () =>
       (provinces || [])
@@ -145,7 +140,6 @@ const HealthFacilitySelectorNoState = ({
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [l2, hcByDist, dhByDist, language]);
 
-
   const emit = (nextProv, nextL2, nextL3) => {
     const province = nextProv || "";
     let district = "", ph = "", ch = "", hc = "", dh = "";
@@ -159,12 +153,10 @@ const HealthFacilitySelectorNoState = ({
     onChange?.({ province, district, ph, ch, hc, dh });
   };
 
-
-  const requireL2 = !!provId;          // province picked → L2 required
-  const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
+  const requireL2 = !!provId;          
+  const requireL3 = l2.type === "DHO"; 
   const l2Error   = requireL2 && !l2.id;
   const l3Error   = requireL3 && !l3.id;
-
 
   const isValid =
     (!provId && !l2.id && !l3.id) ||
@@ -174,21 +166,19 @@ const HealthFacilitySelectorNoState = ({
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  // clear buttons
 const ClearBtn = ({ onClick, disabled }) => (
-  <InputAdornment position="end" sx={{ mr: 2 /* ~4px */ }}>
+  <InputAdornment position="end" sx={{ mr: 2   /* ~4px */ }}>
     <IconButton
       size="small"
       onClick={onClick}
       disabled={disabled}
       edge="end"
-      sx={{ p: 0.5 }}  
+      sx={{ p: 0.5 }}   
     >
       <ClearIcon fontSize="small" />
     </IconButton>
   </InputAdornment>
 );
-
 
   const onProvChange = (e) => {
     const id = e.target.value || "";
@@ -213,14 +203,12 @@ const ClearBtn = ({ onClick, disabled }) => (
     setL3(nextL3); emit(provId, l2, nextL3);
   };
 
-  // labels
   const l1Label = labelsOverride?.level1 ?? <AttributeLabelNoState attribute={ids.province} />;
   const l2Label = labelsOverride?.level2 ?? "CH / PH / DHO";
   const l3Label = labelsOverride?.level3 ?? "DH / HC";
 
   return (
     <Box sx={{ display: "grid", rowGap: ROW_GAP }}>
-      {/* Province */}
       <FormControl fullWidth size="small" disabled={!!disabled}>
         <FormLabel sx={LABEL_SX}>{l1Label}</FormLabel>
         <Select
@@ -243,7 +231,6 @@ const ClearBtn = ({ onClick, disabled }) => (
         </Select>
       </FormControl>
 
-      {/* CH / PH / DHO */}
       <FormControl
         fullWidth
         size="small"
@@ -273,7 +260,6 @@ const ClearBtn = ({ onClick, disabled }) => (
 
       </FormControl>
 
-      {/* DH / HC — only when DHO picked */}
       {l2.type === "DHO" && (
         <FormControl
           fullWidth

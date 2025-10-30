@@ -11,10 +11,8 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import Accordion from "../../../common/Accordion";
 
-// columns: [Row label] [Primary/Alternate] [Name] [Phone] [Position]
 const GRID_COLS = "300px 140px repeat(3, 1fr)";
 
-// ---- primary + alternate DE mappings ----
 /** @type {Array<{label:string,name:string,phone:string,position:string, altName:string, altPhone:string, altPosition:string}>} */
 const ROWS = [
   // 1 Statistics
@@ -103,7 +101,6 @@ const ROWS = [
   },
 ];
 
-// i18n helpers/fallbacks
 const rowKey = (label) =>
   "focal.rows." + String(label).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 const LO_ROW = {

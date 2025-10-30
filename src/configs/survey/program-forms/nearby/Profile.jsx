@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/common/Profile.jsx
 import { Table, TableBody, TableCell, TableRow, Typography, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
@@ -15,7 +14,6 @@ const Profile = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  // i18n labels with Lao/EN fallbacks
   const trSelectNearest = t("profile.hf.selectNearest", {
     defaultValue: isLao
       ? "ເລືອກສະຖານທີ່ບໍລິການໃກ້ຄຽງ"
@@ -33,7 +31,7 @@ const Profile = () => {
     defaultValue: isLao ? "ໂຮງໝໍເມືອງປະເພດ / ໂຮງໝໍນ້ອຍ" : "District Hospital / Health Center",
   });
 
-  useChrTrackerStore(); // ensure store subscription
+  useChrTrackerStore(); 
 
   const { layout, actions, data } = useTrackerCaptureStore(
     useShallow((state) => ({
@@ -46,7 +44,6 @@ const Profile = () => {
   const { changeAttributeValue, setLayout } = actions || {};
   const { currentTei } = data || {};
 
-  // TEA IDs (this instance only)
   const IDS = {
     province: "pvY01Pt3GTk",
     district: "GbubCuHuzM7",
@@ -56,8 +53,7 @@ const Profile = () => {
     ch: "VF9VIPxkf9z",
   };
 
-  // initial values
-  const initVals = {
+   const initVals = {
     province: findAttributeValue(currentTei, IDS.province) || "",
     district: findAttributeValue(currentTei, IDS.district) || "",
     hc: findAttributeValue(currentTei, IDS.hc) || "",
@@ -68,7 +64,6 @@ const Profile = () => {
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
-  // receive validity from the selector and disable Save while invalid
   const [hfValid, setHfValid] = useState(true);
 
   useEffect(() => {
@@ -80,7 +75,6 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hfValid, layout?.profileFormEditing, setLayout]);
 
   return (

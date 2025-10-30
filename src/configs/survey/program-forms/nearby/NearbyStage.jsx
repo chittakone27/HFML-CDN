@@ -1,4 +1,3 @@
-// program-forms/nearby/NearbyStage.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -19,7 +18,6 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
-// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -49,16 +47,13 @@ const NearbyStage = () => {
   );
   const { currentEvent } = useCurrentEvent();
 
-  // includes: foot vs car + integer-only (now codes)
   const { warnings } = useNearbyRules();
   const hasWarnings = Object.keys(warnings || {}).length > 0;
 
-  // i18n strings
   const trAssessmentDate = t("assessment.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
-  // SECTION title (not stage)
   const SECTION_EN = "Details of nearby health facilities";
   const SECTION_LO = "ຂໍ້ມູນຂອງສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
   const trNearbySectionTitle = t("nearby.section.details", {
@@ -74,7 +69,6 @@ const NearbyStage = () => {
   };
   const trSectionTitle = (name) => (isNearbySection(name) ? trNearbySectionTitle : name);
 
-  // translate a warning code → message (EN/LO only, not both)
   const trWarn = (code) => {
     switch (code) {
       case "footVsCar":
@@ -92,15 +86,13 @@ const NearbyStage = () => {
       case "min1000":
         return t("nearby.rules.min1000", {
           min: 1000,
-          defaultValue: isLao ? "ຄ່າຂ້າມເຮືອບໍ່ຄວນຕໍ່າກວ່າ 1000 ກີບ" : "Value must be at least 1000",
+          defaultValue: isLao ? "ຄ່າຕ້ອງຢ່າງນ້ອຍ 1000" : "Value must be at least 1000",
         });
       default:
-        // fallback: if someone passed a literal message
         return typeof code === "string" ? code : "";
     }
   };
 
-  // stage / sections
   const stage = useMemo(
     () => program?.programStages?.find((ps) => ps.id === currentEvent?.programStage),
     [program?.programStages, currentEvent?.programStage]
@@ -123,7 +115,6 @@ const NearbyStage = () => {
     ];
   }, [stage]);
 
-  // all DEs we render
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -135,7 +126,6 @@ const NearbyStage = () => {
     return Array.from(new Set(ids));
   }, [sections]);
 
-  // missing check (all fields + eventDate)
   const missing = useMemo(() => {
     const m = [];
     for (const id of presentIds) {
@@ -148,7 +138,6 @@ const NearbyStage = () => {
     return m;
   }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // save/complete gating
   const disabled = missing.length > 0 || hasWarnings;
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
@@ -172,7 +161,6 @@ const NearbyStage = () => {
     }
   }, [actions, disabled]);
 
-  // Save handler (translate warning codes here too)
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_nearby_all_required";
@@ -202,11 +190,10 @@ const NearbyStage = () => {
         return { ok: true };
       });
     return () => actions.setHandlers && actions.setHandlers(KEY, null);
-  }, [actions, t, isLao]); // include t/isLao so translations reflect current locale
+  }, [actions, t, isLao]); 
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
-  // integer-only input guards for dBK06ybZUbT
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -228,7 +215,6 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Event date (required) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -292,7 +278,6 @@ const NearbyStage = () => {
                     {...extra}
                   />
 
-                  {/* INLINE MESSAGE UNDER FIELD (translated; single language) */}
                   {hasWarn && (
                     <Box
                       id={helpId}

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
-// helper
 const convertListToObj = (list, keyProperty, valueProperty) =>
   list
     ? list.reduce((result, current) => {
@@ -28,7 +27,7 @@ const useProfileRules = () => {
     : {};
 
   const statusRaw = attributes[STATUS_ATTR];
-  const status = norm(statusRaw); // e.g., "functioning"
+  const status = norm(statusRaw); 
 
   const [props, setProps] = useState({
     warnings: {},
@@ -41,15 +40,14 @@ const useProfileRules = () => {
   useEffect(() => {
     const hiddenFields = {};
 
-    // Hide YoXa89MGtIf when status is "Functioning" OR not set
-    if (!status || status === "functioning") {
+     if (!status || status === "functioning") {
       hiddenFields[TARGET_ATTR] = true;
     }
 
     setProps((prev) => ({ ...prev, hiddenFields }));
-  }, [status]); // ✅ only depends on status
+  }, [status]); 
 
-  return props; // { hiddenFields, disabledFields, ... }
+  return props; 
 };
 
 export default useProfileRules;

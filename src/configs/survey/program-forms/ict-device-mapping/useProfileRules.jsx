@@ -1,4 +1,3 @@
-// useProfileRules.js
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -24,17 +23,16 @@ const pad3 = (v) => {
   return s.padStart(3, "0");
 };
 
-// NEW: normalize Thai/Lao/Arabic numerals -> ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
@@ -45,7 +43,7 @@ const ID = {
 
   deviceType: "xQrdgnlPcC3",
   code: "y6RfdAq2zmQ",
-  hf: "odDm8AxiL1j",          // HF ID (user)
+  hf: "odDm8AxiL1j",          
   hftype: "STdn1v1AxLa",
   hfSequence: "xgb9vCptedt",
   num: "KZ5D0DFEqdf",
@@ -62,7 +60,6 @@ const useProfileRules = () => {
   const sourceOfFunding = norm(attributes[ID.sourceOfFunding]);
   const deviceType = norm(attributes[ID.deviceType]);
 
-  // NEW: sanitize HF to ASCII digits, keep max 4 chars (UI enforces too)
   const hf = toAsciiDigits(String(attributes[ID.hf] ?? "")).replace(/\D/g, "").slice(0, 4);
 
   const hftype = String(attributes[ID.hftype] ?? "").trim();
@@ -95,7 +92,7 @@ const useProfileRules = () => {
     const hideFor = {
       laptop: ["XRdw8EK5FJg"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
-      desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],
+      desktop: [ "XRdw8EK5FJg"],
       "smart phone": ["rIHJFrYHA27", "leCxCv4ZFaX"],
       smartphone: ["rIHJFrYHA27", "leCxCv4ZFaX"],
     };
