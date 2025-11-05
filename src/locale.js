@@ -232,7 +232,7 @@ const resources = {
       saveAndClose: "ບັນທຶກ ແລະ ອອກ",
       goBack: "ກັບໄປໜ້າຫຼັກ",
       register: "ລົງທະບຽນ",
-      teiList: "ລາຍຊື່ເດັກ",
+      teiList: "ລາຍຊື່ການລົງທະບຽນ",
       previousPage: "ໜ້າກ່ອນ",
       nextPage: "ໜ້າຕໍ່ໄປ",
       events: "ເຫດການ",
