@@ -14,11 +14,11 @@ const StyledAlert = styled(Alert)(({ theme }) => ({
   borderRadius: 0,
   fontSize: 16,
   "&.MuiAlert-standardInfo": {
-    border: "1px solid " + theme.palette.info.main,
+    border: "1px solid " + theme.palette.info.main
   },
   "&.MuiAlert-standardError": {
-    border: "1px solid " + theme.palette.error.main,
-  },
+    border: "1px solid " + theme.palette.error.main
+  }
 }));
 
 const Dli5 = () => {
@@ -26,11 +26,8 @@ const Dli5 = () => {
 
   const {
     currentEvent,
-    actions: { setCurrentEventDataValue, setCurrentEventProperty },
-  } = useEventCaptureStore(
-    (state) => ({ currentEvent: state.currentEvent, actions: state.actions }),
-    shallow
-  );
+    actions: { setCurrentEventDataValue, setCurrentEventProperty }
+  } = useEventCaptureStore((state) => ({ currentEvent: state.currentEvent, actions: state.actions }), shallow);
 
   const villageName = currentEvent.dataValues["S3FyEAI34OA"];
 
@@ -38,16 +35,10 @@ const Dli5 = () => {
     (async () => {
       if (currentEvent.eventDate && villageName) {
         const orgUnit = currentEvent.orgUnit;
-        const startDate = moment(currentEvent.eventDate)
-          .subtract(14, "days")
-          .format("YYYY-MM-DD");
-        const endDate = moment(currentEvent.eventDate)
-          .add(14, "days")
-          .format("YYYY-MM-DD");
+        const startDate = moment(currentEvent.eventDate).subtract(14, "days").format("YYYY-MM-DD");
+        const endDate = moment(currentEvent.eventDate).add(14, "days").format("YYYY-MM-DD");
 
-        const result = await pull(
-          `/api/events?orgUnit=${orgUnit}&program=QQkFwiPkEBv&startDate=${startDate}&endDate=${endDate}`
-        );
+        const result = await pull(`/api/events?orgUnit=${orgUnit}&program=QQkFwiPkEBv&startDate=${startDate}&endDate=${endDate}`);
 
         if (result.events?.length === 0) {
           setVillageStatus("valid");
@@ -59,10 +50,7 @@ const Dli5 = () => {
           result.events.forEach(({ dataValues, event }) => {
             if (event === currentEvent.event) return;
             if (dataValues?.length) {
-              const found = dataValues.find(
-                (de) =>
-                  de.dataElement === "S3FyEAI34OA" && de.value === villageName
-              );
+              const found = dataValues.find((de) => de.dataElement === "S3FyEAI34OA" && de.value === villageName);
               if (found) exist = true;
             }
           });
@@ -103,20 +91,14 @@ const Dli5 = () => {
       <Table>
         <TableBody>
           <VillageName />
-          {villageName && villageStatus === "valid" && (
-            <MapTable
-              dataElementConfigs={dataElementConfigs}
-              tableName="dli5-form-container"
-            />
-          )}
+          {villageName && villageStatus === "valid" && <MapTable dataElementConfigs={dataElementConfigs} tableName="dli5-form-container" />}
         </TableBody>
       </Table>
 
       {villageStatus === "inValid" && (
         <>
           <StyledAlert showIcon color="error" severity="error">
-            ບ້ານນີ້ໄດ້ຖືກລົງເຊື່ອມສານສຳເລັດແລ້ວ ໃນໄລຍະ 1-2
-            ອາທິດຜ່ານມາກະລຸນາກວດຄືນ
+            ບ້ານນີ້ໄດ້ຖືກລົງເຊື່ອມສານສຳເລັດແລ້ວ ໃນໄລຍະ 1-2 ອາທິດຜ່ານມາກະລຸນາກວດຄືນ
           </StyledAlert>
           <StyledAlert showIcon color="error" severity="error">
             This village was checked 2 weeks ago or in 2 next weeks
@@ -125,8 +107,7 @@ const Dli5 = () => {
       )}
 
       <StyledAlert showIcon color="info" severity="info">
-        ຖ້າທ່ານບໍ່ເຫັນຊື່ບ້ານຂື້ນມາ, ກະລຸນາລ້າງຂໍ້ມູນໃນ browser, ຫຼືຕິດຕໍ່
-        ວຽງທອງ 9113 2319/ຊົ່ງຢ່າງ 9244 4414
+        ຖ້າທ່ານບໍ່ເຫັນຊື່ບ້ານຂື້ນມາ, ກະລຸນາລ້າງຂໍ້ມູນໃນ browser, ຫຼືຕິດຕໍ່ ວຽງທອງ 9113 2319/ຊົ່ງຢ່າງ 9244 4414
       </StyledAlert>
     </Box>
   );
@@ -138,10 +119,17 @@ const packageIds = [
   "znHyW54QMzM",
   "LW56NRgi5NL",
   "MbeI4sw7AYQ",
+  "WQJuBnMKoID",
+  "HhPBfgdUcCH",
+  "bx4AX1YKXOw",
+  "Nvx6jzRpMo2",
+  "RYxMAmqMHbF",
+  "L4iCjMJLSnO",
+  "ZMLmx5B81Ag"
 ];
 
 const commonProps = {
-  fieldCellProps: { className: "checkbox" },
+  fieldCellProps: { className: "checkbox" }
 };
 
 const dataElementConfigs = [
@@ -150,6 +138,13 @@ const dataElementConfigs = [
   [{ id: "XI7JpBKucGT", ...commonProps }],
   [{ id: "kdnUVUiMlAt", ...commonProps }],
   [{ id: "MbeI4sw7AYQ", ...commonProps }],
+  [{ id: "WQJuBnMKoID", ...commonProps }],
+  [{ id: "HhPBfgdUcCH", ...commonProps }],
+  [{ id: "bx4AX1YKXOw", ...commonProps }],
+  [{ id: "Nvx6jzRpMo2", ...commonProps }],
+  [{ id: "RYxMAmqMHbF", ...commonProps }],
+  [{ id: "L4iCjMJLSnO", ...commonProps }],
+  [{ id: "ZMLmx5B81Ag", ...commonProps }]
 ];
 
 export default Dli5;

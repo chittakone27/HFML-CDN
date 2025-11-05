@@ -29,7 +29,6 @@ const AncVisitDetails = () => {
   // const hiddenFields = [];
   // const helpers = {};
   // const props = {};
-
   useEffect(() => {
     let order = ["chid", "eventDate"];
     currentProgramStage.programStageSections.forEach((pss) => {
