@@ -18,6 +18,7 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
+// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -47,7 +48,7 @@ const NearbyStage = () => {
   );
   const { currentEvent } = useCurrentEvent();
 
-  const { warnings } = useNearbyRules();
+  const { warnings, hiddenFields } = useNearbyRules();
   const hasWarnings = Object.keys(warnings || {}).length > 0;
 
   const trAssessmentDate = t("assessment.assessmentDate", {
@@ -123,8 +124,9 @@ const NearbyStage = () => {
         if (id) ids.push(id);
       });
     });
-    return Array.from(new Set(ids));
-  }, [sections]);
+    const uniq = Array.from(new Set(ids));
+    return hiddenFields ? uniq.filter((id) => !hiddenFields[id]) : uniq;
+  }, [sections, hiddenFields]);
 
   const missing = useMemo(() => {
     const m = [];
@@ -190,7 +192,7 @@ const NearbyStage = () => {
         return { ok: true };
       });
     return () => actions.setHandlers && actions.setHandlers(KEY, null);
-  }, [actions, t, isLao]); 
+  }, [actions, t, isLao]);
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
@@ -215,6 +217,7 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Event date (required) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -243,6 +246,8 @@ const NearbyStage = () => {
           {(section.dataElements ?? []).map((de) => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
+
+            if (hiddenFields && hiddenFields[deId]) return null;
 
             const hasWarn = !!warnings?.[deId];
             const helpId = `help-${deId}`;

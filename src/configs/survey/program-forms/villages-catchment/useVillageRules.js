@@ -6,6 +6,10 @@ const FOOT_ID = "ooCoZbdc3az";
 const CAR_ID  = "bHbKBszX1LW";  
 const INTEGER_ID = "OWAR8Vpa8IW"; 
 
+
+const TRIGGER_ID = "SOWCUUYumd6";
+
+
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, ch => {
     const c = ch.charCodeAt(0);
@@ -28,6 +32,14 @@ const parseHMToMinutes = (val) => {
   return hours * 60 + mins;
 };
 
+const truthy = (v) => {
+  const s = String(v ?? "").trim().toLowerCase();
+  return v === false || v === 0 || s === "0" || s === "false" || s === "no" || s === "n";
+};
+const explicitNo = (v) => {
+  const s = String(v ?? "").trim().toLowerCase();
+  return v === false || s === "false" || s === "no" || s === "0" || s === "n";
+};
 const useVillageRules = () => {
   const [props, setProps] = useState({
     warnings: {},          
@@ -46,17 +58,23 @@ const useVillageRules = () => {
   useEffect(() => {
     const assignations = {};
     const warnings = {};
+    const hiddenFields = {};
 
     const dv = (id) => currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
-    const rawInt = toAsciiDigits(String(dv(INTEGER_ID) ?? "").trim());
-    if (rawInt !== "") {
-      if (!/^\d+$/.test(rawInt)) {
-        warnings[INTEGER_ID] = "integerOnly";
-      } else {
-        const num = Number(rawInt);
-        if (!Number.isFinite(num) || num < 1000) {
-          warnings[INTEGER_ID] = "min1000";
+    const triggerVal = dv(TRIGGER_ID);
+    if (explicitNo(triggerVal)) hiddenFields[INTEGER_ID] = true;
+
+    if (!hiddenFields[INTEGER_ID]) {
+      const rawInt = toAsciiDigits(String(dv(INTEGER_ID) ?? "").trim());
+      if (rawInt !== "") {
+        if (!/^\d+$/.test(rawInt)) {
+          warnings[INTEGER_ID] = "integerOnly";
+        } else {
+          const num = Number(rawInt);
+          if (!Number.isFinite(num) || num < 1000) {
+            warnings[INTEGER_ID] = "min1000";
+          }
         }
       }
     }
@@ -65,7 +83,7 @@ const useVillageRules = () => {
       ...prev,
       assignations,
       warnings,
-      hiddenFields: prev.hiddenFields || {},
+      hiddenFields,
       disabledFields: prev.disabledFields || {},
       hiddenOptions: prev.hiddenOptions || {},
     }));

@@ -27,7 +27,7 @@ const toAsciiDigits = (str = "") =>
     (ch) => {
       const c = ch.charCodeAt(0);
       if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0);
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
       if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
       if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
       if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
@@ -191,7 +191,7 @@ const FacilityBuildingandFurniture = () => {
         const MONTH_ORDER = [
           "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
           "X67WGTx2djm","t1Z7lsQ2Qte","SO1P5eMGMSc","L1lvlYVBaVN",
-          "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE",
+          "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE","l4g6U5MNdxQ"
         ];
         const visibleMonths = MONTH_ORDER.filter(
           (id) => months.ids.has(id) && !hiddenFields[id]
@@ -323,7 +323,6 @@ const FacilityBuildingandFurniture = () => {
                     {showNewOperators && visibleNewOps.length > 0 && (
                       <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
                         <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
-                          {/* red * before On-site internet operator label */}
                           <Box
                             component="span"
                             sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4, display: "inline-flex", alignItems: "center" }}
@@ -379,14 +378,13 @@ const FacilityBuildingandFurniture = () => {
                     {Row}
                     <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
                       <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", py: "10px", display: "flex", alignItems: "center" }}>
-                        {/* red * before Months label */}
                         <Box component="span" sx={{ fontWeight: 400, fontSize: 16, display: "inline-flex", alignItems: "center" }}>
                           {trMonthsLabel}
                           <RedStar />
                         </Box>
                       </Box>
                       <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
-                        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(6, minmax(120px, 1fr))", gap: 2, alignItems: "start" }}>
+                        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(120px, 1fr))", gap: 2, alignItems: "start" }}>
                           {visibleMonths.map((mId) => (
                             <Box key={mId} sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", minWidth: 0 }}>
                               <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary", lineHeight: 1.2 }}>

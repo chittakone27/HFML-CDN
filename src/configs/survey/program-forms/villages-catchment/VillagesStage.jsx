@@ -32,7 +32,7 @@ const isEmpty = (v) => {
   return false;
 };
 
-const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; 
+const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; // integer-only DE
 
 const VillagesStage = () => {
   const { t, i18n } = useTranslation();
@@ -46,6 +46,7 @@ const VillagesStage = () => {
   );
   const { currentEvent } = useCurrentEvent();
   const props = useVillageRules(); 
+  const hiddenFields = props?.hiddenFields || {};
 
   const trStageDate = t("village.stageDate", {
     defaultValue: isLao ? "ວັນທີ່ບັນທຶກ" : "Stage date",
@@ -105,8 +106,9 @@ const VillagesStage = () => {
         if (id) ids.push(id);
       });
     });
-    return Array.from(new Set(ids));
-  }, [sections]);
+    const uniq = Array.from(new Set(ids));
+    return uniq.filter((id) => !hiddenFields[id]);
+  }, [sections, hiddenFields]);
 
   const missing = useMemo(() => {
     const m = [];
@@ -227,6 +229,7 @@ const VillagesStage = () => {
           {(section.dataElements ?? []).map((de) => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
+            if (hiddenFields[deId]) return null;
 
             const hasWarn = !!props?.warnings?.[deId];
             const helpId = `help-${deId}`;

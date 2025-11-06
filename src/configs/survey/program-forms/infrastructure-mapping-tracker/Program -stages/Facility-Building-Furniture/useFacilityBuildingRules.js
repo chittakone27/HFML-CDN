@@ -14,26 +14,21 @@ const TYPE_CONN_ID   = "eWrvOj7ZUL2"; // Wifi/Cable/Both
 const WIFI_FIELD_ID  = "nhilsZioxC9"; // Wifi detail
 const CABLE_FIELD_ID = "xQS1owULSbL"; // Cable detail
 
-// --- Existing 6.1 operator checkboxes (multi-select) ---
 const OPERATOR_IDS = new Set([
   "zLgkhPBoASd","fspSJIn4Vqq","oxzEWQ0BkDQ","OADBGdVi279",
   "Y0KkCeX3jUv","TXc0EBAuhHE","rKIPUko4uIS","BRHYwOIZ01O",
 ]);
 
-// --- NEW 8.1 operator group (regular internet network) ---
 const NEW_OPERATOR_IDS = new Set([
   "Pza84UE33Qh","rMDTqJBGufz","cokIAx7lbWF","PMN34xrGhew",
   "l91Lp6CKVQW","clHAviSg1NZ","zxfjpZ9yziJ","khA9UFm6Qpq",
 ]);
 
-// If khA9UFm6Qpq true → require specify text
 const NEW_OP_TRIGGER_ID = "khA9UFm6Qpq";
 const NEW_OP_SPECIFY_ID = "Zc3FhnkGI7H";
 
-// Extra field to show + make mandatory when 6. anchor is true
 const EXT_HIDE_WHEN_ANCHOR_FALSE = "tknBpZWiu89";
 
-// Connectivity group (includes type selector & details + other singles)
 const CONN_FIELDS = [
   TYPE_CONN_ID,
   NEW_OP_SPECIFY_ID,
@@ -43,7 +38,6 @@ const CONN_FIELDS = [
   "SbpLKeVJBZd",
 ];
 
-// initial always-mandatory (when visible) 
 const GLOBAL_MANDATORY_IDS = new Set([
   "bEWpwn7HfUI",
   "OpKuX0h3iSf",
@@ -55,7 +49,6 @@ const GLOBAL_MANDATORY_IDS = new Set([
   "SVSfEQFVBUj", // months anchor
 ]);
 
-// ===== integer-only constraint IDs =====
 const INTEGER_ONLY_IDS = new Set([
   "bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53",
 ]);
@@ -71,12 +64,11 @@ const ALWAYS_REQ_IDS = new Set([
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
-// -------- Months block (always shown; require ≥1) --------
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 const MONTH_IDS = new Set([
   "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
   "X67WGTx2djm","t1Z7lsQ2Qte","SO1P5eMGMSc","L1lvlYVBaVN",
-  "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE",
+  "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE","l4g6U5MNdxQ",
 ]);
 
 // ------------------------- Helpers -------------------------
@@ -97,7 +89,7 @@ const toAsciiDigits = (str = "") =>
     (ch) => {
       const c = ch.charCodeAt(0);
       if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0);
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
       if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
       if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
       if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
@@ -207,11 +199,11 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       }
 
       if (id === SERVICE_PROVIDER_ID) {
-        req[id] = showServiceProvider && !hiddenFields[id]; // Others → Service provider
+        req[id] = showServiceProvider && !hiddenFields[id]; 
         continue;
       }
       if (id === NEW_OP_SPECIFY_ID) {
-        req[id] = showNewSpecify && !hiddenFields[id]; // khA9UFm6Qpq → specify
+        req[id] = showNewSpecify && !hiddenFields[id]; 
         continue;
       }
 
@@ -220,7 +212,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
         continue;
       }
 
-      // Stage guard enforces all visible singles anyway.
       req[id] = false;
     }
     return req;
@@ -364,6 +355,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       TYPE_CONN_ID, WIFI_FIELD_ID, CABLE_FIELD_ID, MONTH_ANCHOR_ID,
     },
     state: {
+
       showConn,
       showOperators,
       showServiceProvider,
