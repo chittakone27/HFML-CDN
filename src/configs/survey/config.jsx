@@ -17,6 +17,9 @@ import VillagesStage from "./program-forms/villages-catchment/VillagesStage";
 import NearbyProfile from "./program-forms/nearby/Profile";
 import NearbyStage from "./program-forms/nearby/NearbyStage";
 
+//logbook
+import ScannedLogBook from "./program-forms/infrastructure-mapping-tracker/Program -stages/Scanned-Logbook/ScannedLogBook";
+
 const customForms = {
   // ICT Device Mapping (tracker)
   D5YBg956c4L: {
@@ -32,6 +35,7 @@ const customForms = {
     FQGIR6wmBWZ: Equipments,
     ZOMnNIWsrX7: IctAdminEquipments,
     L6OUrGJCq69: FocalPoints,
+    YLDq73HwBtm: ScannedLogBook,
   },
 
   // Villages in catchment area (tracker)
