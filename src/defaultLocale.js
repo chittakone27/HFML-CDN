@@ -182,7 +182,7 @@ const resources = {
       programDataSet: "ເລືອກຊຸດຂໍ້ມູນ/ສາຍງານ",
       selectOrgUnit: "ເລືອກໂຄງຮ່າງການຈັດຕັ້ງ",
       selectPeriod: "ເລືອຊ່ວງເວລາ",
-      newEvent: "ລົງທະບຽນເຫດການໃຫມ່",
+      newEvent: "ບັນທຶກເຫດການໃໝ່",
       previousYear: "ປີກ່ອນໜ້າ",
       nextYear: "ປີຕໍ່ໄປ",
       eventEntryForm: "ຟອມປ້ອນແບບເຫດການ",
