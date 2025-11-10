@@ -43,7 +43,12 @@ const DataValueFieldNoBlur = (props) => {
   const { valueType, id } = foundDe;
   const completed = currentEvent.status === "COMPLETED" ? true : false;
   const foundDataValue = currentEvent.dataValues.find((dv) => dv.dataElement === dataElement);
-  const value = foundDataValue ? foundDataValue.value : "";
+  let value = foundDataValue ? foundDataValue.value : "";
+
+  const isImageOrFileResource = ["FILE_RESOURCE", "IMAGE"].includes(valueType);
+  if (isImageOrFileResource && value) {
+    value = `${dataElement}-${currentEvent.event}-${value}`;
+  }
 
   if (hiddenOptions) {
     valueSet = valueSet
