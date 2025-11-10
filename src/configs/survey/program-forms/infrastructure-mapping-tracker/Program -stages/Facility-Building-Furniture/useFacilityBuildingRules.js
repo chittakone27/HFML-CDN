@@ -3,32 +3,41 @@ import { useTranslation } from "react-i18next";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
+// 7. On-site internet available (can connect to the internet?)
 const AVAIL_SEL = "fszEmzFYXHU";
 
+// 6. Can receive phone call? (anchor for 6.1 operator list)
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";
 
+// Operator: Others (checkbox) → then require Service Provider text
 const OTHERS_ID = "BRHYwOIZ01O";
 const SERVICE_PROVIDER_ID = "O5TwLn4hWFr";
 
+// 8. Connection type selector + detail fields
 const TYPE_CONN_ID   = "eWrvOj7ZUL2"; // Wifi/Cable/Both
 const WIFI_FIELD_ID  = "nhilsZioxC9"; // Wifi detail
 const CABLE_FIELD_ID = "xQS1owULSbL"; // Cable detail
 
+// --- Existing 6.1 operator checkboxes (multi-select) ---
 const OPERATOR_IDS = new Set([
   "zLgkhPBoASd","fspSJIn4Vqq","oxzEWQ0BkDQ","OADBGdVi279",
   "Y0KkCeX3jUv","TXc0EBAuhHE","rKIPUko4uIS","BRHYwOIZ01O",
 ]);
 
+// --- NEW 8.1 operator group (regular internet network) ---
 const NEW_OPERATOR_IDS = new Set([
   "Pza84UE33Qh","rMDTqJBGufz","cokIAx7lbWF","PMN34xrGhew",
   "l91Lp6CKVQW","clHAviSg1NZ","zxfjpZ9yziJ","khA9UFm6Qpq",
 ]);
 
+// If khA9UFm6Qpq true → require specify text
 const NEW_OP_TRIGGER_ID = "khA9UFm6Qpq";
 const NEW_OP_SPECIFY_ID = "Zc3FhnkGI7H";
 
+// Extra field to show + make mandatory when 6. anchor is true
 const EXT_HIDE_WHEN_ANCHOR_FALSE = "tknBpZWiu89";
 
+// Connectivity group (includes type selector & details + other singles)
 const CONN_FIELDS = [
   TYPE_CONN_ID,
   NEW_OP_SPECIFY_ID,
@@ -53,7 +62,7 @@ const INTEGER_ONLY_IDS = new Set([
   "bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53",
 ]);
 
-// Additional fields to mark as required in UI (when visible)
+
 const ALWAYS_REQ_IDS = new Set([
   TYPE_CONN_ID,          // show asterisk on connection type
   WIFI_FIELD_ID,         // required when Wifi or Both
@@ -64,6 +73,7 @@ const ALWAYS_REQ_IDS = new Set([
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
+// -------- Months block (always shown; require ≥1) --------
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 const MONTH_IDS = new Set([
   "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
@@ -83,22 +93,25 @@ const isEmpty = (v) => {
   return false;
 };
 
+
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
       return ch;
     }
   );
 
+// Integer check that accepts localized digits
 const isIntegerOnly = (v) => /^\d+$/.test(toAsciiDigits(String(v ?? "").trim()));
 
+// Read a DE value from current event (supports dataValues and flattened)
 const getValue = (event, deId) => {
   if (!event) return undefined;
   const arr = event?.dataValues;
@@ -157,9 +170,10 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const showOperators = truthy(anchorVal);
   const showServiceProvider = showOperators && truthy(othersVal);
 
-  const showNewOperators = showConn; 
+  const showNewOperators = showConn; // 8.1 group visible with connection section
   const showNewSpecify = showNewOperators && truthy(newTriggerVal);
 
+  // this section's DE ids
   const sectionIds = (sectionDEs || [])
     .map((de) => de?.id || de?.dataElement?.id)
     .filter(Boolean);
@@ -176,6 +190,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       if (!showNewSpecify) h[NEW_OP_SPECIFY_ID] = true;
     }
 
+    // Operators 6.1
     if (!showOperators) {
       for (const id of OPERATOR_IDS) h[id] = true;
       h[SERVICE_PROVIDER_ID] = true;
@@ -199,11 +214,11 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       }
 
       if (id === SERVICE_PROVIDER_ID) {
-        req[id] = showServiceProvider && !hiddenFields[id]; 
+        req[id] = showServiceProvider && !hiddenFields[id]; // Others → Service provider
         continue;
       }
       if (id === NEW_OP_SPECIFY_ID) {
-        req[id] = showNewSpecify && !hiddenFields[id]; 
+        req[id] = showNewSpecify && !hiddenFields[id]; // khA9UFm6Qpq → specify
         continue;
       }
 
@@ -217,6 +232,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     return req;
   }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify]);
 
+  // -------------------- Clear values when hidden --------------------
   useEffect(() => {
     if (!currentEvent?.event || !actions?.changeDataValue) return;
     const evId = currentEvent.event;
@@ -228,10 +244,12 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     });
   }, [hiddenFields, currentEvent?.event, actions, currentEvent]);
 
+  // -------------------- Master-guard registration --------------------
   useEffect(() => {
     if (!actions) return;
     const ev = currentEvent;
 
+    // helper: any of the given ids selected (for multi-select groups)
     const anySelected = (ids) => {
       if (!ev) return false;
       for (const id of ids) {
@@ -241,6 +259,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       return false;
     };
 
+    // recompute minimal visibility used by guard
     const selStage = normalize(getValue(ev, AVAIL_SEL));
     const showConnStage = selStage !== "" && selStage !== "not available";
     const typeStage = normalize(getValue(ev, TYPE_CONN_ID));
@@ -251,12 +270,14 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     const showServiceProviderStage =
       truthy(getValue(ev, OP_ANCHOR_ID)) && truthy(getValue(ev, OTHERS_ID));
 
+    // ----- REQUIRED: ALL visible single-value fields in this section -----
     const singleCandidates = sectionIds.filter(
       (id) => !OPERATOR_IDS.has(id) && !NEW_OPERATOR_IDS.has(id) && !MONTH_IDS.has(id)
     );
 
     const visibleSingles = singleCandidates.filter((id) => !hiddenFields[id]);
 
+    // Wifi/Cable details only when their types are chosen
     if (!showWifiStage) {
       const idx = visibleSingles.indexOf(WIFI_FIELD_ID);
       if (idx >= 0) visibleSingles.splice(idx, 1);
@@ -272,16 +293,20 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       if (isEmpty(val)) missingSingles.push(id);
     }
 
+    // ----- REQUIRED: groups (multi-select) -----
     const needOneOp6   = showOp6Stage  && !anySelected(Array.from(OPERATOR_IDS));     // 6.1 when 6==true
     const needOneOp8   = showConnStage && !anySelected(Array.from(NEW_OPERATOR_IDS)); // 8.1 when connection shown
     const needOneMonth =                !anySelected(Array.from(MONTH_IDS));          // months always
 
+    // ----- Additional singles driven by booleans -----
+    // Others → service provider text
     const missingSvcProvider =
       showServiceProviderStage && isEmpty(getValue(ev, SERVICE_PROVIDER_ID));
-
+    // khA9UFm6Qpq → specify text
     const missingNewSpecify =
       showNewSpecifyStage && isEmpty(getValue(ev, NEW_OP_SPECIFY_ID));
 
+    // ----- Integer-only checks -----
     const invalidIntegerIds = [];
     for (const id of INTEGER_ONLY_IDS) {
       if (hiddenFields[id]) continue;
@@ -295,9 +320,11 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       missingSvcProvider || missingNewSpecify ||
       invalidIntegerIds.length > 0;
 
+    // Register this section in the global registry
     const reg = getRegistry();
     const sectionKey = sectionIds[0] || `sec_${Math.random().toString(36).slice(2, 7)}`;
 
+    // Per-section checker (used by master on Save/Complete)
     const checkSection = () => {
       const msgs = [];
       if (missingSingles.length) msgs.push("Please complete all required fields.");
@@ -313,9 +340,11 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       };
     };
 
+    // write + recompute live disable
     reg.set(sectionKey, { disabled: sectionDisabled, check: checkSection });
     setCombinedDisabled(actions);
 
+    // Install/refresh MASTER handler (single entry point the app will call)
     if (actions.setHandlers) {
       const MASTER_KEY = "eventSave_facilityStageMaster";
       actions.setHandlers(MASTER_KEY, async () => {
@@ -328,6 +357,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       });
     }
 
+    // Cleanup: remove this section on unmount and recompute
     return () => {
       const r = getRegistry();
       r.delete(sectionKey);
@@ -355,7 +385,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       TYPE_CONN_ID, WIFI_FIELD_ID, CABLE_FIELD_ID, MONTH_ANCHOR_ID,
     },
     state: {
-
+      // expose current visibility for the UI if needed
       showConn,
       showOperators,
       showServiceProvider,

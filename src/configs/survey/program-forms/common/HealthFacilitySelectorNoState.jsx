@@ -19,20 +19,21 @@ const LABEL_SX = {};
 const SELECT_SX = { "& .MuiSelect-select": { textAlign: "left", py: 1 } };
 const ROW_GAP = 1;
 
+// OU group IDs
 const G = {
   PHO: "jblbYwuvO33",   // Province
   DHO: "Zh1inFu0Z2O",   // District
   PH:  "GiRpQWVJ24q",   // Provincial Hospital
-  DH_A:"Ky8EJEqdpGP",   // District Hospital A
-  DH_B:"ZcbWJfYaX5n",   // District Hospital B
+  DH:  "S8nZUO4pUE8",   // District Hospital (A+B combined)
   HC:  "U53tdte60Ku",   // Health Center
   CH:  "Wg7j9DPk2n5",   // Central Hospital
+  DC:  "OwxKU9KCNMv",   // District Service Center (treat as DH)
 };
 
 const getName = (ou, language) => {
   const tx = (ou?.translations || []).find(
     (t) =>
-      (t.property === "NAME") &&
+      (t.property === "NAME" || t.property === "SHORT_NAME") &&
       (t.locale || "").toLowerCase().startsWith((language || "en").slice(0, 2).toLowerCase())
   );
   return tx?.value || ou?.displayName || ou?.name || "";
@@ -61,6 +62,7 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
+  // classify OUs
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [], districts = [], phs = [], chs = [], hcs = [], dhs = [];
     (orgUnits || []).forEach((ou) => {
@@ -69,11 +71,13 @@ const HealthFacilitySelectorNoState = ({
       if (inGroup(ou, G.PH))  phs.push(ou);
       if (inGroup(ou, G.CH))  chs.push(ou);
       if (inGroup(ou, G.HC))  hcs.push(ou);
-      if (inGroup(ou, G.DH_A) || inGroup(ou, G.DH_B)) dhs.push(ou);
+      // Treat DH and DC as DH-type
+      if (inGroup(ou, G.DH) || inGroup(ou, G.DC)) dhs.push(ou);
     });
     return { provinces, districts, phs, chs, hcs, dhs };
   }, [orgUnits]);
 
+  // parent maps
   const dhoByProv = useMemo(() => mapByParent(districts), [districts]);
   const phByProv  = useMemo(() => mapByParent(phs),       [phs]);
   const chByProv  = useMemo(() => mapByParent(chs),       [chs]);
@@ -105,6 +109,7 @@ const HealthFacilitySelectorNoState = ({
     else setL3({ type: "", id: "" });
   }, [init?.province, init?.district, init?.ph, init?.ch, init?.hc, init?.dh]);
 
+  // options
   const provOptions = useMemo(
     () =>
       (provinces || [])
@@ -140,6 +145,7 @@ const HealthFacilitySelectorNoState = ({
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [l2, hcByDist, dhByDist, language]);
 
+  // propagate selection to parent
   const emit = (nextProv, nextL2, nextL3) => {
     const province = nextProv || "";
     let district = "", ph = "", ch = "", hc = "", dh = "";
@@ -153,8 +159,8 @@ const HealthFacilitySelectorNoState = ({
     onChange?.({ province, district, ph, ch, hc, dh });
   };
 
-  const requireL2 = !!provId;          
-  const requireL3 = l2.type === "DHO"; 
+  const requireL2 = !!provId;          // province picked → L2 required
+  const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
   const l2Error   = requireL2 && !l2.id;
   const l3Error   = requireL3 && !l3.id;
 
@@ -166,19 +172,19 @@ const HealthFacilitySelectorNoState = ({
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-const ClearBtn = ({ onClick, disabled }) => (
-  <InputAdornment position="end" sx={{ mr: 2   /* ~4px */ }}>
-    <IconButton
-      size="small"
-      onClick={onClick}
-      disabled={disabled}
-      edge="end"
-      sx={{ p: 0.5 }}   
-    >
-      <ClearIcon fontSize="small" />
-    </IconButton>
-  </InputAdornment>
-);
+  const ClearBtn = ({ onClick, disabled }) => (
+    <InputAdornment position="end" sx={{ mr: 2 }}>
+      <IconButton
+        size="small"
+        onClick={onClick}
+        disabled={disabled}
+        edge="end"
+        sx={{ p: 0.5 }}
+      >
+        <ClearIcon fontSize="small" />
+      </IconButton>
+    </InputAdornment>
+  );
 
   const onProvChange = (e) => {
     const id = e.target.value || "";

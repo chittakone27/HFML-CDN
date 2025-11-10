@@ -13,9 +13,11 @@ import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
 import Accordion from "../common/Accordion";
+// import useAssessmentRules from "./useAssessmentRules"; // keep if you use it
 
 const GRID_COLS = "300px 1fr";
 
+// --- helpers used in other stages -------------------------------------------
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -33,8 +35,10 @@ const isEmpty = (v) => {
   return false;
 };
 
+// NEW: list any DEs that should NOT be mandatory in this stage
 const NOT_REQUIRED = new Set(["audIElWyoJP"]);
 
+// tiny red asterisk like other stages
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", ml: 0.5 }} aria-hidden="true">
    
@@ -53,6 +57,7 @@ const Assessment = () => {
   );
   const { currentEvent } = useCurrentEvent();
 
+  // Use your custom rules hook if present (kept optional to avoid breaking)
   const props =
     typeof useAssessmentRules === "function" ? useAssessmentRules() : {};
 
@@ -69,17 +74,20 @@ const Assessment = () => {
     return displayName;
   };
 
+  // ---- existing visibility rules you had ------------------------------------
   const norm = (s) => String(s ?? "").toLowerCase().trim();
   const dataValuesArr = currentEvent?.dataValues ?? [];
   const getDeValueLocal = (deId) =>
     dataValuesArr.find((dv) => dv?.dataElement === deId)?.value;
 
+  // controllers
   const nhQC_val = norm(getDeValueLocal("nhQCkj3UWJK"));
   const jr3E_val = norm(getDeValueLocal("jr3EVDUQRhX"));
 
   const show_ayj5xsLBA0T = nhQC_val === "other";
   const show_ZXzj7W5848O = jr3E_val === "other";
 
+  // clear hidden dependents (keep your behavior)
   useEffect(() => {
     if (!currentEvent?.event) return;
     if (!show_ayj5xsLBA0T) {
@@ -90,6 +98,7 @@ const Assessment = () => {
     }
   }, [show_ayj5xsLBA0T, show_ZXzj7W5848O, currentEvent?.event, actions]);
 
+  // apply assignations from rules (unchanged)
   useEffect(() => {
     if (!currentEvent?.event) return;
     if (!props?.assignations) return;
@@ -98,14 +107,15 @@ const Assessment = () => {
     });
   }, [actions, currentEvent?.event, props?.assignations]);
 
-   const sections = useMemo(() => {
+  // Sections
+  const sections = useMemo(() => {
     const stage = program?.programStages?.find(
       (ps) => ps.id === currentEvent?.programStage
     );
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-
+  // Build the set of VISIBLE DEs
   const visibleDeIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -113,9 +123,11 @@ const Assessment = () => {
         const deId = de?.id || de?.dataElement?.id;
         if (!deId) return;
 
+        // respect your conditional hides
         if (deId === "ayj5xsLBA0T" && !show_ayj5xsLBA0T) return;
         if (deId === "ZXzj7W5848O" && !show_ZXzj7W5848O) return;
 
+        // honor hiddenFields from rules hook if provided
         if (props?.hiddenFields?.[deId]) return;
 
         ids.push(deId);
@@ -124,11 +136,12 @@ const Assessment = () => {
     return ids;
   }, [sections, show_ayj5xsLBA0T, show_ZXzj7W5848O, props?.hiddenFields]);
 
+  // ---- ALL MANDATORY *except* NOT_REQUIRED ----------------------------------
   const missing = useMemo(() => {
     if (!currentEvent) return [];
     const m = [];
     visibleDeIds.forEach((id) => {
-      if (NOT_REQUIRED.has(id)) return;        
+      if (NOT_REQUIRED.has(id)) return;        // NEW: skip optional DEs
       const val = getEventDEValue(currentEvent, id);
       if (isEmpty(val)) m.push(id);
     });
@@ -137,11 +150,12 @@ const Assessment = () => {
 
   const disabled = missing.length > 0;
 
+  // keep previous disabled state like other stage
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   missingRef.current = missing;
 
-
+  // Disable/enable Complete button
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -158,6 +172,7 @@ const Assessment = () => {
     }
   }, [actions, disabled]);
 
+  // Save/complete guard
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_assessment_all_required";
@@ -179,6 +194,7 @@ const Assessment = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -200,6 +216,7 @@ const Assessment = () => {
         />
       </Box>
 
+      {/* Sections & fields — red * for required ones only */}
       {sections.map((section) => (
         <Accordion
           key={section.id || section.displayName}
@@ -209,11 +226,12 @@ const Assessment = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
+            // respect hides
             if (deId === "ayj5xsLBA0T" && !show_ayj5xsLBA0T) return null;
             if (deId === "ZXzj7W5848O" && !show_ZXzj7W5848O) return null;
             if (props?.hiddenFields?.[deId]) return null;
 
-            const optional = NOT_REQUIRED.has(deId);
+            const optional = NOT_REQUIRED.has(deId); // NEW
 
             return (
               <Box
@@ -227,12 +245,12 @@ const Assessment = () => {
               >
                 <Box sx={{ padding: "10px", display: "flex", alignItems: "center" }}>
                   <DataValueLabel dataElement={deId} />
-                  {!optional && <RedStar />}
+                  {!optional && <RedStar />}{/* NEW: star only if required */}
                 </Box>
                 <Box sx={{ borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                   <DataValueFieldNoBlur
                     dataElement={deId}
-                    required={!optional}        
+                    required={!optional}         // NEW: not required for audIElWyoJP
                   />
                 </Box>
               </Box>

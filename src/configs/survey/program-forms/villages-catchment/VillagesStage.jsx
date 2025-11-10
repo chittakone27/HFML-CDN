@@ -15,6 +15,7 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
+// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -32,6 +33,7 @@ const isEmpty = (v) => {
   return false;
 };
 
+// Program: sBkMdki30ua | Stage: JrbpF3DG3FL
 const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; // integer-only DE
 
 const VillagesStage = () => {
@@ -45,13 +47,14 @@ const VillagesStage = () => {
     useShallow((state) => ({ actions: state.actions }))
   );
   const { currentEvent } = useCurrentEvent();
-  const props = useVillageRules(); 
+  const props = useVillageRules(); // warnings now contain *codes*
   const hiddenFields = props?.hiddenFields || {};
 
   const trStageDate = t("village.stageDate", {
     defaultValue: isLao ? "ວັນທີ່ບັນທຶກ" : "Stage date",
   });
 
+  // ---- translate a warning code -> message (EN/LO) ----
   const trWarn = (code) => {
     switch (code) {
       case "footVsCar":
@@ -76,6 +79,7 @@ const VillagesStage = () => {
     }
   };
 
+  // ---- SECTION title (not stage): "Details of catchment area" ----
   const SECTION_EN = "Details of catchment area";
   const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ";
   const trCatchmentSectionTitle = t("village.section.details", {
@@ -91,6 +95,7 @@ const VillagesStage = () => {
   };
   const trSectionTitle = (name) => (isCatchmentSection(name) ? trCatchmentSectionTitle : name);
 
+  // Sections
   const sections = useMemo(() => {
     const stage = program?.programStages?.find(
       (ps) => ps.id === currentEvent?.programStage
@@ -98,6 +103,7 @@ const VillagesStage = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
+  // Collect DEs present in this stage (respect hiddenFields)
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -110,6 +116,7 @@ const VillagesStage = () => {
     return uniq.filter((id) => !hiddenFields[id]);
   }, [sections, hiddenFields]);
 
+  // Compute missing (all visible DEs + eventDate)
   const missing = useMemo(() => {
     const m = [];
     for (const id of presentIds) {
@@ -122,15 +129,18 @@ const VillagesStage = () => {
     return m;
   }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
 
+  // Block when missing or any rule warnings
   const hasWarnings = !!props?.warnings && Object.keys(props.warnings).length > 0;
   const disabled = missing.length > 0 || hasWarnings;
 
+  // Avoid update loops
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(props?.warnings || {});
   missingRef.current = missing;
   warningsRef.current = props?.warnings || {};
 
+  // Toggle Complete button only when value changes
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -147,6 +157,7 @@ const VillagesStage = () => {
     }
   }, [actions, disabled]);
 
+  // Register Save handler once
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_villages_all_required";
@@ -179,6 +190,7 @@ const VillagesStage = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
+  // integer-only input guards for OWAR8Vpa8IW
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -229,6 +241,8 @@ const VillagesStage = () => {
           {(section.dataElements ?? []).map((de) => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
+
+            // respect hidden fields (OWAR8Vpa8IW hidden when SOWCUUYumd6 is false)
             if (hiddenFields[deId]) return null;
 
             const hasWarn = !!props?.warnings?.[deId];

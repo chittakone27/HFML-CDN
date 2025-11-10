@@ -4,11 +4,33 @@ import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import { Box } from "@mui/material";
 import useProfileRules from "./useProfileRules";
 
-const SECRET_ATTR = "s9TfhXLCYgD"; // TEA to protect
+// TEA IDs you want to toggle frequently
+const IDS = {
+  A: "s9TfhXLCYgD",
+  B: "nZjzEldORWw",
+  C: "Z9V1f5YzXXj",
+};
+
+// --- Toggle here -------------------------------------------------------------
+// Disable (read-only in UI)
+const MANUAL_DISABLE = new Set([
+  // IDS.A,
+   IDS.B,
+   IDS.C,
+]);
+
+// Hide (don’t render at all)
+const MANUAL_HIDE = new Set([
+   IDS.A,
+  // IDS.B,
+  // IDS.C,
+]);
+// -----------------------------------------------------------------------------
+
 
 const Profile = () => {
   const { program } = useSelectionStore((s) => ({ program: s.program }));
-  const { hiddenFields, disabledFields } = useProfileRules();
+  const { hiddenFields = {}, disabledFields = {} } = useProfileRules() || {};
 
   const attributes =
     program?.programTrackedEntityAttributes?.map(
@@ -18,16 +40,13 @@ const Profile = () => {
   return (
     <>
       {attributes.map((attribute) => {
-        // Use this AFTER your import is done. Just uncomment the next line.
-         if (attribute === SECRET_ATTR) return null;
-        // ------------------------------------------------------------------
+        // Manual hide overrides everything
+        if (MANUAL_HIDE.has(attribute)) return null;
 
         // Respect rule-based hiding
         if (hiddenFields?.[attribute]) return null;
 
-        // disable – default
-        const isSecret = attribute === SECRET_ATTR;
-        const isDisabled = isSecret || !!disabledFields?.[attribute];
+        const isDisabled = MANUAL_DISABLE.has(attribute) || !!disabledFields?.[attribute];
 
         return (
           <Box key={attribute} className="custom-tracker-profile-field-row">

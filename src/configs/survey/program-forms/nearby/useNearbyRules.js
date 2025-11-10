@@ -9,6 +9,7 @@ const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
 const TRIGGER_ID = "jWinhL2rxeK";
 
+// --- helpers unchanged ---
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, ch => {
     const c = ch.charCodeAt(0);
@@ -30,6 +31,7 @@ const parseHMToMinutes = (val) => {
   return hours * 60 + mins;
 };
 
+// NEW: truthy helper for yes/true
 const truthy = (v) => {
   const s = String(v ?? "").trim().toLowerCase();
   return v === false || v === 0 || s === "0" || s === "false" || s === "no" || s === "n";
@@ -59,10 +61,14 @@ const useNearbyRules = () => {
 
     const dv = (id) => currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
+    // Visibility for INTEGER_ONLY_ID:
+    // Visible by default; HIDE only when trigger is truthy.
     const triggerVal = dv(TRIGGER_ID);
     const hiddenFields = {};
     if (truthy(triggerVal)) hiddenFields[INTEGER_ONLY_ID] = true;
 
+    // 2) Integer-only + minimum (>= 1000) guard for dBK06ybZUbT
+    //    (apply ONLY when visible)
     if (!hiddenFields[INTEGER_ONLY_ID]) {
       const intRaw = toAsciiDigits(String(dv(INTEGER_ONLY_ID) ?? "").trim());
       if (intRaw !== "") {
@@ -89,6 +95,7 @@ const useNearbyRules = () => {
       assignations,
       warnings,
       warningTexts,
+      // push computed visibility
       hiddenFields,
       disabledFields: prev.disabledFields || {},
       hiddenOptions: prev.hiddenOptions || {},

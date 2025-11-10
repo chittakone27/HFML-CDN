@@ -18,7 +18,9 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
-// helpers
+const CH_ATTR_ID = "VF9VIPxkf9z";
+const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
+
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -35,6 +37,8 @@ const isEmpty = (v) => {
   if (typeof v === "string") return v.trim() === "";
   return false;
 };
+const getAttr = (tei, id) =>
+  (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
 
 const NearbyStage = () => {
   const { t, i18n } = useTranslation();
@@ -43,13 +47,15 @@ const NearbyStage = () => {
   const { program } = useSelectionStore(
     useShallow((state) => ({ program: state.program }))
   );
-  const { actions } = useTrackerCaptureStore(
-    useShallow((state) => ({ actions: state.actions }))
+  const { actions, data } = useTrackerCaptureStore(
+    useShallow((state) => ({ actions: state.actions, data: state.data }))
   );
+  const currentTei = data?.currentTei;
+
   const { currentEvent } = useCurrentEvent();
 
+
   const { warnings, hiddenFields } = useNearbyRules();
-  const hasWarnings = Object.keys(warnings || {}).length > 0;
 
   const trAssessmentDate = t("assessment.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
@@ -69,30 +75,6 @@ const NearbyStage = () => {
     return enMatch || loMatch;
   };
   const trSectionTitle = (name) => (isNearbySection(name) ? trNearbySectionTitle : name);
-
-  const trWarn = (code) => {
-    switch (code) {
-      case "footVsCar":
-        return t("nearby.rules.footVsCar", {
-          defaultValue: isLao
-            ? "ເວລາເດີນທາງດ້ວຍທ້າວຕ້ອງຫຼາຍກວ່າເວລາໄປດ້ວຍລົດ."
-            : "Travel time on foot must be greater than by car.",
-        });
-      case "integerOnly":
-        return t("nearby.rules.integerOnly", {
-          defaultValue: isLao
-            ? "ກະລຸນາໃສ່ເປັນຈໍານວນເຕັມ (0–9) ເທົ່ານັ້ນ."
-            : "Please enter a whole number (digits 0–9 only).",
-        });
-      case "min1000":
-        return t("nearby.rules.min1000", {
-          min: 1000,
-          defaultValue: isLao ? "ຄ່າຕ້ອງຢ່າງນ້ອຍ 1000" : "Value must be at least 1000",
-        });
-      default:
-        return typeof code === "string" ? code : "";
-    }
-  };
 
   const stage = useMemo(
     () => program?.programStages?.find((ps) => ps.id === currentEvent?.programStage),
@@ -116,6 +98,10 @@ const NearbyStage = () => {
     ];
   }, [stage]);
 
+  // CH selected?
+  const isCHSelected = !!String(getAttr(currentTei, CH_ATTR_ID) || "").trim();
+
+  // all DEs we render (respect hiddenFields; then if CH → keep ONLY K4RyAstSuIe)
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -125,21 +111,37 @@ const NearbyStage = () => {
       });
     });
     const uniq = Array.from(new Set(ids));
-    return hiddenFields ? uniq.filter((id) => !hiddenFields[id]) : uniq;
-  }, [sections, hiddenFields]);
+    const visible = hiddenFields ? uniq.filter((id) => !hiddenFields[id]) : uniq;
+    return isCHSelected ? visible.filter((id) => id === ONLY_DE_WHEN_CH) : visible;
+  }, [sections, hiddenFields, isCHSelected]);
 
+  // warnings only for visible fields
+  const hasWarnings = useMemo(
+    () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
+    [warnings, presentIds]
+  );
+
+  // missing check (visible DEs + eventDate)
+  // - If CH selected: only K4RyAstSuIe is required (among DEs) + eventDate is required
+  // - Otherwise: all visible DEs are required + eventDate is required
   const missing = useMemo(() => {
     const m = [];
-    for (const id of presentIds) {
-      const v = getEventDEValue(currentEvent, id);
-      if (isEmpty(v)) m.push(id);
+    if (isCHSelected) {
+      const v = getEventDEValue(currentEvent, ONLY_DE_WHEN_CH);
+      if (isEmpty(v)) m.push(ONLY_DE_WHEN_CH);
+    } else {
+      for (const id of presentIds) {
+        const v = getEventDEValue(currentEvent, id);
+        if (isEmpty(v)) m.push(id);
+      }
     }
     if (!currentEvent?.eventDate || isEmpty(currentEvent.eventDate)) {
       m.push("__eventDate__");
     }
     return m;
-  }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
+  }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate, isCHSelected]);
 
+  // save/complete gating
   const disabled = missing.length > 0 || hasWarnings;
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
@@ -163,6 +165,7 @@ const NearbyStage = () => {
     }
   }, [actions, disabled]);
 
+  // Save handler
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_nearby_all_required";
@@ -170,11 +173,11 @@ const NearbyStage = () => {
       actions.setHandlers(KEY, async () => {
         const m = missingRef.current;
         const w = warningsRef.current || {};
-        const hasW = Object.keys(w).length > 0;
+        const hasW = Object.keys(w).some((id) => presentIds.includes(id));
 
         if (m.length > 0 || hasW) {
           const msgs = [];
-          if (m.length > 0)
+          if (m.length > 0) {
             msgs.push(
               t("nearby.save.completeAll", {
                 defaultValue: isLao
@@ -182,20 +185,17 @@ const NearbyStage = () => {
                   : "Please complete all required fields.",
               })
             );
-
-          if (hasW) {
-            const uniqCodes = Array.from(new Set(Object.values(w)));
-            msgs.push(uniqCodes.map(trWarn).join(" "));
           }
           return { ok: false, message: msgs.join(" ") };
         }
         return { ok: true };
       });
     return () => actions.setHandlers && actions.setHandlers(KEY, null);
-  }, [actions, t, isLao]);
+  }, [actions, t, isLao, presentIds]);
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
+  // integer-only input guards for dBK06ybZUbT
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -217,7 +217,7 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Event date (required) */}
+      {/* Event date (ALWAYS visible & mandatory) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -247,12 +247,12 @@ const NearbyStage = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
-            if (hiddenFields && hiddenFields[deId]) return null;
+            // respect hidden fields and CH filter via presentIds
+            if ((hiddenFields && hiddenFields[deId]) || !presentIds.includes(deId)) return null;
 
             const hasWarn = !!warnings?.[deId];
             const helpId = `help-${deId}`;
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
-            const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
 
             return (
               <Box
@@ -277,25 +277,11 @@ const NearbyStage = () => {
                 >
                   <DataValueFieldNoBlur
                     dataElement={deId}
-                    required
+                    required={isCHSelected ? deId === ONLY_DE_WHEN_CH : true}
                     aria-invalid={hasWarn ? "true" : undefined}
                     aria-describedby={hasWarn ? helpId : undefined}
                     {...extra}
                   />
-
-                  {hasWarn && (
-                    <Box
-                      id={helpId}
-                      sx={{
-                        mt: 0.5,
-                        fontSize: 12,
-                        lineHeight: "16px",
-                        color: "#d32f2f",
-                      }}
-                    >
-                      {warnMsg}
-                    </Box>
-                  )}
                 </Box>
               </Box>
             );

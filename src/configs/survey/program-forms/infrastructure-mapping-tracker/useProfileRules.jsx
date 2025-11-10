@@ -27,7 +27,7 @@ const useProfileRules = () => {
     : {};
 
   const statusRaw = attributes[STATUS_ATTR];
-  const status = norm(statusRaw); 
+  const status = norm(statusRaw); // e.g., "functioning"
 
   const [props, setProps] = useState({
     warnings: {},
@@ -40,7 +40,7 @@ const useProfileRules = () => {
   useEffect(() => {
     const hiddenFields = {};
 
-     if (!status || status === "functioning") {
+    if (!status || status === "functioning") {
       hiddenFields[TARGET_ATTR] = true;
     }
 

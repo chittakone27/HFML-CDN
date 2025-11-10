@@ -101,6 +101,7 @@ const ROWS = [
   },
 ];
 
+// i18n helpers/fallbacks
 const rowKey = (label) =>
   "focal.rows." + String(label).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 const LO_ROW = {

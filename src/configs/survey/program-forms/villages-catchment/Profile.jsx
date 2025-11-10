@@ -16,6 +16,7 @@ const Profile = () => {
   );
   const props = useProfileRules();
 
+  // Clear values for hidden attributes
   useEffect(() => {
     if (!props?.hiddenFields) return;
     Object.entries(props.hiddenFields).forEach(([attr, isHidden]) => {
@@ -23,6 +24,7 @@ const Profile = () => {
     });
   }, [actions, props?.hiddenFields]);
 
+  // Apply auto-assignments
   useEffect(() => {
     if (!props?.assignations) return;
     Object.entries(props.assignations).forEach(([attr, value]) => {
