@@ -10,7 +10,6 @@ import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoSta
 const LABEL_COL_WIDTH = 220;
 const FIELD_MAX_WIDTH = 400;
 
-
 const Profile = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
@@ -58,16 +57,19 @@ const Profile = () => {
     dh: "WH4Az6TJ5ZA",
     ch: "VF9VIPxkf9z",
 
+
   };
 
+  // ========== COMMENT-TO-TOGGLE SETS ==========
+  // Disable (read-only) these IDs:
   const MANUAL_DISABLE = new Set([
-    // IDS.firstField,
-    // IDS.province,
-    // IDS.district,
-    // IDS.hc,
-    // IDS.ph,
-    // IDS.dh,
-    // IDS.ch,
+     IDS.firstField,
+     IDS.province,
+     IDS.district,
+     IDS.hc,
+     IDS.ph,
+     IDS.dh,
+     IDS.ch,
 
     // Quick toggles for your extra UIDs:
     // IDS.extraA, // s9TfhXLCYgD
@@ -75,7 +77,7 @@ const Profile = () => {
     // IDS.extraC, // Z9V1f5YzXXj
   ]);
 
-
+  // Hide (don’t render) these IDs / rows:
   const MANUAL_HIDE = new Set([
     // IDS.firstField,
     // IDS.province,
@@ -105,6 +107,7 @@ const Profile = () => {
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
+  // receive validity from the selector and disable Save while invalid
   const [hfValid, setHfValid] = useState(true);
 
   useEffect(() => {
@@ -116,11 +119,13 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hfValid, layout?.profileFormEditing, setLayout]);
 
+  // keep value in sync with store
   const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
 
+  // --- Visibility / disable logic -------------------------------------------
   const rowFirstHidden = MANUAL_HIDE.has(IDS.firstField);
   const rowFirstDisabled = !layout?.profileFormEditing || MANUAL_DISABLE.has(IDS.firstField);
 
