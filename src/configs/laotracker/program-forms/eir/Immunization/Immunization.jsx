@@ -221,18 +221,18 @@ const Immunization = () => {
         if (placeOfVaccination !== "private") {
           // 💉 Rule set for NON-private places
           if ((hasHepB0_24h && hasBCG) || (hasHepB0_7d && hasBCG)) {
-            scheduledDate = addDays(dob, 46);
+            scheduledDate = addWeeks(dob, 6);
           } else if (hasHepB0_7d || hasBCG) {
-            scheduledDate = addDays(dob, 46);
+            scheduledDate = addWeeks(dob, 6);
           } else if (hasPCV1 && hasOPV1 && hasPenta1) {
-            scheduledDate = addDays(dob, 78);
+            scheduledDate = addWeeks(dob, 10);
           } else if (hasPCV2 && hasOPV2 && hasPenta2) {
-            scheduledDate = addDays(dob, 108);
+            scheduledDate = addWeeks(dob, 14);
           } else if (
             (hasPCV3 && hasOPV3 && hasPenta3) ||
             (hasOPV3 && hasPenta3 && hasIPV1)
           ) {
-            scheduledDate = addDays(dob, 114);
+            scheduledDate = addWeeks(dob, 15);
           } else if (hasPCV3 || hasIPV1) {
             scheduledDate = addMonths(dob, 9);
           } else if (hasJE && hasMR1) {
@@ -241,19 +241,19 @@ const Immunization = () => {
         } else {
           // 💉 Rule set for PRIVATE places
           if ((hasHepB0_24h && hasBCG) || (hasHepB0_7d && hasBCG)) {
-            scheduledDate = addDays(dob, 46);
+            scheduledDate = addWeeks(dob, 6);
           } else if (hasHepB0_7d || hasBCG) {
-            scheduledDate = addDays(dob, 46);
+            scheduledDate = addWeeks(dob, 6);
           } else if (
             (hasPenta1 && hasIPV1) ||
             (hasPCV1 && hasOPV1 && hasPenta1)
           ) {
-            scheduledDate = addDays(dob, 78);
+            scheduledDate = addWeeks(dob, 10);
           } else if (
             (hasPenta2 && hasIPV2) ||
             (hasPCV2 && hasOPV2 && hasPenta2)
           ) {
-            scheduledDate = addDays(dob, 108);
+            scheduledDate = addWeeks(dob, 14);
           } else if (
             (hasPCV3 && hasOPV3 && hasPenta3) ||
             (hasIPV1 && hasOPV3 && hasPenta3)
