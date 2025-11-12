@@ -111,6 +111,22 @@ const CommunityDeathProfile = () => {
               );
             }
 
+            // --- Hide "Separated" (code "SE") for TEA kgszUgf3OdN ---
+            if (attrId === "kgszUgf3OdN") {
+              return (
+                <TableRow key={attrId}>
+                  <TableCell><AttributeLabel attribute={attrId} /></TableCell>
+                  <TableCell>
+                    <AttributeField
+                      attribute={attrId}
+                      hiddenOptions={["Separated", "SE"]}
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            }
+            // --------------------------------------------------------
+
             return (
               <TableRow key={attrId}>
                 <TableCell><AttributeLabel attribute={attrId} /></TableCell>
