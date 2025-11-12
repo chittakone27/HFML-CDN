@@ -111,7 +111,7 @@ const Profile = () => {
   const hfType  = (findAttributeValue(currentTei, IDS.hfType) || "").toString().trim();
 
   const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); 
-  const seq  = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 3);  
+  const seq  = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 2);  
 
   useEffect(() => {
     if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
