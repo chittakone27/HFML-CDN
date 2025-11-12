@@ -17,7 +17,6 @@ const GRID_ROW   = { display: "flex", alignItems: "center", borderBottom: "1px s
 const LABEL_CELL = { width: "300px", padding: "10px" };
 const VALUE_CELL = { flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" };
 
-// The only DE in this stage (file upload)
 const ONLY_DE_ID = "vWXAocoSljn";
 
 const ScannedLogBook = () => {
@@ -33,7 +32,6 @@ const ScannedLogBook = () => {
     useShallow((s) => ({ actions: s.actions }))
   );
 
-  // Force-enable the Complete button for this stage (no mandatory checks)
   useEffect(() => {
     if (!actions) return;
     try {
@@ -43,7 +41,6 @@ const ScannedLogBook = () => {
     } catch {}
   }, [actions, currentEvent?.event]);
 
-  // Register a save handler that never blocks save from this stage
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_scannedLogBook_optional";
@@ -77,7 +74,7 @@ const ScannedLogBook = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Event date (optional for this stage) */}
+
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur maxDate={maxDateStr} type="eventDate" />
@@ -91,7 +88,7 @@ const ScannedLogBook = () => {
           {(section.dataElements || []).map((de, dIdx) => {
             const deId = de?.id ?? de?.dataElement?.id;
             if (!deId) return null;
-            // Render as optional (no `required` prop)
+   
             return (
               <Box key={deId || `de-${dIdx}`} sx={GRID_ROW}>
                 <Box sx={LABEL_CELL}>

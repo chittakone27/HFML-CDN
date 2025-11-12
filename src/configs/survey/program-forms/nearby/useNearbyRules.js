@@ -5,10 +5,9 @@ import { useTranslation } from "react-i18next";
 
 const FOOT_ID = "Bokim7QLnF8";
 const CAR_ID  = "bcnCvxfxNeF";
-const INTEGER_ONLY_ID = "dBK06ybZUbT"; // integer, >= 1000
-const TRIGGER_ID = "jWinhL2rxeK";      // controls visibility of INTEGER_ONLY_ID
+const INTEGER_ONLY_ID = "dBK06ybZUbT"; 
+const TRIGGER_ID = "jWinhL2rxeK";      
 
-// Normalize non-ASCII digits to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, ch => {
     const c = ch.charCodeAt(0);
@@ -20,7 +19,6 @@ const toAsciiDigits = (str = "") =>
     return ch;
   });
 
-// Interprets “false/no/0” as a hiding trigger
 const isNo = (v) => {
   const s = String(v ?? "").trim().toLowerCase();
   return v === false || v === 0 || s === "0" || s === "false" || s === "no" || s === "n";
@@ -32,7 +30,6 @@ const useNearbyRules = () => {
     warnings: {},
     warningTexts: {},
     hiddenFields: {},
-    // mandatoryFields intentionally unused — NearbyStage makes *all visible* mandatory
     assignations: {},
     disabledFields: {},
     hiddenOptions: {},
@@ -53,11 +50,9 @@ const useNearbyRules = () => {
 
     const dv = (id) => currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
-    // Dynamically hide INTEGER_ONLY_ID when trigger says "no/false/0"
     const triggerVal = dv(TRIGGER_ID);
     if (isNo(triggerVal)) hiddenFields[INTEGER_ONLY_ID] = true;
 
-    // Integer-only + minimum >= 1000 (apply only when visible)
     if (!hiddenFields[INTEGER_ONLY_ID]) {
       const intRaw = toAsciiDigits(String(dv(INTEGER_ONLY_ID) ?? "").trim());
       if (intRaw !== "") {
@@ -79,7 +74,6 @@ const useNearbyRules = () => {
       }
     }
 
-    // Hide specific options as requested
     hiddenOptions[CAR_ID] = [
       "cannot_foot",
     ];

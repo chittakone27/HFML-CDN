@@ -18,15 +18,13 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 const LABEL_COL_WIDTH = 220;
 const FIELD_MAX_WIDTH = 480;
 
-// inline widths (match ICT feel)
-const DIST_W = 120;  // District ID (4 digits)
-const TYPE_W = 130;  // HF Type (required)
-const SEQ_W  = 90;   // Seq number (3 digits, required)
+const DIST_W = 120;  
+const TYPE_W = 130;  
+const SEQ_W  = 90;   
 
-// Normalize non-ASCII digits (Thai/Lao/Arabic/Devanagari) to ASCII
 const toAsciiDigits = (str = "") => {
   const s = String(str);
-  const bases = [0x0660, 0x06F0, 0x0966, 0x0E50, 0x0ED0]; // Arabic, Persian, Devanagari, Thai, Lao
+  const bases = [0x0660, 0x06F0, 0x0966, 0x0E50, 0x0ED0]; 
   return s.replace(
     /[0-9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F\u0E50-\u0E59\u0ED0-\u0ED9]/g,
     (ch) => {
@@ -80,15 +78,11 @@ const Profile = () => {
   const { changeAttributeValue, setLayout } = actions || {};
   const { currentTei } = data || {};
 
-  // TEA IDs (target + sources + selector)
   const IDS = useMemo(() => ({
-    // target (auto-composed)
     firstField: "sO0ItF0Dr0p",
-    // sources (inline trio) — MANDATORY
     districtId: "R4mULOs2f6M",
     hfType: "A81fBn53hAD",
     seqNum: "GwphHuSwouj",
-    // selector members
     province: "pvY01Pt3GTk",
     district: "GbubCuHuzM7",
     hc: "Jy7ou2LCeju",
@@ -99,42 +93,35 @@ const Profile = () => {
 
   const props = useProfileRules();
 
-  // lock composed field
   const MANUAL_DISABLE = new Set([IDS.firstField]);
   const MANUAL_HIDE = new Set([]);
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
-  // Keep Facility ID synced from rules
   const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
   useEffect(() => {
     const next = props?.assignations?.[IDS.firstField];
     if (typeof next === "undefined") return;
     if (String(firstFieldVal) !== String(next)) setAttr(IDS.firstField, next);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [props?.assignations?.[IDS.firstField], currentTei]);
 
-  // CURRENT values (normalized where needed)
   const rawDist = findAttributeValue(currentTei, IDS.districtId) || "";
   const rawSeq  = findAttributeValue(currentTei, IDS.seqNum) || "";
   const hfType  = (findAttributeValue(currentTei, IDS.hfType) || "").toString().trim();
 
-  const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); // clamp to 4
-  const seq  = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 3);  // clamp to 3
+  const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); 
+  const seq  = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 3);  
 
-  // If normalization trimmed anything, reflect it back to store
   useEffect(() => {
     if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
     if (rawSeq && rawSeq !== seq)   setAttr(IDS.seqNum, seq);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawDist, rawSeq, dist, seq]);
 
-  // VALIDATION — all three are mandatory
   const distValid = /^\d{4}$/.test(dist);
-  const typeValid = hfType.length > 0;           // required selection/input
-  const seqValid  = /^[0-9]{1,3}$/.test(seq);    // at least 1 digit, up to 3
+  const typeValid = hfType.length > 0;           
+  const seqValid  = /^[0-9]{1,3}$/.test(seq);    
 
-  // Disable Save when HF selector invalid OR any of the required fields invalid
   const [hfValid, setHfValid] = useState(true);
   useEffect(() => {
     if (!setLayout) return;
@@ -147,10 +134,8 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hfValid, distValid, typeValid, seqValid, layout?.profileFormEditing, setLayout]);
 
-  // INPUT GUARDS
   const DIST_DIGIT_GUARDS = {
     inputProps: {
       inputMode: "numeric",
@@ -226,7 +211,6 @@ const Profile = () => {
     },
   };
 
-  // visibility / disabled
   const rowFirstDisabled = !layout?.profileFormEditing || MANUAL_DISABLE.has(IDS.firstField);
 
   const hfIds = [IDS.province, IDS.district, IDS.ph, IDS.dh, IDS.ch, IDS.hc];
@@ -237,9 +221,7 @@ const Profile = () => {
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-          {/* Inline trio: District ID | HF Type | Seq No. (all REQUIRED) */}
           <TableRow>
-            {/* ghost label keeps alignment */}
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
             <TableCell>
               <Box
@@ -251,7 +233,7 @@ const Profile = () => {
                   alignItems: "start",
                 }}
               >
-                {/* District ID (4 digits, required) */}
+
                 <Box sx={{ display: "grid", gap: 0.5 }}>
                   <AttributeLabel attribute={IDS.districtId} />
                   <AttributeField
@@ -275,7 +257,6 @@ const Profile = () => {
                   )}
                 </Box>
 
-                {/* HF Type (required) */}
                 <Box sx={{ display: "grid", gap: 0.5 }}>
                   <AttributeLabel attribute={IDS.hfType} />
                   <AttributeField
@@ -300,7 +281,6 @@ const Profile = () => {
                   )}
                 </Box>
 
-                {/* Seq number (1–3 digits, required) */}
                 <Box sx={{ display: "grid", gap: 0.5 }}>
                   <AttributeLabel attribute={IDS.seqNum} />
                   <AttributeField
@@ -325,14 +305,12 @@ const Profile = () => {
                 </Box>
               </Box>
 
-              {/* Generic save hint when any required invalid */}
               {(!distValid || !typeValid || !seqValid) && (
                 <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>{trFixErrors}</Box>
               )}
             </TableCell>
           </TableRow>
 
-          {/* Facility ID (auto-filled & locked) */}
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
               <Typography>{trFirstField}</Typography>
@@ -350,7 +328,6 @@ const Profile = () => {
             </TableCell>
           </TableRow>
 
-          {/* Health facility selector */}
           {!hfRowHidden && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>

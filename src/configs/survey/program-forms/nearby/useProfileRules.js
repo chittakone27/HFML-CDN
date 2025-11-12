@@ -34,8 +34,8 @@ const composeFacilityId = (districtId, hfType, seq) => {
   const d4 = toAsciiDigits(districtId).replace(/\D/g, "").slice(0, 4);
   const t = String(hfType ?? "").trim().toUpperCase().replace(/\s+/g, "");
   const s3raw = toAsciiDigits(seq).replace(/\D/g, "").slice(0, 3);
-  if (d4.length !== 4 || !t || !s3raw) return undefined; // only assign when fully valid
-  const s3 = s3raw.padStart(3, "0"); // pad if you want 001..999
+  if (d4.length !== 4 || !t || !s3raw) return undefined; 
+  const s3 = s3raw.padStart(3, "0");
   return `${d4}${t}${s3}`;
 };
 

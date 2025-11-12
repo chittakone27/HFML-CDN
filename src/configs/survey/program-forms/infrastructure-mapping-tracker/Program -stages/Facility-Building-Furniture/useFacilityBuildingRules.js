@@ -3,11 +3,8 @@ import { useTranslation } from "react-i18next";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
-// ------------------------- IDs -------------------------
-// 7. On-site internet available (can connect to the internet?)
 const AVAIL_SEL = "fszEmzFYXHU";
 
-// 6. Can receive phone call? (anchor for 6.1 operator list)
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";
 
 const OTHERS_ID = "BRHYwOIZ01O";
@@ -47,7 +44,6 @@ const CONN_FIELDS = [
   "SbpLKeVJBZd",
 ];
 
-// ===== initial always-mandatory (when visible) =====
 const GLOBAL_MANDATORY_IDS = new Set([
   "bEWpwn7HfUI",
   "OpKuX0h3iSf",
@@ -59,12 +55,10 @@ const GLOBAL_MANDATORY_IDS = new Set([
   "SVSfEQFVBUj", // months anchor
 ]);
 
-// ===== integer-only constraint IDs =====
 const INTEGER_ONLY_IDS = new Set([
   "bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53",
 ]);
 
-// Additional fields to mark as required in UI (when visible)
 const ALWAYS_REQ_IDS = new Set([
   TYPE_CONN_ID,          // show asterisk on connection type
   WIFI_FIELD_ID,         // required when Wifi or Both
@@ -75,7 +69,6 @@ const ALWAYS_REQ_IDS = new Set([
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
-// -------- Months block (always shown; require ≥1) --------
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 const MONTH_IDS = new Set([
   "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
@@ -86,7 +79,6 @@ const MONTH_IDS = new Set([
 const FUND_SOURCE_ID = "eq1FTj6Z2vT";
 const HIDE_WHEN_PERSONAL_ID = "SbpLKeVJBZd";
 
-// ------------------------- Helpers -------------------------
 const truthy = (v) =>
   v === true || v === "true" || v === 1 || v === "1" || v === "Yes" || v === "YES" || v === "yes";
 
@@ -98,25 +90,22 @@ const isEmpty = (v) => {
   return false;
 };
 
-// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic/… → ASCII)
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
 
-// Integer check that accepts localized digits
 const isIntegerOnly = (v) => /^\d+$/.test(toAsciiDigits(String(v ?? "").trim()));
 
-// Read a DE value from current event (supports dataValues and flattened)
 const getValue = (event, deId) => {
   if (!event) return undefined;
   const arr = event?.dataValues;
@@ -127,8 +116,6 @@ const getValue = (event, deId) => {
   return event?.[deId];
 };
 
-// -------- Global aggregator (master guard) --------
-// Holds per-section validators + live disable flags
 const REG_KEY = "__FACILITY_RULES_REGISTRY__";
 const getRegistry = () => {
   const g = typeof globalThis !== "undefined" ? globalThis : window;
@@ -153,14 +140,12 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const { i18n, t } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  // Bilingual integer-only message
   const trIntOnly = t("equipment.error.integerOnly", {
     defaultValue: isLao
       ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
       : "Only whole numbers are allowed (no decimals).",
   });
 
-  // current values for logic
   const availVal      = getValue(currentEvent, AVAIL_SEL);
   const anchorVal     = getValue(currentEvent, OP_ANCHOR_ID);
   const othersVal     = getValue(currentEvent, OTHERS_ID);
@@ -171,8 +156,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const hasSel = sel !== "";
   const notAvail = sel === "not available";
 
-  // Keep existing show/hide behavior:
-  // show connectivity when Available or Available, but often disrupted
+
   const showConn = hasSel && !notAvail;
 
   const type = normalize(typeVal); // "wifi" | "cable" | "both" | ""
@@ -182,22 +166,19 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const showOperators = truthy(anchorVal);
   const showServiceProvider = showOperators && truthy(othersVal);
 
-  const showNewOperators = showConn; // 8.1 group visible with connection section
+  const showNewOperators = showConn; 
   const showNewSpecify = showNewOperators && truthy(newTriggerVal);
 
-  // this section's DE ids
   const sectionIds = (sectionDEs || [])
     .map((de) => de?.id || de?.dataElement?.id)
     .filter(Boolean);
 
-  // --- Personal fund check (normalized robust match) ---
   const isPersonalFund = useMemo(() => {
     const raw = getValue(currentEvent, FUND_SOURCE_ID);
     const key = normalize(raw).replace(/[\s_]+/g, "");
     return key === "personalfund";
   }, [currentEvent?.dataValues]);
 
-  // -------------------- Visibility map --------------------
   const hiddenFields = useMemo(() => {
     const h = {};
 
@@ -257,17 +238,15 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       }
 
       if (ALWAYS_REQ_IDS.has(id)) {
-        req[id] = !hiddenFields[id]; // TYPE_CONN_ID, WIFI/CABLE details, eq1FTj6Z2vT, etc.
+        req[id] = !hiddenFields[id]; 
         continue;
       }
 
-      // Stage guard enforces all visible singles anyway.
       req[id] = false;
     }
     return req;
   }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify, isPersonalFund]);
 
-  // -------------------- Clear values when hidden --------------------
   useEffect(() => {
     if (!currentEvent?.event || !actions?.changeDataValue) return;
     const evId = currentEvent.event;
@@ -279,12 +258,10 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     });
   }, [hiddenFields, currentEvent?.event, actions, currentEvent]);
 
-  // -------------------- Master-guard registration --------------------
   useEffect(() => {
     if (!actions) return;
     const ev = currentEvent;
 
-    // helper: any of the given ids selected (for multi-select groups)
     const anySelected = (ids) => {
       if (!ev) return false;
       for (const id of ids) {
@@ -294,7 +271,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       return false;
     };
 
-    // recompute minimal visibility used by guard
     const selStage = normalize(getValue(ev, AVAIL_SEL));
     const showConnStage = selStage !== "" && selStage !== "not available";
     const typeStage = normalize(getValue(ev, TYPE_CONN_ID));
@@ -305,14 +281,12 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     const showServiceProviderStage =
       truthy(getValue(ev, OP_ANCHOR_ID)) && truthy(getValue(ev, OTHERS_ID));
 
-    // ----- REQUIRED: ALL visible single-value fields in this section -----
     const singleCandidates = sectionIds.filter(
       (id) => !OPERATOR_IDS.has(id) && !NEW_OPERATOR_IDS.has(id) && !MONTH_IDS.has(id)
     );
 
     const visibleSingles = singleCandidates.filter((id) => !hiddenFields[id]);
 
-    // Wifi/Cable details only when their types are chosen
     if (!showWifiStage) {
       const idx = visibleSingles.indexOf(WIFI_FIELD_ID);
       if (idx >= 0) visibleSingles.splice(idx, 1);
@@ -328,20 +302,16 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       if (isEmpty(val)) missingSingles.push(id);
     }
 
-    // ----- REQUIRED: groups (multi-select) -----
     const needOneOp6   = showOp6Stage  && !anySelected(Array.from(OPERATOR_IDS));     // 6.1 when 6==true
     const needOneOp8   = showConnStage && !anySelected(Array.from(NEW_OPERATOR_IDS)); // 8.1 when connection shown
     const needOneMonth =                !anySelected(Array.from(MONTH_IDS));          // months always
 
-    // ----- Additional singles driven by booleans -----
-    // Others → service provider text
     const missingSvcProvider =
       showServiceProviderStage && isEmpty(getValue(ev, SERVICE_PROVIDER_ID));
-    // khA9UFm6Qpq → specify text
+   
     const missingNewSpecify =
       showNewSpecifyStage && isEmpty(getValue(ev, NEW_OP_SPECIFY_ID));
 
-    // ----- Integer-only checks -----
     const invalidIntegerIds = [];
     for (const id of INTEGER_ONLY_IDS) {
       if (hiddenFields[id]) continue;
@@ -355,11 +325,9 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       missingSvcProvider || missingNewSpecify ||
       invalidIntegerIds.length > 0;
 
-    // Register this section in the global registry
     const reg = getRegistry();
     const sectionKey = sectionIds[0] || `sec_${Math.random().toString(36).slice(2, 7)}`;
 
-    // Per-section checker (used by master on Save/Complete)
     const checkSection = () => {
       const msgs = [];
       if (missingSingles.length) msgs.push("Please complete all required fields.");
@@ -375,11 +343,9 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       };
     };
 
-    // write + recompute live disable
     reg.set(sectionKey, { disabled: sectionDisabled, check: checkSection });
     setCombinedDisabled(actions);
 
-    // Install/refresh MASTER handler (single entry point the app will call)
     if (actions.setHandlers) {
       const MASTER_KEY = "eventSave_facilityStageMaster";
       actions.setHandlers(MASTER_KEY, async () => {
@@ -392,7 +358,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       });
     }
 
-    // Cleanup: remove this section on unmount and recompute
     return () => {
       const r = getRegistry();
       r.delete(sectionKey);
@@ -420,7 +385,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       TYPE_CONN_ID, WIFI_FIELD_ID, CABLE_FIELD_ID, MONTH_ANCHOR_ID,
     },
     state: {
-      // expose current visibility for the UI if needed
       showConn,
       showOperators,
       showServiceProvider,

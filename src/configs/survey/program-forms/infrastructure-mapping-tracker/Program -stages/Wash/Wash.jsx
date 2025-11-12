@@ -14,16 +14,13 @@ import { useMemo, useEffect } from "react";
 
 import Accordion from "../../../common/Accordion";
 
-// --- IDs & rules -------------------------------------------------------------
 const RULES = [
   { controller: "VmCvSADpsA1", matchValues: ["other"], dependents: ["bmlUYsjXYko"] },
   { controller: "CNVSIJkquLR", matchValues: ["other"], dependents: ["Eoj2LevRSsa"] },
 ];
 
-// INTEGER-only fields in this stage:
 const INTEGER_ONLY_IDS = new Set(["CViemlWnENJ", "W5UrZzdDLvz"]);
 
-// These DEs are NOT mandatory (optional) even when visible
 const OPTIONAL_IDS = new Set([
   "sevW1KA9uZv",
   "x59W91PRh3t",
@@ -32,24 +29,22 @@ const OPTIONAL_IDS = new Set([
   "xnccpdd2vKn",
 ]);
 
-// --- NEW: conditional hide mapping ------------------------------------------
 const HIDE_IF_TRUE_CONTROLLER_ID = "vnJhT1wzjJa";
 const HIDE_IF_TRUE_TARGET_ID = "sevW1KA9uZv";
 
 const DEP_SET = new Set(RULES.flatMap((r) => r.dependents));
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
-// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic/… → ASCII)
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
@@ -72,7 +67,6 @@ const isEmpty = (v) => {
   return false;
 };
 
-// treat “true/1/yes/y” (case-insensitive) as true
 const isTruthyYes = (v) => {
   const s = normalize(v);
   return s === "true" || s === "1" || s === "yes" || s === "y";
@@ -89,7 +83,6 @@ const Wash = () => {
   const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
   const { currentEvent } = useCurrentEvent();
 
-  // Prefer selection.stage; fall back to program + currentEvent.programStage
   const { stage: selStage, program } = useSelectionStore(
     useShallow((s) => ({ stage: s.stage, program: s.program }))
   );
@@ -103,12 +96,10 @@ const Wash = () => {
   const sections = stage?.programStageSections ?? [];
   const maxDateStr = format(new Date(), "yyyy-MM-dd");
 
-  // i18n: translated “Assessment date”
   const trAssessmentDate = t("wash.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
-  // i18n: translated section titles (only for these five)
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -127,7 +118,6 @@ const Wash = () => {
     }
   };
 
-  // helpers for rule checks
   const valueOf = (id) => normalize(getEventDEValue(currentEvent, id));
   const matchedRuleFor = (controllerId) => RULES.find((r) => r.controller === controllerId);
   const shouldShowDependents = (rule) => {
@@ -136,7 +126,6 @@ const Wash = () => {
     return rule.matchValues.includes(v);
   };
 
-  // ---- integer-only warnings (for CViemlWnENJ & W5UrZzdDLvz) ----
   const warnings = useMemo(() => {
     const w = {};
     INTEGER_ONLY_IDS.forEach((id) => {
@@ -147,7 +136,6 @@ const Wash = () => {
   }, [currentEvent?.dataValues]);
   const hasWarnings = Object.keys(warnings).length > 0;
 
-  // translate warning codes → single-language message
   const trWarn = (code) => {
     switch (code) {
       case "integerOnly":
@@ -161,7 +149,6 @@ const Wash = () => {
     }
   };
 
-  // ---------- Stage-wide mandatory guard ----------
   useEffect(() => {
     if (!actions) return;
 
@@ -171,7 +158,6 @@ const Wash = () => {
         .filter(Boolean)
     );
 
-    // Required = visible & not a dependent placeholder & not in OPTIONAL_IDS
     const requiredNow = new Set(
       [...presentIds].filter((id) => !DEP_SET.has(id) && !OPTIONAL_IDS.has(id))
     );
@@ -182,7 +168,6 @@ const Wash = () => {
       const v = valueOf(controller);
       if (rule.matchValues.includes(v)) {
         for (const depId of dependents) {
-          // Dependents become required only if visible AND not optional
           if (presentIds.has(depId) && !OPTIONAL_IDS.has(depId)) requiredNow.add(depId);
         }
       }
@@ -228,7 +213,6 @@ const Wash = () => {
     }
   }, [actions, currentEvent?.dataValues, sections, hasWarnings, t, isLao, warnings]);
 
-  // numeric-only input guards (prevents typing/pasting non-integers)
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -248,7 +232,6 @@ const Wash = () => {
     },
   };
 
-  // --- NEW: compute whether to hide the target field -------------------------
   const hideTarget = useMemo(() => {
     const ctrlVal = getEventDEValue(currentEvent, HIDE_IF_TRUE_CONTROLLER_ID);
     return isTruthyYes(ctrlVal);
@@ -256,7 +239,6 @@ const Wash = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Translated Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -294,15 +276,12 @@ const Wash = () => {
               const deId = de?.id ?? de?.dataElement?.id;
               if (!deId) return null;
 
-              // If this DE is a dependent, skip it here; it will be injected below its controller.
               if (DEP_SET.has(deId)) return null;
 
-              // NEW: hide sevW1KA9uZv when vnJhT1wzjJa is truthy
               if (deId === HIDE_IF_TRUE_TARGET_ID && hideTarget) return null;
 
               const rule = matchedRuleFor(deId);
 
-              // --- render a single row (unchanged layout) with integer guards + inline message ---
               const code = warnings[deId];
               const hasWarn = !!code;
               const helpId = `help-${deId}`;
@@ -314,7 +293,7 @@ const Wash = () => {
                     <DataValueLabel dataElement={deId} />
                   </Box>
                   <Box sx={VALUE_CELL}>
-                    {/* Required unless marked optional */}
+
                     <DataValueFieldNoBlur
                       dataElement={deId}
                       required={!OPTIONAL_IDS.has(deId)}
@@ -335,11 +314,10 @@ const Wash = () => {
               );
 
               if (!rule) {
-                // Plain DE, render as-is (required unless optional)
+
                 return renderControllerRow;
               }
 
-              // This DE controls dependents; render controller, then dependents if matched
               const showDeps = shouldShowDependents(rule);
 
               return (
@@ -347,7 +325,7 @@ const Wash = () => {
                   {renderControllerRow}
                   {showDeps &&
                     rule.dependents.map((depId) => {
-                      // If a dependent ever equals the hide target, respect the same rule
+
                       if (depId === HIDE_IF_TRUE_TARGET_ID && hideTarget) return null;
 
                       const depCode = warnings[depId];
@@ -361,7 +339,7 @@ const Wash = () => {
                             <DataValueLabel dataElement={depId} />
                           </Box>
                           <Box sx={VALUE_CELL}>
-                            {/* Dependent is required when shown, unless optional */}
+
                             <DataValueFieldNoBlur
                               dataElement={depId}
                               required={!OPTIONAL_IDS.has(depId)}

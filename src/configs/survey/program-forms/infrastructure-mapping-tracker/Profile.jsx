@@ -5,22 +5,21 @@ import { Box } from "@mui/material";
 import useProfileRules from "./useProfileRules";
 
 
-// TEA IDs you want to toggle frequently
+
 const IDS = {
   A: "s9TfhXLCYgD",
   B: "nZjzEldORWw",
   C: "Z9V1f5YzXXj",
 };
 
-// --- Toggle here -------------------------------------------------------------
-// Disable (read-only in UI)
+
 const MANUAL_DISABLE = new Set([
   // IDS.A,
    IDS.B,
    IDS.C,
 ]);
 
-// Hide (don’t render at all)
+
 const MANUAL_HIDE = new Set([
    IDS.A,
   // IDS.B,
@@ -41,15 +40,12 @@ const Profile = () => {
   return (
     <>
       {attributes.map((attribute) => {
-        // Manual hide overrides everything
+
         if (MANUAL_HIDE.has(attribute)) return null;
 
-        // Respect rule-based hiding
+
         if (hiddenFields?.[attribute]) return null;
 
-        // Disabled if:
-        // - listed in MANUAL_DISABLE, or
-        // - rules say it's disabled
         const isDisabled = MANUAL_DISABLE.has(attribute) || !!disabledFields?.[attribute];
 
         return (

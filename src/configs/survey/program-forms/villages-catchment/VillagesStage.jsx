@@ -32,8 +32,7 @@ const isEmpty = (v) => {
   return false;
 };
 
-// Program: sBkMdki30ua | Stage: JrbpF3DG3FL
-const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; // integer-only DE
+const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; 
 
 const VillagesStage = () => {
   const { t, i18n } = useTranslation();
@@ -47,7 +46,6 @@ const VillagesStage = () => {
   );
   const { currentEvent } = useCurrentEvent();
 
-  // ⬇ warnings + hiddenFields + hiddenOptions (ALL visible will be required below)
   const { warnings, hiddenFields = {}, hiddenOptions = {} } = useVillageRules();
 
   const trStageDate = t("village.stageDate", {
@@ -96,7 +94,6 @@ const VillagesStage = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // Collect DEs present in this stage (respect hiddenFields)
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -109,10 +106,8 @@ const VillagesStage = () => {
     return uniq.filter((id) => !hiddenFields[id]);
   }, [sections, hiddenFields]);
 
-  // ⬇⬇⬇ MAKE *ALL VISIBLE* FIELDS MANDATORY ⬇⬇⬇
   const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
 
-  // Missing check: all visible required + eventDate
   const missing = useMemo(() => {
     const m = [];
     for (const id of requiredSet) {
@@ -125,23 +120,19 @@ const VillagesStage = () => {
     return m;
   }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // Only block on warnings for visible fields
   const hasWarnings = useMemo(
     () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
     [warnings, presentIds]
   );
 
-  // Disable save/complete when missing or warnings exist
   const disabled = missing.length > 0 || hasWarnings;
 
-  // Avoid update loops
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(warnings || {});
   missingRef.current = missing;
   warningsRef.current = warnings || {};
 
-  // Toggle Complete button only when value changes
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -158,7 +149,6 @@ const VillagesStage = () => {
     }
   }, [actions, disabled]);
 
-  // Register Save handler once
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_villages_all_visible_required";
@@ -196,7 +186,6 @@ const VillagesStage = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
-  // integer-only input guards for OWAR8Vpa8IW
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -256,7 +245,6 @@ const VillagesStage = () => {
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
             const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
 
-            // Every visible field is required
             const isRequired = requiredSet.has(deId);
 
             return (

@@ -23,11 +23,7 @@ const useProfileRules = () => {
 
   useEffect(() => {
     const hidden = {};
-    // Example:
-    // if (String(A["ATTR_FOR_SOURCE_OF_FUNDING"]).toLowerCase() !== "other") {
-    //   hidden["ATTR_FOR_FUNDING_OTHER_TEXT"] = true;
-    // }
-
+ 
     setProps((p) => ({ ...p, hiddenFields: hidden }));
   }, [JSON.stringify(A)]);
 

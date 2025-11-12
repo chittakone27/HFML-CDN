@@ -8,20 +8,16 @@ import { useEffect, useMemo } from "react";
 import useProfileRules from "./useProfileRules";
 
 
-
-// TEA IDs you want to control here
 const IDS = {
   a: "NSkJrZeR8LL",
   b: "RLamCNXOwQ5",
 };
 
-// Manually disabled fields (read-only)
 const MANUAL_DISABLE = new Set([
-  IDS.a, // comment out to re-enable
-  IDS.b, // comment out to re-enable
+  IDS.a, 
+  IDS.b, 
 ]);
 
-// Program: Villages in catchment area (sBkMdki30ua)
 const Profile = () => {
   const { program } = useSelectionStore(
     useShallow((state) => ({ program: state.program }))
@@ -31,7 +27,6 @@ const Profile = () => {
   );
   const props = useProfileRules() || {};
 
-  // Clear values for hidden attributes
   useEffect(() => {
     if (!props.hiddenFields) return;
     Object.entries(props.hiddenFields).forEach(([attr, isHidden]) => {
@@ -39,7 +34,6 @@ const Profile = () => {
     });
   }, [actions, props.hiddenFields]);
 
-  // Apply auto-assignments
   useEffect(() => {
     if (!props.assignations) return;
     Object.entries(props.assignations).forEach(([attr, value]) => {
@@ -56,11 +50,9 @@ const Profile = () => {
   );
 
   return attributes.map((attribute) => {
-    // Hide via rules
     const hidden = props?.hiddenFields?.[attribute];
     if (hidden) return null;
 
-    // Disable if: manually flagged OR rules say so
     const ruleDisabled = !!props?.disabledFields?.[attribute];
     const manualDisabled = MANUAL_DISABLE.has(attribute);
     const disabled = ruleDisabled || manualDisabled;

@@ -18,11 +18,9 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
-// Central Hospital TEA + the only DE to show when CH selected
 const CH_ATTR_ID = "VF9VIPxkf9z";
 const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
 
-// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -56,7 +54,6 @@ const NearbyStage = () => {
 
   const { currentEvent } = useCurrentEvent();
 
-  // Get dynamic rules
   const { warnings, hiddenFields, hiddenOptions } = useNearbyRules();
 
   const trAssessmentDate = t("assessment.assessmentDate", {
@@ -102,7 +99,6 @@ const NearbyStage = () => {
 
   const isCHSelected = !!String(getAttr(currentTei, CH_ATTR_ID) || "").trim();
 
-  // Visible DEs, respecting hiddenFields + the CH restriction
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -116,16 +112,13 @@ const NearbyStage = () => {
     return isCHSelected ? visible.filter((id) => id === ONLY_DE_WHEN_CH) : visible;
   }, [sections, hiddenFields, isCHSelected]);
 
-  // ⬇⬇⬇ MAKE *ALL VISIBLE* FIELDS MANDATORY ⬇⬇⬇
   const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
 
-  // warnings only for visible fields
   const hasWarnings = useMemo(
     () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
     [warnings, presentIds]
   );
 
-  // Missing check (all visible required + eventDate)
   const missing = useMemo(() => {
     const m = [];
     for (const id of requiredSet) {
@@ -138,7 +131,6 @@ const NearbyStage = () => {
     return m;
   }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // save/complete gating
   const disabled = missing.length > 0 || hasWarnings;
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
@@ -162,7 +154,6 @@ const NearbyStage = () => {
     }
   }, [actions, disabled]);
 
-  // Save handler
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_nearby_all_visible_required";
@@ -192,7 +183,6 @@ const NearbyStage = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
-  // integer-only input guards for dBK06ybZUbT
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -214,7 +204,6 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Event date (ALWAYS mandatory) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -244,14 +233,12 @@ const NearbyStage = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
-            // respect hidden fields and CH filter via presentIds
             if ((hiddenFields && hiddenFields[deId]) || !presentIds.includes(deId)) return null;
 
             const hasWarn = !!warnings?.[deId];
             const helpId = `help-${deId}`;
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
 
-            // Every visible field is required
             const isRequired = requiredSet.has(deId);
 
             return (
