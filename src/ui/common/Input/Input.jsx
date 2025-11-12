@@ -413,16 +413,7 @@ const Input = ({
       case "IMAGE":
         return <FilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
       case "FILE_RESOURCE":
-        return (
-          <FilePicker
-            type={valueType}
-            onChange={() => {
-              change;
-            }}
-            disabled={disabled}
-            value={value}
-          />
-        );
+        return <FilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
       case "TIME":
         return <TimePicker change={change} disabled={disabled} value={value} disableClearable={disableClearable} />;
       default:
