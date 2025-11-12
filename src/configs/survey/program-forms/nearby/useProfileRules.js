@@ -35,7 +35,7 @@ const composeFacilityId = (districtId, hfType, seq) => {
   const t = String(hfType ?? "").trim().toUpperCase().replace(/\s+/g, "");
   const s3raw = toAsciiDigits(seq).replace(/\D/g, "").slice(0, 3);
   if (d4.length !== 4 || !t || !s3raw) return undefined; 
-  const s3 = s3raw.padStart(3, "0");
+  const s3 = s3raw.padStart(2, "0");
   return `${d4}${t}${s3}`;
 };
 
