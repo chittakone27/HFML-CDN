@@ -1,20 +1,49 @@
-import { Table, TableBody, TableCell, TableRow, Typography, Box, TextField } from "@mui/material";
+import {
+  Table, TableBody, TableCell, TableRow, Typography, Box, TextField,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { findAttributeValue } from "@/configs/laotracker/common/utils.js";
+
 import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoState";
+import useProfileRules from "./useProfileRules";
+
+import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
+import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 const LABEL_COL_WIDTH = 220;
-const FIELD_MAX_WIDTH = 400;
+const FIELD_MAX_WIDTH = 480;
+
+// inline widths (match ICT feel)
+const DIST_W = 120;  // District ID (4 digits)
+const TYPE_W = 130;  // HF Type (required)
+const SEQ_W  = 90;   // Seq number (3 digits, required)
+
+// Normalize non-ASCII digits (Thai/Lao/Arabic/Devanagari) to ASCII
+const toAsciiDigits = (str = "") => {
+  const s = String(str);
+  const bases = [0x0660, 0x06F0, 0x0966, 0x0E50, 0x0ED0]; // Arabic, Persian, Devanagari, Thai, Lao
+  return s.replace(
+    /[0-9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F\u0E50-\u0E59\u0ED0-\u0ED9]/g,
+    (ch) => {
+      const code = ch.charCodeAt(0);
+      if (code >= 0x30 && code <= 0x39) return ch; // ASCII 0–9
+      for (const base of bases) {
+        if (code >= base && code <= base + 9) return String.fromCharCode(0x30 + (code - base));
+      }
+      return "";
+    }
+  );
+};
 
 const Profile = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  // i18n labels with Lao/EN fallbacks
   const trSelectNearest = t("profile.hf.selectNearest", {
     defaultValue: isLao ? "ເລືອກສະຖານທີ່ບໍລິການໃກ້ຄຽງ" : "Near by Health Facility",
   });
@@ -26,12 +55,20 @@ const Profile = () => {
     defaultValue: isLao ? "ໂຮງໝໍເມືອງປະເພດ / ໂຮງໝໍນ້ອຍ" : "District Hospital / Health Center",
   });
 
-  // New label for the first field (TEA sO0ItF0Dr0p)
   const trFirstField = t("profile.firstField", {
     defaultValue: isLao ? "ລະຫັດສະຖານທີ່" : "Facility ID",
   });
+  const trDistExact4 = t("profile.districtId.exact4", {
+    defaultValue: isLao ? "ໃສ່ເລກ 4 ໂຕແນ່ນອນ" : "Enter exactly 4 digits.",
+  });
+  const trRequired = t("form.required", {
+    defaultValue: isLao ? "ຕ້ອງການ" : "Required",
+  });
+  const trFixErrors = t("form.fixErrorsToSave", {
+    defaultValue: isLao ? "" : "",
+  });
 
-  useChrTrackerStore(); // ensure store subscription
+  useChrTrackerStore();
 
   const { layout, actions, data } = useTrackerCaptureStore(
     useShallow((state) => ({
@@ -40,125 +77,278 @@ const Profile = () => {
       data: state.data,
     }))
   );
-
   const { changeAttributeValue, setLayout } = actions || {};
   const { currentTei } = data || {};
 
-  // TEA IDs (this instance only)
-  const IDS = {
-    // Single text field
+  // TEA IDs (target + sources + selector)
+  const IDS = useMemo(() => ({
+    // target (auto-composed)
     firstField: "sO0ItF0Dr0p",
-
-    // Health facility selector members
+    // sources (inline trio) — MANDATORY
+    districtId: "R4mULOs2f6M",
+    hfType: "A81fBn53hAD",
+    seqNum: "GwphHuSwouj",
+    // selector members
     province: "pvY01Pt3GTk",
     district: "GbubCuHuzM7",
     hc: "Jy7ou2LCeju",
     ph: "rsXdExpMW65",
     dh: "WH4Az6TJ5ZA",
     ch: "VF9VIPxkf9z",
+  }), []);
 
+  const props = useProfileRules();
 
-  };
-
-  // ========== COMMENT-TO-TOGGLE SETS ==========
-  // Disable (read-only) these IDs:
-  const MANUAL_DISABLE = new Set([
-     IDS.firstField,
-     IDS.province,
-     IDS.district,
-     IDS.hc,
-     IDS.ph,
-     IDS.dh,
-     IDS.ch,
-
-    // Quick toggles for your extra UIDs:
-    // IDS.extraA, // s9TfhXLCYgD
-    // IDS.extraB, // nZjzEldORWw
-    // IDS.extraC, // Z9V1f5YzXXj
-  ]);
-
-  // Hide (don’t render) these IDs / rows:
-  const MANUAL_HIDE = new Set([
-    // IDS.firstField,
-    // IDS.province,
-    // IDS.district,
-    // IDS.hc,
-    // IDS.ph,
-    // IDS.dh,
-    // IDS.ch,
-
-    // Quick toggles for your extra UIDs:
-    // IDS.extraA, // s9TfhXLCYgD
-    // IDS.extraB, // nZjzEldORWw
-    // IDS.extraC, // Z9V1f5YzXXj
-  ]);
-  // ============================================
-
-  // initial values
-  const initVals = {
-    firstField: findAttributeValue(currentTei, IDS.firstField) || "",
-    province: findAttributeValue(currentTei, IDS.province) || "",
-    district: findAttributeValue(currentTei, IDS.district) || "",
-    hc: findAttributeValue(currentTei, IDS.hc) || "",
-    ph: findAttributeValue(currentTei, IDS.ph) || "",
-    dh: findAttributeValue(currentTei, IDS.dh) || "",
-    ch: findAttributeValue(currentTei, IDS.ch) || "",
-  };
+  // lock composed field
+  const MANUAL_DISABLE = new Set([IDS.firstField]);
+  const MANUAL_HIDE = new Set([]);
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
-  // receive validity from the selector and disable Save while invalid
-  const [hfValid, setHfValid] = useState(true);
+  // Keep Facility ID synced from rules
+  const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
+  useEffect(() => {
+    const next = props?.assignations?.[IDS.firstField];
+    if (typeof next === "undefined") return;
+    if (String(firstFieldVal) !== String(next)) setAttr(IDS.firstField, next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props?.assignations?.[IDS.firstField], currentTei]);
 
+  // CURRENT values (normalized where needed)
+  const rawDist = findAttributeValue(currentTei, IDS.districtId) || "";
+  const rawSeq  = findAttributeValue(currentTei, IDS.seqNum) || "";
+  const hfType  = (findAttributeValue(currentTei, IDS.hfType) || "").toString().trim();
+
+  const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); // clamp to 4
+  const seq  = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 3);  // clamp to 3
+
+  // If normalization trimmed anything, reflect it back to store
+  useEffect(() => {
+    if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
+    if (rawSeq && rawSeq !== seq)   setAttr(IDS.seqNum, seq);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawDist, rawSeq, dist, seq]);
+
+  // VALIDATION — all three are mandatory
+  const distValid = /^\d{4}$/.test(dist);
+  const typeValid = hfType.length > 0;           // required selection/input
+  const seqValid  = /^[0-9]{1,3}$/.test(seq);    // at least 1 digit, up to 3
+
+  // Disable Save when HF selector invalid OR any of the required fields invalid
+  const [hfValid, setHfValid] = useState(true);
   useEffect(() => {
     if (!setLayout) return;
-    const block = layout?.profileFormEditing && !hfValid;
+    const block =
+      layout?.profileFormEditing &&
+      (!hfValid || !distValid || !typeValid || !seqValid);
     setLayout("saveDisabled", block);
-    setLayout("saveDisabledReason", block ? "healthFacilityRequired" : "");
+    setLayout("saveDisabledReason", block ? "profileRequiredFields" : "");
     return () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hfValid, layout?.profileFormEditing, setLayout]);
+  }, [hfValid, distValid, typeValid, seqValid, layout?.profileFormEditing, setLayout]);
 
-  // keep value in sync with store
-  const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
+  // INPUT GUARDS
+  const DIST_DIGIT_GUARDS = {
+    inputProps: {
+      inputMode: "numeric",
+      pattern: "[0-9]*",
+      maxLength: 4,
+      placeholder: "####",
+      "aria-invalid": !distValid ? "true" : undefined,
+      "aria-describedby": !distValid ? "dist-help" : undefined,
+      required: true,
+    },
+    onKeyDown: (e) => {
+      if (["e", "E", "+", "-", ".", ",", " "].includes(e.key)) return e.preventDefault();
+      if (/^\d$/.test(e.key)) {
+        const el = e.target;
+        const val = toAsciiDigits(String(el.value ?? "")).replace(/\D/g, "");
+        const hasSel = (el.selectionEnd ?? 0) - (el.selectionStart ?? 0) > 0;
+        if (!hasSel && val.length >= 4) return e.preventDefault();
+      }
+    },
+    onPaste: (e) => {
+      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const clean = toAsciiDigits(txt).replace(/\D/g, "").slice(0, 4);
+      e.preventDefault();
+      const el = e.target;
+      const start = el.selectionStart ?? 0;
+      const end = el.selectionEnd ?? 0;
+      const next = (
+        toAsciiDigits(String(el.value ?? "")).slice(0, start) +
+        clean +
+        toAsciiDigits(String(el.value ?? "")).slice(end)
+      ).replace(/\D/g, "").slice(0, 4);
+      el.value = next;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    },
+    onInput: (e) => {
+      const s = toAsciiDigits(String(e.target.value ?? ""));
+      const digits4 = s.replace(/\D/g, "").slice(0, 4);
+      if (s !== digits4) e.target.value = digits4;
+    },
+  };
 
-  // --- Visibility / disable logic -------------------------------------------
-  const rowFirstHidden = MANUAL_HIDE.has(IDS.firstField);
+  const SEQ_DIGIT_GUARDS = {
+    inputProps: {
+      inputMode: "numeric",
+      pattern: "[0-9]*",
+      maxLength: 3,
+      placeholder: "###",
+      "aria-invalid": !seqValid ? "true" : undefined,
+      required: true,
+    },
+    onKeyDown: (e) => {
+      if (["e", "E", "+", "-", ".", ",", " "].includes(e.key)) e.preventDefault();
+    },
+    onInput: (e) => {
+      const s = toAsciiDigits(String(e.target.value ?? ""));
+      const clean = s.replace(/\D/g, "").slice(0, 3);
+      if (s !== clean) e.target.value = clean;
+    },
+    onPaste: (e) => {
+      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const clean = toAsciiDigits(txt).replace(/\D/g, "").slice(0, 3);
+      e.preventDefault();
+      const el = e.target;
+      const start = el.selectionStart ?? 0;
+      const end = el.selectionEnd ?? 0;
+      const next = (
+        toAsciiDigits(String(el.value ?? "")).slice(0, start) +
+        clean +
+        toAsciiDigits(String(el.value ?? "")).slice(end)
+      ).replace(/\D/g, "").slice(0, 3);
+      el.value = next;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    },
+  };
+
+  // visibility / disabled
   const rowFirstDisabled = !layout?.profileFormEditing || MANUAL_DISABLE.has(IDS.firstField);
 
   const hfIds = [IDS.province, IDS.district, IDS.ph, IDS.dh, IDS.ch, IDS.hc];
   const hfRowHidden = hfIds.every((id) => MANUAL_HIDE.has(id));
-  // If any underlying ID is disabled, disable the whole selector (component limitation)
-  const hfDisabledManual = hfIds.some((id) => MANUAL_DISABLE.has(id));
-  const hfDisabled = !layout?.profileFormEditing || hfDisabledManual;
-  // ---------------------------------------------------------------------------
+  const hfDisabled = !layout?.profileFormEditing;
 
   return (
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-          {/* First field row (TEA sO0ItF0Dr0p) */}
-          {!rowFirstHidden && (
-            <TableRow>
-              <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
-                <Typography>{trFirstField}</Typography>
-              </TableCell>
-              <TableCell>
-                <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
-                  <TextField
+          {/* Inline trio: District ID | HF Type | Seq No. (all REQUIRED) */}
+          <TableRow>
+            {/* ghost label keeps alignment */}
+            <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
+            <TableCell>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: `${DIST_W}px ${TYPE_W}px ${SEQ_W}px`,
+                  gap: 1.5,
+                  maxWidth: FIELD_MAX_WIDTH,
+                  alignItems: "start",
+                }}
+              >
+                {/* District ID (4 digits, required) */}
+                <Box sx={{ display: "grid", gap: 0.5 }}>
+                  <AttributeLabel attribute={IDS.districtId} />
+                  <AttributeField
+                    attribute={IDS.districtId}
+                    disabledManualFields
                     size="small"
-                    fullWidth
-                    value={firstFieldVal}
-                    onChange={(e) => setAttr(IDS.firstField, e.target.value)}
-                    disabled={rowFirstDisabled}
+                    {...DIST_DIGIT_GUARDS}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: 36,
+                        width: DIST_W,
+                        ...(distValid ? {} : { borderColor: "#d32f2f", borderWidth: 1, borderStyle: "solid" }),
+                      },
+                      "& .MuiInputBase-input": { py: 0.5, fontSize: "0.9rem" },
+                    }}
                   />
+                  {!distValid && (
+                    <Box id="dist-help" sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                      {trDistExact4}
+                    </Box>
+                  )}
                 </Box>
-              </TableCell>
-            </TableRow>
-          )}
+
+                {/* HF Type (required) */}
+                <Box sx={{ display: "grid", gap: 0.5 }}>
+                  <AttributeLabel attribute={IDS.hfType} />
+                  <AttributeField
+                    attribute={IDS.hfType}
+                    disabledManualFields
+                    size="small"
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: 36,
+                        width: TYPE_W,
+                        ...(typeValid ? {} : { borderColor: "#d32f2f", borderWidth: 1, borderStyle: "solid" }),
+                      },
+                      "& .MuiInputBase-input, & .MuiSelect-select": {
+                        py: 0.5, fontSize: "0.9rem",
+                      },
+                    }}
+                  />
+                  {!typeValid && (
+                    <Box sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                      {trRequired}
+                    </Box>
+                  )}
+                </Box>
+
+                {/* Seq number (1–3 digits, required) */}
+                <Box sx={{ display: "grid", gap: 0.5 }}>
+                  <AttributeLabel attribute={IDS.seqNum} />
+                  <AttributeField
+                    attribute={IDS.seqNum}
+                    disabledManualFields
+                    size="small"
+                    {...SEQ_DIGIT_GUARDS}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: 36,
+                        width: SEQ_W,
+                        ...(seqValid ? {} : { borderColor: "#d32f2f", borderWidth: 1, borderStyle: "solid" }),
+                      },
+                      "& .MuiInputBase-input": { py: 0.5, fontSize: "0.9rem" },
+                    }}
+                  />
+                  {!seqValid && (
+                    <Box sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                      {trRequired}
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              {/* Generic save hint when any required invalid */}
+              {(!distValid || !typeValid || !seqValid) && (
+                <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>{trFixErrors}</Box>
+              )}
+            </TableCell>
+          </TableRow>
+
+          {/* Facility ID (auto-filled & locked) */}
+          <TableRow>
+            <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
+              <Typography>{trFirstField}</Typography>
+            </TableCell>
+            <TableCell>
+              <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
+                <TextField
+                  size="small"
+                  fullWidth
+                  value={firstFieldVal}
+                  onChange={(e) => setAttr(IDS.firstField, e.target.value)}
+                  disabled={rowFirstDisabled}
+                />
+              </Box>
+            </TableCell>
+          </TableRow>
 
           {/* Health facility selector */}
           {!hfRowHidden && (
@@ -169,9 +359,17 @@ const Profile = () => {
               <TableCell>
                 <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
                   <HealthFacilitySelectorNoState
-                    disabled={hfDisabled}
+                    disabled={!layout?.profileFormEditing}
                     ids={IDS}
-                    init={initVals}
+                    init={{
+                      firstField: findAttributeValue(currentTei, IDS.firstField) || "",
+                      province: findAttributeValue(currentTei, IDS.province) || "",
+                      district: findAttributeValue(currentTei, IDS.district) || "",
+                      hc: findAttributeValue(currentTei, IDS.hc) || "",
+                      ph: findAttributeValue(currentTei, IDS.ph) || "",
+                      dh: findAttributeValue(currentTei, IDS.dh) || "",
+                      ch: findAttributeValue(currentTei, IDS.ch) || "",
+                    }}
                     labelsOverride={{
                       level1: <span>{trLevel1}</span>,
                       level2: <span>{trLevel2}</span>,
@@ -179,12 +377,12 @@ const Profile = () => {
                     }}
                     onValidityChange={setHfValid}
                     onChange={({ province, district, ph, ch, hc, dh }) => {
-                      setAttr(IDS.province, province || "");
-                      setAttr(IDS.district, district || "");
-                      setAttr(IDS.ph, ph || "");
-                      setAttr(IDS.hc, hc || "");
-                      setAttr(IDS.dh, dh || "");
-                      setAttr(IDS.ch, ch || "");
+                      changeAttributeValue?.(IDS.province, province || "");
+                      changeAttributeValue?.(IDS.district, district || "");
+                      changeAttributeValue?.(IDS.ph, ph || "");
+                      changeAttributeValue?.(IDS.hc, hc || "");
+                      changeAttributeValue?.(IDS.dh, dh || "");
+                      changeAttributeValue?.(IDS.ch, ch || "");
                     }}
                   />
                 </Box>

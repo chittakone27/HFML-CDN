@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
+// ------------------------- IDs -------------------------
 // 7. On-site internet available (can connect to the internet?)
 const AVAIL_SEL = "fszEmzFYXHU";
 
 // 6. Can receive phone call? (anchor for 6.1 operator list)
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";
 
-// Operator: Others (checkbox) → then require Service Provider text
 const OTHERS_ID = "BRHYwOIZ01O";
 const SERVICE_PROVIDER_ID = "O5TwLn4hWFr";
 
@@ -47,6 +47,7 @@ const CONN_FIELDS = [
   "SbpLKeVJBZd",
 ];
 
+// ===== initial always-mandatory (when visible) =====
 const GLOBAL_MANDATORY_IDS = new Set([
   "bEWpwn7HfUI",
   "OpKuX0h3iSf",
@@ -58,11 +59,12 @@ const GLOBAL_MANDATORY_IDS = new Set([
   "SVSfEQFVBUj", // months anchor
 ]);
 
+// ===== integer-only constraint IDs =====
 const INTEGER_ONLY_IDS = new Set([
   "bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53",
 ]);
 
-
+// Additional fields to mark as required in UI (when visible)
 const ALWAYS_REQ_IDS = new Set([
   TYPE_CONN_ID,          // show asterisk on connection type
   WIFI_FIELD_ID,         // required when Wifi or Both
@@ -81,6 +83,9 @@ const MONTH_IDS = new Set([
   "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE","l4g6U5MNdxQ",
 ]);
 
+const FUND_SOURCE_ID = "eq1FTj6Z2vT";
+const HIDE_WHEN_PERSONAL_ID = "SbpLKeVJBZd";
+
 // ------------------------- Helpers -------------------------
 const truthy = (v) =>
   v === true || v === "true" || v === 1 || v === "1" || v === "Yes" || v === "YES" || v === "yes";
@@ -93,7 +98,7 @@ const isEmpty = (v) => {
   return false;
 };
 
-
+// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic/… → ASCII)
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
@@ -122,6 +127,8 @@ const getValue = (event, deId) => {
   return event?.[deId];
 };
 
+// -------- Global aggregator (master guard) --------
+// Holds per-section validators + live disable flags
 const REG_KEY = "__FACILITY_RULES_REGISTRY__";
 const getRegistry = () => {
   const g = typeof globalThis !== "undefined" ? globalThis : window;
@@ -138,6 +145,7 @@ const setCombinedDisabled = (actions) => {
   } catch {}
 };
 
+// ------------------------- Hook -------------------------
 export default function useFacilityBuildingRules(sectionDEs = []) {
   const { currentEvent } = useCurrentEvent();
   const { actions } = useTrackerCaptureStore.getState();
@@ -145,12 +153,14 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const { i18n, t } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
+  // Bilingual integer-only message
   const trIntOnly = t("equipment.error.integerOnly", {
     defaultValue: isLao
       ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
       : "Only whole numbers are allowed (no decimals).",
   });
 
+  // current values for logic
   const availVal      = getValue(currentEvent, AVAIL_SEL);
   const anchorVal     = getValue(currentEvent, OP_ANCHOR_ID);
   const othersVal     = getValue(currentEvent, OTHERS_ID);
@@ -161,6 +171,8 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const hasSel = sel !== "";
   const notAvail = sel === "not available";
 
+  // Keep existing show/hide behavior:
+  // show connectivity when Available or Available, but often disrupted
   const showConn = hasSel && !notAvail;
 
   const type = normalize(typeVal); // "wifi" | "cable" | "both" | ""
@@ -178,9 +190,18 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     .map((de) => de?.id || de?.dataElement?.id)
     .filter(Boolean);
 
+  // --- Personal fund check (normalized robust match) ---
+  const isPersonalFund = useMemo(() => {
+    const raw = getValue(currentEvent, FUND_SOURCE_ID);
+    const key = normalize(raw).replace(/[\s_]+/g, "");
+    return key === "personalfund";
+  }, [currentEvent?.dataValues]);
+
+  // -------------------- Visibility map --------------------
   const hiddenFields = useMemo(() => {
     const h = {};
 
+    // Connectivity group visibility
     if (!showConn) {
       for (const id of CONN_FIELDS) h[id] = true;
       for (const id of NEW_OPERATOR_IDS) h[id] = true;
@@ -199,15 +220,22 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       h[SERVICE_PROVIDER_ID] = true;
     }
 
-    return h;
-  }, [showConn, showWifi, showCable, showOperators, showServiceProvider, showNewSpecify]);
+    // If funding source is "Personal fund", hide SbpLKeVJBZd
+    if (isPersonalFund) {
+      h[HIDE_WHEN_PERSONAL_ID] = true;
+    }
 
+    return h;
+  }, [showConn, showWifi, showCable, showOperators, showServiceProvider, showNewSpecify, isPersonalFund]);
+
+  // -------------------- Required flags for UI (asterisks) --------------------
   const requiredFields = useMemo(() => {
     const req = {};
     for (const de of sectionDEs) {
       const id = de?.id || de?.dataElement?.id;
       if (!id) continue;
 
+      // Groups are "at least one", so don't mark single-field required flags
       if (OPERATOR_IDS.has(id) || NEW_OPERATOR_IDS.has(id) || MONTH_IDS.has(id)) {
         req[id] = false;
         continue;
@@ -222,15 +250,22 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
         continue;
       }
 
-      if (ALWAYS_REQ_IDS.has(id)) {
-        req[id] = !hiddenFields[id]; 
+      // Special rule: SbpLKeVJBZd is NOT mandatory when Personal fund
+      if (id === HIDE_WHEN_PERSONAL_ID) {
+        req[id] = !hiddenFields[id] && !isPersonalFund;
         continue;
       }
 
+      if (ALWAYS_REQ_IDS.has(id)) {
+        req[id] = !hiddenFields[id]; // TYPE_CONN_ID, WIFI/CABLE details, eq1FTj6Z2vT, etc.
+        continue;
+      }
+
+      // Stage guard enforces all visible singles anyway.
       req[id] = false;
     }
     return req;
-  }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify]);
+  }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify, isPersonalFund]);
 
   // -------------------- Clear values when hidden --------------------
   useEffect(() => {

@@ -5,11 +5,10 @@ import { useTranslation } from "react-i18next";
 
 const FOOT_ID = "Bokim7QLnF8";
 const CAR_ID  = "bcnCvxfxNeF";
-const INTEGER_ONLY_ID = "dBK06ybZUbT"; 
+const INTEGER_ONLY_ID = "dBK06ybZUbT"; // integer, >= 1000
+const TRIGGER_ID = "jWinhL2rxeK";      // controls visibility of INTEGER_ONLY_ID
 
-const TRIGGER_ID = "jWinhL2rxeK";
-
-// --- helpers unchanged ---
+// Normalize non-ASCII digits to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, ch => {
     const c = ch.charCodeAt(0);
@@ -21,18 +20,8 @@ const toAsciiDigits = (str = "") =>
     return ch;
   });
 
-const parseHMToMinutes = (val) => {
-  const s = toAsciiDigits(String(val ?? "")).trim();
-  const m = /^(\d{1,2})\s*:\s*([0-5]?\d)$/.exec(s);
-  if (!m) return NaN;
-  const hours = Number(m[1]);
-  const mins  = Number(m[2]);
-  if (!Number.isFinite(hours) || !Number.isFinite(mins)) return NaN;
-  return hours * 60 + mins;
-};
-
-// NEW: truthy helper for yes/true
-const truthy = (v) => {
+// Interprets “false/no/0” as a hiding trigger
+const isNo = (v) => {
   const s = String(v ?? "").trim().toLowerCase();
   return v === false || v === 0 || s === "0" || s === "false" || s === "no" || s === "n";
 };
@@ -43,6 +32,7 @@ const useNearbyRules = () => {
     warnings: {},
     warningTexts: {},
     hiddenFields: {},
+    // mandatoryFields intentionally unused — NearbyStage makes *all visible* mandatory
     assignations: {},
     disabledFields: {},
     hiddenOptions: {},
@@ -58,17 +48,16 @@ const useNearbyRules = () => {
     const assignations = {};
     const warnings = {};
     const warningTexts = {};
+    const hiddenOptions = {};
+    const hiddenFields = {};
 
     const dv = (id) => currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
-    // Visibility for INTEGER_ONLY_ID:
-    // Visible by default; HIDE only when trigger is truthy.
+    // Dynamically hide INTEGER_ONLY_ID when trigger says "no/false/0"
     const triggerVal = dv(TRIGGER_ID);
-    const hiddenFields = {};
-    if (truthy(triggerVal)) hiddenFields[INTEGER_ONLY_ID] = true;
+    if (isNo(triggerVal)) hiddenFields[INTEGER_ONLY_ID] = true;
 
-    // 2) Integer-only + minimum (>= 1000) guard for dBK06ybZUbT
-    //    (apply ONLY when visible)
+    // Integer-only + minimum >= 1000 (apply only when visible)
     if (!hiddenFields[INTEGER_ONLY_ID]) {
       const intRaw = toAsciiDigits(String(dv(INTEGER_ONLY_ID) ?? "").trim());
       if (intRaw !== "") {
@@ -90,15 +79,22 @@ const useNearbyRules = () => {
       }
     }
 
+    // Hide specific options as requested
+    hiddenOptions[CAR_ID] = [
+      "cannot_foot",
+    ];
+    hiddenOptions[FOOT_ID] = [
+      "cannot_bike",
+    ];
+
     setProps((prev) => ({
       ...prev,
       assignations,
       warnings,
       warningTexts,
-      // push computed visibility
       hiddenFields,
+      hiddenOptions,
       disabledFields: prev.disabledFields || {},
-      hiddenOptions: prev.hiddenOptions || {},
     }));
   }, [JSON.stringify(currentEvent), JSON.stringify(currentTei?.lastSaved), t]);
 
@@ -106,3 +102,4 @@ const useNearbyRules = () => {
 };
 
 export default useNearbyRules;
+export { toAsciiDigits };

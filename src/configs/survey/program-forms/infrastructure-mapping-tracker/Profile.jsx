@@ -4,6 +4,7 @@ import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import { Box } from "@mui/material";
 import useProfileRules from "./useProfileRules";
 
+
 // TEA IDs you want to toggle frequently
 const IDS = {
   A: "s9TfhXLCYgD",
@@ -46,6 +47,9 @@ const Profile = () => {
         // Respect rule-based hiding
         if (hiddenFields?.[attribute]) return null;
 
+        // Disabled if:
+        // - listed in MANUAL_DISABLE, or
+        // - rules say it's disabled
         const isDisabled = MANUAL_DISABLE.has(attribute) || !!disabledFields?.[attribute];
 
         return (

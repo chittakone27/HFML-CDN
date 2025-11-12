@@ -19,7 +19,6 @@ const LABEL_SX = {};
 const SELECT_SX = { "& .MuiSelect-select": { textAlign: "left", py: 1 } };
 const ROW_GAP = 1;
 
-// OU group IDs
 const G = {
   PHO: "jblbYwuvO33",   // Province
   DHO: "Zh1inFu0Z2O",   // District
@@ -62,7 +61,6 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
-  // classify OUs
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [], districts = [], phs = [], chs = [], hcs = [], dhs = [];
     (orgUnits || []).forEach((ou) => {
@@ -71,13 +69,11 @@ const HealthFacilitySelectorNoState = ({
       if (inGroup(ou, G.PH))  phs.push(ou);
       if (inGroup(ou, G.CH))  chs.push(ou);
       if (inGroup(ou, G.HC))  hcs.push(ou);
-      // Treat DH and DC as DH-type
       if (inGroup(ou, G.DH) || inGroup(ou, G.DC)) dhs.push(ou);
     });
     return { provinces, districts, phs, chs, hcs, dhs };
   }, [orgUnits]);
 
-  // parent maps
   const dhoByProv = useMemo(() => mapByParent(districts), [districts]);
   const phByProv  = useMemo(() => mapByParent(phs),       [phs]);
   const chByProv  = useMemo(() => mapByParent(chs),       [chs]);
@@ -109,7 +105,6 @@ const HealthFacilitySelectorNoState = ({
     else setL3({ type: "", id: "" });
   }, [init?.province, init?.district, init?.ph, init?.ch, init?.hc, init?.dh]);
 
-  // options
   const provOptions = useMemo(
     () =>
       (provinces || [])
@@ -145,7 +140,6 @@ const HealthFacilitySelectorNoState = ({
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [l2, hcByDist, dhByDist, language]);
 
-  // propagate selection to parent
   const emit = (nextProv, nextL2, nextL3) => {
     const province = nextProv || "";
     let district = "", ph = "", ch = "", hc = "", dh = "";
@@ -159,8 +153,8 @@ const HealthFacilitySelectorNoState = ({
     onChange?.({ province, district, ph, ch, hc, dh });
   };
 
-  const requireL2 = !!provId;          // province picked → L2 required
-  const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
+  const requireL2 = !!provId;          
+  const requireL3 = l2.type === "DHO"; 
   const l2Error   = requireL2 && !l2.id;
   const l3Error   = requireL3 && !l3.id;
 
@@ -215,6 +209,7 @@ const HealthFacilitySelectorNoState = ({
 
   return (
     <Box sx={{ display: "grid", rowGap: ROW_GAP }}>
+      {/* Province */}
       <FormControl fullWidth size="small" disabled={!!disabled}>
         <FormLabel sx={LABEL_SX}>{l1Label}</FormLabel>
         <Select

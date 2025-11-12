@@ -15,7 +15,6 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
-// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -43,26 +42,20 @@ const VillagesStage = () => {
   const { program } = useSelectionStore(
     useShallow((state) => ({ program: state.program }))
   );
-  const { actions } = useTrackerCaptureStore(
-    useShallow((state) => ({ actions: state.actions }))
+  const { actions, data } = useTrackerCaptureStore(
+    useShallow((state) => ({ actions: state.actions, data: state.data }))
   );
   const { currentEvent } = useCurrentEvent();
-  const props = useVillageRules(); // warnings now contain *codes*
-  const hiddenFields = props?.hiddenFields || {};
+
+  // ⬇ warnings + hiddenFields + hiddenOptions (ALL visible will be required below)
+  const { warnings, hiddenFields = {}, hiddenOptions = {} } = useVillageRules();
 
   const trStageDate = t("village.stageDate", {
     defaultValue: isLao ? "ວັນທີ່ບັນທຶກ" : "Stage date",
   });
 
-  // ---- translate a warning code -> message (EN/LO) ----
   const trWarn = (code) => {
     switch (code) {
-      case "footVsCar":
-        return t("village.rules.footVsCar", {
-          defaultValue: isLao
-            ? "ເວລາເດີນທາງດ້ວຍທ້າວຕ້ອງຫຼາຍກວ່າເວລາໄປດ້ວຍລົດ."
-            : "Travel time on foot must be greater than by car.",
-        });
       case "integerOnly":
         return t("village.rules.integerOnly", {
           defaultValue: isLao
@@ -79,7 +72,7 @@ const VillagesStage = () => {
     }
   };
 
-  // ---- SECTION title (not stage): "Details of catchment area" ----
+  // SECTION title mapping
   const SECTION_EN = "Details of catchment area";
   const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ";
   const trCatchmentSectionTitle = t("village.section.details", {
@@ -116,10 +109,13 @@ const VillagesStage = () => {
     return uniq.filter((id) => !hiddenFields[id]);
   }, [sections, hiddenFields]);
 
-  // Compute missing (all visible DEs + eventDate)
+  // ⬇⬇⬇ MAKE *ALL VISIBLE* FIELDS MANDATORY ⬇⬇⬇
+  const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
+
+  // Missing check: all visible required + eventDate
   const missing = useMemo(() => {
     const m = [];
-    for (const id of presentIds) {
+    for (const id of requiredSet) {
       const v = getEventDEValue(currentEvent, id);
       if (isEmpty(v)) m.push(id);
     }
@@ -127,18 +123,23 @@ const VillagesStage = () => {
       m.push("__eventDate__");
     }
     return m;
-  }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate]);
+  }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // Block when missing or any rule warnings
-  const hasWarnings = !!props?.warnings && Object.keys(props.warnings).length > 0;
+  // Only block on warnings for visible fields
+  const hasWarnings = useMemo(
+    () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
+    [warnings, presentIds]
+  );
+
+  // Disable save/complete when missing or warnings exist
   const disabled = missing.length > 0 || hasWarnings;
 
   // Avoid update loops
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
-  const warningsRef = useRef(props?.warnings || {});
+  const warningsRef = useRef(warnings || {});
   missingRef.current = missing;
-  warningsRef.current = props?.warnings || {};
+  warningsRef.current = warnings || {};
 
   // Toggle Complete button only when value changes
   useEffect(() => {
@@ -160,12 +161,12 @@ const VillagesStage = () => {
   // Register Save handler once
   useEffect(() => {
     if (!actions) return;
-    const KEY = "eventSave_villages_all_required";
+    const KEY = "eventSave_villages_all_visible_required";
     actions.setHandlers &&
       actions.setHandlers(KEY, async () => {
         const m = missingRef.current;
         const w = warningsRef.current || {};
-        const hasW = Object.keys(w).length > 0;
+        const hasW = Object.keys(w).some((id) => presentIds.includes(id));
 
         if (m.length > 0 || hasW) {
           const msgs = [];
@@ -173,20 +174,25 @@ const VillagesStage = () => {
             msgs.push(
               t("village.save.completeAll", {
                 defaultValue: isLao
-                  ? "ກະລຸນາກອກຂໍ້ມູນທຸກຊ່ອງທີ່ຈໍາເປັນ."
+                  ? "ກະລຸນາກອກຂໍ້ມູນທີ່ຈໍາເປັນ."
                   : "Please complete all required fields.",
               })
             );
           if (hasW) {
-            const uniqCodes = Array.from(new Set(Object.values(w)));
-            msgs.push(uniqCodes.map(trWarn).join(" "));
+            msgs.push(
+              Array.from(new Set(
+                Object.entries(w)
+                  .filter(([id]) => presentIds.includes(id))
+                  .map(([, code]) => trWarn(code))
+              )).join(" ")
+            );
           }
           return { ok: false, message: msgs.join(" ") };
         }
         return { ok: true };
       });
     return () => actions.setHandlers && actions.setHandlers(KEY, null);
-  }, [actions, t, isLao]);
+  }, [actions, t, isLao, presentIds]);
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
@@ -242,13 +248,16 @@ const VillagesStage = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
-            // respect hidden fields (OWAR8Vpa8IW hidden when SOWCUUYumd6 is false)
+            // respect hidden fields
             if (hiddenFields[deId]) return null;
 
-            const hasWarn = !!props?.warnings?.[deId];
+            const hasWarn = !!warnings?.[deId];
             const helpId = `help-${deId}`;
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
-            const warnMsg = hasWarn ? trWarn(props.warnings[deId]) : "";
+            const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
+
+            // Every visible field is required
+            const isRequired = requiredSet.has(deId);
 
             return (
               <Box
@@ -261,27 +270,23 @@ const VillagesStage = () => {
                 }}
               >
                 <Box sx={{ width: 300, p: "10px" }}>
-                  <DataValueLabel dataElement={deId} />
+                  <DataValueLabel dataElement={deId} required={isRequired} />
                 </Box>
 
                 <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", p: "10px" }}>
                   <DataValueFieldNoBlur
                     dataElement={deId}
-                    required
+                    required={isRequired}
                     aria-invalid={hasWarn ? "true" : undefined}
                     aria-describedby={hasWarn ? helpId : undefined}
+                    hiddenOptions={hiddenOptions?.[deId] || undefined}  // <— pass down
                     {...extra}
                   />
 
                   {hasWarn && (
                     <Box
                       id={helpId}
-                      sx={{
-                        mt: 0.5,
-                        fontSize: 12,
-                        lineHeight: "16px",
-                        color: "#d32f2f",
-                      }}
+                      sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
                     >
                       {warnMsg}
                     </Box>

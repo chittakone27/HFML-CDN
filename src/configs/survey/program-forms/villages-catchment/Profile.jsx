@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/villages-catchment/Profile.jsx
 import useSelectionStore from "@/state/selection";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
@@ -9,16 +8,20 @@ import { useEffect, useMemo } from "react";
 import useProfileRules from "./useProfileRules";
 
 
+
+// TEA IDs you want to control here
 const IDS = {
   a: "NSkJrZeR8LL",
   b: "RLamCNXOwQ5",
 };
 
+// Manually disabled fields (read-only)
 const MANUAL_DISABLE = new Set([
-  IDS.a, 
-  IDS.b, 
+  IDS.a, // comment out to re-enable
+  IDS.b, // comment out to re-enable
 ]);
 
+// Program: Villages in catchment area (sBkMdki30ua)
 const Profile = () => {
   const { program } = useSelectionStore(
     useShallow((state) => ({ program: state.program }))

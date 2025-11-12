@@ -18,9 +18,11 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
+// Central Hospital TEA + the only DE to show when CH selected
 const CH_ATTR_ID = "VF9VIPxkf9z";
 const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
 
+// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -54,8 +56,8 @@ const NearbyStage = () => {
 
   const { currentEvent } = useCurrentEvent();
 
-
-  const { warnings, hiddenFields } = useNearbyRules();
+  // Get dynamic rules
+  const { warnings, hiddenFields, hiddenOptions } = useNearbyRules();
 
   const trAssessmentDate = t("assessment.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
@@ -98,10 +100,9 @@ const NearbyStage = () => {
     ];
   }, [stage]);
 
-  // CH selected?
   const isCHSelected = !!String(getAttr(currentTei, CH_ATTR_ID) || "").trim();
 
-  // all DEs we render (respect hiddenFields; then if CH → keep ONLY K4RyAstSuIe)
+  // Visible DEs, respecting hiddenFields + the CH restriction
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -115,31 +116,27 @@ const NearbyStage = () => {
     return isCHSelected ? visible.filter((id) => id === ONLY_DE_WHEN_CH) : visible;
   }, [sections, hiddenFields, isCHSelected]);
 
+  // ⬇⬇⬇ MAKE *ALL VISIBLE* FIELDS MANDATORY ⬇⬇⬇
+  const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
+
   // warnings only for visible fields
   const hasWarnings = useMemo(
     () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
     [warnings, presentIds]
   );
 
-  // missing check (visible DEs + eventDate)
-  // - If CH selected: only K4RyAstSuIe is required (among DEs) + eventDate is required
-  // - Otherwise: all visible DEs are required + eventDate is required
+  // Missing check (all visible required + eventDate)
   const missing = useMemo(() => {
     const m = [];
-    if (isCHSelected) {
-      const v = getEventDEValue(currentEvent, ONLY_DE_WHEN_CH);
-      if (isEmpty(v)) m.push(ONLY_DE_WHEN_CH);
-    } else {
-      for (const id of presentIds) {
-        const v = getEventDEValue(currentEvent, id);
-        if (isEmpty(v)) m.push(id);
-      }
+    for (const id of requiredSet) {
+      const v = getEventDEValue(currentEvent, id);
+      if (isEmpty(v)) m.push(id);
     }
     if (!currentEvent?.eventDate || isEmpty(currentEvent.eventDate)) {
       m.push("__eventDate__");
     }
     return m;
-  }, [presentIds, currentEvent?.dataValues, currentEvent?.eventDate, isCHSelected]);
+  }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
   // save/complete gating
   const disabled = missing.length > 0 || hasWarnings;
@@ -168,7 +165,7 @@ const NearbyStage = () => {
   // Save handler
   useEffect(() => {
     if (!actions) return;
-    const KEY = "eventSave_nearby_all_required";
+    const KEY = "eventSave_nearby_all_visible_required";
     actions.setHandlers &&
       actions.setHandlers(KEY, async () => {
         const m = missingRef.current;
@@ -181,7 +178,7 @@ const NearbyStage = () => {
             msgs.push(
               t("nearby.save.completeAll", {
                 defaultValue: isLao
-                  ? "ກະລຸນາກອກຂໍ້ມູນທຸກຊ່ອງທີ່ຈໍາເປັນ."
+                  ? "ກະລຸນາກອກຂໍ້ມູນທັງໝົດທີ່ກໍານົດໃຫ້ຕ້ອງກອກ."
                   : "Please complete all required fields.",
               })
             );
@@ -217,7 +214,7 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      {/* Event date (ALWAYS visible & mandatory) */}
+      {/* Event date (ALWAYS mandatory) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -254,6 +251,9 @@ const NearbyStage = () => {
             const helpId = `help-${deId}`;
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
 
+            // Every visible field is required
+            const isRequired = requiredSet.has(deId);
+
             return (
               <Box
                 key={deId}
@@ -277,9 +277,10 @@ const NearbyStage = () => {
                 >
                   <DataValueFieldNoBlur
                     dataElement={deId}
-                    required={isCHSelected ? deId === ONLY_DE_WHEN_CH : true}
+                    required={isRequired}
                     aria-invalid={hasWarn ? "true" : undefined}
                     aria-describedby={hasWarn ? helpId : undefined}
+                    hiddenOptions={hiddenOptions?.[deId] || undefined}
                     {...extra}
                   />
                 </Box>

@@ -13,20 +13,18 @@ import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../../../common/Accordion";
 
-const GRID_COLS = "300px repeat(3, 1fr)"; // label + usable + damaged + image
-const SCALE = 0.8; // scale factor for the image uploader (0.75–0.9 looks good)
+const GRID_COLS = "300px repeat(3, 1fr)"; 
+const SCALE = 0.8; 
 
-// Section IDs (stable)
 const SECTION = {
   BASIC: "ftMRtZvarWk",
   MCH: "ipHIglCu5Z9",
   EPI: "IFiX3F88mHg",
   ADMIN: "Q68YZTN83dj",
   ICT: "kVViSpknfAg",
-  MOVED_COMBINED: "XUbOnfMrc0H", // exclude from this stage if visible
+  MOVED_COMBINED: "XUbOnfMrc0H", 
 };
 
-// Lao quick-fallbacks
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   partiallyDamaged: "ເສຍຫາຍບາງສ່ວນແຕ່ຍັງໃຊ້ໄດ້ຢູ່",
@@ -76,7 +74,6 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
-// Rows we still render here (BASIC, MCH, EPI)
 const SECTION_ROWS = {
   [SECTION.BASIC]: [
     { label: "1. Oxygen concentrator", usable: "k6STi37BjK9", damaged: "NykhziIHZHH", image: "VPvZAg55M28" },
@@ -114,7 +111,6 @@ const SECTION_ROWS = {
 const stripRomanOrNumber = (s) =>
   String(s || "").replace(/^\s*((?:[IVXLCDM]+|\d+)\.)\s*/i, "");
 
-// --- helpers to read values / check emptiness ---
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -132,7 +128,6 @@ const isEmpty = (v) => {
   return false;
 };
 
-// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic, etc.)
 const toAsciiDigits = (str = "") =>
   String(str).replace(/[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g, (ch) => {
     const c = ch.charCodeAt(0);
@@ -185,7 +180,6 @@ const Equipments = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // Filter OUT ICT + Admin (and the combined section if it accidentally appears in this stage)
   const filteredSections = sections.filter(
     (s) => ![SECTION.ICT, SECTION.ADMIN, SECTION.MOVED_COMBINED].includes(s.id)
   );
@@ -194,7 +188,6 @@ const Equipments = () => {
   const knownSections = filteredSections.filter((s) => knownSectionIds.has(s.id));
   const unknownSections = filteredSections.filter((s) => !knownSectionIds.has(s.id));
 
-  // Collect DE ids for numeric (required) vs image (optional)
   const allRows = useMemo(
     () => knownSections.flatMap((sec) => SECTION_ROWS[sec.id] || []),
     [knownSections]
@@ -205,7 +198,7 @@ const Equipments = () => {
       if (r.usable) ids.push(r.usable);
       if (r.damaged) ids.push(r.damaged);
     });
-    // Unknown section DEs are also treated as numeric/required
+
     unknownSections.forEach((sec) =>
       (sec.dataElements || []).forEach((de) => {
         const id = de?.id || de?.dataElement?.id;
@@ -215,7 +208,7 @@ const Equipments = () => {
     return new Set(ids);
   }, [allRows, unknownSections]);
 
-  // Build warnings map: integer-only for numeric fields only (NOT for image)
+
   const warnings = useMemo(() => {
     if (!currentEvent) return {};
     const w = {};
@@ -230,7 +223,6 @@ const Equipments = () => {
     return w;
   }, [numericIds, currentEvent?.dataValues, trIntOnly]);
 
-  // Missing: required = numeric fields only (NOT image)
   const missing = useMemo(() => {
     if (!currentEvent) return [];
     const m = [];
@@ -244,14 +236,12 @@ const Equipments = () => {
   const hasWarnings = Object.keys(warnings).length > 0;
   const disabled = missing.length > 0 || hasWarnings;
 
-  // Keep latest for save handler
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(warnings);
   missingRef.current = missing;
   warningsRef.current = warnings;
 
-  // ---------- Stage-wide compulsory + validation guard ----------
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -268,7 +258,6 @@ const Equipments = () => {
     }
   }, [actions, disabled]);
 
-  // Register Save handler once; read latest via refs
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_equipment_all_required";
@@ -292,7 +281,6 @@ const Equipments = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
-  // integer-only input guards (apply to numeric fields only)
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -316,7 +304,6 @@ const Equipments = () => {
     },
   };
 
-  // Reusable red asterisk
   const RedStar = () => (
     <Box component="span" sx={{ color: "#d32f2f", ml: 0.75 }} aria-hidden="true">
       *
@@ -376,7 +363,6 @@ const Equipments = () => {
                 <Box sx={{ p: "10px 12px" }}>{trHeader("image", "Image")}</Box>
               </Box>
 
-              {/* rows */}
               {rows.map((r, i) => {
                 const usableWarn = !!warnings[r.usable];
                 const damagedWarn = r.damaged ? !!warnings[r.damaged] : false;
@@ -394,7 +380,7 @@ const Equipments = () => {
                       background: i % 2 === 1 ? "#fafafa" : "transparent",
                     }}
                   >
-                    {/* label cell with red * (numeric columns are required) */}
+
                     <Box
                       sx={{
                         p: "10px 12px",
@@ -410,7 +396,6 @@ const Equipments = () => {
                       <RedStar />
                     </Box>
 
-                    {/* usable (required numeric) */}
                     <Box
                       sx={{
                         p: "6px 10px",
@@ -440,7 +425,6 @@ const Equipments = () => {
                       </Box>
                     </Box>
 
-                    {/* damaged (required numeric if present) */}
                     {r.damaged ? (
                       <Box
                         sx={{
@@ -470,11 +454,9 @@ const Equipments = () => {
                         </Box>
                       </Box>
                     ) : (
-                      // no damaged column for this row — empty placeholder cell to keep grid aligned
                       <Box sx={{ p: "6px 10px", borderRight: "1px solid #e5e5e5" }} />
                     )}
 
-                    {/* image (optional) — scaled smaller to reduce row height */}
                     <Box sx={{ p: "6px 10px", display: "flex", alignItems: "flex-start" }}>
                       <Box sx={{ width: "100%" }}>
                         {r.image ? (
@@ -482,7 +464,7 @@ const Equipments = () => {
                             sx={{
                               transform: `scale(${SCALE})`,
                               transformOrigin: "top left",
-                              width: `${(1 / SCALE) * 100}%`, // compensate width shrink so it still fills cell
+                              width: `${(1 / SCALE) * 100}%`, 
                             }}
                           >
                             <DataValueFieldNoBlur dataElement={r.image} />
@@ -500,7 +482,6 @@ const Equipments = () => {
         );
       })}
 
-      {/* Unknown sections (rare) — still enforce integer-only + red * (no image column) */}
       {unknownSections.map((section, sIdx) => (
         <Accordion key={section.id || `${section.displayName}-${sIdx}`} title={trSectionTitle(section.displayName)}>
           {(section.dataElements ?? []).map((de, dIdx) => {

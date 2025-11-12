@@ -32,6 +32,10 @@ const OPTIONAL_IDS = new Set([
   "xnccpdd2vKn",
 ]);
 
+// --- NEW: conditional hide mapping ------------------------------------------
+const HIDE_IF_TRUE_CONTROLLER_ID = "vnJhT1wzjJa";
+const HIDE_IF_TRUE_TARGET_ID = "sevW1KA9uZv";
+
 const DEP_SET = new Set(RULES.flatMap((r) => r.dependents));
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
@@ -66,6 +70,12 @@ const isEmpty = (v) => {
   if (v == null) return true;
   if (typeof v === "string") return v.trim() === "";
   return false;
+};
+
+// treat “true/1/yes/y” (case-insensitive) as true
+const isTruthyYes = (v) => {
+  const s = normalize(v);
+  return s === "true" || s === "1" || s === "yes" || s === "y";
 };
 
 const GRID_ROW = { display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" };
@@ -238,6 +248,12 @@ const Wash = () => {
     },
   };
 
+  // --- NEW: compute whether to hide the target field -------------------------
+  const hideTarget = useMemo(() => {
+    const ctrlVal = getEventDEValue(currentEvent, HIDE_IF_TRUE_CONTROLLER_ID);
+    return isTruthyYes(ctrlVal);
+  }, [currentEvent?.dataValues]);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       {/* Translated Assessment date */}
@@ -280,6 +296,9 @@ const Wash = () => {
 
               // If this DE is a dependent, skip it here; it will be injected below its controller.
               if (DEP_SET.has(deId)) return null;
+
+              // NEW: hide sevW1KA9uZv when vnJhT1wzjJa is truthy
+              if (deId === HIDE_IF_TRUE_TARGET_ID && hideTarget) return null;
 
               const rule = matchedRuleFor(deId);
 
@@ -328,6 +347,9 @@ const Wash = () => {
                   {renderControllerRow}
                   {showDeps &&
                     rule.dependents.map((depId) => {
+                      // If a dependent ever equals the hide target, respect the same rule
+                      if (depId === HIDE_IF_TRUE_TARGET_ID && hideTarget) return null;
+
                       const depCode = warnings[depId];
                       const depHasWarn = !!depCode;
                       const depHelpId = `help-${depId}`;
