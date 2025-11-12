@@ -111,7 +111,7 @@ const useImmunizationRule = () => {
         hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] = true;
       }
       /* Updated by Somkhit */
-      if (ageInDay < 45) {
+      if (ageInWeek < 6) {
         hiddenFields[DATA_ELEMENT_IDS.PCV_1] = true;
         hiddenFields[DATA_ELEMENT_IDS.OPV_1] = true;
         hiddenFields[DATA_ELEMENT_IDS.PENTA_1] = true;
