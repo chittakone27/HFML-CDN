@@ -30,7 +30,7 @@ const useProfileRules = () => {
 
     hidden["tDri5optbSF"] = sourceOfFunding !== "other";
 
-     const hideFor = {
+    const hideFor = {
       laptop: ["XRdw8EK5FJg", "azMLZ6HjJzX"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
       desktop: ["leCxCv4ZFaX", "rIHJFrYHA27", "XRdw8EK5FJg"],

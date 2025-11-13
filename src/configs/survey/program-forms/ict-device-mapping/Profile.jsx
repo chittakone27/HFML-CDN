@@ -10,23 +10,27 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 import useProfileRules from "./useProfileRules";
 
+// --- Layout knobs ------------------------------------------------------------
 const LABEL_COL_W = 210; 
 
 // Fixed widths (adjust here)
-const HF_W = 80;           
-const HFSEQUENCE_W = 50;   
-const HFTYPE_W = 80;       
-const CODE_W = 50;         
-const NUM_W = 65;          
+const HF_W = 80;           // HF ID input width
+const HFSEQUENCE_W = 50;   // HF sequence number input width
+const HFTYPE_W = 80;       // HF type input width
+const CODE_W = 50;         // Code input width
+const NUM_W = 65;          // Number input width
 
+// --- Attribute IDs -----------------------------------------------------------
 const ID = {
-  deviceType: "xQrdgnlPcC3",  
-  code: "y6RfdAq2zmQ",        
-  hf: "odDm8AxiL1j",          
-  hftype: "STdn1v1AxLa",      
-  hfSequence: "xgb9vCptedt", 
-  num: "KZ5D0DFEqdf",         
-}
+  deviceType: "xQrdgnlPcC3",  // render first
+  code: "y6RfdAq2zmQ",        // Code  — disabled
+  hf: "odDm8AxiL1j",          // HF ID (user input)
+  hftype: "STdn1v1AxLa",      // HF type (user)
+  hfSequence: "xgb9vCptedt",  // HF sequence number (user)
+  num: "KZ5D0DFEqdf",         // Number (user input)
+  deviceId: "RyN09GsWd64",    // Composed Device ID 
+};
+
 const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
 
 const toAttrMap = (tei) =>
@@ -177,7 +181,8 @@ const Profile = () => {
         className="custom-tracker-profile-field-row"
         sx={{ alignItems: "flex-start", mb: 1 }}
       >
-     <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
+
+        <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
 
         <Box
           sx={{
@@ -200,7 +205,7 @@ const Profile = () => {
                     disabledManualFields
                     disabled={
                       attribute === ID.code || !!props?.disabledFields?.[attribute]
-                    } // Code locked
+                    } 
                     size="small"
                     {...(attribute === ID.hf ? HF_DIGIT_GUARDS : {})}
                     sx={{
