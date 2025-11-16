@@ -18,9 +18,14 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
+// Central Hospital TEA + the only DE to show when CH selected
 const CH_ATTR_ID = "VF9VIPxkf9z";
 const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
 
+// NEW: this one should NOT be mandatory
+const NON_MANDATORY_ID = "HFXe55C0WT0";
+
+// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -54,6 +59,7 @@ const NearbyStage = () => {
 
   const { currentEvent } = useCurrentEvent();
 
+  // Get dynamic rules
   const { warnings, hiddenFields, hiddenOptions } = useNearbyRules();
 
   const trAssessmentDate = t("assessment.assessmentDate", {
@@ -61,7 +67,7 @@ const NearbyStage = () => {
   });
 
   const SECTION_EN = "Details of nearby health facilities";
-  const SECTION_LO = "ຂໍ້ມູນຂອງສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
+  const SECTION_LO = "ຂໍ້ມູນຂອງສະຖານທີ່ບຍລິການໃກ້ຄຽງ";
   const trNearbySectionTitle = t("nearby.section.details", {
     defaultValue: isLao ? SECTION_LO : SECTION_EN,
   });
@@ -69,7 +75,8 @@ const NearbyStage = () => {
     const s = String(name || "").trim();
     if (!s) return false;
     const enMatch =
-      s.toLowerCase().replace(/\s+/g, " ") === SECTION_EN.toLowerCase().replace(/\s+/g, " ");
+      s.toLowerCase().replace(/\s+/g, " ") ===
+      SECTION_EN.toLowerCase().replace(/\s+/g, " ");
     const loMatch = s === SECTION_LO;
     return enMatch || loMatch;
   };
@@ -99,6 +106,7 @@ const NearbyStage = () => {
 
   const isCHSelected = !!String(getAttr(currentTei, CH_ATTR_ID) || "").trim();
 
+  // Visible DEs, respecting hiddenFields + the CH restriction
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((sec) => {
@@ -112,13 +120,20 @@ const NearbyStage = () => {
     return isCHSelected ? visible.filter((id) => id === ONLY_DE_WHEN_CH) : visible;
   }, [sections, hiddenFields, isCHSelected]);
 
-  const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
+  // MAKE *ALL VISIBLE* FIELDS MANDATORY EXCEPT NON_MANDATORY_ID
+  const requiredSet = useMemo(() => {
+    const s = new Set(presentIds);
+    s.delete(NON_MANDATORY_ID); // this one becomes optional
+    return s;
+  }, [presentIds]);
 
+  // warnings only for visible fields
   const hasWarnings = useMemo(
     () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
     [warnings, presentIds]
   );
 
+  // Missing check (all visible required + eventDate)
   const missing = useMemo(() => {
     const m = [];
     for (const id of requiredSet) {
@@ -131,6 +146,7 @@ const NearbyStage = () => {
     return m;
   }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
+  // save/complete gating
   const disabled = missing.length > 0 || hasWarnings;
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
@@ -154,6 +170,7 @@ const NearbyStage = () => {
     }
   }, [actions, disabled]);
 
+  // Save handler
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_nearby_all_visible_required";
@@ -183,6 +200,7 @@ const NearbyStage = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
+  // integer-only input guards for dBK06ybZUbT
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -204,6 +222,7 @@ const NearbyStage = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Event date (ALWAYS mandatory) */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -233,12 +252,14 @@ const NearbyStage = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
+            // respect hidden fields and CH filter via presentIds
             if ((hiddenFields && hiddenFields[deId]) || !presentIds.includes(deId)) return null;
 
             const hasWarn = !!warnings?.[deId];
             const helpId = `help-${deId}`;
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
 
+            // Every visible field is required EXCEPT NON_MANDATORY_ID
             const isRequired = requiredSet.has(deId);
 
             return (

@@ -14,37 +14,47 @@ import { useMemo, useEffect } from "react";
 
 import Accordion from "../../../common/Accordion";
 
+// --- IDs & rules -------------------------------------------------------------
 const RULES = [
   { controller: "VmCvSADpsA1", matchValues: ["other"], dependents: ["bmlUYsjXYko"] },
   { controller: "CNVSIJkquLR", matchValues: ["other"], dependents: ["Eoj2LevRSsa"] },
 ];
 
+// INTEGER-only fields in this stage:
 const INTEGER_ONLY_IDS = new Set(["CViemlWnENJ", "W5UrZzdDLvz"]);
 
-const OPTIONAL_IDS = new Set([
-  "sevW1KA9uZv",
-  "x59W91PRh3t",
-  "Kcb5YG66lpa",
-  "sb8FHULfVoC",
-  "xnccpdd2vKn",
-]);
+// These DEs are NOT mandatory (optional) even when visible
+// -> UPDATED: all images mandatory, so keep this EMPTY
+const OPTIONAL_IDS = new Set([]);
 
+// --- conditional hide mapping ------------------------------------------
+// Existing: hide sevW1KA9uZv
+const HIDE_IF_NO_WATER = "uVEvR09vS76";
 const HIDE_IF_TRUE_CONTROLLER_ID = "vnJhT1wzjJa";
 const HIDE_IF_TRUE_TARGET_ID = "sevW1KA9uZv";
+
+// NEW: hide Patient toilet image when "No toilet"
+const HIDE_TOILET_CTRL_ID = "omwad4O2kAf";    // 4.1. Type of toilet
+const HIDE_TOILET_TARGET_ID = "x59W91PRh3t";  // 4.2. Patient toilet image
+
+// NEW: hide OPD soap+water image when "No"
+const HIDE_OPD_CTRL_ID = "KpDpzOLL5YI";       // 10.1. Soap and water available in OPD
+const HIDE_OPD_TARGET_ID = "Kcb5YG66lpa";     // 10.2. Image of soap and water in OPD
 
 const DEP_SET = new Set(RULES.flatMap((r) => r.dependents));
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
+// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic/… → ASCII)
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
       return ch;
     }
   );
@@ -67,6 +77,7 @@ const isEmpty = (v) => {
   return false;
 };
 
+// treat “true/1/yes/y” (case-insensitive) as true
 const isTruthyYes = (v) => {
   const s = normalize(v);
   return s === "true" || s === "1" || s === "yes" || s === "y";
@@ -83,6 +94,7 @@ const Wash = () => {
   const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
   const { currentEvent } = useCurrentEvent();
 
+  // Prefer selection.stage; fall back to program + currentEvent.programStage
   const { stage: selStage, program } = useSelectionStore(
     useShallow((s) => ({ stage: s.stage, program: s.program }))
   );
@@ -96,10 +108,12 @@ const Wash = () => {
   const sections = stage?.programStageSections ?? [];
   const maxDateStr = format(new Date(), "yyyy-MM-dd");
 
+  // i18n: translated “Assessment date”
   const trAssessmentDate = t("wash.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
 
+  // i18n: translated section titles (only for these five)
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -112,12 +126,15 @@ const Wash = () => {
       case "waste":
         return t("wash.sections.waste", { defaultValue: isLao ? "ຂີ້ເຫຍື້ອ" : "Waste" });
       case "climate":
-        return t("wash.sections.climate", { defaultValue: isLao ? "ສະພາບດິນຟ້າອາກາດ" : "Climate" });
+        return t("wash.sections.climate", {
+          defaultValue: isLao ? "ສະພາບດິນຟ້າອາກາດ" : "Climate",
+        });
       default:
         return displayName;
     }
   };
 
+  // helpers for rule checks
   const valueOf = (id) => normalize(getEventDEValue(currentEvent, id));
   const matchedRuleFor = (controllerId) => RULES.find((r) => r.controller === controllerId);
   const shouldShowDependents = (rule) => {
@@ -126,6 +143,7 @@ const Wash = () => {
     return rule.matchValues.includes(v);
   };
 
+  // ---- integer-only warnings (for CViemlWnENJ & W5UrZzdDLvz) ----
   const warnings = useMemo(() => {
     const w = {};
     INTEGER_ONLY_IDS.forEach((id) => {
@@ -136,6 +154,33 @@ const Wash = () => {
   }, [currentEvent?.dataValues]);
   const hasWarnings = Object.keys(warnings).length > 0;
 
+  // --- hide flags -----------------------------------------------------
+  // Existing: sevW1KA9uZv
+  const hideTarget = useMemo(() => {
+    const ctrlVal = getEventDEValue(currentEvent, HIDE_IF_TRUE_CONTROLLER_ID);
+    return isTruthyYes(ctrlVal);
+  }, [currentEvent?.dataValues]);
+
+  const hideNoWater = useMemo(() => {
+    const v = valueOf(HIDE_IF_NO_WATER); // already normalized
+    return v === "no water source";
+  }, [currentEvent?.dataValues]);
+
+  const hideSev = hideTarget || hideNoWater;
+
+  // NEW: hide 4.2 Patient toilet image if 4.1 Type of toilet = "No toilet"
+  const hideToiletImage = useMemo(() => {
+    const v = valueOf(HIDE_TOILET_CTRL_ID);
+    return v === "none";
+  }, [currentEvent?.dataValues]);
+
+  // NEW: hide 10.2 OPD soap+water image if 10.1 = "No"
+  const hideOpdSoapImage = useMemo(() => {
+    const v = valueOf(HIDE_OPD_CTRL_ID);
+    return v === "no";
+  }, [currentEvent?.dataValues]);
+
+  // translate warning codes → single-language message
   const trWarn = (code) => {
     switch (code) {
       case "integerOnly":
@@ -149,6 +194,7 @@ const Wash = () => {
     }
   };
 
+  // ---------- Stage-wide mandatory guard ----------
   useEffect(() => {
     if (!actions) return;
 
@@ -158,8 +204,17 @@ const Wash = () => {
         .filter(Boolean)
     );
 
+    // Hidden IDs (must NOT be treated as required)
+    const hiddenIds = new Set();
+    if (hideSev) hiddenIds.add(HIDE_IF_TRUE_TARGET_ID);
+    if (hideToiletImage) hiddenIds.add(HIDE_TOILET_TARGET_ID);
+    if (hideOpdSoapImage) hiddenIds.add(HIDE_OPD_TARGET_ID);
+
+    // Required = visible & not a dependent placeholder & not in OPTIONAL_IDS
     const requiredNow = new Set(
-      [...presentIds].filter((id) => !DEP_SET.has(id) && !OPTIONAL_IDS.has(id))
+      [...presentIds].filter(
+        (id) => !DEP_SET.has(id) && !OPTIONAL_IDS.has(id) && !hiddenIds.has(id)
+      )
     );
 
     for (const rule of RULES) {
@@ -168,7 +223,10 @@ const Wash = () => {
       const v = valueOf(controller);
       if (rule.matchValues.includes(v)) {
         for (const depId of dependents) {
-          if (presentIds.has(depId) && !OPTIONAL_IDS.has(depId)) requiredNow.add(depId);
+          // Dependents become required only if visible AND not optional
+          if (presentIds.has(depId) && !OPTIONAL_IDS.has(depId) && !hiddenIds.has(depId)) {
+            requiredNow.add(depId);
+          }
         }
       }
     }
@@ -211,8 +269,20 @@ const Wash = () => {
       });
       return () => actions.setHandlers && actions.setHandlers(KEY, null);
     }
-  }, [actions, currentEvent?.dataValues, sections, hasWarnings, t, isLao, warnings]);
+  }, [
+    actions,
+    currentEvent?.dataValues,
+    sections,
+    hasWarnings,
+    t,
+    isLao,
+    warnings,
+    hideSev,
+    hideToiletImage,
+    hideOpdSoapImage,
+  ]);
 
+  // numeric-only input guards (prevents typing/pasting non-integers)
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -232,13 +302,9 @@ const Wash = () => {
     },
   };
 
-  const hideTarget = useMemo(() => {
-    const ctrlVal = getEventDEValue(currentEvent, HIDE_IF_TRUE_CONTROLLER_ID);
-    return isTruthyYes(ctrlVal);
-  }, [currentEvent?.dataValues]);
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Translated Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -276,9 +342,17 @@ const Wash = () => {
               const deId = de?.id ?? de?.dataElement?.id;
               if (!deId) return null;
 
+              // If this DE is a dependent, skip it here; it will be injected below its controller.
               if (DEP_SET.has(deId)) return null;
 
-              if (deId === HIDE_IF_TRUE_TARGET_ID && hideTarget) return null;
+              // hide sevW1KA9uZv when condition matched
+              if (deId === HIDE_IF_TRUE_TARGET_ID && hideSev) return null;
+
+              // hide 4.2 Patient toilet image when "No toilet"
+              if (deId === HIDE_TOILET_TARGET_ID && hideToiletImage) return null;
+
+              // hide 10.2 OPD soap+water image when "No"
+              if (deId === HIDE_OPD_TARGET_ID && hideOpdSoapImage) return null;
 
               const rule = matchedRuleFor(deId);
 
@@ -293,7 +367,7 @@ const Wash = () => {
                     <DataValueLabel dataElement={deId} />
                   </Box>
                   <Box sx={VALUE_CELL}>
-
+                    {/* Required unless marked optional */}
                     <DataValueFieldNoBlur
                       dataElement={deId}
                       required={!OPTIONAL_IDS.has(deId)}
@@ -314,10 +388,11 @@ const Wash = () => {
               );
 
               if (!rule) {
-
+                // Plain DE, render as-is (required unless optional)
                 return renderControllerRow;
               }
 
+              // This DE controls dependents; render controller, then dependents if matched
               const showDeps = shouldShowDependents(rule);
 
               return (
@@ -325,8 +400,10 @@ const Wash = () => {
                   {renderControllerRow}
                   {showDeps &&
                     rule.dependents.map((depId) => {
-
-                      if (depId === HIDE_IF_TRUE_TARGET_ID && hideTarget) return null;
+                      // If a dependent ever equals the hide targets, respect same rules
+                      if (depId === HIDE_IF_TRUE_TARGET_ID && hideSev) return null;
+                      if (depId === HIDE_TOILET_TARGET_ID && hideToiletImage) return null;
+                      if (depId === HIDE_OPD_TARGET_ID && hideOpdSoapImage) return null;
 
                       const depCode = warnings[depId];
                       const depHasWarn = !!depCode;
@@ -339,7 +416,7 @@ const Wash = () => {
                             <DataValueLabel dataElement={depId} />
                           </Box>
                           <Box sx={VALUE_CELL}>
-
+                            {/* Dependent is required when shown, unless optional */}
                             <DataValueFieldNoBlur
                               dataElement={depId}
                               required={!OPTIONAL_IDS.has(depId)}
@@ -350,7 +427,12 @@ const Wash = () => {
                             {depHasWarn && (
                               <Box
                                 id={depHelpId}
-                                sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
+                                sx={{
+                                  mt: 0.5,
+                                  fontSize: 12,
+                                  lineHeight: "16px",
+                                  color: "#d32f2f",
+                                }}
                               >
                                 {trWarn(depCode)}
                               </Box>
