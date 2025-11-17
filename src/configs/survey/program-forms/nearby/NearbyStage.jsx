@@ -23,6 +23,7 @@ const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
 
 const NON_MANDATORY_ID = "HFXe55C0WT0";
 
+// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -117,7 +118,7 @@ const NearbyStage = () => {
 
   const requiredSet = useMemo(() => {
     const s = new Set(presentIds);
-    s.delete(NON_MANDATORY_ID); 
+    s.delete(NON_MANDATORY_ID); // this one becomes optional
     return s;
   }, [presentIds]);
 

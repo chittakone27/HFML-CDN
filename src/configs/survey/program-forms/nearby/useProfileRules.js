@@ -30,7 +30,7 @@ const toAsciiDigits = (str = "") => {
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
 const NEARBY_EXISTING_HF_CODES = new Set([
-  "EXIST_PUBLIC_HF", 
+  "EXIST_PUBLIC_HF", // <-- replace with your actual option code
 ]);
 
 const toObj = (list) =>
