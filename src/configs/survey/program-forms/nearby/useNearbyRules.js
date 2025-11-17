@@ -1,20 +1,18 @@
-// src/configs/laotracker/program-forms/nearby/useNearbyRules.js
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-// Travel-time / condition DEs
 const TRAVEL_CONDITION_ID = "dfMxJtpEVY0"; // Travel condition (option set)
 const FOOT_DURATION_ID = "Bokim7QLnF8";    // Travel duration – foot
 const BIKE_DURATION_ID = "bcnCvxfxNeF";    // Travel duration – bike
-
+const FERRY_FEE_ID = "dBK06ybZUbT";          // Ferry fee
 // Boat-related DEs
 const BOAT_TIME_ID = "yZfjh0SBRzz";        // Travel time by boat
-const CROSS_RIVER_ID = "jWinhL2rxeK";      // Need to cross river (Yes/No)
 
 const INTEGER_ONLY_ID = "dBK06ybZUbT";     // integer, >= 1000
 
+// Normalize non-ASCII digits to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
@@ -25,7 +23,6 @@ const toAsciiDigits = (str = "") =>
       if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
       if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
       if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
-      return ch;
     }
   );
 
@@ -49,7 +46,6 @@ const useNearbyRules = () => {
     warnings: {},
     warningTexts: {},
     hiddenFields: {},
-    // mandatoryFields intentionally unused — NearbyStage makes *all visible* mandatory
     assignations: {},
     disabledFields: {},
     hiddenOptions: {},
@@ -74,24 +70,31 @@ const useNearbyRules = () => {
     const travelCondRaw = dv(TRAVEL_CONDITION_ID);
     const travelCond = norm(travelCondRaw);
 
-    const isFootOnly =
-      travelCond === "foot only" || travelCond === "foot_only";
-    const isBikeOnly =
-      travelCond === "bike only" || travelCond === "bike_only";
+    let hideFoot = false;
+    let hideBike = false;
+    let hideBoat = false;
 
-    if (isFootOnly) {
-      hiddenFields[BIKE_DURATION_ID] = true;
+    if (travelCond) {
+      const hasFoot = travelCond.includes("foot");
+      const hasBike = travelCond.includes("bike");
+      const hasBoat = travelCond.includes("boat");
+
+      if (!hasFoot) hideFoot = true;
+      if (!hasBike) hideBike = true;
+      if (!hasBoat) hideBoat = true;
     }
 
-    if (isBikeOnly) {
-      hiddenFields[FOOT_DURATION_ID] = true;
+    if (hideFoot) {
+      hiddenFields[FOOT_DURATION_ID] = true; // Bokim7QLnF8
     }
-
-    const crossRiverVal = dv(CROSS_RIVER_ID);
-    if (isNo(crossRiverVal)) {
-
-      hiddenFields[INTEGER_ONLY_ID] = true;
-      hiddenFields[BOAT_TIME_ID] = true;
+    if (hideBike) {
+      hiddenFields[BIKE_DURATION_ID] = true; // bcnCvxfxNeF
+    }
+    if (hideBoat) {
+      hiddenFields[BOAT_TIME_ID] = true; // yZfjh0SBRzz
+    }
+    if (hideBoat) {
+      hiddenFields[FERRY_FEE_ID] = true; // dBK06ybZUbT
     }
 
     if (!hiddenFields[INTEGER_ONLY_ID]) {

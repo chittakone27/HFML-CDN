@@ -32,7 +32,7 @@ const G = {
 const getName = (ou, language) => {
   const tx = (ou?.translations || []).find(
     (t) =>
-      (t.property === "NAME" || t.property === "SHORT_NAME") &&
+      (t.property === "NAME") &&
       (t.locale || "").toLowerCase().startsWith((language || "en").slice(0, 2).toLowerCase())
   );
   return tx?.value || ou?.displayName || ou?.name || "";
@@ -69,6 +69,7 @@ const HealthFacilitySelectorNoState = ({
       if (inGroup(ou, G.PH))  phs.push(ou);
       if (inGroup(ou, G.CH))  chs.push(ou);
       if (inGroup(ou, G.HC))  hcs.push(ou);
+      // Treat DH and DC as DH-type
       if (inGroup(ou, G.DH) || inGroup(ou, G.DC)) dhs.push(ou);
     });
     return { provinces, districts, phs, chs, hcs, dhs };

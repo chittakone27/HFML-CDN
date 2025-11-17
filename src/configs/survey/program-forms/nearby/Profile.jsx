@@ -24,17 +24,15 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 const LABEL_COL_WIDTH = 220;
 const FIELD_MAX_WIDTH = 480;
 
-// inline widths (match ICT feel)
 const DIST_W = 120; // District ID (4 digits)
-const TYPE_W = 130; // HF Type (required)
-const SEQ_W = 90; // Seq number (3 digits, required)
+const TYPE_W = 130; // HF Type (required in Existing HF mode)
+const SEQ_W = 90; // Seq number (2–3 digits in ID)
 
-// Normalize non-ASCII digits (Thai/Lao/Arabic/Devanagari) to ASCII
 const toAsciiDigits = (str = "") => {
   const s = String(str);
-  const bases = [0x0660, 0x06f0, 0x0966, 0x0e50, 0x0ed0]; // Arabic, Persian, Devanagari, Thai, Lao
+  const bases = [0x0660, 0x06f0, 0x0966, 0x0e50, 0x0ed0]; 
   return s.replace(
-    /[0-9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F\u0E50-\u0E59\u0ED0-\u0ED9]/g,
+    /[0-9\u0660-\u0669\u06F0-\u06F9\u0E50-\u0E59\u0ED0-\u0ED9]/g,
     (ch) => {
       const code = ch.charCodeAt(0);
       if (code >= 0x30 && code <= 0x39) return ch; // ASCII 0–9
@@ -50,9 +48,8 @@ const toAsciiDigits = (str = "") => {
 
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
-// 🔧 put the *real* option code for “Existing public health facility” here
 const NEARBY_EXISTING_HF_CODES = new Set([
-  "EXIST_PUBLIC_HF", // <-- replace with your actual option code
+  "EXIST_PUBLIC_HF", 
 ]);
 
 const Profile = () => {
@@ -101,12 +98,11 @@ const Profile = () => {
   const { changeAttributeValue, setLayout } = actions || {};
   const { currentTei } = data || {};
 
-  // TEA IDs (target + sources + selector + new nearby facility fields)
   const IDS = useMemo(
     () => ({
       // target (auto-composed)
       firstField: "sO0ItF0Dr0p",
-      // sources (inline trio) — MANDATORY
+      // sources (inline trio)
       districtId: "R4mULOs2f6M",
       hfType: "A81fBn53hAD",
       seqNum: "GwphHuSwouj",
@@ -118,31 +114,27 @@ const Profile = () => {
       dh: "WH4Az6TJ5ZA",
       ch: "VF9VIPxkf9z",
       // NEW: Type of nearby facility + custom fields
-      nearbyType: "SxKvvxpzop9", // Type of nearby health facility
-      customFacilityName: "f9d4P9maZEq", // Facility name (text, required when visible)
-      customFacilityGps: "oqcnIPmiVhh", // GPS location (optional)
+      nearbyType: "SxKvvxpzop9", 
+      customFacilityName: "f9d4P9maZEq", 
+      customFacilityGps: "oqcnIPmiVhh", 
     }),
     []
   );
 
   const props = useProfileRules();
 
-  // lock composed field
-  const MANUAL_DISABLE = new Set([IDS.firstField]);
   const MANUAL_HIDE = new Set([]);
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
-  // Keep Facility ID synced from rules
   const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
   useEffect(() => {
     const next = props?.assignations?.[IDS.firstField];
     if (typeof next === "undefined") return;
     if (String(firstFieldVal) !== String(next)) setAttr(IDS.firstField, next);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [props?.assignations?.[IDS.firstField], currentTei]);
 
-  // CURRENT values (normalized where needed)
   const rawDist = findAttributeValue(currentTei, IDS.districtId) || "";
   const rawSeq = findAttributeValue(currentTei, IDS.seqNum) || "";
   const hfType = (findAttributeValue(currentTei, IDS.hfType) || "")
@@ -152,10 +144,8 @@ const Profile = () => {
   const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); // clamp to 4
   const seq = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 2); // clamp to 2
 
-  // NEW: Type of nearby facility + derived mode
   const nearbyTypeRaw = findAttributeValue(currentTei, IDS.nearbyType) || "";
 
-  // In DHIS2 this is usually the option *code*
   const isExistingPublicHF =
     NEARBY_EXISTING_HF_CODES.has(nearbyTypeRaw) ||
     normalize(nearbyTypeRaw) === normalize("Existing public health facility");
@@ -163,28 +153,23 @@ const Profile = () => {
   const isCustomFacilityMode =
     !!normalize(nearbyTypeRaw) && !isExistingPublicHF;
 
-  // NEW: custom facility name validity (required when visible)
   const customFacilityName =
     findAttributeValue(currentTei, IDS.customFacilityName) || "";
   const facilityNameValid =
     !isCustomFacilityMode || customFacilityName.trim().length > 0;
 
-  // If normalization trimmed anything, reflect it back to store
   useEffect(() => {
     if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
     if (rawSeq && rawSeq !== seq) setAttr(IDS.seqNum, seq);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [rawDist, rawSeq, dist, seq]);
 
-  // VALIDATION — all three are mandatory
-  const distValid = /^\d{4}$/.test(dist);
-  const typeValid = hfType.length > 0; // required selection/input
-  const seqValid = /^[0-9]{1,3}$/.test(seq); // at least 1 digit, up to 3
+  const distValid = !isExistingPublicHF || /^\d{4}$/.test(dist);
+  const typeValid = !isExistingPublicHF || hfType.length > 0;
+  const seqValid = !isExistingPublicHF || /^[0-9]{1,3}$/.test(seq);
 
-  // Disable Save when HF selector invalid OR any of the required fields invalid
   const [hfValid, setHfValid] = useState(true);
 
-  // Only enforce hfValid when we are in "Existing public health facility" mode
   const hfValidityForSave = isExistingPublicHF ? hfValid : true;
 
   useEffect(() => {
@@ -203,7 +188,7 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [
     hfValidityForSave,
     distValid,
@@ -221,9 +206,11 @@ const Profile = () => {
       pattern: "[0-9]*",
       maxLength: 4,
       placeholder: "####",
-      "aria-invalid": !distValid ? "true" : undefined,
-      "aria-describedby": !distValid ? "dist-help" : undefined,
-      required: true,
+      "aria-invalid":
+        isExistingPublicHF && !distValid ? "true" : undefined,
+      "aria-describedby":
+        isExistingPublicHF && !distValid ? "dist-help" : undefined,
+      required: isExistingPublicHF,
     },
     onKeyDown: (e) => {
       if (["e", "E", "+", "-", ".", ",", " "].includes(e.key))
@@ -267,8 +254,9 @@ const Profile = () => {
       pattern: "[0-9]*",
       maxLength: 3,
       placeholder: "###",
-      "aria-invalid": !seqValid ? "true" : undefined,
-      required: true,
+      "aria-invalid":
+        isExistingPublicHF && !seqValid ? "true" : undefined,
+      required: isExistingPublicHF,
     },
     onKeyDown: (e) => {
       if (["e", "E", "+", "-", ".", ",", " "].includes(e.key))
@@ -299,9 +287,9 @@ const Profile = () => {
     },
   };
 
-  // visibility / disabled
-  const rowFirstDisabled =
-    !layout?.profileFormEditing || MANUAL_DISABLE.has(IDS.firstField);
+  // const rowFirstDisabled =
+  //   !layout?.profileFormEditing || isExistingPublicHF;
+const rowFirstDisabled = true;
 
   const hfIds = [
     IDS.province,
@@ -318,9 +306,7 @@ const Profile = () => {
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-          {/* Inline trio: District ID | HF Type | Seq No. (all REQUIRED) */}
           <TableRow>
-            {/* ghost label keeps alignment */}
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
             <TableCell>
               <Box
@@ -332,7 +318,6 @@ const Profile = () => {
                   alignItems: "start",
                 }}
               >
-                {/* District ID (4 digits, required) */}
                 <Box sx={{ display: "grid", gap: 0.5 }}>
                   <AttributeLabel attribute={IDS.districtId} />
                   <AttributeField
@@ -344,13 +329,13 @@ const Profile = () => {
                       "& .MuiInputBase-root": {
                         height: 36,
                         width: DIST_W,
-                        ...(distValid
-                          ? {}
-                          : {
+                        ...(isExistingPublicHF && !distValid
+                          ? {
                               borderColor: "#d32f2f",
                               borderWidth: 1,
                               borderStyle: "solid",
-                            }),
+                            }
+                          : {}),
                       },
                       "& .MuiInputBase-input": {
                         py: 0.5,
@@ -358,7 +343,7 @@ const Profile = () => {
                       },
                     }}
                   />
-                  {!distValid && (
+                  {isExistingPublicHF && !distValid && (
                     <Box
                       id="dist-help"
                       sx={{
@@ -373,7 +358,6 @@ const Profile = () => {
                   )}
                 </Box>
 
-                {/* HF Type (required) */}
                 <Box sx={{ display: "grid", gap: 0.5 }}>
                   <AttributeLabel attribute={IDS.hfType} />
                   <AttributeField
@@ -384,13 +368,13 @@ const Profile = () => {
                       "& .MuiInputBase-root": {
                         height: 36,
                         width: TYPE_W,
-                        ...(typeValid
-                          ? {}
-                          : {
+                        ...(isExistingPublicHF && !typeValid
+                          ? {
                               borderColor: "#d32f2f",
                               borderWidth: 1,
                               borderStyle: "solid",
-                            }),
+                            }
+                          : {}),
                       },
                       "& .MuiInputBase-input, & .MuiSelect-select": {
                         py: 0.5,
@@ -398,7 +382,7 @@ const Profile = () => {
                       },
                     }}
                   />
-                  {!typeValid && (
+                  {isExistingPublicHF && !typeValid && (
                     <Box
                       sx={{
                         mt: 0.5,
@@ -412,7 +396,6 @@ const Profile = () => {
                   )}
                 </Box>
 
-                {/* Seq number (1–3 digits, required) */}
                 <Box sx={{ display: "grid", gap: 0.5 }}>
                   <AttributeLabel attribute={IDS.seqNum} />
                   <AttributeField
@@ -424,13 +407,13 @@ const Profile = () => {
                       "& .MuiInputBase-root": {
                         height: 36,
                         width: SEQ_W,
-                        ...(seqValid
-                          ? {}
-                          : {
+                        ...(isExistingPublicHF && !seqValid
+                          ? {
                               borderColor: "#d32f2f",
                               borderWidth: 1,
                               borderStyle: "solid",
-                            }),
+                            }
+                          : {}),
                       },
                       "& .MuiInputBase-input": {
                         py: 0.5,
@@ -438,7 +421,7 @@ const Profile = () => {
                       },
                     }}
                   />
-                  {!seqValid && (
+                  {isExistingPublicHF && !seqValid && (
                     <Box
                       sx={{
                         mt: 0.5,
@@ -453,16 +436,15 @@ const Profile = () => {
                 </Box>
               </Box>
 
-              {/* Generic save hint when any required invalid */}
-              {(!distValid || !typeValid || !seqValid) && (
-                <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>
-                  {trFixErrors}
-                </Box>
-              )}
+              {isExistingPublicHF &&
+                (!distValid || !typeValid || !seqValid) && (
+                  <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>
+                    {trFixErrors}
+                  </Box>
+                )}
             </TableCell>
           </TableRow>
 
-          {/* Facility ID (auto-filled & locked) */}
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
               <Typography>{trFirstField}</Typography>
@@ -480,7 +462,6 @@ const Profile = () => {
             </TableCell>
           </TableRow>
 
-          {/* NEW: Type of nearby health facility */}
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
               <AttributeLabel attribute={IDS.nearbyType} />
@@ -496,7 +477,6 @@ const Profile = () => {
             </TableCell>
           </TableRow>
 
-          {/* Health facility selector – only when Existing public health facility */}
           {showHfSelectorRow && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -539,10 +519,8 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Custom facility details when NOT Existing public health facility */}
           {isCustomFacilityMode && (
             <>
-              {/* Facility name (required when visible) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <Box
@@ -581,7 +559,6 @@ const Profile = () => {
                 </TableCell>
               </TableRow>
 
-              {/* GPS location (optional) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <AttributeLabel attribute={IDS.customFacilityGps} />

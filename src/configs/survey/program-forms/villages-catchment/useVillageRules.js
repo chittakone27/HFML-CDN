@@ -2,12 +2,13 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState } from "react";
 
-const FOOT_ID = "ooCoZbdc3az";   // Travel duration by foot
-const CAR_ID  = "bHbKBszX1LW";   // Travel duration by bike (was "car")
-const INTEGER_ID = "OWAR8Vpa8IW"; // Ferry fee (integer-only, >= 1000)
-const TRIGGER_ID = "SOWCUUYumd6"; // Need to cross river? (Yes/No)
-const TRAVEL_CONDITION_ID = "tiXQkpoVypv"; // Travel condition
-const BOAT_TIME_ID = "gepvFAO9AZ7";       // Travel time by boat
+const FOOT_ID = "ooCoZbdc3az";      // Travel duration by foot
+const CAR_ID = "bHbKBszX1LW";       // Travel duration by bike
+const INTEGER_ID = "OWAR8Vpa8IW";   // Ferry fee (integer-only, >= 1000)
+const TRIGGER_ID = "SOWCUUYumd6";   // Need to cross river? (Yes/No)
+const TRAVEL_CONDITION_ID = "tiXQkpoVypv"; // Travel condition (option set)
+const BOAT_TIME_ID = "gepvFAO9AZ7"; // Travel time by boat
+const FEERY_FEE_ID = "OWAR8Vpa8IW"; // Ferry fee
 
 const toAsciiDigits = (str = "") =>
   String(str).replace(
@@ -23,34 +24,24 @@ const toAsciiDigits = (str = "") =>
     }
   );
 
-// explicit "no/false/0/n"
-const explicitNo = (v) => {
+const isNo = (v) => {
   const s = String(v ?? "").trim().toLowerCase();
-  return v === false || s === "false" || s === "no" || s === "0" || s === "n";
+  return (
+    v === false ||
+    v === 0 ||
+    s === "0" ||
+    s === "false" ||
+    s === "no" ||
+    s === "n"
+  );
 };
 
-const parseTravelCondition = (v) => {
-  const s = String(v ?? "").trim().toLowerCase();
-  if (!s) return null;
-
-  if (
-    s === "foot only" 
-  ) {
-    return "foot_only";
-  }
-  if (
-    s === "bike only"
-  ) {
-    return "bike_only";
-  }
-  return null;
-};
+const norm = (s) => String(s ?? "").trim().toLowerCase();
 
 const useVillageRules = () => {
   const [props, setProps] = useState({
-    warnings: {},          // { [deId]: 'warningCode' }
+    warnings: {},          
     hiddenFields: {},
-    // mandatoryFields not needed — ALL visible are required in the stage
     assignations: {},
     disabledFields: {},
     hiddenOptions: {},
@@ -71,9 +62,38 @@ const useVillageRules = () => {
     const dv = (id) =>
       currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
+    const travelCondRaw = dv(TRAVEL_CONDITION_ID);
+    const travelCond = norm(travelCondRaw);
+
+    let hideFoot = false;
+    let hideBike = false;
+    let hideBoat = false;
+
+    if (travelCond) {
+      const hasFoot = travelCond.includes("foot");
+      const hasBike = travelCond.includes("bike");
+      const hasBoat = travelCond.includes("boat");
+
+      if (!hasFoot) hideFoot = true;
+      if (!hasBike) hideBike = true;
+      if (!hasBoat) hideBoat = true;
+    }
+
+    if (hideFoot) {
+      hiddenFields[FOOT_ID] = true; // Travel duration by foot
+    }
+    if (hideBike) {
+      hiddenFields[CAR_ID] = true;  // Travel duration by bike
+    }
+    if (hideBoat) {
+      hiddenFields[BOAT_TIME_ID] = true; // Travel time by boat
+    }
+    if (hideBoat) {
+      hiddenFields[FEERY_FEE_ID] = true; // Ferry fee
+    }
 
     const triggerVal = dv(TRIGGER_ID);
-    if (explicitNo(triggerVal)) {
+    if (isNo(triggerVal)) {
       hiddenFields[INTEGER_ID] = true;
       hiddenFields[BOAT_TIME_ID] = true; 
     }
@@ -90,17 +110,6 @@ const useVillageRules = () => {
           }
         }
       }
-    }
-
-    const travelCondVal = dv(TRAVEL_CONDITION_ID);
-    const travelMode = parseTravelCondition(travelCondVal);
-
-    if (travelMode === "foot_only") {
-      // can only travel by foot → hide bike duration
-      hiddenFields[CAR_ID] = true;
-    } else if (travelMode === "bike_only") {
-      // can only travel by bike → hide foot duration
-      hiddenFields[FOOT_ID] = true;
     }
 
     hiddenOptions[CAR_ID] = ["cannot_foot"];
