@@ -8,7 +8,7 @@ const INTEGER_ID = "OWAR8Vpa8IW";   // Ferry fee (integer-only, >= 1000)
 const TRIGGER_ID = "SOWCUUYumd6";   // Need to cross river? (Yes/No)
 const TRAVEL_CONDITION_ID = "tiXQkpoVypv"; // Travel condition (option set)
 const BOAT_TIME_ID = "gepvFAO9AZ7"; // Travel time by boat
-const FEERY_FEE_ID = "OWAR8Vpa8IW"; // Ferry fee
+const FEERY_FEE_ID = "XGdsUB1qrEE"; // Ferry fee
 
 const toAsciiDigits = (str = "") =>
   String(str).replace(
