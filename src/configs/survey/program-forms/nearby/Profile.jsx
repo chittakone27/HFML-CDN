@@ -1,3 +1,4 @@
+// src/configs/laotracker/program-forms/.../Profile.jsx
 import {
   Table,
   TableBody,
@@ -32,7 +33,7 @@ const toAsciiDigits = (str = "") => {
   const s = String(str);
   const bases = [0x0660, 0x06f0, 0x0966, 0x0e50, 0x0ed0]; 
   return s.replace(
-    /[0-9\u0660-\u0669\u06F0-\u06F9\u0E50-\u0E59\u0ED0-\u0ED9]/g,
+    /[0-9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F\u0E50-\u0E59\u0ED0-\u0ED9]/g,
     (ch) => {
       const code = ch.charCodeAt(0);
       if (code >= 0x30 && code <= 0x39) return ch; // ASCII 0–9
@@ -113,7 +114,6 @@ const Profile = () => {
       ph: "rsXdExpMW65",
       dh: "WH4Az6TJ5ZA",
       ch: "VF9VIPxkf9z",
-      // NEW: Type of nearby facility + custom fields
       nearbyType: "SxKvvxpzop9", 
       customFacilityName: "f9d4P9maZEq", 
       customFacilityGps: "oqcnIPmiVhh", 
@@ -123,6 +123,7 @@ const Profile = () => {
 
   const props = useProfileRules();
 
+  // manual hide set (kept for future if needed)
   const MANUAL_HIDE = new Set([]);
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
@@ -132,7 +133,6 @@ const Profile = () => {
     const next = props?.assignations?.[IDS.firstField];
     if (typeof next === "undefined") return;
     if (String(firstFieldVal) !== String(next)) setAttr(IDS.firstField, next);
-
   }, [props?.assignations?.[IDS.firstField], currentTei]);
 
   const rawDist = findAttributeValue(currentTei, IDS.districtId) || "";
@@ -144,6 +144,7 @@ const Profile = () => {
   const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); // clamp to 4
   const seq = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 2); // clamp to 2
 
+  // Type of nearby facility + derived mode
   const nearbyTypeRaw = findAttributeValue(currentTei, IDS.nearbyType) || "";
 
   const isExistingPublicHF =
@@ -161,7 +162,7 @@ const Profile = () => {
   useEffect(() => {
     if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
     if (rawSeq && rawSeq !== seq) setAttr(IDS.seqNum, seq);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawDist, rawSeq, dist, seq]);
 
   const distValid = !isExistingPublicHF || /^\d{4}$/.test(dist);
@@ -169,7 +170,6 @@ const Profile = () => {
   const seqValid = !isExistingPublicHF || /^[0-9]{1,3}$/.test(seq);
 
   const [hfValid, setHfValid] = useState(true);
-
   const hfValidityForSave = isExistingPublicHF ? hfValid : true;
 
   useEffect(() => {
@@ -188,7 +188,6 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-
   }, [
     hfValidityForSave,
     distValid,
@@ -199,7 +198,6 @@ const Profile = () => {
     setLayout,
   ]);
 
-  // INPUT GUARDS
   const DIST_DIGIT_GUARDS = {
     inputProps: {
       inputMode: "numeric",
@@ -287,10 +285,8 @@ const Profile = () => {
     },
   };
 
-  // const rowFirstDisabled =
-  //   !layout?.profileFormEditing || isExistingPublicHF;
-const rowFirstDisabled = true;
-
+  // visibility / disabled
+  const rowFirstDisabled = true;
   const hfIds = [
     IDS.province,
     IDS.district,
@@ -306,162 +302,7 @@ const rowFirstDisabled = true;
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-          <TableRow>
-            <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
-            <TableCell>
-              <Box
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: `${DIST_W}px ${TYPE_W}px ${SEQ_W}px`,
-                  gap: 1.5,
-                  maxWidth: FIELD_MAX_WIDTH,
-                  alignItems: "start",
-                }}
-              >
-                <Box sx={{ display: "grid", gap: 0.5 }}>
-                  <AttributeLabel attribute={IDS.districtId} />
-                  <AttributeField
-                    attribute={IDS.districtId}
-                    disabledManualFields
-                    size="small"
-                    {...DIST_DIGIT_GUARDS}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        height: 36,
-                        width: DIST_W,
-                        ...(isExistingPublicHF && !distValid
-                          ? {
-                              borderColor: "#d32f2f",
-                              borderWidth: 1,
-                              borderStyle: "solid",
-                            }
-                          : {}),
-                      },
-                      "& .MuiInputBase-input": {
-                        py: 0.5,
-                        fontSize: "0.9rem",
-                      },
-                    }}
-                  />
-                  {isExistingPublicHF && !distValid && (
-                    <Box
-                      id="dist-help"
-                      sx={{
-                        mt: 0.5,
-                        fontSize: 12,
-                        lineHeight: "16px",
-                        color: "#d32f2f",
-                      }}
-                    >
-                      {trDistExact4}
-                    </Box>
-                  )}
-                </Box>
-
-                <Box sx={{ display: "grid", gap: 0.5 }}>
-                  <AttributeLabel attribute={IDS.hfType} />
-                  <AttributeField
-                    attribute={IDS.hfType}
-                    disabledManualFields
-                    size="small"
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        height: 36,
-                        width: TYPE_W,
-                        ...(isExistingPublicHF && !typeValid
-                          ? {
-                              borderColor: "#d32f2f",
-                              borderWidth: 1,
-                              borderStyle: "solid",
-                            }
-                          : {}),
-                      },
-                      "& .MuiInputBase-input, & .MuiSelect-select": {
-                        py: 0.5,
-                        fontSize: "0.9rem",
-                      },
-                    }}
-                  />
-                  {isExistingPublicHF && !typeValid && (
-                    <Box
-                      sx={{
-                        mt: 0.5,
-                        fontSize: 12,
-                        lineHeight: "16px",
-                        color: "#d32f2f",
-                      }}
-                    >
-                      {trRequired}
-                    </Box>
-                  )}
-                </Box>
-
-                <Box sx={{ display: "grid", gap: 0.5 }}>
-                  <AttributeLabel attribute={IDS.seqNum} />
-                  <AttributeField
-                    attribute={IDS.seqNum}
-                    disabledManualFields
-                    size="small"
-                    {...SEQ_DIGIT_GUARDS}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        height: 36,
-                        width: SEQ_W,
-                        ...(isExistingPublicHF && !seqValid
-                          ? {
-                              borderColor: "#d32f2f",
-                              borderWidth: 1,
-                              borderStyle: "solid",
-                            }
-                          : {}),
-                      },
-                      "& .MuiInputBase-input": {
-                        py: 0.5,
-                        fontSize: "0.9rem",
-                      },
-                    }}
-                  />
-                  {isExistingPublicHF && !seqValid && (
-                    <Box
-                      sx={{
-                        mt: 0.5,
-                        fontSize: 12,
-                        lineHeight: "16px",
-                        color: "#d32f2f",
-                      }}
-                    >
-                      {trRequired}
-                    </Box>
-                  )}
-                </Box>
-              </Box>
-
-              {isExistingPublicHF &&
-                (!distValid || !typeValid || !seqValid) && (
-                  <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>
-                    {trFixErrors}
-                  </Box>
-                )}
-            </TableCell>
-          </TableRow>
-
-          <TableRow>
-            <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
-              <Typography>{trFirstField}</Typography>
-            </TableCell>
-            <TableCell>
-              <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
-                <TextField
-                  size="small"
-                  fullWidth
-                  value={firstFieldVal}
-                  onChange={(e) => setAttr(IDS.firstField, e.target.value)}
-                  disabled={rowFirstDisabled}
-                />
-              </Box>
-            </TableCell>
-          </TableRow>
-
+          {/* FIRST FIELD: Type of nearby health facility (SxKvvxpzop9) */}
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
               <AttributeLabel attribute={IDS.nearbyType} />
@@ -477,6 +318,176 @@ const rowFirstDisabled = true;
             </TableCell>
           </TableRow>
 
+          {/* Inline trio: District ID | HF Type | Seq No.
+              Visible ONLY when "Existing public health facility" */}
+          {isExistingPublicHF && (
+            <TableRow>
+              {/* ghost label keeps alignment */}
+              <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
+              <TableCell>
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: `${DIST_W}px ${TYPE_W}px ${SEQ_W}px`,
+                    gap: 1.5,
+                    maxWidth: FIELD_MAX_WIDTH,
+                    alignItems: "start",
+                  }}
+                >
+                  {/* District ID (4 digits) */}
+                  <Box sx={{ display: "grid", gap: 0.5 }}>
+                    <AttributeLabel attribute={IDS.districtId} />
+                    <AttributeField
+                      attribute={IDS.districtId}
+                      disabledManualFields
+                      size="small"
+                      {...DIST_DIGIT_GUARDS}
+                      sx={{
+                        "& .MuiInputBase-root": {
+                          height: 36,
+                          width: DIST_W,
+                          ...(isExistingPublicHF && !distValid
+                            ? {
+                                borderColor: "#d32f2f",
+                                borderWidth: 1,
+                                borderStyle: "solid",
+                              }
+                            : {}),
+                        },
+                        "& .MuiInputBase-input": {
+                          py: 0.5,
+                          fontSize: "0.9rem",
+                        },
+                      }}
+                    />
+                    {isExistingPublicHF && !distValid && (
+                      <Box
+                        id="dist-help"
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
+                      >
+                        {trDistExact4}
+                      </Box>
+                    )}
+                  </Box>
+
+                  {/* HF Type */}
+                  <Box sx={{ display: "grid", gap: 0.5 }}>
+                    <AttributeLabel attribute={IDS.hfType} />
+                    <AttributeField
+                      attribute={IDS.hfType}
+                      disabledManualFields
+                      size="small"
+                      sx={{
+                        "& .MuiInputBase-root": {
+                          height: 36,
+                          width: TYPE_W,
+                          ...(isExistingPublicHF && !typeValid
+                            ? {
+                                borderColor: "#d32f2f",
+                                borderWidth: 1,
+                                borderStyle: "solid",
+                              }
+                            : {}),
+                        },
+                        "& .MuiInputBase-input, & .MuiSelect-select": {
+                          py: 0.5,
+                          fontSize: "0.9rem",
+                        },
+                      }}
+                    />
+                    {isExistingPublicHF && !typeValid && (
+                      <Box
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
+                      >
+                        {trRequired}
+                      </Box>
+                    )}
+                  </Box>
+
+                  {/* Seq number */}
+                  <Box sx={{ display: "grid", gap: 0.5 }}>
+                    <AttributeLabel attribute={IDS.seqNum} />
+                    <AttributeField
+                      attribute={IDS.seqNum}
+                      disabledManualFields
+                      size="small"
+                      {...SEQ_DIGIT_GUARDS}
+                      sx={{
+                        "& .MuiInputBase-root": {
+                          height: 36,
+                          width: SEQ_W,
+                          ...(isExistingPublicHF && !seqValid
+                            ? {
+                                borderColor: "#d32f2f",
+                                borderWidth: 1,
+                                borderStyle: "solid",
+                              }
+                            : {}),
+                        },
+                        "& .MuiInputBase-input": {
+                          py: 0.5,
+                          fontSize: "0.9rem",
+                        },
+                      }}
+                    />
+                    {isExistingPublicHF && !seqValid && (
+                      <Box
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
+                      >
+                        {trRequired}
+                      </Box>
+                    )}
+                  </Box>
+                </Box>
+
+                {/* Generic save hint when any required invalid (Existing HF mode) */}
+                {isExistingPublicHF &&
+                  (!distValid || !typeValid || !seqValid) && (
+                    <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>
+                      {trFixErrors}
+                    </Box>
+                  )}
+              </TableCell>
+            </TableRow>
+          )}
+
+          {/* Facility ID
+              Visible ONLY when "Existing public health facility" */}
+          {isExistingPublicHF && (
+            <TableRow>
+              <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
+                <Typography>{trFirstField}</Typography>
+              </TableCell>
+              <TableCell>
+                <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
+                  <TextField
+                    size="small"
+                    fullWidth
+                    value={firstFieldVal}
+                    onChange={(e) => setAttr(IDS.firstField, e.target.value)}
+                    disabled={rowFirstDisabled}
+                  />
+                </Box>
+              </TableCell>
+            </TableRow>
+          )}
+
+          {/* Health facility selector – only when Existing public health facility */}
           {showHfSelectorRow && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -519,8 +530,10 @@ const rowFirstDisabled = true;
             </TableRow>
           )}
 
+          {/* Custom facility details when NOT Existing public health facility */}
           {isCustomFacilityMode && (
             <>
+              {/* Facility name (required when visible) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <Box
@@ -559,6 +572,7 @@ const rowFirstDisabled = true;
                 </TableCell>
               </TableRow>
 
+              {/* GPS location (optional) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <AttributeLabel attribute={IDS.customFacilityGps} />
