@@ -110,7 +110,7 @@ const FacilityBuildingandFurniture = () => {
         return t("facility.sections.internet", { defaultValue: isLao ? "ອິນເຕີເນັດ" : "Internet" });
       case "outreach activity":
         return t("facility.sections.outreach_activity", {
-          defaultValue: isLao ? "ການລົງເຄື່ອນທີ່ເຊື່ອມສານ" : "Outreach activity",
+          defaultValue: isLao ? "ການລົງເຄື່ອນທີ່" : "Outreach activity",
         });
       default:
         return displayName;

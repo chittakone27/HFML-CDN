@@ -3,15 +3,19 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
+
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
+
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
+// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -29,20 +33,48 @@ const isEmpty = (v) => {
   return false;
 };
 
-const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; 
+// ✅ TEA that stores the health facility
+const FACILITY_ATTR_ID = "RLamCNXOwQ5";
+
+// TEI attribute helper
+const getAttr = (tei, id) =>
+  (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
+
+// Strip code prefix: "(0501PH01) PH Bokeo" -> "PH Bokeo"
+const stripCodePrefix = (s = "") => {
+  const str = String(s || "").trim();
+  const match = str.match(/^\([^)]*\)\s*(.+)$/);
+  return match ? match[1] : str;
+};
+
+// Normalizer for section name comparison
+const normalize = (s) =>
+  String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
+
+// Program: sBkMdki30ua | Stage: JrbpF3DG3FL
+const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; // integer-only DE
+
+// Static EN/LO section names (the one you see in the form)
+const DRY_SECTION_EN =
+  "Dry-season travel conditions from this health facility to the nearby health facility";
+const DRY_SECTION_LO =
+  "ການເດີນທາງໃນລະດູແຫ້ງ ຈາກສະຖານທີ່ບໍລິການຂອງເຮົາ ຫາ ສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
 
 const VillagesStage = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  const { program } = useSelectionStore(
-    useShallow((state) => ({ program: state.program }))
+  const { program, orgUnit } = useSelectionStore(
+    useShallow((state) => ({ program: state.program, orgUnit: state.orgUnit }))
   );
+
   const { actions, data } = useTrackerCaptureStore(
     useShallow((state) => ({ actions: state.actions, data: state.data }))
   );
   const { currentEvent } = useCurrentEvent();
+  const currentTei = data?.currentTei;
 
+  // ⬇ warnings + hiddenFields + hiddenOptions (ALL visible will be required below)
   const { warnings, hiddenFields = {}, hiddenOptions = {} } = useVillageRules();
 
   const trStageDate = t("village.stageDate", {
@@ -67,21 +99,72 @@ const VillagesStage = () => {
     }
   };
 
+  // ---------------------------------------------------------------------------
   // SECTION title mapping
+  // ---------------------------------------------------------------------------
   const SECTION_EN = "Details of catchment area";
   const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ";
   const trCatchmentSectionTitle = t("village.section.details", {
     defaultValue: isLao ? SECTION_LO : SECTION_EN,
   });
+
   const isCatchmentSection = (name) => {
     const s = String(name || "").trim();
     if (!s) return false;
-    const enMatch =
-      s.toLowerCase().replace(/\s+/g, " ") === SECTION_EN.toLowerCase().replace(/\s+/g, " ");
+    const enMatch = normalize(s) === normalize(SECTION_EN);
     const loMatch = s === SECTION_LO;
     return enMatch || loMatch;
   };
-  const trSectionTitle = (name) => (isCatchmentSection(name) ? trCatchmentSectionTitle : name);
+
+  // ✅ FROM: selected org unit name (village)
+  const sourceName = useMemo(() => {
+    if (!orgUnit) return "";
+    if (typeof orgUnit === "string") {
+      return stripCodePrefix(orgUnit);
+    }
+    const label = orgUnit.displayName || orgUnit.name || "";
+    return stripCodePrefix(label);
+  }, [orgUnit]);
+
+  // ✅ TO: health facility from TEA RLamCNXOwQ5
+  const facilityName = useMemo(() => {
+    if (!currentTei) return "";
+    const raw = getAttr(currentTei, FACILITY_ATTR_ID);
+    return stripCodePrefix(raw);
+  }, [currentTei]);
+
+  // ✅ Dynamic dry-season title using both names
+  const dynamicDryTitle = useMemo(() => {
+    const from =
+      sourceName ||
+      (isLao ? "ບ້ານ" : "this village");
+    const to =
+      facilityName ||
+      (isLao ? "ສະຖານທີ່ບໍລິການສຸຂະພາບ" : "the health facility");
+    return isLao
+      ? `ການເດີນທາງໃນລະດູແຫ້ງ ຈາກ ${from} ຫາ ${to}`
+      : `Dry-season travel conditions from ${from} to ${to}`;
+  }, [isLao, sourceName, facilityName]);
+
+  // Keep catchment override + add dry-season override
+  const trSectionTitle = (name) => {
+    const s = String(name || "").trim();
+    if (!s) return s;
+
+    const norm = normalize(s);
+
+    // First: match the dry-season string and replace with dynamic title
+    if (norm === normalize(DRY_SECTION_EN) || s === DRY_SECTION_LO) {
+      return dynamicDryTitle;
+    }
+
+    // Existing: generic catchment-section override
+    if (isCatchmentSection(s)) {
+      return trCatchmentSectionTitle;
+    }
+
+    return name;
+  };
 
   // Sections
   const sections = useMemo(() => {
@@ -91,6 +174,7 @@ const VillagesStage = () => {
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
+  // Collect DEs present in this stage (respect hiddenFields)
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -103,8 +187,10 @@ const VillagesStage = () => {
     return uniq.filter((id) => !hiddenFields[id]);
   }, [sections, hiddenFields]);
 
+  // ⬇⬇⬇ MAKE *ALL VISIBLE* FIELDS MANDATORY ⬇⬇⬇
   const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
 
+  // Missing check: all visible required + eventDate
   const missing = useMemo(() => {
     const m = [];
     for (const id of requiredSet) {
@@ -117,19 +203,23 @@ const VillagesStage = () => {
     return m;
   }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
+  // Only block on warnings for visible fields
   const hasWarnings = useMemo(
     () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
     [warnings, presentIds]
   );
 
+  // Disable save/complete when missing or warnings exist
   const disabled = missing.length > 0 || hasWarnings;
 
+  // Avoid update loops
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(warnings || {});
   missingRef.current = missing;
   warningsRef.current = warnings || {};
 
+  // Toggle Complete button only when value changes
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -146,6 +236,7 @@ const VillagesStage = () => {
     }
   }, [actions, disabled]);
 
+  // Register Save handler once
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_villages_all_visible_required";
@@ -167,11 +258,13 @@ const VillagesStage = () => {
             );
           if (hasW) {
             msgs.push(
-              Array.from(new Set(
-                Object.entries(w)
-                  .filter(([id]) => presentIds.includes(id))
-                  .map(([, code]) => trWarn(code))
-              )).join(" ")
+              Array.from(
+                new Set(
+                  Object.entries(w)
+                    .filter(([id]) => presentIds.includes(id))
+                    .map(([, code]) => trWarn(code))
+                )
+              ).join(" ")
             );
           }
           return { ok: false, message: msgs.join(" ") };
@@ -183,6 +276,7 @@ const VillagesStage = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
+  // integer-only input guards for OWAR8Vpa8IW
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -242,6 +336,7 @@ const VillagesStage = () => {
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
             const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
 
+            // Every visible field is required
             const isRequired = requiredSet.has(deId);
 
             return (
@@ -264,7 +359,7 @@ const VillagesStage = () => {
                     required={isRequired}
                     aria-invalid={hasWarn ? "true" : undefined}
                     aria-describedby={hasWarn ? helpId : undefined}
-                    hiddenOptions={hiddenOptions?.[deId] || undefined} 
+                    hiddenOptions={hiddenOptions?.[deId] || undefined}
                     {...extra}
                   />
 

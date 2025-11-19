@@ -26,7 +26,7 @@ const G = {
   DH:  "S8nZUO4pUE8",   // District Hospital (A+B combined)
   HC:  "U53tdte60Ku",   // Health Center
   CH:  "Wg7j9DPk2n5",   // Central Hospital
-  DC:  "OwxKU9KCNMv",   // District Service Center (treat as DH)
+  //DC:  "OwxKU9KCNMv",   // District Service Center (treat as DH)
 };
 
 const getName = (ou, language) => {

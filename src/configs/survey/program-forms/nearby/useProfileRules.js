@@ -7,7 +7,7 @@ const TEA = {
   hfType: "A81fBn53hAD",
   seqNum: "GwphHuSwouj",
   facilityId: "sO0ItF0Dr0p",
-  nearbyType: "SxKvvxpzop9", 
+  nearbyType: "SxKvvxpzop9", // Type of nearby health facility
 };
 
 const toAsciiDigits = (str = "") => {
@@ -29,8 +29,9 @@ const toAsciiDigits = (str = "") => {
 
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
+// 🔧 put the *real* option code for “Existing public health facility” here
 const NEARBY_EXISTING_HF_CODES = new Set([
-  "EXIST_PUBLIC_HF",
+  "EXIST_PUBLIC_HF", // <-- replace with your actual option code
 ]);
 
 const toObj = (list) =>
@@ -72,6 +73,7 @@ const useProfileRules = () => {
       NEARBY_EXISTING_HF_CODES.has(nearbyTypeVal) ||
       normalize(nearbyTypeVal) === normalize("Existing public health facility");
 
+    // Only auto-compose Facility ID when using Existing public health facility
     if (isExistingPublicHF) {
       const nextId = composeFacilityId(
         A[TEA.districtId],

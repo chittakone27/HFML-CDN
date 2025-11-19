@@ -37,7 +37,7 @@ const LO = {
   SECTION_MCH: "ຈໍານວນ ອຸປະກອນ ສໍາລັບວຽກງານ ແມ່ ແລະ ເດັກ (MCH)",
   SECTION_EPI: "ຈໍານວນ ອຸປະກອນ ສໍາລັບວຽກງານ ສັກຢາກັນພະຍາດ (EPI)",
   SECTION_ADMIN: "ອຸປະກອນການແພດ ສໍາລັບວຽກງານ ການສື່ສານ",
-  "1. Oxygen concentrator": "1. ເຄື່ອງຜະລິດອົກຊີ (Oxygen concentrator)",
+  "1. Oxygen concentrator": "1. ເຄື່ອງກັ່ນອົກຊີ (ບໍ່ແມ່ນບັ້ງອົກຊີ) (Oxygen concentrator)",
   "2. Ventilator (Inhaler)": "2. ເຄື່ອງເຊີດຊູ (Ambu bag)",
   "3. Hemodialysis unit": "3. ເຄື່ອງຟອກໝາກໄຂ່ຫຼັງ (Hemodialysis unit)",
   "4. Hemoglobinometer": "4. ເຄື່ອງກວດເລືອດ (Hemoglobinometer)",
@@ -66,8 +66,8 @@ const LO = {
     "6. ເຄື່ອງວັດແທກລວງຍາວສໍາລັບເດັກນ້ອຍ/ເດັກເກີດໃໝ່ (Length measurement for newborn)",
   "7. Fetus Stethoscope / Traube / Doppler":
     "7. ກ້ອງຟັງສຽງຫົວໃຈເດັກໃນທ້ອງ (Fetus Stethoscope / Traube / Doppler)",
-  "8. Autoclave for medical sterilization":
-    "8. ຕູ້ອົບຂ້າເຊື້ອ (Autoclave for medical sterilization)",
+  "8. Autoclave for medical sterilization or dried heat sterilization oven":
+    "8. ຕູ້ອົບຂ້າເຊື້ອ ອຸປະກອນການແພດ (Autoclave for medical sterilization or dried heat sterilization oven)",
   "9. MUAC measure tape":
     "9. ເຊືອກວັດແທກຮອບແຂນ (MUAC measure tape)",
   "10. New MCH Pink Book remaining":
@@ -216,7 +216,7 @@ const SECTION_ROWS = {
       more: "diFqjNTQgrV",
     },
     {
-      label: "8. Autoclave for medical sterilization",
+      label: "8. Autoclave for medical sterilization or dried heat sterilization oven",
       usable: "prNkyfjJ45f",
       damaged: "UVB85154Q7J",
       image: "cuMKqPxtNcs",
@@ -302,6 +302,7 @@ const isEmpty = (v) => {
   return false;
 };
 
+// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic, etc.)
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
@@ -316,6 +317,7 @@ const toAsciiDigits = (str = "") =>
     }
   );
 
+// <<< NEW: helper to safely parse integer from a DE value
 const parseIntValue = (val) => {
   const s = toAsciiDigits(String(val ?? "")).trim();
   if (!s) return 0;
@@ -775,6 +777,7 @@ const Equipments = () => {
         );
       })}
 
+      {/* Unknown sections (rare) — still enforce integer-only + red * (no image column) */}
       {unknownSections.map((section, sIdx) => (
         <Accordion
           key={section.id || `${section.displayName}-${sIdx}`}
