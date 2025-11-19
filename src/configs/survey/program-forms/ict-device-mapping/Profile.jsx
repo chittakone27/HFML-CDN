@@ -11,24 +11,24 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import useProfileRules from "./useProfileRules";
 
 // --- Layout knobs ------------------------------------------------------------
-const LABEL_COL_W = 210; 
+const LABEL_COL_W = 210;
 
 // Fixed widths (adjust here)
-const HF_W = 80;           // HF ID input width
-const HFSEQUENCE_W = 50;   // HF sequence number input width
-const HFTYPE_W = 80;       // HF type input width
-const CODE_W = 50;         // Code input width
-const NUM_W = 65;          // Number input width
+const HF_W = 80; // HF ID input width
+const HFSEQUENCE_W = 50; // HF sequence number input width
+const HFTYPE_W = 80; // HF type input width
+const CODE_W = 50; // Code input width
+const NUM_W = 65; // Number input width
 
 // --- Attribute IDs -----------------------------------------------------------
 const ID = {
-  deviceType: "xQrdgnlPcC3",  // render first
-  code: "y6RfdAq2zmQ",        // Code  — disabled
-  hf: "odDm8AxiL1j",          // HF ID (user input)
-  hftype: "STdn1v1AxLa",      // HF type (user)
-  hfSequence: "xgb9vCptedt",  // HF sequence number (user)
-  num: "KZ5D0DFEqdf",         // Number (user input)
-  deviceId: "RyN09GsWd64",    // Composed Device ID 
+  deviceType: "xQrdgnlPcC3", // render first
+  code: "y6RfdAq2zmQ", // Code  — disabled
+  hf: "odDm8AxiL1j", // HF ID (user input)
+  hftype: "STdn1v1AxLa", // HF type (user)
+  hfSequence: "xgb9vCptedt", // HF sequence number (user)
+  num: "KZ5D0DFEqdf", // Number (user input)
+  deviceId: "RyN09GsWd64", // Composed Device ID
 };
 
 const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
@@ -41,17 +41,28 @@ const toAttrMap = (tei) =>
       }, {})
     : {};
 
+const getHelpers = (target, { errors = [], helpers = [], warnings = [] }) => {
+  const result = [];
+  Object.keys(errors).forEach((key) => {
+    if (key === target) result.push({ type: "ERROR", value: errors[key] });
+  });
+  Object.keys(helpers).forEach((key) => {
+    if (key === target) result.push({ type: "HELPER", value: helpers[key] });
+  });
+  Object.keys(warnings).forEach((key) => {
+    if (key === target) result.push({ type: "WARNING", value: warnings[key] });
+  });
+
+  return result;
+};
+
 const Profile = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  const { program } = useSelectionStore(
-    useShallow((s) => ({ program: s.program }))
-  );
+  const { program } = useSelectionStore(useShallow((s) => ({ program: s.program })));
 
-  const { actions, data } = useTrackerCaptureStore(
-    useShallow((s) => ({ actions: s.actions, data: s.data }))
-  );
+  const { actions, data } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions, data: s.data })));
 
   const props = useProfileRules();
 
@@ -76,27 +87,22 @@ const Profile = () => {
   }, [actions, data?.currentTei, props?.assignations]);
 
   const allAttributes = useMemo(
-    () =>
-      (program?.programTrackedEntityAttributes ?? []).map(
-        (ptea) => ptea.trackedEntityAttribute.id
-      ),
+    () => (program?.programTrackedEntityAttributes ?? []).map((ptea) => ptea.trackedEntityAttribute.id),
     [program?.programTrackedEntityAttributes]
   );
 
   const deviceIdx = allAttributes.indexOf(ID.deviceType);
 
-  const beforeDevice = (deviceIdx > -1
-    ? allAttributes.slice(0, deviceIdx)
-    : []
-  ).filter((a) => !SPECIAL.includes(a));
+  const beforeDevice = (deviceIdx > -1 ? allAttributes.slice(0, deviceIdx) : []).filter((a) => !SPECIAL.includes(a));
 
-  const afterDevice = (deviceIdx > -1
-    ? allAttributes.slice(deviceIdx + 1)
-    : allAttributes
-  ).filter((a) => !SPECIAL.includes(a));
+  const afterDevice = (deviceIdx > -1 ? allAttributes.slice(deviceIdx + 1) : allAttributes).filter(
+    (a) => !SPECIAL.includes(a)
+  );
 
   const renderRow = (attribute) => {
     if (props?.hiddenFields?.[attribute]) return null;
+    const helpers = getHelpers(attribute, props);
+
     return (
       <Box key={attribute} className="custom-tracker-profile-field-row">
         <AttributeLabel attribute={attribute} />
@@ -104,6 +110,7 @@ const Profile = () => {
           attribute={attribute}
           disabledManualFields
           disabled={!!props?.disabledFields?.[attribute]}
+          helpers={helpers}
         />
       </Box>
     );
@@ -144,10 +151,7 @@ const Profile = () => {
       const el = e.target;
       const start = el.selectionStart ?? 0;
       const end = el.selectionEnd ?? 0;
-      const next =
-        String(el.value ?? "").slice(0, start) +
-        clean +
-        String(el.value ?? "").slice(end);
+      const next = String(el.value ?? "").slice(0, start) + clean + String(el.value ?? "").slice(end);
       el.value = next.replace(/\D/g, "").slice(0, 4);
       el.dispatchEvent(new Event("input", { bubbles: true }));
     },
@@ -177,11 +181,7 @@ const Profile = () => {
     };
 
     return (
-      <Box
-        className="custom-tracker-profile-field-row"
-        sx={{ alignItems: "flex-start", mb: 1 }}
-      >
-
+      <Box className="custom-tracker-profile-field-row" sx={{ alignItems: "flex-start", mb: 1 }}>
         <Box sx={{ width: LABEL_COL_W, minWidth: LABEL_COL_W, pr: 2 }} />
 
         <Box
@@ -194,18 +194,13 @@ const Profile = () => {
         >
           {[ID.hf, ID.hftype, ID.hfSequence, ID.code, ID.num].map((attribute) =>
             props?.hiddenFields?.[attribute] ? null : (
-              <Box
-                key={attribute}
-                sx={{ display: "grid", gap: 0.5, width: widths[attribute] }}
-              >
+              <Box key={attribute} sx={{ display: "grid", gap: 0.5, width: widths[attribute] }}>
                 <AttributeLabel attribute={attribute} />
                 <Box sx={{ width: widths[attribute] }}>
                   <AttributeField
                     attribute={attribute}
                     disabledManualFields
-                    disabled={
-                      attribute === ID.code || !!props?.disabledFields?.[attribute]
-                    } 
+                    disabled={attribute === ID.code || !!props?.disabledFields?.[attribute]}
                     size="small"
                     {...(attribute === ID.hf ? HF_DIGIT_GUARDS : {})}
                     sx={{
@@ -223,10 +218,7 @@ const Profile = () => {
                     }}
                   />
                   {attribute === ID.hf && !hfValid && (
-                    <Box
-                      id="hf-help"
-                      sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
-                    >
+                    <Box id="hf-help" sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
                       {trHFExact4}
                     </Box>
                   )}
@@ -241,16 +233,12 @@ const Profile = () => {
 
   const renderDeviceId = () =>
     props?.hiddenFields?.[ID.deviceId] ? null : (
-      <Box
-        key={ID.deviceId}
-        className="custom-tracker-profile-field-row"
-        sx={{ mb: 1.5 }}
-      >
+      <Box key={ID.deviceId} className="custom-tracker-profile-field-row" sx={{ mb: 1.5 }}>
         <AttributeLabel attribute={ID.deviceId} />
         <AttributeField
           attribute={ID.deviceId}
           disabledManualFields
-          disabled 
+          disabled
           size="small"
           sx={{
             "& .MuiInputBase-root": { height: 36 },
