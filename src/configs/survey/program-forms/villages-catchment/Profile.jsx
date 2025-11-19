@@ -7,7 +7,6 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useEffect, useMemo } from "react";
 import useProfileRules from "./useProfileRules";
 
-
 const IDS = {
   a: "NSkJrZeR8LL",
   b: "RLamCNXOwQ5",

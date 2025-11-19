@@ -1,33 +1,22 @@
-// src/configs/laotracker/program-forms/.../Profile.jsx
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  Typography,
-  Box,
-  TextField,
-} from "@mui/material";
+import {  Table,  TableBody,  TableCell,  TableRow,  Typography,  Box,  TextField,} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState, useMemo } from "react";
-
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { findAttributeValue } from "@/configs/laotracker/common/utils.js";
-
 import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoState";
+import VillageSelectorOrgUnit from "../common/VillageSelectorOrgUnit";
 import useProfileRules from "./useProfileRules";
-
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 const LABEL_COL_WIDTH = 220;
 const FIELD_MAX_WIDTH = 480;
 
-const DIST_W = 120; // District ID (4 digits)
-const TYPE_W = 130; // HF Type (required in Existing HF mode)
-const SEQ_W = 90; // Seq number (2–3 digits in ID)
+const DIST_W = 120; 
+const TYPE_W = 130; 
+const SEQ_W = 90; 
 
 const toAsciiDigits = (str = "") => {
   const s = String(str);
@@ -36,7 +25,7 @@ const toAsciiDigits = (str = "") => {
     /[0-9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F\u0E50-\u0E59\u0ED0-\u0ED9]/g,
     (ch) => {
       const code = ch.charCodeAt(0);
-      if (code >= 0x30 && code <= 0x39) return ch; // ASCII 0–9
+      if (code >= 0x30 && code <= 0x39) return ch; 
       for (const base of bases) {
         if (code >= base && code <= base + 9) {
           return String.fromCharCode(0x30 + (code - base));
@@ -86,6 +75,9 @@ const Profile = () => {
   const trFixErrors = t("form.fixErrorsToSave", {
     defaultValue: isLao ? "" : "",
   });
+  const trAddress = t("profile.addressBlock", {
+    defaultValue: isLao ? "ທີ່ຢູ່" : "Address",
+  });
 
   useChrTrackerStore();
 
@@ -101,13 +93,13 @@ const Profile = () => {
 
   const IDS = useMemo(
     () => ({
-      // target (auto-composed)
+
       firstField: "sO0ItF0Dr0p",
-      // sources (inline trio)
+
       districtId: "R4mULOs2f6M",
       hfType: "A81fBn53hAD",
       seqNum: "GwphHuSwouj",
-      // selector members
+
       province: "pvY01Pt3GTk",
       district: "GbubCuHuzM7",
       hc: "Jy7ou2LCeju",
@@ -117,17 +109,17 @@ const Profile = () => {
       nearbyType: "SxKvvxpzop9", 
       customFacilityName: "f9d4P9maZEq", 
       customFacilityGps: "oqcnIPmiVhh", 
+
+      addressProvince: "kFHo6CSy7B0",
+      addressDistrict: "MFb4L2Ju4iu",
+      addressVillage: "U4k2WoPO2dN",
     }),
     []
   );
 
   const props = useProfileRules();
-
-  // manual hide set (kept for future if needed)
   const MANUAL_HIDE = new Set([]);
-
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
-
   const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
   useEffect(() => {
     const next = props?.assignations?.[IDS.firstField];
@@ -143,10 +135,7 @@ const Profile = () => {
 
   const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); // clamp to 4
   const seq = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 2); // clamp to 2
-
-  // Type of nearby facility + derived mode
   const nearbyTypeRaw = findAttributeValue(currentTei, IDS.nearbyType) || "";
-
   const isExistingPublicHF =
     NEARBY_EXISTING_HF_CODES.has(nearbyTypeRaw) ||
     normalize(nearbyTypeRaw) === normalize("Existing public health facility");
@@ -162,7 +151,7 @@ const Profile = () => {
   useEffect(() => {
     if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
     if (rawSeq && rawSeq !== seq) setAttr(IDS.seqNum, seq);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [rawDist, rawSeq, dist, seq]);
 
   const distValid = !isExistingPublicHF || /^\d{4}$/.test(dist);
@@ -188,6 +177,7 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
+
   }, [
     hfValidityForSave,
     distValid,
@@ -285,7 +275,6 @@ const Profile = () => {
     },
   };
 
-  // visibility / disabled
   const rowFirstDisabled = true;
   const hfIds = [
     IDS.province,
@@ -302,7 +291,7 @@ const Profile = () => {
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-          {/* FIRST FIELD: Type of nearby health facility (SxKvvxpzop9) */}
+
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
               <AttributeLabel attribute={IDS.nearbyType} />
@@ -318,11 +307,8 @@ const Profile = () => {
             </TableCell>
           </TableRow>
 
-          {/* Inline trio: District ID | HF Type | Seq No.
-              Visible ONLY when "Existing public health facility" */}
           {isExistingPublicHF && (
             <TableRow>
-              {/* ghost label keeps alignment */}
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
               <TableCell>
                 <Box
@@ -334,7 +320,6 @@ const Profile = () => {
                     alignItems: "start",
                   }}
                 >
-                  {/* District ID (4 digits) */}
                   <Box sx={{ display: "grid", gap: 0.5 }}>
                     <AttributeLabel attribute={IDS.districtId} />
                     <AttributeField
@@ -375,7 +360,6 @@ const Profile = () => {
                     )}
                   </Box>
 
-                  {/* HF Type */}
                   <Box sx={{ display: "grid", gap: 0.5 }}>
                     <AttributeLabel attribute={IDS.hfType} />
                     <AttributeField
@@ -414,7 +398,6 @@ const Profile = () => {
                     )}
                   </Box>
 
-                  {/* Seq number */}
                   <Box sx={{ display: "grid", gap: 0.5 }}>
                     <AttributeLabel attribute={IDS.seqNum} />
                     <AttributeField
@@ -455,7 +438,6 @@ const Profile = () => {
                   </Box>
                 </Box>
 
-                {/* Generic save hint when any required invalid (Existing HF mode) */}
                 {isExistingPublicHF &&
                   (!distValid || !typeValid || !seqValid) && (
                     <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>
@@ -466,8 +448,6 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Facility ID
-              Visible ONLY when "Existing public health facility" */}
           {isExistingPublicHF && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -487,7 +467,6 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Health facility selector – only when Existing public health facility */}
           {showHfSelectorRow && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -530,10 +509,9 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Custom facility details when NOT Existing public health facility */}
           {isCustomFacilityMode && (
             <>
-              {/* Facility name (required when visible) */}
+
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <Box
@@ -572,7 +550,25 @@ const Profile = () => {
                 </TableCell>
               </TableRow>
 
-              {/* GPS location (optional) */}
+              <TableRow>
+                <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
+                  <Typography>{trAddress}</Typography>
+                </TableCell>
+                <TableCell>
+                  <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
+                    <VillageSelectorOrgUnit
+                      VillageSelectorIds={[
+                        IDS.addressProvince,
+                        IDS.addressDistrict,
+                        IDS.addressVillage,
+                      ]}
+                      saveGeo
+                      disabled={!layout?.profileFormEditing}
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <AttributeLabel attribute={IDS.customFacilityGps} />

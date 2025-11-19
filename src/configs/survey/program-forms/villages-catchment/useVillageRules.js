@@ -8,7 +8,7 @@ const INTEGER_ID = "OWAR8Vpa8IW";   // Ferry fee (integer-only, >= 1000)
 const TRIGGER_ID = "SOWCUUYumd6";   // Need to cross river? (Yes/No)
 const TRAVEL_CONDITION_ID = "tiXQkpoVypv"; // Travel condition (option set)
 const BOAT_TIME_ID = "gepvFAO9AZ7"; // Travel time by boat
-const FEERY_FEE_ID = "XGdsUB1qrEE"; // Ferry fee
+const FEERY_FEE_ID = "OWAR8Vpa8IW"; // Ferry fee
 
 const toAsciiDigits = (str = "") =>
   String(str).replace(
@@ -62,6 +62,7 @@ const useVillageRules = () => {
     const dv = (id) =>
       currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
+
     const travelCondRaw = dv(TRAVEL_CONDITION_ID);
     const travelCond = norm(travelCondRaw);
 
@@ -95,7 +96,7 @@ const useVillageRules = () => {
     const triggerVal = dv(TRIGGER_ID);
     if (isNo(triggerVal)) {
       hiddenFields[INTEGER_ID] = true;
-      hiddenFields[BOAT_TIME_ID] = true; 
+      hiddenFields[BOAT_TIME_ID] = true; // always hide boat time if no river
     }
 
     if (!hiddenFields[INTEGER_ID]) {

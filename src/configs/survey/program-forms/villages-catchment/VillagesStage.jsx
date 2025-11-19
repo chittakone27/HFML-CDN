@@ -3,15 +3,12 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
@@ -267,7 +264,7 @@ const VillagesStage = () => {
                     required={isRequired}
                     aria-invalid={hasWarn ? "true" : undefined}
                     aria-describedby={hasWarn ? helpId : undefined}
-                    hiddenOptions={hiddenOptions?.[deId] || undefined}  // <— pass down
+                    hiddenOptions={hiddenOptions?.[deId] || undefined} 
                     {...extra}
                   />
 

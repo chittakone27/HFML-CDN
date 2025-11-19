@@ -7,12 +7,10 @@ const TRAVEL_CONDITION_ID = "dfMxJtpEVY0"; // Travel condition (option set)
 const FOOT_DURATION_ID = "Bokim7QLnF8";    // Travel duration – foot
 const BIKE_DURATION_ID = "bcnCvxfxNeF";    // Travel duration – bike
 const FERRY_FEE_ID = "dBK06ybZUbT";          // Ferry fee
-// Boat-related DEs
 const BOAT_TIME_ID = "yZfjh0SBRzz";        // Travel time by boat
 
 const INTEGER_ONLY_ID = "dBK06ybZUbT";     // integer, >= 1000
 
-// Normalize non-ASCII digits to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,

@@ -3,27 +3,21 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-
 import Accordion from "../common/Accordion";
 import useNearbyRules from "./useNearbyRules";
 
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
-
 const CH_ATTR_ID = "VF9VIPxkf9z";
 const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
-
 const NON_MANDATORY_ID = "HFXe55C0WT0";
 
-// helpers
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
