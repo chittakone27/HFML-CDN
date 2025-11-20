@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/nearby/useNearbyRules.js
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState } from "react";
@@ -25,10 +24,8 @@ const FEE_FOR_TRUCK_ID = "T08IOF1bwi3";         // Fee for truck (rainy)
 const ROAD_BROKEN_ID = "ex7pwRhyyAM";           // Road damaged in rainy season (Yes/No)
 const TRUCK_NEED_RAIN_ID = "j7JHlTSVlPy";       // Need truck to cross muddy road (rainy)
 
-// Boat-related DEs – Section 1
 const BOAT_TIME_ID = "yZfjh0SBRzz";             // Travel time by boat
 
-// Fee fields: integer only, allowed 0 or >= 1000
 const INTEGER_ONLY_IDS = [
   "dBK06ybZUbT",
   "F3U851g1biu",
@@ -38,38 +35,28 @@ const INTEGER_ONLY_IDS = [
   "T08IOF1bwi3",
 ];
 
-// Existing dry-section rule: hide F3U851g1biu if jWinhL2rxeK not true
 const HIDE_IF_YES_ID = "F3U851g1biu";
 const YES_TRIGGER_ID = "jWinhL2rxeK";
 
-// Dry-season truck fields
-const SHOW_TRIGGER_ID = "rvYPto0hxVE";   // Need a truck (dry)
-const SHOW_IF_TRUE_ID = "UiDx8c6lno5";   // Fee for truck (dry)
+const SHOW_TRIGGER_ID = "rvYPto0hxVE";  
+const SHOW_IF_TRUE_ID = "UiDx8c6lno5";  
 
-// Normalize non-ASCII digits to ASCII
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
 
 const norm = (s) => String(s ?? "").trim().toLowerCase();
 
-/**
- * Apply travel-condition rules to one section
- * - If "foot" not present → hide foot field
- * - If "bike" not present → hide bike field (+ optional car field)
- * - If "boat" not present → hide boat duration & ferry fee
- * - If "boat" present     → hide "Need to cross river"
- */
 const applyTravelConditionRules = (
   travelCondRaw,
   {
@@ -136,9 +123,6 @@ const useNearbyRules = () => {
     const dv = (id) =>
       currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
 
-    // -----------------------------------------------------------------------
-    // 1) Travel condition rules – Section 1 (dfMxJtpEVY0)
-    // -----------------------------------------------------------------------
     const { hasBoat: hasBoat1 } = applyTravelConditionRules(
       dv(TRAVEL_CONDITION_ID),
       {
@@ -152,9 +136,6 @@ const useNearbyRules = () => {
       hiddenFields
     );
 
-    // -----------------------------------------------------------------------
-    // 1.2) Travel condition rules – Section 2 (BiSiYIv9EFW)
-    // -----------------------------------------------------------------------
     const { hasBoat: hasBoat2 } = applyTravelConditionRules(
       dv(TRAVEL_CONDITION_ID2),
       {
@@ -167,24 +148,20 @@ const useNearbyRules = () => {
       hiddenFields
     );
 
-    // --- Extra logic based on travel modality in Section 2 ------------------
     const cond2Raw = dv(TRAVEL_CONDITION_ID2);
     const cond2 = norm(cond2Raw || "");
     const hasFoot2 = cond2.includes("foot");
     const hasBike2 = cond2.includes("bike");
     const isBoatOnly2 = hasBoat2 && !hasFoot2 && !hasBike2;
-    // Also handle literal label "Can only travel by boat from source to destination"
     const isBoatOnlyLabel =
       cond2 === "can only travel by boat from source to destination";
 
     const treatAsBoatOnly = isBoatOnly2 || isBoatOnlyLabel;
 
-    // Need human to carry bike — show only if bike is part of travel modality
     if (!hasBike2) {
       hiddenFields[NEED_HUMAN_CARRY_BIKE_ID] = true;
-      hiddenFields[FEES_CARRY_BIKE_ID] = true; // bike not used → also hide fee
+      hiddenFields[FEES_CARRY_BIKE_ID] = true; 
     } else {
-      // Fee for human to carry bike — show only if above DE is Yes/true
       const needHumanVal = dv(NEED_HUMAN_CARRY_BIKE_ID);
       const needHumanNorm = norm(needHumanVal);
       if (needHumanNorm !== "yes" && needHumanNorm !== "true") {
@@ -192,9 +169,6 @@ const useNearbyRules = () => {
       }
     }
 
-    // Need a truck to cross muddy road (RAINY):
-    // - Hide j7JHlTSVlPy only when BiSiYIv9EFW is "only boat" (treatAsBoatOnly)
-    // - Otherwise show it; fee T08IOF1bwi3 only when j7JHlTSVlPy is yes/true.
     if (treatAsBoatOnly) {
       hiddenFields[TRUCK_NEED_RAIN_ID] = true;
       hiddenFields[FEE_FOR_TRUCK_ID] = true;
@@ -206,27 +180,17 @@ const useNearbyRules = () => {
       }
     }
 
-    // Road damaged in rainy season — show only if modality is NOT "only boat"
     if (treatAsBoatOnly) {
       hiddenFields[ROAD_BROKEN_ID] = true;
     }
 
-    // -----------------------------------------------------------------------
-    // 2) Existing rule (Section 1): hide F3U851g1biu when jWinhL2rxeK is NOT true
-    // -----------------------------------------------------------------------
     const yesTriggerVal = dv(YES_TRIGGER_ID);
     const yesNorm = norm(yesTriggerVal);
     if (yesNorm !== "true" && yesNorm !== "yes") {
       hiddenFields[HIDE_IF_YES_ID] = true;
     }
 
-    // -----------------------------------------------------------------------
-    // 2.1) Dry-season truck logic (Section 1):
-    //      - If travel modality has boat → hide Need truck + Fee for truck
-    //      - Else: show fee only when Need truck is yes/true
-    // -----------------------------------------------------------------------
     if (hasBoat1) {
-      // Boat is part of travel modality in dry season → hide both fields
       hiddenFields[SHOW_TRIGGER_ID] = true;   // rvYPto0hxVE – Need a truck (dry)
       hiddenFields[SHOW_IF_TRUE_ID] = true;   // UiDx8c6lno5 – Fee for truck (dry)
     } else if (!hiddenFields[SHOW_IF_TRUE_ID]) {
@@ -237,9 +201,6 @@ const useNearbyRules = () => {
       }
     }
 
-    // -----------------------------------------------------------------------
-    // 3) Integer-only + 0 or >= 1000 for all fee fields
-    // -----------------------------------------------------------------------
     for (const id of INTEGER_ONLY_IDS) {
       if (hiddenFields[id]) continue;
 
@@ -255,7 +216,6 @@ const useNearbyRules = () => {
       }
 
       const num = Number(raw);
-      // Allowed: 0 OR >= 1000; disallow negatives and 1–999
       if (!Number.isFinite(num) || num < 0 || (num > 0 && num < 1000)) {
         warnings[id] = "min1000OrZero";
         warningTexts[id] = t("nearby.warnings.min1000OrZero", {
@@ -264,10 +224,6 @@ const useNearbyRules = () => {
       }
     }
 
-    // -----------------------------------------------------------------------
-    // 4) Hide specific options for Travel time by boat yZfjh0SBRzz
-    //    Hide: cannot_foot, cannot_bike
-    // -----------------------------------------------------------------------
     hiddenOptions[BOAT_TIME_ID] = ["cannot_foot", "cannot_bike"];
 
     setProps((prev) => ({

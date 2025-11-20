@@ -1,4 +1,3 @@
-// useFacilityBuildingRules.js
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
