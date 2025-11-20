@@ -18,24 +18,16 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
-// Central Hospital TEA + the only DE to show when CH selected
 const CH_ATTR_ID = "VF9VIPxkf9z";
 const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
-
-// This DE should NOT be mandatory
 const NON_MANDATORY_ID = "HFXe55C0WT0";
 
-// Nearby facility attribute IDs (profile)
 const NEARBY_ATTR = {
   hc: "Jy7ou2LCeju",
   ph: "rsXdExpMW65",
   dh: "WH4Az6TJ5ZA",
   ch: CH_ATTR_ID, // central hospital
 };
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
 
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
@@ -58,7 +50,6 @@ const isEmpty = (v) => {
 const getAttr = (tei, id) =>
   (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
 
-// Remove leading code in brackets: "(0501PH01) PH Bokeo" -> "PH Bokeo"
 const stripCodePrefix = (s = "") => {
   const str = String(s || "").trim();
   const match = str.match(/^\([^)]*\)\s*(.+)$/);
@@ -71,17 +62,15 @@ const normalize = (s) =>
 // DHIS2 UID pattern
 const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
 
-// Detect API base URL (prod: DHIS_CONFIG.baseUrl, dev: VITE_DHIS2_BASE_URL)
 const getApiBaseUrl = () => {
   if (typeof window !== "undefined" && window.DHIS_CONFIG?.baseUrl) {
-    // DHIS2 will typically set baseUrl like "/dhis"
+
     return window.DHIS_CONFIG.baseUrl.replace(/\/$/, "");
   }
   const envBase = import.meta.env.VITE_BASE_URL;
   if (envBase) {
     return String(envBase).replace(/\/$/, "");
   }
-  // Fallback: same origin (works when app is served from DHIS2)
   return "";
 };
 
@@ -97,6 +86,7 @@ const buildApiUrl = (path) => {
 const NearbyStage = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
+  const langKey = isLao ? "lo" : "en"; // just two buckets is enough here
 
   const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
@@ -167,12 +157,15 @@ const NearbyStage = () => {
     return Array.from(new Set(vals));
   }, [currentTei]);
 
-  // Names fetched from DHIS2 API, keyed by UID
+  // Names fetched from DHIS2 API, keyed by UID + language
+  // e.g. ouNames["SbVBLDCqmks|en"] or ouNames["SbVBLDCqmks|lo"]
   const [ouNames, setOuNames] = useState({});
 
-  // Fetch missing org unit names from DHIS2 API
+  // Fetch missing org unit names from DHIS2 API, language-aware
   useEffect(() => {
-    const missing = nearbyOrgUnitIds.filter((id) => !ouNames[id]);
+    const missing = nearbyOrgUnitIds.filter(
+      (id) => !ouNames[`${id}|${langKey}`]
+    );
     if (!missing.length) return;
 
     let cancelled = false;
@@ -181,33 +174,53 @@ const NearbyStage = () => {
       for (const id of missing) {
         try {
           const url = buildApiUrl(
-            `/api/organisationUnits/${id}.json?fields=id,name,displayName,code`
+            `/api/organisationUnits/${id}.json?fields=id,name,displayName,code,translations[locale,property,value]&locale=${encodeURIComponent(
+              langKey
+            )}`
           );
-          const res = await fetch(url, {
-            headers: { Accept: "application/json" },
-          });
 
-          // If dev proxy is wrong, content-type will not be JSON
+          const headers = { Accept: "application/json" };
+          if (i18n.language) {
+            headers["Accept-Language"] = i18n.language;
+          }
+
+          const res = await fetch(url, { headers });
+
           const ct = res.headers.get("content-type") || "";
           if (!res.ok || !ct.includes("application/json")) {
-            // skip on bad responses (e.g. Vite index.html)
-            // console.warn("Failed to resolve orgUnit", id, res.status);
             continue;
           }
 
           const json = await res.json();
-          const label =
-            json.name ||
-            json.displayName ||
-            (json.code ? `(${json.code})` : "") ||
-            id;
+
+          let label = json.displayName || json.name || "";
+
+          if (isLao && Array.isArray(json.translations)) {
+            const loTr = json.translations.find(
+              (tr) =>
+                (tr.locale || "")
+                  .toLowerCase()
+                  .startsWith("lo") && tr.property === "name"
+            );
+            if (loTr?.value) {
+              label = loTr.value;
+            }
+          }
+
+          if (!label && json.code) {
+            label = `(${json.code})`;
+          }
+          if (!label) {
+            label = id;
+          }
 
           if (!cancelled) {
-            setOuNames((prev) => ({ ...prev, [id]: label }));
+            setOuNames((prev) => ({
+              ...prev,
+              [`${id}|${langKey}`]: label,
+            }));
           }
-        } catch (e) {
-          // swallow network errors, do not block the form
-          // console.error("Error fetching orgUnit", id, e);
+        } catch {
         }
       }
     };
@@ -216,11 +229,7 @@ const NearbyStage = () => {
     return () => {
       cancelled = true;
     };
-  }, [nearbyOrgUnitIds, ouNames]);
-
-  // -------------------------------------------------------------------------
-  // Target facility name (priority: DH -> HC -> PH -> CH)
-  // -------------------------------------------------------------------------
+  }, [nearbyOrgUnitIds, langKey, i18n.language, isLao, ouNames]);
 
   const targetFacilityName = useMemo(() => {
     if (!currentTei) return "";
@@ -234,18 +243,14 @@ const NearbyStage = () => {
 
     for (const uid of ordered) {
       if (!uid || !DHIS_UID_RE.test(uid)) continue;
-      const label = ouNames[uid];
+      const label = ouNames[`${uid}|${langKey}`];
       if (label) {
         return stripCodePrefix(label);
       }
     }
 
     return "";
-  }, [currentTei, ouNames]);
-
-  // -------------------------------------------------------------------------
-  // Dynamic section titles
-  // -------------------------------------------------------------------------
+  }, [currentTei, ouNames, langKey]);
 
   const dynamicDryTitle = useMemo(() => {
     const from =
@@ -293,10 +298,6 @@ const NearbyStage = () => {
 
     return name;
   };
-
-  // -------------------------------------------------------------------------
-  // Stage & sections
-  // -------------------------------------------------------------------------
 
   const stage = useMemo(
     () =>
