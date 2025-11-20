@@ -3,12 +3,15 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
+
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
+
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
@@ -49,6 +52,11 @@ const DRY_SECTION_EN =
   "Dry-season travel conditions from this health facility to the nearby health facility";
 const DRY_SECTION_LO =
   "ການເດີນທາງໃນລະດູແຫ້ງ ຈາກສະຖານທີ່ບໍລິການຂອງເຮົາ ຫາ ສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
+
+const RAINY_SECTION_EN =
+  "Rainy-season travel conditions from this health facility to the nearby health facility";
+const RAINY_SECTION_LO =
+  "ການເດີນທາງໃນລະດູຝົນ ຈາກສະຖານທີ່ບໍລິການຂອງເຮົາ ຫາ ສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
 
 const VillagesStage = () => {
   const { t, i18n } = useTranslation();
@@ -118,15 +126,23 @@ const VillagesStage = () => {
   }, [currentTei]);
 
   const dynamicDryTitle = useMemo(() => {
-    const from =
-      sourceName ||
-      (isLao ? "ບ້ານ" : "this village");
+    const from = sourceName || (isLao ? "ບ້ານ" : "this village");
     const to =
       facilityName ||
       (isLao ? "ສະຖານທີ່ບໍລິການສຸຂະພາບ" : "the health facility");
     return isLao
       ? `ການເດີນທາງໃນລະດູແຫ້ງ ຈາກ ${from} ຫາ ${to}`
       : `Dry-season travel conditions from ${from} to ${to}`;
+  }, [isLao, sourceName, facilityName]);
+
+  const dynamicRainyTitle = useMemo(() => {
+    const from = sourceName || (isLao ? "ບ້ານ" : "this village");
+    const to =
+      facilityName ||
+      (isLao ? "ສະຖານທີ່ບໍລິການສຸຂະພາບ" : "the health facility");
+    return isLao
+      ? `ການເດີນທາງໃນລະດູຝົນ ຈາກ ${from} ຫາ ${to}`
+      : `Rainy-season travel conditions from ${from} to ${to}`;
   }, [isLao, sourceName, facilityName]);
 
   const trSectionTitle = (name) => {
@@ -137,6 +153,10 @@ const VillagesStage = () => {
 
     if (norm === normalize(DRY_SECTION_EN) || s === DRY_SECTION_LO) {
       return dynamicDryTitle;
+    }
+
+    if (norm === normalize(RAINY_SECTION_EN) || s === RAINY_SECTION_LO) {
+      return dynamicRainyTitle;
     }
 
     if (isCatchmentSection(s)) {
@@ -334,7 +354,12 @@ const VillagesStage = () => {
                   {hasWarn && (
                     <Box
                       id={helpId}
-                      sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
+                      sx={{
+                        mt: 0.5,
+                        fontSize: 12,
+                        lineHeight: "16px",
+                        color: "#d32f2f",
+                      }}
                     >
                       {warnMsg}
                     </Box>
