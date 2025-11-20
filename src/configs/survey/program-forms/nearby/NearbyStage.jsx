@@ -1,3 +1,4 @@
+// src/configs/laotracker/program-forms/nearby/NearbyStage.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -18,16 +19,24 @@ import useNearbyRules from "./useNearbyRules";
 const LABEL_COL_W = 300;
 const INTEGER_ONLY_ID = "dBK06ybZUbT";
 
+// Central Hospital TEA + the only DE to show when CH selected
 const CH_ATTR_ID = "VF9VIPxkf9z";
 const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
+
+// This DE should NOT be mandatory
 const NON_MANDATORY_ID = "HFXe55C0WT0";
 
+// Nearby facility attribute IDs (profile)
 const NEARBY_ATTR = {
   hc: "Jy7ou2LCeju",
   ph: "rsXdExpMW65",
   dh: "WH4Az6TJ5ZA",
   ch: CH_ATTR_ID, // central hospital
 };
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
@@ -50,6 +59,7 @@ const isEmpty = (v) => {
 const getAttr = (tei, id) =>
   (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
 
+// Remove leading code in brackets: "(0501PH01) PH Bokeo" -> "PH Bokeo"
 const stripCodePrefix = (s = "") => {
   const str = String(s || "").trim();
   const match = str.match(/^\([^)]*\)\s*(.+)$/);
@@ -62,15 +72,17 @@ const normalize = (s) =>
 // DHIS2 UID pattern
 const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
 
+// Detect API base URL (prod: DHIS_CONFIG.baseUrl, dev: VITE_BASE_URL)
 const getApiBaseUrl = () => {
   if (typeof window !== "undefined" && window.DHIS_CONFIG?.baseUrl) {
-
+    // DHIS2 will typically set baseUrl like "/dhis"
     return window.DHIS_CONFIG.baseUrl.replace(/\/$/, "");
   }
   const envBase = import.meta.env.VITE_BASE_URL;
   if (envBase) {
     return String(envBase).replace(/\/$/, "");
   }
+  // Fallback: same origin (works when app is served from DHIS2)
   return "";
 };
 
@@ -180,12 +192,14 @@ const NearbyStage = () => {
           );
 
           const headers = { Accept: "application/json" };
+          // Help DHIS2 choose the right locale
           if (i18n.language) {
             headers["Accept-Language"] = i18n.language;
           }
 
           const res = await fetch(url, { headers });
 
+          // If dev proxy is wrong, content-type will not be JSON
           const ct = res.headers.get("content-type") || "";
           if (!res.ok || !ct.includes("application/json")) {
             continue;
@@ -193,8 +207,10 @@ const NearbyStage = () => {
 
           const json = await res.json();
 
+          // Default label from name/displayName
           let label = json.displayName || json.name || "";
 
+          // If Lao UI and translations are present, prefer Lao translation
           if (isLao && Array.isArray(json.translations)) {
             const loTr = json.translations.find(
               (tr) =>
@@ -221,6 +237,7 @@ const NearbyStage = () => {
             }));
           }
         } catch {
+          // swallow network errors; don't block the form
         }
       }
     };
@@ -230,6 +247,10 @@ const NearbyStage = () => {
       cancelled = true;
     };
   }, [nearbyOrgUnitIds, langKey, i18n.language, isLao, ouNames]);
+
+  // -------------------------------------------------------------------------
+  // Target facility name (priority: DH -> HC -> PH -> CH)
+  // -------------------------------------------------------------------------
 
   const targetFacilityName = useMemo(() => {
     if (!currentTei) return "";
@@ -252,6 +273,10 @@ const NearbyStage = () => {
     return "";
   }, [currentTei, ouNames, langKey]);
 
+  // -------------------------------------------------------------------------
+  // Dynamic section titles
+  // -------------------------------------------------------------------------
+
   const dynamicDryTitle = useMemo(() => {
     const from =
       sourceFacilityName ||
@@ -261,7 +286,7 @@ const NearbyStage = () => {
       (isLao ? "ສະຖານທີ່ບໍລິການໃກ້ຄຽງ" : "the nearby health facility");
 
     return isLao
-      ? `ການເດີນທາງໃນລະດູແຫ້ງ ຈາກ ${from} ຫາ ${to}`
+      ? `ການເດີນທາງໃນລະດູແລ້ງ ຈາກ ${from} ຫາ ${to}`
       : `Dry-season travel conditions from ${from} to ${to}`;
   }, [isLao, sourceFacilityName, targetFacilityName]);
 
@@ -274,7 +299,7 @@ const NearbyStage = () => {
       (isLao ? "ສະຖານທີ່ບໍລິການໃກ້ຄຽງ" : "the nearby health facility");
 
     return isLao
-      ? `ການເດີນທາງໃນລະດູຝົນ ຈາກ ${from} ຫາ ${to}`
+      ? `ການເດີນທາງໃນລະດູແລ້ງ ຈາກ ${from} ຫາ ${to}`
       : `Rainy-season travel conditions from ${from} to ${to}`;
   }, [isLao, sourceFacilityName, targetFacilityName]);
 
@@ -298,6 +323,10 @@ const NearbyStage = () => {
 
     return name;
   };
+
+  // -------------------------------------------------------------------------
+  // Stage & sections
+  // -------------------------------------------------------------------------
 
   const stage = useMemo(
     () =>

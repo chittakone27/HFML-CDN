@@ -1,45 +1,109 @@
+// src/configs/laotracker/program-forms/villages-catchment/Profile.jsx
 import useSelectionStore from "@/state/selection";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useProfileRules from "./useProfileRules";
+import { findAttributeValue } from "@/configs/laotracker/common/utils.js";
+import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoState";
 
+// ---- layout widths (for the selector block only) ----
+const FIELD_MAX_WIDTH = 480;
+
+// TEA IDs
 const IDS = {
-  a: "NSkJrZeR8LL",
-  b: "RLamCNXOwQ5",
+  // stored ID + Name
+  orgUnitId: "NSkJrZeR8LL",   // Facility ID
+  orgUnitName: "RLamCNXOwQ5", // Name of the Health Facility
+
+  // selector members
+  province: "waE5GXY7Bo5",
+  district: "XVt1Ar6BRcv",
+  hc: "VklGYpp1m5K",
+  ph: "nBxJDYEPkhc",
+  dh: "vHh9uvGwT3U",
+  ch: "gTy71R4wgJQ",
 };
 
-const MANUAL_DISABLE = new Set([
-  IDS.a, 
-  IDS.b, 
+// read-only IDs
+const MANUAL_DISABLE = new Set([IDS.orgUnitId, IDS.orgUnitName]);
+
+// fields handled by custom UI (we don't auto-render them in the loop)
+const CUSTOM_HANDLED = new Set([
+  IDS.province,
+  IDS.district,
+  IDS.hc,
+  IDS.ph,
+  IDS.dh,
+  IDS.ch,
 ]);
+
+// --------- DHIS2 orgUnit helpers ----------
+const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
+
+const getApiBaseUrl = () => {
+  if (typeof window !== "undefined" && window.DHIS_CONFIG?.baseUrl) {
+    return window.DHIS_CONFIG.baseUrl.replace(/\/$/, "");
+  }
+  const envBase = import.meta.env.VITE_BASE_URL;
+  if (envBase) return String(envBase).replace(/\/$/, "");
+  return "";
+};
+
+const buildApiUrl = (path) => {
+  const base = getApiBaseUrl();
+  const cleaned = path.replace(/^\//, "");
+  return base ? `${base}/${cleaned}` : `/${cleaned}`;
+};
+
+const getAuthHeaders = () => {
+  const user = import.meta.env.VITE_USERNAME;
+  const pass = import.meta.env.VITE_PASSWORD;
+  if (!user || !pass) return {};
+  const token = btoa(`${user}:${pass}`);
+  return { Authorization: `Basic ${token}` };
+};
+// ------------------------------------------
 
 const Profile = () => {
   const { program } = useSelectionStore(
     useShallow((state) => ({ program: state.program }))
   );
-  const { actions } = useTrackerCaptureStore(
-    useShallow((state) => ({ actions: state.actions }))
+
+  const { actions, data } = useTrackerCaptureStore(
+    useShallow((state) => ({
+      actions: state.actions,
+      data: state.data,
+    }))
   );
+
+  const { currentTei } = data || {};
+  const changeAttributeValue = actions?.changeAttributeValue;
+
   const props = useProfileRules() || {};
 
+  const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
+
+  // clear hidden fields
   useEffect(() => {
-    if (!props.hiddenFields) return;
+    if (!props.hiddenFields || !changeAttributeValue) return;
     Object.entries(props.hiddenFields).forEach(([attr, isHidden]) => {
-      if (isHidden) actions.changeAttributeValue(attr, "");
+      if (isHidden) changeAttributeValue(attr, "");
     });
-  }, [actions, props.hiddenFields]);
+  }, [changeAttributeValue, props.hiddenFields]);
 
+  // apply assignations (if any)
   useEffect(() => {
-    if (!props.assignations) return;
+    if (!props.assignations || !changeAttributeValue) return;
     Object.entries(props.assignations).forEach(([attr, value]) => {
-      actions.changeAttributeValue(attr, value);
+      changeAttributeValue(attr, value);
     });
-  }, [actions, props.assignations]);
+  }, [changeAttributeValue, props.assignations]);
 
+  // list of attributes in program
   const attributes = useMemo(
     () =>
       (program?.programTrackedEntityAttributes ?? []).map(
@@ -48,25 +112,159 @@ const Profile = () => {
     [program?.programTrackedEntityAttributes]
   );
 
-  return attributes.map((attribute) => {
-    const hidden = props?.hiddenFields?.[attribute];
-    if (hidden) return null;
+  // ---------- map selected HF orgUnit → ID + Name ----------
+  const [hfOuCache, setHfOuCache] = useState({});
 
-    const ruleDisabled = !!props?.disabledFields?.[attribute];
-    const manualDisabled = MANUAL_DISABLE.has(attribute);
-    const disabled = ruleDisabled || manualDisabled;
+  const hfIds = {
+    hc: findAttributeValue(currentTei, IDS.hc) || "",
+    dh: findAttributeValue(currentTei, IDS.dh) || "",
+    ph: findAttributeValue(currentTei, IDS.ph) || "",
+    ch: findAttributeValue(currentTei, IDS.ch) || "",
+  };
 
-    return (
-      <Box key={attribute} className="custom-tracker-profile-field-row">
-        <AttributeLabel attribute={attribute} />
-        <AttributeField
-          attribute={attribute}
-          disabledManualFields={true}
-          disabled={disabled}
-        />
+  const orgUnitIdVal = findAttributeValue(currentTei, IDS.orgUnitId) || "";
+  const orgUnitNameVal =
+    findAttributeValue(currentTei, IDS.orgUnitName) || "";
+
+  useEffect(() => {
+    if (!currentTei || !changeAttributeValue) return;
+
+    // priority: HC → DH → PH → CH
+    const ordered = [hfIds.hc, hfIds.dh, hfIds.ph, hfIds.ch]
+      .map((v) => String(v || "").trim())
+      .filter(Boolean);
+
+    const uid = ordered.find((v) => DHIS_UID_RE.test(v));
+
+    // nothing selected → clear ID + name
+    if (!uid) {
+      if (orgUnitIdVal || orgUnitNameVal) {
+        setAttr(IDS.orgUnitId, "");
+        setAttr(IDS.orgUnitName, "");
+      }
+      return;
+    }
+
+    const cached = hfOuCache[uid];
+    if (cached) {
+      const { code = "", name = "" } = cached;
+      if (code && code !== orgUnitIdVal) setAttr(IDS.orgUnitId, code);
+      if (name && name !== orgUnitNameVal) setAttr(IDS.orgUnitName, name);
+      return;
+    }
+
+    let cancelled = false;
+
+    const fetchOu = async () => {
+      try {
+        const url = buildApiUrl(
+          `/api/organisationUnits/${uid}.json?fields=id,code,displayName,name`
+        );
+        const res = await fetch(url, {
+          headers: {
+            Accept: "application/json",
+            ...getAuthHeaders(),
+          },
+        });
+        const ct = res.headers.get("content-type") || "";
+        if (!res.ok || !ct.includes("application/json")) return;
+
+        const json = await res.json();
+        const code = json.code || "";
+        const name = json.displayName || json.name || "";
+
+        if (cancelled) return;
+
+        setHfOuCache((prev) => ({
+          ...prev,
+          [uid]: { code, name },
+        }));
+
+        if (code && code !== orgUnitIdVal) setAttr(IDS.orgUnitId, code);
+        if (name && name !== orgUnitNameVal) setAttr(IDS.orgUnitName, name);
+      } catch {
+        // ignore
+      }
+    };
+
+    fetchOu();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    hfIds.hc,
+    hfIds.dh,
+    hfIds.ph,
+    hfIds.ch,
+    currentTei,
+    orgUnitIdVal,
+    orgUnitNameVal,
+    changeAttributeValue,
+    IDS.orgUnitId,
+    IDS.orgUnitName,
+    hfOuCache,
+  ]);
+
+  // -------------------- RENDER --------------------
+  return (
+    <>
+      {/* normal profile rows (all non-selector TEAs) */}
+      {attributes.map((attribute) => {
+        // skip fields we handle with the selector
+        if (CUSTOM_HANDLED.has(attribute)) return null;
+
+        const hidden = props?.hiddenFields?.[attribute];
+        if (hidden) return null;
+
+        const ruleDisabled = !!props?.disabledFields?.[attribute];
+        const manualDisabled = MANUAL_DISABLE.has(attribute);
+        const disabled = ruleDisabled || manualDisabled;
+
+        return (
+          <Box key={attribute} className="custom-tracker-profile-field-row">
+            <AttributeLabel attribute={attribute} />
+            <AttributeField
+              attribute={attribute}
+              disabledManualFields
+              disabled={disabled}
+            />
+          </Box>
+        );
+      })}
+
+      {/* Health facility selector at the bottom – aligned & fixed width */}
+      <Box
+        className="custom-tracker-profile-field-row"
+        sx={{ mt: 1.5 }}
+      >
+        <Box>
+          Health facility
+        </Box>
+        <Box sx={{ maxWidth: FIELD_MAX_WIDTH, width: "100%" }}>
+          <HealthFacilitySelectorNoState
+            ids={IDS}
+            init={{
+              province: findAttributeValue(currentTei, IDS.province) || "",
+              district: findAttributeValue(currentTei, IDS.district) || "",
+              hc: findAttributeValue(currentTei, IDS.hc) || "",
+              ph: findAttributeValue(currentTei, IDS.ph) || "",
+              dh: findAttributeValue(currentTei, IDS.dh) || "",
+              ch: findAttributeValue(currentTei, IDS.ch) || "",
+            }}
+            onChange={({ province, district, ph, ch, hc, dh }) => {
+              setAttr(IDS.province, province || "");
+              setAttr(IDS.district, district || "");
+              setAttr(IDS.ph, ph || "");
+              setAttr(IDS.hc, hc || "");
+              setAttr(IDS.dh, dh || "");
+              setAttr(IDS.ch, ch || "");
+            }}
+          />
+        </Box>
       </Box>
-    );
-  });
+    </>
+  );
 };
 
 export default Profile;

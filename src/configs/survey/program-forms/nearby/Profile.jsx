@@ -1,46 +1,69 @@
-import {  Table,  TableBody,  TableCell,  TableRow,  Typography,  Box,  TextField,} from "@mui/material";
+// src/configs/laotracker/program-forms/.../Profile.jsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
+  Box,
+  TextField,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useState, useMemo } from "react";
+
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import useChrTrackerStore from "@/configs/laotracker/layout/ChrTrackerLayout/state";
 import { findAttributeValue } from "@/configs/laotracker/common/utils.js";
+
 import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoState";
 import VillageSelectorOrgUnit from "../common/VillageSelectorOrgUnit";
 import useProfileRules from "./useProfileRules";
+
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 const LABEL_COL_WIDTH = 220;
 const FIELD_MAX_WIDTH = 480;
 
-const DIST_W = 120; 
-const TYPE_W = 130; 
-const SEQ_W = 90; 
-
-const toAsciiDigits = (str = "") => {
-  const s = String(str);
-  const bases = [0x0660, 0x06f0, 0x0966, 0x0e50, 0x0ed0]; 
-  return s.replace(
-    /[0-9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F\u0E50-\u0E59\u0ED0-\u0ED9]/g,
-    (ch) => {
-      const code = ch.charCodeAt(0);
-      if (code >= 0x30 && code <= 0x39) return ch; 
-      for (const base of bases) {
-        if (code >= base && code <= base + 9) {
-          return String.fromCharCode(0x30 + (code - base));
-        }
-      }
-      return "";
-    }
-  );
-};
-
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
+// 🔧 put the *real* option code for “Existing public health facility” here
 const NEARBY_EXISTING_HF_CODES = new Set([
-  "EXIST_PUBLIC_HF", 
+  "EXIST_PUBLIC_HF", // <-- replace with your actual option code if needed
 ]);
+
+// -------------------- helpers for orgUnit API --------------------
+const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
+
+const getApiBaseUrl = () => {
+  // DHIS2 app (prod)
+  if (typeof window !== "undefined" && window.DHIS_CONFIG?.baseUrl) {
+    return window.DHIS_CONFIG.baseUrl.replace(/\/$/, "");
+  }
+  // local dev
+  const envBase = import.meta.env.VITE_BASE_URL;
+  if (envBase) {
+    return String(envBase).replace(/\/$/, "");
+  }
+  return "";
+};
+
+const buildApiUrl = (path) => {
+  const base = getApiBaseUrl();
+  const cleaned = path.replace(/^\//, "");
+  return base ? `${base}/${cleaned}` : `/${cleaned}`;
+};
+
+// ✅ Basic auth for localhost / dev (uses your .env values)
+const getAuthHeaders = () => {
+  const user = import.meta.env.VITE_USERNAME;
+  const pass = import.meta.env.VITE_PASSWORD;
+  if (!user || !pass) return {};
+  const token = btoa(`${user}:${pass}`);
+  return { Authorization: `Basic ${token}` };
+};
+// ---------------------------------------------------------------------
 
 const Profile = () => {
   const { t, i18n } = useTranslation();
@@ -66,9 +89,6 @@ const Profile = () => {
   const trFirstField = t("profile.firstField", {
     defaultValue: isLao ? "ລະຫັດສະຖານທີ່" : "Facility ID",
   });
-  const trDistExact4 = t("profile.districtId.exact4", {
-    defaultValue: isLao ? "ໃສ່ເລກ 4 ໂຕແນ່ນອນ" : "Enter exactly 4 digits.",
-  });
   const trRequired = t("form.required", {
     defaultValue: isLao ? "ຕ້ອງການ" : "Required",
   });
@@ -77,6 +97,9 @@ const Profile = () => {
   });
   const trAddress = t("profile.addressBlock", {
     defaultValue: isLao ? "ທີ່ຢູ່" : "Address",
+  });
+  const trSelectedHfName = t("profile.selectedHfName", {
+    defaultValue: isLao ? "ຊື່ສະຖານທີ່ບໍລິການ" : "Health facility name",
   });
 
   useChrTrackerStore();
@@ -91,25 +114,26 @@ const Profile = () => {
   const { changeAttributeValue, setLayout } = actions || {};
   const { currentTei } = data || {};
 
+  // TEA IDs (target + selector + new nearby facility fields)
   const IDS = useMemo(
     () => ({
-
+      // target (auto-composed / mapped from orgUnit code)
       firstField: "sO0ItF0Dr0p",
 
-      districtId: "R4mULOs2f6M",
-      hfType: "A81fBn53hAD",
-      seqNum: "GwphHuSwouj",
-
+      // selector members
       province: "pvY01Pt3GTk",
       district: "GbubCuHuzM7",
       hc: "Jy7ou2LCeju",
       ph: "rsXdExpMW65",
       dh: "WH4Az6TJ5ZA",
       ch: "VF9VIPxkf9z",
-      nearbyType: "SxKvvxpzop9", 
-      customFacilityName: "f9d4P9maZEq", 
-      customFacilityGps: "oqcnIPmiVhh", 
 
+      // Type of nearby facility + custom fields
+      nearbyType: "SxKvvxpzop9", // Type of nearby health facility
+      customFacilityName: "f9d4P9maZEq", // Facility name (text, required when visible)
+      customFacilityGps: "oqcnIPmiVhh", // GPS location (optional)
+
+      // address block TEAs (Province / District / Village)
       addressProvince: "kFHo6CSy7B0",
       addressDistrict: "MFb4L2Ju4iu",
       addressVillage: "U4k2WoPO2dN",
@@ -118,58 +142,82 @@ const Profile = () => {
   );
 
   const props = useProfileRules();
+
+  // manual hide set (kept for future if needed)
   const MANUAL_HIDE = new Set([]);
+
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
+
+  // Keep Facility ID synced from rules (if assignations is used for something)
   const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
   useEffect(() => {
     const next = props?.assignations?.[IDS.firstField];
     if (typeof next === "undefined") return;
     if (String(firstFieldVal) !== String(next)) setAttr(IDS.firstField, next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.assignations?.[IDS.firstField], currentTei]);
 
-  const rawDist = findAttributeValue(currentTei, IDS.districtId) || "";
-  const rawSeq = findAttributeValue(currentTei, IDS.seqNum) || "";
-  const hfType = (findAttributeValue(currentTei, IDS.hfType) || "")
-    .toString()
-    .trim();
-
-  const dist = toAsciiDigits(rawDist).replace(/\D/g, "").slice(0, 4); // clamp to 4
-  const seq = toAsciiDigits(rawSeq).replace(/\D/g, "").slice(0, 2); // clamp to 2
+  // Type of nearby facility + derived mode
   const nearbyTypeRaw = findAttributeValue(currentTei, IDS.nearbyType) || "";
-  const isExistingPublicHF =
+  const nearbyTypeNorm = normalize(nearbyTypeRaw);
+
+  // nearbyType itself is mandatory
+  const nearbyTypeValid = !!nearbyTypeNorm;
+
+  // True only when user *actually* picked "Existing public health facility"
+  const isExistingHFSelection =
     NEARBY_EXISTING_HF_CODES.has(nearbyTypeRaw) ||
-    normalize(nearbyTypeRaw) === normalize("Existing public health facility");
+    nearbyTypeNorm === normalize("Existing public health facility");
 
-  const isCustomFacilityMode =
-    !!normalize(nearbyTypeRaw) && !isExistingPublicHF;
+  // Show Existing HF block only when "Existing public health facility" is selected
+  const showExistingHFBlock = isExistingHFSelection;
 
+  // Custom (non-existing) facility mode:
+  const isCustomFacilityMode = !!nearbyTypeNorm && !isExistingHFSelection;
+
+  // custom facility name validity (required when visible)
   const customFacilityName =
     findAttributeValue(currentTei, IDS.customFacilityName) || "";
   const facilityNameValid =
     !isCustomFacilityMode || customFacilityName.trim().length > 0;
 
-  useEffect(() => {
-    if (rawDist && rawDist !== dist) setAttr(IDS.districtId, dist);
-    if (rawSeq && rawSeq !== seq) setAttr(IDS.seqNum, seq);
+  // Address block values + validity (only required in custom mode)
+  const addressProvinceVal =
+    findAttributeValue(currentTei, IDS.addressProvince) || "";
+  const addressDistrictVal =
+    findAttributeValue(currentTei, IDS.addressDistrict) || "";
+  const addressVillageVal =
+    findAttributeValue(currentTei, IDS.addressVillage) || "";
 
-  }, [rawDist, rawSeq, dist, seq]);
+  const addressProvinceValid =
+    !isCustomFacilityMode || addressProvinceVal.trim().length > 0;
+  const addressDistrictValid =
+    !isCustomFacilityMode || addressDistrictVal.trim().length > 0;
+  const addressVillageValid =
+    !isCustomFacilityMode || addressVillageVal.trim().length > 0;
 
-  const distValid = !isExistingPublicHF || /^\d{4}$/.test(dist);
-  const typeValid = !isExistingPublicHF || hfType.length > 0;
-  const seqValid = !isExistingPublicHF || /^[0-9]{1,3}$/.test(seq);
-
+  // Disable Save when invalid (mode-aware)
   const [hfValid, setHfValid] = useState(true);
-  const hfValidityForSave = isExistingPublicHF ? hfValid : true;
+  const hfValidityForSave = isExistingHFSelection ? hfValid : true;
 
   useEffect(() => {
     if (!setLayout) return;
     const block =
       layout?.profileFormEditing &&
-      (!hfValidityForSave ||
-        !distValid ||
-        !typeValid ||
-        !seqValid ||
-        !facilityNameValid);
+      (
+        // nearbyType itself mandatory
+        !nearbyTypeValid ||
+
+        // Existing HF: selector HF must be valid
+        (isExistingHFSelection && !hfValidityForSave) ||
+
+        // Custom HF: name + address block mandatory
+        (isCustomFacilityMode &&
+          (!facilityNameValid ||
+            !addressProvinceValid ||
+            !addressDistrictValid ||
+            !addressVillageValid))
+      );
 
     setLayout("saveDisabled", block);
     setLayout("saveDisabledReason", block ? "profileRequiredFields" : "");
@@ -177,104 +225,21 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    hfValidityForSave,
-    distValid,
-    typeValid,
-    seqValid,
-    facilityNameValid,
     layout?.profileFormEditing,
     setLayout,
+    nearbyTypeValid,
+    isExistingHFSelection,
+    isCustomFacilityMode,
+    hfValidityForSave,
+    facilityNameValid,
+    addressProvinceValid,
+    addressDistrictValid,
+    addressVillageValid,
   ]);
 
-  const DIST_DIGIT_GUARDS = {
-    inputProps: {
-      inputMode: "numeric",
-      pattern: "[0-9]*",
-      maxLength: 4,
-      placeholder: "####",
-      "aria-invalid":
-        isExistingPublicHF && !distValid ? "true" : undefined,
-      "aria-describedby":
-        isExistingPublicHF && !distValid ? "dist-help" : undefined,
-      required: isExistingPublicHF,
-    },
-    onKeyDown: (e) => {
-      if (["e", "E", "+", "-", ".", ",", " "].includes(e.key))
-        return e.preventDefault();
-      if (/^\d$/.test(e.key)) {
-        const el = e.target;
-        const val = toAsciiDigits(String(el.value ?? "")).replace(/\D/g, "");
-        const hasSel =
-          (el.selectionEnd ?? 0) - (el.selectionStart ?? 0) > 0;
-        if (!hasSel && val.length >= 4) return e.preventDefault();
-      }
-    },
-    onPaste: (e) => {
-      const txt =
-        (e.clipboardData || window.clipboardData).getData("text") || "";
-      const clean = toAsciiDigits(txt).replace(/\D/g, "").slice(0, 4);
-      e.preventDefault();
-      const el = e.target;
-      const start = el.selectionStart ?? 0;
-      const end = el.selectionEnd ?? 0;
-      const next = (
-        toAsciiDigits(String(el.value ?? "")).slice(0, start) +
-        clean +
-        toAsciiDigits(String(el.value ?? "")).slice(end)
-      )
-        .replace(/\D/g, "")
-        .slice(0, 4);
-      el.value = next;
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-    },
-    onInput: (e) => {
-      const s = toAsciiDigits(String(e.target.value ?? ""));
-      const digits4 = s.replace(/\D/g, "").slice(0, 4);
-      if (s !== digits4) e.target.value = digits4;
-    },
-  };
-
-  const SEQ_DIGIT_GUARDS = {
-    inputProps: {
-      inputMode: "numeric",
-      pattern: "[0-9]*",
-      maxLength: 3,
-      placeholder: "###",
-      "aria-invalid":
-        isExistingPublicHF && !seqValid ? "true" : undefined,
-      required: isExistingPublicHF,
-    },
-    onKeyDown: (e) => {
-      if (["e", "E", "+", "-", ".", ",", " "].includes(e.key))
-        e.preventDefault();
-    },
-    onInput: (e) => {
-      const s = toAsciiDigits(String(e.target.value ?? ""));
-      const clean = s.replace(/\D/g, "").slice(0, 3);
-      if (s !== clean) e.target.value = clean;
-    },
-    onPaste: (e) => {
-      const txt =
-        (e.clipboardData || window.clipboardData).getData("text") || "";
-      const clean = toAsciiDigits(txt).replace(/\D/g, "").slice(0, 3);
-      e.preventDefault();
-      const el = e.target;
-      const start = el.selectionStart ?? 0;
-      const end = el.selectionEnd ?? 0;
-      const next = (
-        toAsciiDigits(String(el.value ?? "")).slice(0, start) +
-        clean +
-        toAsciiDigits(String(el.value ?? "")).slice(end)
-      )
-        .replace(/\D/g, "")
-        .slice(0, 3);
-      el.value = next;
-      el.dispatchEvent(new Event("input", { bubbles: true }));
-    },
-  };
-
+  // visibility / disabled
   const rowFirstDisabled = true;
   const hfIds = [
     IDS.province,
@@ -285,16 +250,146 @@ const Profile = () => {
     IDS.hc,
   ];
   const hfRowHidden = hfIds.every((id) => MANUAL_HIDE.has(id));
-  const showHfSelectorRow = !hfRowHidden && isExistingPublicHF;
+  const showHfSelectorRow = !hfRowHidden && showExistingHFBlock;
+
+  // ------------------- map selected orgUnit → Facility ID --------------
+  // cache orgUnit details by UID (to avoid re-fetching)
+  // hfOuCache[uid] = { code, en, lo }
+  const [hfOuCache, setHfOuCache] = useState({});
+
+  const hcUid = findAttributeValue(currentTei, IDS.hc) || "";
+  const dhUid = findAttributeValue(currentTei, IDS.dh) || "";
+  const phUid = findAttributeValue(currentTei, IDS.ph) || "";
+  const chUid = findAttributeValue(currentTei, IDS.ch) || "";
+
+  useEffect(() => {
+    // When we are NOT in "Existing public health facility" mode,
+    // clear Facility ID and skip mapping.
+    if (!isExistingHFSelection) {
+      if (firstFieldVal) setAttr(IDS.firstField, "");
+      return;
+    }
+
+    // Priority: HC -> DH -> PH -> CH
+    const ordered = [hcUid, dhUid, phUid, chUid]
+      .map((v) => String(v || "").trim())
+      .filter((v) => !!v);
+    const uid = ordered.find((v) => DHIS_UID_RE.test(v));
+    if (!uid) return;
+
+    const cached = hfOuCache[uid];
+    if (cached?.code) {
+      if (cached.code !== firstFieldVal) {
+        setAttr(IDS.firstField, cached.code);
+      }
+      return;
+    }
+
+    let cancelled = false;
+
+    const fetchOu = async () => {
+      try {
+        const url = buildApiUrl(
+          `/api/organisationUnits/${uid}.json?fields=id,code,name,displayName,translations[value,locale,property]`
+        );
+        const res = await fetch(url, {
+          headers: {
+            Accept: "application/json",
+            ...getAuthHeaders(), // ✅ important for localhost / external base URL
+          },
+          redirect: "follow",
+        });
+
+        const ct = res.headers.get("content-type") || "";
+        if (!res.ok || !ct.includes("application/json")) return;
+
+        const json = await res.json();
+
+        const baseName =
+          json.displayName ||
+          json.name ||
+          (json.code ? `(${json.code})` : json.id);
+
+        let loName = "";
+        if (Array.isArray(json.translations)) {
+          const loTr = json.translations.find(
+            (tr) =>
+              tr.property === "NAME" &&
+              tr.locale &&
+              tr.locale.toLowerCase().startsWith("lo")
+          );
+          if (loTr?.value) loName = loTr.value;
+        }
+
+        const code = json.code || "";
+
+        if (!cancelled) {
+          setHfOuCache((prev) => ({
+            ...prev,
+            [uid]: {
+              code,
+              en: baseName,
+              lo: loName || baseName,
+            },
+          }));
+
+          if (code && code !== firstFieldVal) {
+            setAttr(IDS.firstField, code);
+          }
+        }
+      } catch {
+        // ignore network / proxy errors – do not block form
+      }
+    };
+
+    fetchOu();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    isExistingHFSelection,
+    hcUid,
+    dhUid,
+    phUid,
+    chUid,
+    firstFieldVal,
+    IDS.firstField,
+    setAttr,
+    hfOuCache,
+  ]);
+
+  // Selected HF name (Lao/EN switch)
+  const selectedHfName = useMemo(() => {
+    const ordered = [hcUid, dhUid, phUid, chUid]
+      .map((v) => String(v || "").trim())
+      .filter((v) => !!v);
+    const uid = ordered.find((v) => DHIS_UID_RE.test(v));
+    if (!uid) return "";
+    const entry = hfOuCache[uid];
+    if (!entry) return "";
+    return isLao ? entry.lo || entry.en || "" : entry.en || entry.lo || "";
+  }, [hcUid, dhUid, phUid, chUid, hfOuCache, isLao]);
+  // --------------------------------------------------------------------------
 
   return (
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-
+          {/* FIRST FIELD: Type of nearby health facility (SxKvvxpzop9) */}
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
-              <AttributeLabel attribute={IDS.nearbyType} />
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <AttributeLabel attribute={IDS.nearbyType} />
+                {/* always mandatory */}
+                <Box
+                  component="span"
+                  sx={{ color: "#d32f2f" }}
+                  aria-hidden="true"
+                >
+                  *
+                </Box>
+              </Box>
             </TableCell>
             <TableCell>
               <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
@@ -302,153 +397,40 @@ const Profile = () => {
                   attribute={IDS.nearbyType}
                   size="small"
                   disabled={!layout?.profileFormEditing}
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      ...(layout?.profileFormEditing && !nearbyTypeValid
+                        ? {
+                            borderColor: "#d32f2f",
+                            borderWidth: 1,
+                            borderStyle: "solid",
+                          }
+                        : {}),
+                    },
+                    "& .MuiInputBase-input, & .MuiSelect-select": {
+                      py: 0.5,
+                      fontSize: "0.9rem",
+                    },
+                  }}
                 />
+                {!nearbyTypeValid && layout?.profileFormEditing && (
+                  <Box
+                    sx={{
+                      mt: 0.5,
+                      fontSize: 12,
+                      lineHeight: "16px",
+                      color: "#d32f2f",
+                    }}
+                  >
+                    {trRequired}
+                  </Box>
+                )}
               </Box>
             </TableCell>
           </TableRow>
 
-          {isExistingPublicHF && (
-            <TableRow>
-              <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }} />
-              <TableCell>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: `${DIST_W}px ${TYPE_W}px ${SEQ_W}px`,
-                    gap: 1.5,
-                    maxWidth: FIELD_MAX_WIDTH,
-                    alignItems: "start",
-                  }}
-                >
-                  <Box sx={{ display: "grid", gap: 0.5 }}>
-                    <AttributeLabel attribute={IDS.districtId} />
-                    <AttributeField
-                      attribute={IDS.districtId}
-                      disabledManualFields
-                      size="small"
-                      {...DIST_DIGIT_GUARDS}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          height: 36,
-                          width: DIST_W,
-                          ...(isExistingPublicHF && !distValid
-                            ? {
-                                borderColor: "#d32f2f",
-                                borderWidth: 1,
-                                borderStyle: "solid",
-                              }
-                            : {}),
-                        },
-                        "& .MuiInputBase-input": {
-                          py: 0.5,
-                          fontSize: "0.9rem",
-                        },
-                      }}
-                    />
-                    {isExistingPublicHF && !distValid && (
-                      <Box
-                        id="dist-help"
-                        sx={{
-                          mt: 0.5,
-                          fontSize: 12,
-                          lineHeight: "16px",
-                          color: "#d32f2f",
-                        }}
-                      >
-                        {trDistExact4}
-                      </Box>
-                    )}
-                  </Box>
-
-                  <Box sx={{ display: "grid", gap: 0.5 }}>
-                    <AttributeLabel attribute={IDS.hfType} />
-                    <AttributeField
-                      attribute={IDS.hfType}
-                      disabledManualFields
-                      size="small"
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          height: 36,
-                          width: TYPE_W,
-                          ...(isExistingPublicHF && !typeValid
-                            ? {
-                                borderColor: "#d32f2f",
-                                borderWidth: 1,
-                                borderStyle: "solid",
-                              }
-                            : {}),
-                        },
-                        "& .MuiInputBase-input, & .MuiSelect-select": {
-                          py: 0.5,
-                          fontSize: "0.9rem",
-                        },
-                      }}
-                    />
-                    {isExistingPublicHF && !typeValid && (
-                      <Box
-                        sx={{
-                          mt: 0.5,
-                          fontSize: 12,
-                          lineHeight: "16px",
-                          color: "#d32f2f",
-                        }}
-                      >
-                        {trRequired}
-                      </Box>
-                    )}
-                  </Box>
-
-                  <Box sx={{ display: "grid", gap: 0.5 }}>
-                    <AttributeLabel attribute={IDS.seqNum} />
-                    <AttributeField
-                      attribute={IDS.seqNum}
-                      disabledManualFields
-                      size="small"
-                      {...SEQ_DIGIT_GUARDS}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          height: 36,
-                          width: SEQ_W,
-                          ...(isExistingPublicHF && !seqValid
-                            ? {
-                                borderColor: "#d32f2f",
-                                borderWidth: 1,
-                                borderStyle: "solid",
-                              }
-                            : {}),
-                        },
-                        "& .MuiInputBase-input": {
-                          py: 0.5,
-                          fontSize: "0.9rem",
-                        },
-                      }}
-                    />
-                    {isExistingPublicHF && !seqValid && (
-                      <Box
-                        sx={{
-                          mt: 0.5,
-                          fontSize: 12,
-                          lineHeight: "16px",
-                          color: "#d32f2f",
-                        }}
-                      >
-                        {trRequired}
-                      </Box>
-                    )}
-                  </Box>
-                </Box>
-
-                {isExistingPublicHF &&
-                  (!distValid || !typeValid || !seqValid) && (
-                    <Box sx={{ mt: 1, fontSize: 12, color: "#d32f2f" }}>
-                      {trFixErrors}
-                    </Box>
-                  )}
-              </TableCell>
-            </TableRow>
-          )}
-
-          {isExistingPublicHF && (
+          {/* Facility ID – auto-filled from selected orgUnit code */}
+          {showExistingHFBlock && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                 <Typography>{trFirstField}</Typography>
@@ -467,6 +449,21 @@ const Profile = () => {
             </TableRow>
           )}
 
+          {/* Selected HF name (read-only, from orgUnit) */}
+          {showExistingHFBlock && selectedHfName && (
+            <TableRow>
+              <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
+                <Typography>{trSelectedHfName}</Typography>
+              </TableCell>
+              <TableCell>
+                <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
+                  <Typography variant="body2">{selectedHfName}</Typography>
+                </Box>
+              </TableCell>
+            </TableRow>
+          )}
+
+          {/* Health facility selector – when "Existing public health facility" */}
           {showHfSelectorRow && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -504,14 +501,20 @@ const Profile = () => {
                       changeAttributeValue?.(IDS.ch, ch || "");
                     }}
                   />
+                  {isExistingHFSelection && !hfValid && (
+                    <Box sx={{ mt: 0.5, fontSize: 12, color: "#d32f2f" }}>
+                      {trFixErrors}
+                    </Box>
+                  )}
                 </Box>
               </TableCell>
             </TableRow>
           )}
 
+          {/* Custom facility details when NOT Existing public health facility */}
           {isCustomFacilityMode && (
             <>
-
+              {/* Facility name (required when visible) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <Box
@@ -550,9 +553,22 @@ const Profile = () => {
                 </TableCell>
               </TableRow>
 
+              {/* Address block (Province / District / Village) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
-                  <Typography>{trAddress}</Typography>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                  >
+                    <Typography>{trAddress}</Typography>
+                    {/* mandatory in custom mode */}
+                    <Box
+                      component="span"
+                      sx={{ color: "#d32f2f" }}
+                      aria-hidden="true"
+                    >
+                      *
+                    </Box>
+                  </Box>
                 </TableCell>
                 <TableCell>
                   <Box sx={{ maxWidth: FIELD_MAX_WIDTH }}>
@@ -565,10 +581,26 @@ const Profile = () => {
                       saveGeo
                       disabled={!layout?.profileFormEditing}
                     />
+                    {isCustomFacilityMode &&
+                      (!addressProvinceValid ||
+                        !addressDistrictValid ||
+                        !addressVillageValid) && (
+                        <Box
+                          sx={{
+                            mt: 0.5,
+                            fontSize: 12,
+                            lineHeight: "16px",
+                            color: "#d32f2f",
+                          }}
+                        >
+                          {trRequired}
+                        </Box>
+                      )}
                   </Box>
                 </TableCell>
               </TableRow>
 
+              {/* GPS location (optional) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <AttributeLabel attribute={IDS.customFacilityGps} />
