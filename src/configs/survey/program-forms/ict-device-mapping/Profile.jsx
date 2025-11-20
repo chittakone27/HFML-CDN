@@ -9,6 +9,7 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 import useProfileRules from "./useProfileRules";
 
+// --- Attribute IDs -----------------------------------------------------------
 const ID = {
   deviceType: "xQrdgnlPcC3", // ICT - Type of ICT device
   code: "y6RfdAq2zmQ",       // ICT - Device ID - Code (D/L/…)
@@ -19,6 +20,7 @@ const ID = {
   deviceId: "RyN09GsWd64",   // ICT - Device ID (full: 0201PH01-L01)
 };
 
+// Fields we never render as normal rows
 const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
 
 const toAttrMap = (tei) =>
@@ -43,6 +45,7 @@ const getHelpers = (target, { errors = {}, helpers = {}, warnings = {} } = {}) =
   return result;
 };
 
+// Map "Laptop" / "Desktop" → L / D etc.
 const mapDeviceTypeToCode = (deviceType) => {
   if (!deviceType) return "";
   const label = String(deviceType).toLowerCase();
@@ -59,7 +62,7 @@ const NUM_INPUT_PROPS = {
   inputProps: {
     inputMode: "numeric",
     pattern: "[0-9]*",
-    maxLength: 2,
+    maxLength: 3,
     placeholder: "##",
   },
 };
@@ -79,12 +82,13 @@ const Profile = () => {
     if (!orgUnit) return "";
     if (orgUnit.code) return String(orgUnit.code);
     const label = orgUnit.displayName || orgUnit.name || "";
-    const m = label.match(/\(([^)]+)\)/); 
+    const m = label.match(/\(([^)]+)\)/); // takes 0201PH01 from "(0201PH01) PH ..."
     return m ? m[1] : "";
   }, [orgUnit]);
 
   const orgUnitParts = useMemo(() => {
     if (!orgUnitCode) return {};
+    // 0201PH01 -> ["0201","PH","01"]
     const m = orgUnitCode.match(/^(\d{4})([A-Za-z]{2})(\d{2})$/);
     if (!m) return {};
     return {
@@ -139,7 +143,7 @@ const Profile = () => {
     const raw = String(numValue ?? "");
     if (!raw) return;
 
-    const cleaned = raw.replace(/\D/g, "").slice(0, 2);
+    const cleaned = raw.replace(/\D/g, "").slice(0, 3);
     if (cleaned !== raw) {
       actions.changeAttributeValue(ID.num, cleaned);
     }
@@ -151,6 +155,7 @@ const Profile = () => {
 
     Object.entries(props.hiddenFields).forEach(([attr, isHidden]) => {
       if (!isHidden) return;
+      // Don't fight with our ID logic:
       if (
         attr === ID.hf ||
         attr === ID.hftype ||
@@ -167,6 +172,7 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.hiddenFields]);
 
+  // --- Assignations from useProfileRules, but skip our ID fields -------------
   useEffect(() => {
     if (!props?.assignations) return;
     const cur = toAttrMap(data?.currentTei);
@@ -180,6 +186,7 @@ const Profile = () => {
         attr === ID.num ||
         attr === ID.deviceId
       ) {
+        // let our ICT logic control these
         return;
       }
       const current = cur[attr] ?? "";
@@ -189,6 +196,7 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.assignations]);
 
+  // --- Keep HF info in hidden fields based on org unit -----------------------
   useEffect(() => {
     if (!data?.currentTei) return;
     const { did, hfType, hfSeq } = orgUnitParts;
@@ -197,6 +205,7 @@ const Profile = () => {
     const cur = toAttrMap(data.currentTei);
     const updates = [];
 
+    // HF sequence in attributes should be unpadded number ("1"), to match your old data
     const hfSeqNum =
       !Number.isNaN(parseInt(hfSeq, 10)) && hfSeq !== ""
         ? String(parseInt(hfSeq, 10))
@@ -210,11 +219,13 @@ const Profile = () => {
     updates.forEach(([attr, value]) => actions.changeAttributeValue(attr, value));
   }, [data?.currentTei, orgUnitParts, actions]);
 
+  // --- Build / keep Device ID in sync (from Type + Number + OU) --------------
   useEffect(() => {
     if (!data?.currentTei) return;
 
     const cur = toAttrMap(data.currentTei);
 
+    // If device type or number is empty → clear Device ID
     if (!deviceTypeValue || !numValue) {
       if (cur[ID.deviceId]) {
         actions.changeAttributeValue(ID.deviceId, "");
@@ -227,6 +238,7 @@ const Profile = () => {
 
     const devCode = mapDeviceTypeToCode(deviceTypeValue);
 
+    // Use the padded seq from org unit code ("01")
     const hfSeq2 = hfSeq;
     const basePrefix = `${did}${hfType}${hfSeq2}`;
 
@@ -238,8 +250,10 @@ const Profile = () => {
 
     const updates = [];
 
+    // Keep code in hidden field
     if (cur[ID.code] !== devCode) updates.push([ID.code, devCode]);
 
+    // Only update deviceId if different (avoid loops)
     if (cur[ID.deviceId] !== newDeviceId) {
       updates.push([ID.deviceId, newDeviceId]);
     }
@@ -248,6 +262,7 @@ const Profile = () => {
     updates.forEach(([attr, value]) => actions.changeAttributeValue(attr, value));
   }, [data?.currentTei, orgUnitParts, deviceTypeValue, numValue, actions]);
 
+  // --- Number row (full-width, editable) -------------------------------------
   const renderNumberRow = () => {
     if (props?.hiddenFields?.[ID.num]) return null;
     const helpers = getHelpers(ID.num, props);
