@@ -35,6 +35,7 @@ const isEmpty = (v) => {
 
 const FACILITY_ATTR_ID = "RLamCNXOwQ5";
 
+// TEI attribute helper
 const getAttr = (tei, id) =>
   (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
 
