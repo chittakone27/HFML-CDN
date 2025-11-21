@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/villages-catchment/VillagesStage.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
@@ -16,7 +15,6 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
-// helpers to read values / check emptiness
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -35,28 +33,22 @@ const isEmpty = (v) => {
   return false;
 };
 
-// ✅ TEA that stores the health facility
 const FACILITY_ATTR_ID = "RLamCNXOwQ5";
 
-// TEI attribute helper
 const getAttr = (tei, id) =>
   (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
 
-// Strip code prefix: "(0501PH01) PH Bokeo" -> "PH Bokeo"
 const stripCodePrefix = (s = "") => {
   const str = String(s || "").trim();
   const match = str.match(/^\([^)]*\)\s*(.+)$/);
   return match ? match[1] : str;
 };
 
-// Normalizer for section name comparison
 const normalize = (s) =>
   String(s || "").trim().toLowerCase().replace(/\s+/g, " ");
 
-// Program: sBkMdki30ua | Stage: JrbpF3DG3FL
-const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; // integer-only DE
+const INTEGER_ONLY_ID = "OWAR8Vpa8IW"; 
 
-// Static EN/LO section names (the ones you configured in metadata)
 const DRY_SECTION_EN =
   "Dry-season travel conditions from this health facility to the nearby health facility";
 const DRY_SECTION_LO =
@@ -67,11 +59,9 @@ const RAINY_SECTION_EN =
 const RAINY_SECTION_LO =
   "ການເດີນທາງໃນລະດູຝົນ ຈາກສະຖານທີ່ບໍລິການຂອງເຮົາ ຫາ ສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
 
-  // Village Health Volunteer (VHV)
 const VHV_SECTION_EN = "Village Health Volunteer (VHV)";
 const VHV_SECTION_LO = "ອາສາສະໝັກສາທາລະນະສຸກບ້ານ (ອສບ)";
 
-// Catchment section (details of catchment area)
 const SECTION_EN = "Details of catchment area";
 const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ";
 
@@ -89,7 +79,6 @@ const VillagesStage = () => {
   const { currentEvent } = useCurrentEvent();
   const currentTei = data?.currentTei;
 
-  // ⬇ warnings + hiddenFields + hiddenOptions (ALL visible will be required below)
   const { warnings, hiddenFields = {}, hiddenOptions = {} } = useVillageRules();
 
   const trStageDate = t("village.stageDate", {
@@ -115,9 +104,6 @@ const VillagesStage = () => {
     }
   };
 
-  // ---------------------------------------------------------------------------
-  // SECTION title mapping
-  // ---------------------------------------------------------------------------
   const trCatchmentSectionTitle = t("village.section.details", {
     defaultValue: isLao ? SECTION_LO : SECTION_EN,
   });
@@ -130,7 +116,6 @@ const VillagesStage = () => {
     return enMatch || loMatch;
   };
 
-  // ✅ FROM: selected org unit name (village)
   const sourceName = useMemo(() => {
     if (!orgUnit) return "";
     if (typeof orgUnit === "string") {
@@ -140,14 +125,12 @@ const VillagesStage = () => {
     return stripCodePrefix(label);
   }, [orgUnit]);
 
-  // ✅ TO: health facility from TEA RLamCNXOwQ5
   const facilityName = useMemo(() => {
     if (!currentTei) return "";
     const raw = getAttr(currentTei, FACILITY_ATTR_ID);
     return stripCodePrefix(raw);
   }, [currentTei]);
 
-  // ✅ Dynamic dry-season title
   const dynamicDryTitle = useMemo(() => {
     const from = sourceName || (isLao ? "ບ້ານ" : "this village");
     const to =
@@ -158,7 +141,6 @@ const VillagesStage = () => {
       : `Dry-season travel conditions from ${from} to ${to}`;
   }, [isLao, sourceName, facilityName]);
 
-  // ✅ Dynamic rainy-season title
   const dynamicRainyTitle = useMemo(() => {
     const from = sourceName || (isLao ? "ບ້ານ" : "this village");
     const to =
@@ -169,19 +151,16 @@ const VillagesStage = () => {
       : `Rainy-season travel conditions from ${from} to ${to}`;
   }, [isLao, sourceName, facilityName]);
 
-  // Keep catchment override + add dry & rainy overrides
   const trSectionTitle = (name) => {
     const s = String(name || "").trim();
     if (!s) return s;
 
     const norm = normalize(s);
 
-    // Dry-season section
     if (norm === normalize(DRY_SECTION_EN) || s === DRY_SECTION_LO) {
       return dynamicDryTitle;
     }
 
-    // Rainy-season section
     if (norm === normalize(RAINY_SECTION_EN) || s === RAINY_SECTION_LO) {
       return dynamicRainyTitle;
     }
@@ -189,7 +168,7 @@ const VillagesStage = () => {
     if (norm === normalize(VHV_SECTION_EN) || s === VHV_SECTION_LO) {
       return isLao ? VHV_SECTION_LO : VHV_SECTION_EN;
     }
-   // Generic catchment-section override
+
     if (isCatchmentSection(s)) {
       return trCatchmentSectionTitle;
     }
@@ -197,9 +176,6 @@ const VillagesStage = () => {
     return name;
   };
 
-  // ---------------------------------------------------------------------------
-  // Stage & sections (with fallback like NearbyStage)
-  // ---------------------------------------------------------------------------
   const stage = useMemo(
     () =>
       program?.programStages?.find(
@@ -227,7 +203,6 @@ const VillagesStage = () => {
     ];
   }, [stage]);
 
-  // Collect DEs present in this stage (respect hiddenFields)
   const presentIds = useMemo(() => {
     const ids = [];
     sections.forEach((section) => {
@@ -240,10 +215,8 @@ const VillagesStage = () => {
     return uniq.filter((id) => !hiddenFields[id]);
   }, [sections, hiddenFields]);
 
-  // ⬇⬇⬇ MAKE *ALL VISIBLE* FIELDS MANDATORY ⬇⬇⬇
   const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
 
-  // Missing check: all visible required + eventDate
   const missing = useMemo(() => {
     const m = [];
     for (const id of requiredSet) {
@@ -256,23 +229,19 @@ const VillagesStage = () => {
     return m;
   }, [requiredSet, currentEvent?.dataValues, currentEvent?.eventDate]);
 
-  // Only block on warnings for visible fields
   const hasWarnings = useMemo(
     () => Object.keys(warnings || {}).some((id) => presentIds.includes(id)),
     [warnings, presentIds]
   );
 
-  // Disable save/complete when missing or warnings exist
   const disabled = missing.length > 0 || hasWarnings;
 
-  // Avoid update loops
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   const warningsRef = useRef(warnings || {});
   missingRef.current = missing;
   warningsRef.current = warnings || {};
 
-  // Toggle Complete button only when value changes
   useEffect(() => {
     if (!actions) return;
     if (prevDisabled.current !== disabled) {
@@ -286,12 +255,10 @@ const VillagesStage = () => {
           actions.setCanComplete(!disabled);
         }
       } catch {
-        // ignore layout API differences
       }
     }
   }, [actions, disabled]);
 
-  // Register Save handler once
   useEffect(() => {
     if (!actions) return;
     const KEY = "eventSave_villages_all_visible_required";
@@ -331,7 +298,6 @@ const VillagesStage = () => {
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
-  // integer-only input guards for OWAR8Vpa8IW
   const integerOnlyGuards = {
     type: "number",
     step: 1,
@@ -383,7 +349,6 @@ const VillagesStage = () => {
             const deId = de?.id || de?.dataElement?.id;
             if (!deId) return null;
 
-            // respect hidden fields
             if (hiddenFields[deId]) return null;
 
             const hasWarn = !!warnings?.[deId];
@@ -391,7 +356,6 @@ const VillagesStage = () => {
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
             const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
 
-            // Every visible field is required
             const isRequired = requiredSet.has(deId);
 
             return (

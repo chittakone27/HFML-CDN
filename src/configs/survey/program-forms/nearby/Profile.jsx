@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/.../Profile.jsx
 import {
   Table,
   TableBody,
@@ -28,20 +27,16 @@ const FIELD_MAX_WIDTH = 480;
 
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
-// 🔧 put the *real* option code for “Existing public health facility” here
 const NEARBY_EXISTING_HF_CODES = new Set([
-  "EXIST_PUBLIC_HF", // <-- replace with your actual option code if needed
+  "EXIST_PUBLIC_HF", 
 ]);
 
-// -------------------- helpers for orgUnit API --------------------
 const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
 
 const getApiBaseUrl = () => {
-  // DHIS2 app (prod)
   if (typeof window !== "undefined" && window.DHIS_CONFIG?.baseUrl) {
     return window.DHIS_CONFIG.baseUrl.replace(/\/$/, "");
   }
-  // local dev
   const envBase = import.meta.env.VITE_BASE_URL;
   if (envBase) {
     return String(envBase).replace(/\/$/, "");
@@ -55,7 +50,6 @@ const buildApiUrl = (path) => {
   return base ? `${base}/${cleaned}` : `/${cleaned}`;
 };
 
-// ✅ Basic auth for localhost / dev (uses your .env values)
 const getAuthHeaders = () => {
   const user = import.meta.env.VITE_USERNAME;
   const pass = import.meta.env.VITE_PASSWORD;
@@ -63,7 +57,6 @@ const getAuthHeaders = () => {
   const token = btoa(`${user}:${pass}`);
   return { Authorization: `Basic ${token}` };
 };
-// ---------------------------------------------------------------------
 
 const Profile = () => {
   const { t, i18n } = useTranslation();
@@ -114,13 +107,10 @@ const Profile = () => {
   const { changeAttributeValue, setLayout } = actions || {};
   const { currentTei } = data || {};
 
-  // TEA IDs (target + selector + new nearby facility fields)
   const IDS = useMemo(
     () => ({
-      // target (auto-composed / mapped from orgUnit code)
       firstField: "sO0ItF0Dr0p",
 
-      // selector members
       province: "pvY01Pt3GTk",
       district: "GbubCuHuzM7",
       hc: "Jy7ou2LCeju",
@@ -128,12 +118,9 @@ const Profile = () => {
       dh: "WH4Az6TJ5ZA",
       ch: "VF9VIPxkf9z",
 
-      // Type of nearby facility + custom fields
-      nearbyType: "SxKvvxpzop9", // Type of nearby health facility
+      nearbyType: "SxKvvxpzop9", 
       customFacilityName: "f9d4P9maZEq", // Facility name (text, required when visible)
       customFacilityGps: "oqcnIPmiVhh", // GPS location (optional)
-
-      // address block TEAs (Province / District / Village)
       addressProvince: "kFHo6CSy7B0",
       addressDistrict: "MFb4L2Ju4iu",
       addressVillage: "U4k2WoPO2dN",
@@ -143,45 +130,35 @@ const Profile = () => {
 
   const props = useProfileRules();
 
-  // manual hide set (kept for future if needed)
   const MANUAL_HIDE = new Set([]);
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
-  // Keep Facility ID synced from rules (if assignations is used for something)
   const firstFieldVal = findAttributeValue(currentTei, IDS.firstField) || "";
   useEffect(() => {
     const next = props?.assignations?.[IDS.firstField];
     if (typeof next === "undefined") return;
     if (String(firstFieldVal) !== String(next)) setAttr(IDS.firstField, next);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.assignations?.[IDS.firstField], currentTei]);
 
-  // Type of nearby facility + derived mode
   const nearbyTypeRaw = findAttributeValue(currentTei, IDS.nearbyType) || "";
   const nearbyTypeNorm = normalize(nearbyTypeRaw);
 
-  // nearbyType itself is mandatory
   const nearbyTypeValid = !!nearbyTypeNorm;
 
-  // True only when user *actually* picked "Existing public health facility"
   const isExistingHFSelection =
     NEARBY_EXISTING_HF_CODES.has(nearbyTypeRaw) ||
     nearbyTypeNorm === normalize("Existing public health facility");
 
-  // Show Existing HF block only when "Existing public health facility" is selected
   const showExistingHFBlock = isExistingHFSelection;
 
-  // Custom (non-existing) facility mode:
   const isCustomFacilityMode = !!nearbyTypeNorm && !isExistingHFSelection;
 
-  // custom facility name validity (required when visible)
   const customFacilityName =
     findAttributeValue(currentTei, IDS.customFacilityName) || "";
   const facilityNameValid =
     !isCustomFacilityMode || customFacilityName.trim().length > 0;
 
-  // Address block values + validity (only required in custom mode)
   const addressProvinceVal =
     findAttributeValue(currentTei, IDS.addressProvince) || "";
   const addressDistrictVal =
@@ -196,7 +173,6 @@ const Profile = () => {
   const addressVillageValid =
     !isCustomFacilityMode || addressVillageVal.trim().length > 0;
 
-  // Disable Save when invalid (mode-aware)
   const [hfValid, setHfValid] = useState(true);
   const hfValidityForSave = isExistingHFSelection ? hfValid : true;
 
@@ -205,13 +181,10 @@ const Profile = () => {
     const block =
       layout?.profileFormEditing &&
       (
-        // nearbyType itself mandatory
         !nearbyTypeValid ||
 
-        // Existing HF: selector HF must be valid
         (isExistingHFSelection && !hfValidityForSave) ||
 
-        // Custom HF: name + address block mandatory
         (isCustomFacilityMode &&
           (!facilityNameValid ||
             !addressProvinceValid ||
@@ -225,7 +198,7 @@ const Profile = () => {
       setLayout("saveDisabled", false);
       setLayout("saveDisabledReason", "");
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [
     layout?.profileFormEditing,
     setLayout,
@@ -239,7 +212,6 @@ const Profile = () => {
     addressVillageValid,
   ]);
 
-  // visibility / disabled
   const rowFirstDisabled = true;
   const hfIds = [
     IDS.province,
@@ -252,9 +224,6 @@ const Profile = () => {
   const hfRowHidden = hfIds.every((id) => MANUAL_HIDE.has(id));
   const showHfSelectorRow = !hfRowHidden && showExistingHFBlock;
 
-  // ------------------- map selected orgUnit → Facility ID --------------
-  // cache orgUnit details by UID (to avoid re-fetching)
-  // hfOuCache[uid] = { code, en, lo }
   const [hfOuCache, setHfOuCache] = useState({});
 
   const hcUid = findAttributeValue(currentTei, IDS.hc) || "";
@@ -263,14 +232,11 @@ const Profile = () => {
   const chUid = findAttributeValue(currentTei, IDS.ch) || "";
 
   useEffect(() => {
-    // When we are NOT in "Existing public health facility" mode,
-    // clear Facility ID and skip mapping.
     if (!isExistingHFSelection) {
       if (firstFieldVal) setAttr(IDS.firstField, "");
       return;
     }
 
-    // Priority: HC -> DH -> PH -> CH
     const ordered = [hcUid, dhUid, phUid, chUid]
       .map((v) => String(v || "").trim())
       .filter((v) => !!v);
@@ -295,7 +261,7 @@ const Profile = () => {
         const res = await fetch(url, {
           headers: {
             Accept: "application/json",
-            ...getAuthHeaders(), // ✅ important for localhost / external base URL
+            ...getAuthHeaders(), 
           },
           redirect: "follow",
         });
@@ -338,7 +304,6 @@ const Profile = () => {
           }
         }
       } catch {
-        // ignore network / proxy errors – do not block form
       }
     };
 
@@ -346,7 +311,6 @@ const Profile = () => {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     isExistingHFSelection,
     hcUid,
@@ -359,7 +323,6 @@ const Profile = () => {
     hfOuCache,
   ]);
 
-  // Selected HF name (Lao/EN switch)
   const selectedHfName = useMemo(() => {
     const ordered = [hcUid, dhUid, phUid, chUid]
       .map((v) => String(v || "").trim())
@@ -376,12 +339,10 @@ const Profile = () => {
     <div className="community-death-profile" id="profile-form">
       <Table size="small">
         <TableBody>
-          {/* FIRST FIELD: Type of nearby health facility (SxKvvxpzop9) */}
           <TableRow>
             <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                 <AttributeLabel attribute={IDS.nearbyType} />
-                {/* always mandatory */}
                 <Box
                   component="span"
                   sx={{ color: "#d32f2f" }}
@@ -429,7 +390,6 @@ const Profile = () => {
             </TableCell>
           </TableRow>
 
-          {/* Facility ID – auto-filled from selected orgUnit code */}
           {showExistingHFBlock && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -449,7 +409,6 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Selected HF name (read-only, from orgUnit) */}
           {showExistingHFBlock && selectedHfName && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -463,7 +422,6 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Health facility selector – when "Existing public health facility" */}
           {showHfSelectorRow && (
             <TableRow>
               <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
@@ -511,10 +469,8 @@ const Profile = () => {
             </TableRow>
           )}
 
-          {/* Custom facility details when NOT Existing public health facility */}
           {isCustomFacilityMode && (
             <>
-              {/* Facility name (required when visible) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <Box
@@ -553,14 +509,12 @@ const Profile = () => {
                 </TableCell>
               </TableRow>
 
-              {/* Address block (Province / District / Village) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <Box
                     sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                   >
                     <Typography>{trAddress}</Typography>
-                    {/* mandatory in custom mode */}
                     <Box
                       component="span"
                       sx={{ color: "#d32f2f" }}
@@ -599,8 +553,6 @@ const Profile = () => {
                   </Box>
                 </TableCell>
               </TableRow>
-
-              {/* GPS location (optional) */}
               <TableRow>
                 <TableCell sx={{ width: LABEL_COL_WIDTH, pr: 1 }}>
                   <AttributeLabel attribute={IDS.customFacilityGps} />

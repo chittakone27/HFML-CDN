@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/.../useProfileRules.js
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
 import { useEffect, useMemo, useState } from "react";
@@ -11,10 +10,8 @@ const TEA = {
   facilityId: "sO0ItF0Dr0p",
   nearbyType: "SxKvvxpzop9",        // Type of nearby health facility
 
-  // Existing HF requirement set
   province: "pvY01Pt3GTk",          // selector province
 
-  // Custom facility + address block
   customFacilityName: "f9d4P9maZEq",
   addressProvince: "kFHo6CSy7B0",
   addressDistrict: "MFb4L2Ju4iu",
@@ -23,9 +20,8 @@ const TEA = {
 
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
 
-// 🔧 put the *real* option code for “Existing public health facility” here
 const NEARBY_EXISTING_HF_CODES = new Set([
-  "EXIST_PUBLIC_HF", // <-- replace with your actual option code
+  "EXIST_PUBLIC_HF", 
 ]);
 
 const toObj = (list) =>
@@ -33,7 +29,6 @@ const toObj = (list) =>
     ? list.reduce((a, x) => ((a[x.attribute] = x.value), a), {})
     : {};
 
-// For Existing public HF we only require: facilityId + province
 const EXISTING_HF_REQUIRED = [
   TEA.facilityId, // sO0ItF0Dr0p (auto-filled from orgUnit code)
   TEA.province,   // pvY01Pt3GTk
@@ -66,7 +61,7 @@ const useProfileRules = () => {
   });
 
   useEffect(() => {
-    const assignations = {}; // no auto-composition, Facility ID is set in Profile.jsx
+    const assignations = {}; 
 
     const nearbyTypeVal = A[TEA.nearbyType];
     const isExistingPublicHF =
@@ -79,21 +74,18 @@ const useProfileRules = () => {
     const hasSelection =
       !!nearbyTypeVal && String(nearbyTypeVal).trim() !== "";
 
-    // nearbyType is ALWAYS mandatory
     nextMandatory.add(TEA.nearbyType);
 
-    // First remove our fields from the mandatory set
     EXISTING_HF_REQUIRED.forEach((id) => nextMandatory.delete(id));
     CUSTOM_HF_REQUIRED.forEach((id) => nextMandatory.delete(id));
 
     if (isExistingPublicHF) {
-      // Existing public HF → require province + Facility ID
+
       EXISTING_HF_REQUIRED.forEach((id) => nextMandatory.add(id));
     } else if (hasSelection) {
-      // Custom HF mode → require name + address block
       CUSTOM_HF_REQUIRED.forEach((id) => nextMandatory.add(id));
     }
-    // If no selection: only nearbyType remains mandatory
+
 
     const nextMandatoryArr = Array.from(nextMandatory);
 

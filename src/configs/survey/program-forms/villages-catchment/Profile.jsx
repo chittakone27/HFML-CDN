@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/villages-catchment/Profile.jsx
 import useSelectionStore from "@/state/selection";
 import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 import AttributeLabel from "@/ui/TrackerCapture/Profile/AttributeLabel";
@@ -10,16 +9,12 @@ import useProfileRules from "./useProfileRules";
 import { findAttributeValue } from "@/configs/laotracker/common/utils.js";
 import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoState";
 
-// ---- layout widths (for the selector block only) ----
 const FIELD_MAX_WIDTH = 480;
 
-// TEA IDs
 const IDS = {
-  // stored ID + Name
-  orgUnitId: "NSkJrZeR8LL",   // Facility ID
-  orgUnitName: "RLamCNXOwQ5", // Name of the Health Facility
+  orgUnitId: "NSkJrZeR8LL",   
+  orgUnitName: "RLamCNXOwQ5", 
 
-  // selector members
   province: "waE5GXY7Bo5",
   district: "XVt1Ar6BRcv",
   hc: "VklGYpp1m5K",
@@ -28,10 +23,8 @@ const IDS = {
   ch: "gTy71R4wgJQ",
 };
 
-// read-only IDs
 const MANUAL_DISABLE = new Set([IDS.orgUnitId, IDS.orgUnitName]);
 
-// fields handled by custom UI (we don't auto-render them in the loop)
 const CUSTOM_HANDLED = new Set([
   IDS.province,
   IDS.district,
@@ -41,7 +34,6 @@ const CUSTOM_HANDLED = new Set([
   IDS.ch,
 ]);
 
-// --------- DHIS2 orgUnit helpers ----------
 const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
 
 const getApiBaseUrl = () => {
@@ -66,7 +58,6 @@ const getAuthHeaders = () => {
   const token = btoa(`${user}:${pass}`);
   return { Authorization: `Basic ${token}` };
 };
-// ------------------------------------------
 
 const Profile = () => {
   const { program } = useSelectionStore(
@@ -87,7 +78,6 @@ const Profile = () => {
 
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
 
-  // clear hidden fields
   useEffect(() => {
     if (!props.hiddenFields || !changeAttributeValue) return;
     Object.entries(props.hiddenFields).forEach(([attr, isHidden]) => {
@@ -95,7 +85,6 @@ const Profile = () => {
     });
   }, [changeAttributeValue, props.hiddenFields]);
 
-  // apply assignations (if any)
   useEffect(() => {
     if (!props.assignations || !changeAttributeValue) return;
     Object.entries(props.assignations).forEach(([attr, value]) => {
@@ -103,7 +92,6 @@ const Profile = () => {
     });
   }, [changeAttributeValue, props.assignations]);
 
-  // list of attributes in program
   const attributes = useMemo(
     () =>
       (program?.programTrackedEntityAttributes ?? []).map(
@@ -112,7 +100,6 @@ const Profile = () => {
     [program?.programTrackedEntityAttributes]
   );
 
-  // ---------- map selected HF orgUnit → ID + Name ----------
   const [hfOuCache, setHfOuCache] = useState({});
 
   const hfIds = {
@@ -129,14 +116,12 @@ const Profile = () => {
   useEffect(() => {
     if (!currentTei || !changeAttributeValue) return;
 
-    // priority: HC → DH → PH → CH
     const ordered = [hfIds.hc, hfIds.dh, hfIds.ph, hfIds.ch]
       .map((v) => String(v || "").trim())
       .filter(Boolean);
 
     const uid = ordered.find((v) => DHIS_UID_RE.test(v));
 
-    // nothing selected → clear ID + name
     if (!uid) {
       if (orgUnitIdVal || orgUnitNameVal) {
         setAttr(IDS.orgUnitId, "");
@@ -183,7 +168,6 @@ const Profile = () => {
         if (code && code !== orgUnitIdVal) setAttr(IDS.orgUnitId, code);
         if (name && name !== orgUnitNameVal) setAttr(IDS.orgUnitName, name);
       } catch {
-        // ignore
       }
     };
 
@@ -191,7 +175,6 @@ const Profile = () => {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     hfIds.hc,
     hfIds.dh,
@@ -206,12 +189,11 @@ const Profile = () => {
     hfOuCache,
   ]);
 
-  // -------------------- RENDER --------------------
   return (
     <>
-      {/* normal profile rows (all non-selector TEAs) */}
+
       {attributes.map((attribute) => {
-        // skip fields we handle with the selector
+
         if (CUSTOM_HANDLED.has(attribute)) return null;
 
         const hidden = props?.hiddenFields?.[attribute];
@@ -233,7 +215,6 @@ const Profile = () => {
         );
       })}
 
-      {/* Health facility selector at the bottom – aligned & fixed width */}
       <Box
         className="custom-tracker-profile-field-row"
         sx={{ mt: 1.5 }}
