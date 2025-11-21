@@ -124,20 +124,20 @@ const useProfileRules = () => {
     const prevMandatory = mandatoryAttributes || [];
     const nextMandatory = new Set(prevMandatory);
 
-    if (isLaptopOrDesktop) {
-      if (!RAM) {
-        errors[ID.RAM] = t("thisFieldIsRequired");
-      }
-      if (!CPU) {
-        errors[ID.CPU] = t("thisFieldIsRequired");
-      }
+    // if (isLaptopOrDesktop) {
+    //   if (!RAM) {
+    //     errors[ID.RAM] = t("thisFieldIsRequired");
+    //   }
+    //   if (!CPU) {
+    //     errors[ID.CPU] = t("thisFieldIsRequired");
+    //   }
 
-      nextMandatory.add(ID.RAM);
-      nextMandatory.add(ID.CPU);
-    } else {
-      nextMandatory.delete(ID.RAM);
-      nextMandatory.delete(ID.CPU);
-    }
+    //   nextMandatory.add(ID.RAM);
+    //   nextMandatory.add(ID.CPU);
+    // } else {
+    //   nextMandatory.delete(ID.RAM);
+    //   nextMandatory.delete(ID.CPU);
+    // }
 
     const nextMandatoryArr = Array.from(nextMandatory);
 
