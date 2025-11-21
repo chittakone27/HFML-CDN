@@ -3,6 +3,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useTranslation } from "react-i18next";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
+// --- Helpers -----------------------------------------------------------------
 const norm = (s) =>
   String(s ?? "")
     .toLowerCase()
@@ -42,6 +43,7 @@ const toAsciiDigits = (str = "") =>
     }
   );
 
+// --- Attribute IDs -----------------------------------------------------------
 const ID = {
   sourceOfFunding: "VDtUCd4xomY",
   specifyPayer: "tDri5optbSF",
@@ -80,6 +82,7 @@ const useProfileRules = () => {
   const sourceOfFunding = norm(attributes[ID.sourceOfFunding]);
   const deviceType = norm(attributes[ID.deviceType]);
 
+  // For validation we only care about empty vs not, so trim is enough
   const RAM = String(attributes[ID.RAM] ?? "").trim();
   const CPU = String(attributes[ID.CPU] ?? "").trim();
 
@@ -92,7 +95,7 @@ const useProfileRules = () => {
   const hfSequencePadded = pad2(hfSequence);
 
   const numRaw = String(attributes[ID.num] ?? "").trim();
-  const num = pad3(numRaw);
+  const num = pad3(numRaw); // 3-digit number part for Device ID
 
   const codeAuto = DEVICE_CODE[deviceType] ?? "";
   const deviceId =
@@ -118,29 +121,19 @@ const useProfileRules = () => {
     const warnings = {};
     const helpers = {};
 
-    const isLaptopOrDesktop =
-      deviceType === "laptop" || deviceType === "desktop";
-
+    // ------------------------------------------------------------------
+    // 1. Mandatory rules – EXPLICITLY remove RAM & CPU from mandatory
+    // ------------------------------------------------------------------
     const prevMandatory = mandatoryAttributes || [];
     const nextMandatory = new Set(prevMandatory);
 
-    // if (isLaptopOrDesktop) {
-    //   if (!RAM) {
-    //     errors[ID.RAM] = t("thisFieldIsRequired");
-    //   }
-    //   if (!CPU) {
-    //     errors[ID.CPU] = t("thisFieldIsRequired");
-    //   }
-
-    //   nextMandatory.add(ID.RAM);
-    //   nextMandatory.add(ID.CPU);
-    // } else {
-    //   nextMandatory.delete(ID.RAM);
-    //   nextMandatory.delete(ID.CPU);
-    // }
+    // Make sure RAM and CPU are NOT mandatory
+    nextMandatory.delete(ID.RAM);
+    nextMandatory.delete(ID.CPU);
 
     const nextMandatoryArr = Array.from(nextMandatory);
 
+    // Only update store if changed
     if (
       nextMandatoryArr.length !== prevMandatory.length ||
       nextMandatoryArr.some((id, idx) => id !== prevMandatory[idx])
@@ -148,8 +141,14 @@ const useProfileRules = () => {
       setData("mandatoryAttributes", nextMandatoryArr);
     }
 
+    // ------------------------------------------------------------------
+    // 2. Show/hide Specify Payer
+    // ------------------------------------------------------------------
     hidden[ID.specifyPayer] = sourceOfFunding !== "other";
 
+    // ------------------------------------------------------------------
+    // 3. Hide some hardware fields per device type
+    // ------------------------------------------------------------------
     const hideFor = {
       laptop: ["XRdw8EK5FJg"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
@@ -161,6 +160,10 @@ const useProfileRules = () => {
     (hideFor[deviceType] ?? []).forEach((attrId) => {
       hidden[attrId] = true;
     });
+
+    // ------------------------------------------------------------------
+    // 4. Auto-code & Device ID (Profile.jsx still does final logic)
+    // ------------------------------------------------------------------
     assignations[ID.code] = codeAuto || "";
     disabled[ID.code] = true;
 

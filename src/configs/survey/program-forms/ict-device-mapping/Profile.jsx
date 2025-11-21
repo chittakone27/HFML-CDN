@@ -17,7 +17,7 @@ const ID = {
   hftype: "STdn1v1AxLa",     // ICT - Device ID - HF type
   hfSequence: "xgb9vCptedt", // ICT - Device ID - HF Sequence
   num: "KZ5D0DFEqdf",        // ICT - Device ID - Number (user input)
-  deviceId: "RyN09GsWd64",   // ICT - Device ID (full: 0201PH01-L01)
+  deviceId: "RyN09GsWd64",   // ICT - Device ID (full: 0201PH01-L001)
 };
 
 // Fields we never render as normal rows
@@ -55,15 +55,17 @@ const mapDeviceTypeToCode = (deviceType) => {
   if (label.includes("tablet")) return "T";
   if (label.includes("phone") || label.includes("mobile")) return "P";
 
+  // Fallback: first letter upper-case
   return String(deviceType).trim().charAt(0).toUpperCase();
 };
 
+// Light hint for the input; real enforcement is in useEffect.
 const NUM_INPUT_PROPS = {
   inputProps: {
     inputMode: "numeric",
     pattern: "[0-9]*",
-    maxLength: 3,
-    placeholder: "##",
+    maxLength: 3,         // up to 3 digits
+    placeholder: "###",   // show 3-digit pattern
   },
 };
 
@@ -78,6 +80,7 @@ const Profile = () => {
 
   const props = useProfileRules();
 
+  // --- Org unit code: "0201PH01" from code or "(0201PH01) PH …" label ---
   const orgUnitCode = useMemo(() => {
     if (!orgUnit) return "";
     if (orgUnit.code) return String(orgUnit.code);
@@ -132,23 +135,26 @@ const Profile = () => {
     );
   };
 
+  // ---- Current TEI + values -------------------------------------------------
   const currentTei = data?.currentTei;
   const currentAttrMap = useMemo(() => toAttrMap(currentTei), [currentTei]);
 
   const numValue = String(currentAttrMap[ID.num] ?? "");
   const deviceTypeValue = String(currentAttrMap[ID.deviceType] ?? "");
 
+  // --- Enforce: Number is max 3 digits --------------------------------------
   useEffect(() => {
     if (!data?.currentTei) return;
     const raw = String(numValue ?? "");
     if (!raw) return;
 
-    const cleaned = raw.replace(/\D/g, "").slice(0, 3);
+    const cleaned = raw.replace(/\D/g, "").slice(0, 3); // allow 3 digits
     if (cleaned !== raw) {
       actions.changeAttributeValue(ID.num, cleaned);
     }
   }, [numValue, data?.currentTei, actions]);
 
+  // --- Clean hidden fields from useProfileRules (but NEVER our ID parts) -----
   useEffect(() => {
     if (!props?.hiddenFields) return;
     const cur = toAttrMap(data?.currentTei);
@@ -245,7 +251,8 @@ const Profile = () => {
     const n = parseInt(numValue, 10);
     if (!Number.isFinite(n)) return;
 
-    const suffix = String(n).padStart(2, "0");
+    // 3-digit suffix: 1 / 01 / 001 → "001"
+    const suffix = String(n).padStart(3, "0");
     const newDeviceId = `${basePrefix}-${devCode}${suffix}`;
 
     const updates = [];
