@@ -110,37 +110,13 @@ const useImmunizationRule = () => {
       ) {
         hiddenFields[DATA_ELEMENT_IDS.HEPB0_LESS_THAN_7DAYS] = true;
       }
-      /* Updated by Somkhit */
-      if (ageInWeek < 6) {
-        hiddenFields[DATA_ELEMENT_IDS.PCV_1] = true;
-        hiddenFields[DATA_ELEMENT_IDS.OPV_1] = true;
-        hiddenFields[DATA_ELEMENT_IDS.PENTA_1] = true;
-        hiddenFields[DATA_ELEMENT_IDS.IPV_1] = true;
-      }
-      if (ageInWeek < 10) {
-        hiddenFields[DATA_ELEMENT_IDS.PCV_2] = true;
-        hiddenFields[DATA_ELEMENT_IDS.OPV_2] = true;
-        hiddenFields[DATA_ELEMENT_IDS.PENTA_2] = true;
-        hiddenFields[DATA_ELEMENT_IDS.IPV_2] = true;
-      }
-      if (ageInWeek < 14) {
-        hiddenFields[DATA_ELEMENT_IDS.PCV_3] = true;
-        hiddenFields[DATA_ELEMENT_IDS.OPV_3] = true;
-        hiddenFields[DATA_ELEMENT_IDS.PENTA_3] = true;
-      }
-      if (ageInMonth < 9) {
-        hiddenFields[DATA_ELEMENT_IDS.JE] = true;
-        hiddenFields[DATA_ELEMENT_IDS.MR_1] = true;
-      }
-      if (ageInMonth < 12) {
-        hiddenFields[DATA_ELEMENT_IDS.MR_2] = true;
-      }
 
       //hide HPV if ageInMonth < 120 or sex = male
       if (ageInMonth < 120 || sex === "M")
         hiddenFields[DATA_ELEMENT_IDS.HPV] = true;
 
-      /* Updated by Somkhit */
+      //hide Catch up if ageInMonth < 12
+      if (ageInMonth < 12) hiddenFields[DATA_ELEMENT_IDS.CATCH_UP] = true;
     }
 
     const pov = dataValues?.[DATA_ELEMENT_IDS.PLACE_OF_VACCINATION];
@@ -259,6 +235,10 @@ const useImmunizationRule = () => {
         disabledFields[id] = true;
         assignations[id] = "";
       });
+
+      // Disable the CATCH_UP field
+      disabledFields[DATA_ELEMENT_IDS.CATCH_UP] = true;
+      assignations[DATA_ELEMENT_IDS.CATCH_UP] = "";
     }
 
     let anyVaccineChecked = false;
