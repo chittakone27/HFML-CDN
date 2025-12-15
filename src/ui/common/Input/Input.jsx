@@ -26,6 +26,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TimePicker from "./TimePicker";
 import FilePicker from "./FilePicker";
+import AttributeFilePicker from "./AttributeFilePicker";
 
 const Input = ({
   onDoubleClick,
@@ -62,7 +63,8 @@ const Input = ({
   rows,
   optionNotes = [],
   row = true,
-  customDateFormat
+  customDateFormat,
+  fieldType
 }) => {
   let isMobile = false;
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -75,7 +77,6 @@ const Input = ({
   if (isError) {
     backgroundColor = "#ffd6d6";
   }
-
   valueSet = valueSet ? valueSet.filter((set) => !set.hidden) : null;
   const generateField = () => {
     if (valueSet) {
@@ -411,9 +412,17 @@ const Input = ({
       case "COORDINATE":
         return <GeometryPicker value={value} accept={accept} disabled={disabled} />;
       case "IMAGE":
-        return <FilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
+        if (fieldType === "attribute") {
+          return <AttributeFilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
+        } else {
+          return <FilePicker accept={accept} value={value} disabled={disabled} />;
+        }
       case "FILE_RESOURCE":
-        return <FilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
+        if (fieldType === "attribute") {
+          return <AttributeFilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
+        } else {
+          return <FilePicker accept={accept} value={value} disabled={disabled} />;
+        }
       case "TIME":
         return <TimePicker change={change} disabled={disabled} value={value} disableClearable={disableClearable} />;
       default:

@@ -54,9 +54,11 @@ const AttributeField = (props) => {
 
   const { valueType, id } = foundTea;
   const foundCurrentValue = currentTei.attributes.find((attr) => attr.attribute === attribute);
-
-  const value = foundCurrentValue ? foundCurrentValue.value : "";
-
+  let value = foundCurrentValue ? foundCurrentValue.value : "";
+  const isImageOrFileResource = ["FILE_RESOURCE", "IMAGE"].includes(valueType);
+  if (isImageOrFileResource && value) {
+    value = `${currentTei.trackedEntityInstance}-${attribute}-${value}`;
+  }
   const changeValue = (value) => {
     const phoneNumberRegex = /^\d{0,12}$/;
     if (foundTea.valueType === "PHONE_NUMBER") {
@@ -97,7 +99,6 @@ const AttributeField = (props) => {
       }
     }
   }
-
   return (
     <div className="input-field-container">
       {VITE_MODE === "development" && foundTea.id}
@@ -127,6 +128,7 @@ const AttributeField = (props) => {
             : undefined
         }
         {...props}
+        fieldType="attribute"
         disabled={currentDisabled || disabled}
         backgroundColor={disabled ? "#f0f0f0" : undefined}
       />
