@@ -3,23 +3,18 @@ import { useTranslation } from "react-i18next";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
-// ------------------------- IDs -------------------------
-// 7. On-site internet available (can connect to the internet?)
+
 const AVAIL_SEL = "fszEmzFYXHU";
 
-// 6. Can receive phone call? (option set: can / Sometimes can, sometimes cannot / cannot)
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";
 
-// Operator: Others (checkbox) → then require Service Provider text
 const OTHERS_ID = "BRHYwOIZ01O";
 const SERVICE_PROVIDER_ID = "O5TwLn4hWFr";
 
-// 8. Connection type selector + detail fields
 const TYPE_CONN_ID = "eWrvOj7ZUL2"; // Wifi/Cable/Both
 const WIFI_FIELD_ID = "nhilsZioxC9"; // Wifi detail
 const CABLE_FIELD_ID = "xQS1owULSbL"; // Cable detail
 
-// --- Existing 6.1 operator checkboxes (multi-select) ---
 const OPERATOR_IDS = new Set([
   "zLgkhPBoASd",
   "fspSJIn4Vqq",
@@ -31,7 +26,6 @@ const OPERATOR_IDS = new Set([
   "BRHYwOIZ01O",
 ]);
 
-// --- NEW 8.1 operator group (regular internet network) ---
 const NEW_OPERATOR_IDS = new Set([
   "Pza84UE33Qh",
   "rMDTqJBGufz",
@@ -43,14 +37,11 @@ const NEW_OPERATOR_IDS = new Set([
   "khA9UFm6Qpq",
 ]);
 
-// If khA9UFm6Qpq true → require specify text
 const NEW_OP_TRIGGER_ID = "khA9UFm6Qpq";
 const NEW_OP_SPECIFY_ID = "Zc3FhnkGI7H";
 
-// Extra field to show + make mandatory when 6. anchor is positive
 const EXT_HIDE_WHEN_ANCHOR_FALSE = "tknBpZWiu89";
 
-// Connectivity group (includes type selector & details + other singles)
 const CONN_FIELDS = [
   TYPE_CONN_ID,
   NEW_OP_SPECIFY_ID,
@@ -60,34 +51,42 @@ const CONN_FIELDS = [
   "SbpLKeVJBZd",
 ];
 
-// ===== initial always-mandatory (when visible) =====
+const TOTAL_OUTREACH_ID = "bEWpwn7HfUI";     // total outreach sessions
+const OUTREACH_FACILITY_ID = "OpKuX0h3iSf";  // sessions at facility
+const OUTREACH_COMMUNITY_ID = "msFzvgwQQzm"; // sessions in outreach/community
+
 const GLOBAL_MANDATORY_IDS = new Set([
-  "bEWpwn7HfUI",
-  "OpKuX0h3iSf",
+  TOTAL_OUTREACH_ID,
+  OUTREACH_FACILITY_ID,
   "Gt26xzdkt53",
   "dww5EckWlhe",
   "M0klNUD2fP5",
   "JYVWqdlRq4Y",
   "fszEmzFYXHU",
-  "SVSfEQFVBUj", // months anchor
+  "SVSfEQFVBUj", 
 ]);
 
-// ===== integer-only constraint IDs =====
-const INTEGER_ONLY_IDS = new Set(["bEWpwn7HfUI", "OpKuX0h3iSf", "Gt26xzdkt53"]);
+const INTEGER_ONLY_IDS = new Set([
+  TOTAL_OUTREACH_ID,
+  OUTREACH_FACILITY_ID,
+  "Gt26xzdkt53",
+  OUTREACH_COMMUNITY_ID,
+  "SVSfEQFVBUj", 
+]);
 
-// Additional fields to mark as required in UI (when visible)
 const ALWAYS_REQ_IDS = new Set([
-  TYPE_CONN_ID, // show asterisk on connection type
-  WIFI_FIELD_ID, // required when Wifi or Both
-  CABLE_FIELD_ID, // required when Cable or Both
+  TYPE_CONN_ID, 
+  WIFI_FIELD_ID, 
+  CABLE_FIELD_ID, 
   "eq1FTj6Z2vT",
   "SbpLKeVJBZd",
-  "tknBpZWiu89", // when 6 is positive (shown then)
+  "tknBpZWiu89", 
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
-// -------- Months block (always shown; require ≥1) --------
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
+const NO_OUTREACH_ID = "l4g6U5MNdxQ";
+
 const MONTH_IDS = new Set([
   "NIji1vKjEsn",
   "ycwkJ30qjwb",
@@ -101,13 +100,12 @@ const MONTH_IDS = new Set([
   "N3dIyivSvSo",
   "kMHppy04I0O",
   "BkK10QaD8FE",
-  "l4g6U5MNdxQ",
+  NO_OUTREACH_ID, 
 ]);
 
 const FUND_SOURCE_ID = "eq1FTj6Z2vT";
 const HIDE_WHEN_PERSONAL_ID = "SbpLKeVJBZd";
 
-// ------------------------- Helpers -------------------------
 const truthy = (v) =>
   v === true ||
   v === "true" ||
@@ -125,42 +123,43 @@ const isEmpty = (v) => {
   return false;
 };
 
-// Interpret the phone-call option set (can / Sometimes can, sometimes cannot / cannot)
 const canReceivePhoneFromOption = (raw) => {
   const v = normalize(raw);
   if (!v) return undefined;
 
-  // explicit cannot
   if (v === "cannot") return false;
 
-  // any "sometimes ..." or "can" variant should behave as "can receive"
   if (v === "can" || v.includes("partially can")) return true;
 
-  // safety fallback: if old data still uses Yes/No, reuse old boolean logic
   if (truthy(raw)) return true;
 
   return false;
 };
 
-// normalize non-ASCII digits to ASCII (Thai/Lao/Arabic/… → ASCII)
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
 
-// Integer check that accepts localized digits
-const isIntegerOnly = (v) => /^\d+$/.test(toAsciiDigits(String(v ?? "").trim()));
+const isIntegerOnly = (v) =>
+  /^\d+$/.test(toAsciiDigits(String(v ?? "").trim()));
 
-// Read a DE value from current event (supports dataValues and flattened)
+const parseIntSafe = (raw) => {
+  const s = toAsciiDigits(String(raw ?? "").trim());
+  if (!s) return null;
+  if (!/^\d+$/.test(s)) return null;
+  return parseInt(s, 10);
+};
+
 const getValue = (event, deId) => {
   if (!event) return undefined;
   const arr = event?.dataValues;
@@ -171,8 +170,6 @@ const getValue = (event, deId) => {
   return event?.[deId];
 };
 
-// -------- Global aggregator (master guard) --------
-// Holds per-section validators + live disable flags
 const REG_KEY = "__FACILITY_RULES_REGISTRY__";
 const getRegistry = () => {
   const g = typeof globalThis !== "undefined" ? globalThis : window;
@@ -181,15 +178,18 @@ const getRegistry = () => {
 };
 const setCombinedDisabled = (actions) => {
   const reg = getRegistry();
-  const anyDisabled = Array.from(reg.values()).some((v) => v.disabled === true);
+  const anyDisabled = Array.from(reg.values()).some(
+    (v) => v.disabled === true
+  );
   try {
-    if (actions.setLayout) actions.setLayout("disableEventCompleteButton", anyDisabled);
-    else if (actions.setCompleteDisabled) actions.setCompleteDisabled(anyDisabled);
+    if (actions.setLayout)
+      actions.setLayout("disableEventCompleteButton", anyDisabled);
+    else if (actions.setCompleteDisabled)
+      actions.setCompleteDisabled(anyDisabled);
     else if (actions.setCanComplete) actions.setCanComplete(!anyDisabled);
   } catch {}
 };
 
-// ------------------------- Hook -------------------------
 export default function useFacilityBuildingRules(sectionDEs = []) {
   const { currentEvent } = useCurrentEvent();
   const { actions } = useTrackerCaptureStore.getState();
@@ -197,14 +197,24 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const { i18n, t } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  // Bilingual integer-only message
   const trIntOnly = t("equipment.error.integerOnly", {
     defaultValue: isLao
       ? "ອະນຸຍາດໃສ່ແຕ່ເລກຈໍານວນເຕັມ (ບໍ່ອະນຸຍາດເລກຈຸດທົດສະນິຍົມ)."
       : "Only whole numbers are allowed (no decimals).",
   });
 
-  // current values for logic
+  const trSessionsSum = t("facility.outreach.sessionsSumCheck", {
+    defaultValue: isLao
+      ? "ຈໍານວນການອອກຄ່າຍລວມຕ້ອງໃຫຍ່ກວ່າ ຫຼື ເທົ່າກັບ ຈໍານວນຄັ້ງທີ່ຈັດຢູ່ສະຖານພະຍາບານ ບວກ ຈໍານວນຄັ້ງທີ່ອອກຄ່າຍໃນຊຸມຊົນ."
+      : "Total outreach sessions (bEWpwn7HfUI) must be greater than or equal to sessions at facility plus sessions in outreach (OpKuX0h3iSf + msFzvgwQQzm).",
+  });
+
+  const trMonthsCount = t("facility.outreach.monthCountCheck", {
+    defaultValue: isLao
+      ? "ຈໍານວນເດືອນທີ່ລາຍງານ (SVSfEQFVBUj) ຕ້ອງໃຫຍ່ກວ່າ ຫຼື ເທົ່າກັບ ຈໍານວນເດືອນທີ່ມີການຕິກໃນຂໍ້ 14."
+      : "The number of outreach activities (SVSfEQFVBUj) must be greater than or equal to the number of months selected in question 14.",
+  });
+
   const availVal = getValue(currentEvent, AVAIL_SEL);
   const anchorVal = getValue(currentEvent, OP_ANCHOR_ID);
   const othersVal = getValue(currentEvent, OTHERS_ID);
@@ -215,15 +225,12 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const hasSel = sel !== "";
   const notAvail = sel === "not available";
 
-  // Keep existing show/hide behavior:
-  // show connectivity when Available or Available, but often disrupted
   const showConn = hasSel && !notAvail;
 
   const type = normalize(typeVal); // "wifi" | "cable" | "both" | ""
   const showWifi = showConn && (type === "wifi" || type === "both");
   const showCable = showConn && (type === "cable" || type === "both");
 
-  // NEW: interpret option-set for "Can receive phone call?"
   const anchorCanReceive = canReceivePhoneFromOption(anchorVal);
   const showOperators = anchorCanReceive === true;
   const showServiceProvider = showOperators && truthy(othersVal);
@@ -231,23 +238,23 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const showNewOperators = showConn; // 8.1 group visible with connection section
   const showNewSpecify = showNewOperators && truthy(newTriggerVal);
 
-  // this section's DE ids
   const sectionIds = (sectionDEs || [])
     .map((de) => de?.id || de?.dataElement?.id)
     .filter(Boolean);
 
-  // --- Personal fund check (normalized robust match) ---
   const isPersonalFund = useMemo(() => {
     const raw = getValue(currentEvent, FUND_SOURCE_ID);
     const key = normalize(raw).replace(/[\s_]+/g, "");
     return key === "personalfund";
   }, [currentEvent?.dataValues]);
 
-  // -------------------- Visibility map --------------------
+  const monthsAnchorValForHide = parseIntSafe(
+    getValue(currentEvent, MONTH_ANCHOR_ID)
+  );
+
   const hiddenFields = useMemo(() => {
     const h = {};
 
-    // Connectivity group visibility
     if (!showConn) {
       for (const id of CONN_FIELDS) h[id] = true;
       for (const id of NEW_OPERATOR_IDS) h[id] = true;
@@ -257,7 +264,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       if (!showNewSpecify) h[NEW_OP_SPECIFY_ID] = true;
     }
 
-    // Operators 6.1
     if (!showOperators) {
       for (const id of OPERATOR_IDS) h[id] = true;
       h[SERVICE_PROVIDER_ID] = true;
@@ -266,54 +272,71 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       h[SERVICE_PROVIDER_ID] = true;
     }
 
-    // If funding source is "Personal fund", hide SbpLKeVJBZd
     if (isPersonalFund) {
       h[HIDE_WHEN_PERSONAL_ID] = true;
     }
 
-    return h;
-  }, [showConn, showWifi, showCable, showOperators, showServiceProvider, showNewSpecify, isPersonalFund]);
+    if (monthsAnchorValForHide > 0) {
+      h[NO_OUTREACH_ID] = true;
+    }
 
-  // -------------------- Required flags for UI (asterisks) --------------------
+    return h;
+  }, [
+    showConn,
+    showWifi,
+    showCable,
+    showOperators,
+    showServiceProvider,
+    showNewSpecify,
+    isPersonalFund,
+    monthsAnchorValForHide,
+  ]);
+
   const requiredFields = useMemo(() => {
     const req = {};
     for (const de of sectionDEs) {
       const id = de?.id || de?.dataElement?.id;
       if (!id) continue;
 
-      // Groups are "at least one", so don't mark single-field required flags
-      if (OPERATOR_IDS.has(id) || NEW_OPERATOR_IDS.has(id) || MONTH_IDS.has(id)) {
+      if (
+        OPERATOR_IDS.has(id) ||
+        NEW_OPERATOR_IDS.has(id) ||
+        MONTH_IDS.has(id)
+      ) {
         req[id] = false;
         continue;
       }
 
       if (id === SERVICE_PROVIDER_ID) {
-        req[id] = showServiceProvider && !hiddenFields[id]; // Others → Service provider
+        req[id] = showServiceProvider && !hiddenFields[id];
         continue;
       }
       if (id === NEW_OP_SPECIFY_ID) {
-        req[id] = showNewSpecify && !hiddenFields[id]; // khA9UFm6Qpq → specify
+        req[id] = showNewSpecify && !hiddenFields[id];
         continue;
       }
 
-      // Special rule: SbpLKeVJBZd is NOT mandatory when Personal fund
       if (id === HIDE_WHEN_PERSONAL_ID) {
         req[id] = !hiddenFields[id] && !isPersonalFund;
         continue;
       }
 
       if (ALWAYS_REQ_IDS.has(id)) {
-        req[id] = !hiddenFields[id]; // TYPE_CONN_ID, WIFI/CABLE details, eq1FTj6Z2vT, etc.
+        req[id] = !hiddenFields[id];
         continue;
       }
 
-      // Stage guard enforces all visible singles anyway.
       req[id] = false;
     }
     return req;
-  }, [sectionDEs, hiddenFields, showServiceProvider, showNewSpecify, isPersonalFund]);
+  }, [
+    sectionDEs,
+    hiddenFields,
+    showServiceProvider,
+    showNewSpecify,
+    isPersonalFund,
+  ]);
 
-  // -------------------- Clear values when hidden --------------------
   useEffect(() => {
     if (!currentEvent?.event || !actions?.changeDataValue) return;
     const evId = currentEvent.event;
@@ -325,12 +348,10 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     });
   }, [hiddenFields, currentEvent?.event, actions, currentEvent]);
 
-  // -------------------- Master-guard registration --------------------
   useEffect(() => {
     if (!actions) return;
     const ev = currentEvent;
 
-    // helper: any of the given ids selected (for multi-select groups)
     const anySelected = (ids) => {
       if (!ev) return false;
       for (const id of ids) {
@@ -340,12 +361,13 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       return false;
     };
 
-    // recompute minimal visibility used by guard
     const selStage = normalize(getValue(ev, AVAIL_SEL));
     const showConnStage = selStage !== "" && selStage !== "not available";
     const typeStage = normalize(getValue(ev, TYPE_CONN_ID));
-    const showWifiStage = showConnStage && (typeStage === "wifi" || typeStage === "both");
-    const showCableStage = showConnStage && (typeStage === "cable" || typeStage === "both");
+    const showWifiStage =
+      showConnStage && (typeStage === "wifi" || typeStage === "both");
+    const showCableStage =
+      showConnStage && (typeStage === "cable" || typeStage === "both");
 
     const anchorStageRaw = getValue(ev, OP_ANCHOR_ID);
     const anchorStageCanReceive = canReceivePhoneFromOption(anchorStageRaw);
@@ -355,14 +377,15 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     const showServiceProviderStage =
       anchorStageCanReceive === true && truthy(getValue(ev, OTHERS_ID));
 
-    // ----- REQUIRED: ALL visible single-value fields in this section -----
     const singleCandidates = sectionIds.filter(
-      (id) => !OPERATOR_IDS.has(id) && !NEW_OPERATOR_IDS.has(id) && !MONTH_IDS.has(id)
+      (id) =>
+        !OPERATOR_IDS.has(id) &&
+        !NEW_OPERATOR_IDS.has(id) &&
+        !MONTH_IDS.has(id)
     );
 
     const visibleSingles = singleCandidates.filter((id) => !hiddenFields[id]);
 
-    // Wifi/Cable details only when their types are chosen
     if (!showWifiStage) {
       const idx = visibleSingles.indexOf(WIFI_FIELD_ID);
       if (idx >= 0) visibleSingles.splice(idx, 1);
@@ -378,27 +401,83 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       if (isEmpty(val)) missingSingles.push(id);
     }
 
-    // ----- REQUIRED: groups (multi-select) -----
-    const needOneOp6 =
-      showOp6Stage && !anySelected(Array.from(OPERATOR_IDS)); // 6.1 when 6 is can / sometimes
-    const needOneOp8 =
-      showConnStage && !anySelected(Array.from(NEW_OPERATOR_IDS)); // 8.1 when connection shown
-    const needOneMonth = !anySelected(Array.from(MONTH_IDS)); // months always
+    const monthsAnchorValForGroup = parseIntSafe(
+      getValue(ev, MONTH_ANCHOR_ID)
+    );
+    const noOutreachFlagForGroup = truthy(getValue(ev, NO_OUTREACH_ID));
 
-    // ----- Additional singles driven by booleans -----
-    // Others → service provider text
+    const realMonthIds = Array.from(MONTH_IDS).filter(
+      (id) => id !== NO_OUTREACH_ID
+    );
+    const realMonthsSelected = realMonthIds.filter((id) =>
+      truthy(getValue(ev, id))
+    ).length;
+
+    let needOneMonth = false;
+    if (monthsAnchorValForGroup === 0) {
+
+      if (realMonthsSelected === 0 && !noOutreachFlagForGroup) {
+        needOneMonth = true;
+      }
+    } else if (monthsAnchorValForGroup > 0) {
+      needOneMonth = realMonthsSelected === 0;
+    } else {
+      needOneMonth = !anySelected(Array.from(MONTH_IDS));
+    }
+
+    const needOneOp6 =
+      showOp6Stage && !anySelected(Array.from(OPERATOR_IDS));
+    const needOneOp8 =
+      showConnStage && !anySelected(Array.from(NEW_OPERATOR_IDS));
+
     const missingSvcProvider =
       showServiceProviderStage && isEmpty(getValue(ev, SERVICE_PROVIDER_ID));
-    // khA9UFm6Qpq → specify text
     const missingNewSpecify =
       showNewSpecifyStage && isEmpty(getValue(ev, NEW_OP_SPECIFY_ID));
 
-    // ----- Integer-only checks -----
     const invalidIntegerIds = [];
     for (const id of INTEGER_ONLY_IDS) {
       if (hiddenFields[id]) continue;
       const raw = getValue(ev, id);
       if (!isEmpty(raw) && !isIntegerOnly(raw)) invalidIntegerIds.push(id);
+    }
+
+    const totalOutreach = parseIntSafe(getValue(ev, TOTAL_OUTREACH_ID));
+    const atFacility = parseIntSafe(getValue(ev, OUTREACH_FACILITY_ID));
+    const inCommunity = parseIntSafe(getValue(ev, OUTREACH_COMMUNITY_ID));
+
+    const sessionsSumConflict =
+      totalOutreach != null &&
+      atFacility != null &&
+      inCommunity != null &&
+      totalOutreach < atFacility + inCommunity;
+
+    let monthsSelectedReal = 0;
+    for (const id of MONTH_IDS) {
+      if (id === NO_OUTREACH_ID) continue; 
+      if (truthy(getValue(ev, id))) monthsSelectedReal++;
+    }
+
+    const monthsAnchorVal = parseIntSafe(getValue(ev, MONTH_ANCHOR_ID));
+    const noOutreachFlag = truthy(getValue(ev, NO_OUTREACH_ID));
+
+    let monthsCountConflict = false;
+    if (monthsAnchorVal === 0) {
+      if (monthsSelectedReal > 0) {
+        monthsCountConflict = true;
+      } else {
+
+        monthsCountConflict = false;
+      }
+    } else if (monthsAnchorVal > 0) {
+      if (
+        monthsSelectedReal > 0 &&
+        monthsAnchorVal < monthsSelectedReal
+      ) {
+        monthsCountConflict = true;
+      }
+    } else {
+      monthsCountConflict = false;
     }
 
     const sectionDisabled =
@@ -408,35 +487,43 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       needOneMonth ||
       missingSvcProvider ||
       missingNewSpecify ||
-      invalidIntegerIds.length > 0;
+      invalidIntegerIds.length > 0 ||
+      sessionsSumConflict ||
+      monthsCountConflict;
 
-    // Register this section in the global registry
     const reg = getRegistry();
-    const sectionKey = sectionIds[0] || `sec_${Math.random().toString(36).slice(2, 7)}`;
+    const sectionKey =
+      sectionIds[0] || `sec_${Math.random().toString(36).slice(2, 7)}`;
 
-    // Per-section checker (used by master on Save/Complete)
     const checkSection = () => {
       const msgs = [];
-      if (missingSingles.length) msgs.push("Please complete all required fields.");
-      if (needOneOp6) msgs.push('Please select at least one option in "6.1 Operator".');
+      if (missingSingles.length)
+        msgs.push("Please complete all required fields.");
+      if (needOneOp6)
+        msgs.push('Please select at least one option in "6.1 Operator".');
       if (needOneOp8)
-        msgs.push('Please select at least one option in "8.1 Regular internet network".');
+        msgs.push(
+          'Please select at least one option in "8.1 Regular internet network".'
+        );
       if (needOneMonth)
-        msgs.push('Please select at least one month in "Outreach activity months".');
-      if (missingSvcProvider) msgs.push('Please fill "Service provider" below "Others".');
+        msgs.push(
+          'Please select at least one month in "Outreach activity months".'
+        );
+      if (missingSvcProvider)
+        msgs.push('Please fill "Service provider" below "Others".');
       if (missingNewSpecify) msgs.push("Please specify the network name.");
       if (invalidIntegerIds.length) msgs.push(trIntOnly);
+      if (sessionsSumConflict) msgs.push(trSessionsSum);
+      if (monthsCountConflict) msgs.push(trMonthsCount);
       return {
         ok: msgs.length === 0,
         message: msgs.join(" "),
       };
     };
 
-    // write + recompute live disable
     reg.set(sectionKey, { disabled: sectionDisabled, check: checkSection });
     setCombinedDisabled(actions);
 
-    // Install/refresh MASTER handler (single entry point the app will call)
     if (actions.setHandlers) {
       const MASTER_KEY = "eventSave_facilityStageMaster";
       actions.setHandlers(MASTER_KEY, async () => {
@@ -449,7 +536,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       });
     }
 
-    // Cleanup: remove this section on unmount and recompute
     return () => {
       const r = getRegistry();
       r.delete(sectionKey);
@@ -461,6 +547,8 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     currentEvent?.event,
     currentEvent?.dataValues,
     trIntOnly,
+    trSessionsSum,
+    trMonthsCount,
     JSON.stringify(hiddenFields),
     i18n.language,
     sectionIds.join("|"),
@@ -487,7 +575,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       MONTH_ANCHOR_ID,
     },
     state: {
-      // expose current visibility for the UI if needed
       showConn,
       showOperators,
       showServiceProvider,

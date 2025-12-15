@@ -7,13 +7,15 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useEffect, useMemo, useState } from "react";
 import useProfileRules from "./useProfileRules";
 import { findAttributeValue } from "@/configs/laotracker/common/utils.js";
-import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoState";
+import HealthFacilitySelectorNoState from "../common/HealthFacilitySelectorNoStateFMD";
+import { useTranslation } from "react-i18next";
 
 const FIELD_MAX_WIDTH = 480;
+const ADMIN_GROUP_ID = "Ft6NncNAjeG";
 
 const IDS = {
-  orgUnitId: "NSkJrZeR8LL",   
-  orgUnitName: "RLamCNXOwQ5", 
+  orgUnitId: "NSkJrZeR8LL",
+  orgUnitName: "RLamCNXOwQ5",
 
   province: "waE5GXY7Bo5",
   district: "XVt1Ar6BRcv",
@@ -21,10 +23,13 @@ const IDS = {
   ph: "nBxJDYEPkhc",
   dh: "vHh9uvGwT3U",
   ch: "gTy71R4wgJQ",
+  DO: "P4excFCl73H",
+
+  army: "ASmuJe6eNTG",
+  police: "rqhax8e5d21",
 };
 
 const MANUAL_DISABLE = new Set([IDS.orgUnitId, IDS.orgUnitName]);
-
 const CUSTOM_HANDLED = new Set([
   IDS.province,
   IDS.district,
@@ -32,6 +37,9 @@ const CUSTOM_HANDLED = new Set([
   IDS.ph,
   IDS.dh,
   IDS.ch,
+  IDS.DO,
+  IDS.army,
+  IDS.police,
 ]);
 
 const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
@@ -60,6 +68,13 @@ const getAuthHeaders = () => {
 };
 
 const Profile = () => {
+  const { t, i18n } = useTranslation();
+  const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
+
+  const trHealthFacility = t("villages.profile.healthFacility", {
+    defaultValue: isLao ? "ທີ່ຕັ້ງ" : "Health facility",
+  });
+
   const { program } = useSelectionStore(
     useShallow((state) => ({ program: state.program }))
   );
@@ -73,10 +88,93 @@ const Profile = () => {
 
   const { currentTei } = data || {};
   const changeAttributeValue = actions?.changeAttributeValue;
-
   const props = useProfileRules() || {};
-
   const setAttr = (id, val) => changeAttributeValue?.(id, val ?? "");
+
+  const [canDeleteTei, setCanDeleteTei] = useState(null); 
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchMe = async () => {
+      try {
+        const url = buildApiUrl(
+          "/api/me.json?fields=id,userGroups[id,name]"
+        );
+        const res = await fetch(url, {
+          headers: {
+            Accept: "application/json",
+            ...getAuthHeaders(),
+          },
+        });
+        const ct = res.headers.get("content-type") || "";
+        if (!res.ok || !ct.includes("application/json")) {
+          if (!cancelled) setCanDeleteTei(false);
+          return;
+        }
+
+        const json = await res.json();
+        const groups = json.userGroups || [];
+        const inAdminGroup = groups.some(
+          (g) => g && g.id === ADMIN_GROUP_ID
+        );
+        if (!cancelled) setCanDeleteTei(inAdminGroup);
+      } catch {
+        if (!cancelled) setCanDeleteTei(false);
+      }
+    };
+    fetchMe();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const canEditHealthFacility = !!canDeleteTei;
+
+  useEffect(() => {
+    if (canDeleteTei === null) return;
+    if (canDeleteTei === true) return;
+
+    const isInsidePopup = (btn) => {
+      if (!btn) return false;
+      return !!btn.closest(
+        [
+          '[role="dialog"]',
+          '[role="alertdialog"]',
+          '.MuiDialog-root',
+          '.MuiDialog-paper',
+          '[class*="dialog"]',
+          '[class*="Dialog"]',
+          '[class*="modal"]',
+          '[class*="Modal"]',
+          '[data-test*="dialog"]',
+          '[data-test*="Dialog"]',
+          '[data-test*="modal"]',
+          '[data-test*="Modal"]',
+        ].join(", ")
+      );
+    };
+
+    const hideTeiDeleteButtons = () => {
+      const buttons = Array.from(
+        document.querySelectorAll("button, .MuiButton-root")
+      );
+      buttons.forEach((btn) => {
+        if (!btn) return;
+        const text = (btn.textContent || "").trim();
+        if (text !== "Delete" && text !== "ລຶບ") return;
+        if (isInsidePopup(btn)) return;
+
+        btn.style.display = "none";
+        btn.disabled = true;
+        btn.setAttribute("aria-hidden", "true");
+      });
+    };
+
+    hideTeiDeleteButtons();
+    const observer = new MutationObserver(hideTeiDeleteButtons);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [canDeleteTei]);
 
   useEffect(() => {
     if (!props.hiddenFields || !changeAttributeValue) return;
@@ -102,21 +200,33 @@ const Profile = () => {
 
   const [hfOuCache, setHfOuCache] = useState({});
 
+  const attrVal = (id) => findAttributeValue(currentTei, id) || "";
+
   const hfIds = {
-    hc: findAttributeValue(currentTei, IDS.hc) || "",
-    dh: findAttributeValue(currentTei, IDS.dh) || "",
-    ph: findAttributeValue(currentTei, IDS.ph) || "",
-    ch: findAttributeValue(currentTei, IDS.ch) || "",
+    hc: attrVal(IDS.hc),
+    dh: attrVal(IDS.dh),
+    DO: attrVal(IDS.DO),
+    ph: attrVal(IDS.ph),
+    ch: attrVal(IDS.ch),
+    army: attrVal(IDS.army),
+    police: attrVal(IDS.police),
   };
 
-  const orgUnitIdVal = findAttributeValue(currentTei, IDS.orgUnitId) || "";
-  const orgUnitNameVal =
-    findAttributeValue(currentTei, IDS.orgUnitName) || "";
+  const orgUnitIdVal = attrVal(IDS.orgUnitId);
+  const orgUnitNameVal = attrVal(IDS.orgUnitName);
 
   useEffect(() => {
     if (!currentTei || !changeAttributeValue) return;
 
-    const ordered = [hfIds.hc, hfIds.dh, hfIds.ph, hfIds.ch]
+    const ordered = [
+      hfIds.hc,
+      hfIds.dh,
+      hfIds.DO,
+      hfIds.army,
+      hfIds.police,
+      hfIds.ph,
+      hfIds.ch,
+    ]
       .map((v) => String(v || "").trim())
       .filter(Boolean);
 
@@ -139,7 +249,6 @@ const Profile = () => {
     }
 
     let cancelled = false;
-
     const fetchOu = async () => {
       try {
         const url = buildApiUrl(
@@ -157,7 +266,6 @@ const Profile = () => {
         const json = await res.json();
         const code = json.code || "";
         const name = json.displayName || json.name || "";
-
         if (cancelled) return;
 
         setHfOuCache((prev) => ({
@@ -168,6 +276,7 @@ const Profile = () => {
         if (code && code !== orgUnitIdVal) setAttr(IDS.orgUnitId, code);
         if (name && name !== orgUnitNameVal) setAttr(IDS.orgUnitName, name);
       } catch {
+        // ignore
       }
     };
 
@@ -175,11 +284,15 @@ const Profile = () => {
     return () => {
       cancelled = true;
     };
+
   }, [
     hfIds.hc,
     hfIds.dh,
+    hfIds.DO,
     hfIds.ph,
     hfIds.ch,
+    hfIds.army,
+    hfIds.police,
     currentTei,
     orgUnitIdVal,
     orgUnitNameVal,
@@ -191,9 +304,7 @@ const Profile = () => {
 
   return (
     <>
-
       {attributes.map((attribute) => {
-
         if (CUSTOM_HANDLED.has(attribute)) return null;
 
         const hidden = props?.hiddenFields?.[attribute];
@@ -215,31 +326,57 @@ const Profile = () => {
         );
       })}
 
-      <Box
-        className="custom-tracker-profile-field-row"
-        sx={{ mt: 1.5 }}
-      >
-        <Box>
-          Health facility
-        </Box>
+      <Box className="custom-tracker-profile-field-row" sx={{ mt: 1.5 }}>
+        <Box>{trHealthFacility}</Box>
         <Box sx={{ maxWidth: FIELD_MAX_WIDTH, width: "100%" }}>
           <HealthFacilitySelectorNoState
             ids={IDS}
             init={{
-              province: findAttributeValue(currentTei, IDS.province) || "",
-              district: findAttributeValue(currentTei, IDS.district) || "",
-              hc: findAttributeValue(currentTei, IDS.hc) || "",
-              ph: findAttributeValue(currentTei, IDS.ph) || "",
-              dh: findAttributeValue(currentTei, IDS.dh) || "",
-              ch: findAttributeValue(currentTei, IDS.ch) || "",
+              province: attrVal(IDS.province),
+              district: attrVal(IDS.district),
+              hc: attrVal(IDS.hc),
+              ph: attrVal(IDS.ph),
+              dh:
+                attrVal(IDS.dh) ||
+                attrVal(IDS.army) ||
+                attrVal(IDS.police),
+              ch: attrVal(IDS.ch),
+              DO: attrVal(IDS.DO),
             }}
-            onChange={({ province, district, ph, ch, hc, dh }) => {
+            disabled={!canEditHealthFacility}  
+            onChange={({
+              province,
+              district,
+              ph,
+              ch,
+              hc,
+              dh,
+              DO,
+              army,
+              police,
+            }) => {
+              if (!canEditHealthFacility) return;
+
               setAttr(IDS.province, province || "");
               setAttr(IDS.district, district || "");
               setAttr(IDS.ph, ph || "");
               setAttr(IDS.hc, hc || "");
-              setAttr(IDS.dh, dh || "");
               setAttr(IDS.ch, ch || "");
+
+              if (DO) {
+                setAttr(IDS.dh, "");
+                setAttr(IDS.DO, DO);
+              } else {
+                setAttr(IDS.dh, dh || "");
+                setAttr(IDS.DO, "");
+              }
+
+              if (typeof army !== "undefined") {
+                setAttr(IDS.army, army || "");
+              }
+              if (typeof police !== "undefined") {
+                setAttr(IDS.police, police || "");
+              }
             }}
           />
         </Box>

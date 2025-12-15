@@ -3,15 +3,12 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-
 import Accordion from "../common/Accordion";
 
 const GRID_COLS = "300px 1fr";
@@ -98,13 +95,12 @@ const Assessment = () => {
     });
   }, [actions, currentEvent?.event, props?.assignations]);
 
-   const sections = useMemo(() => {
+  const sections = useMemo(() => {
     const stage = program?.programStages?.find(
       (ps) => ps.id === currentEvent?.programStage
     );
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
-
 
   const visibleDeIds = useMemo(() => {
     const ids = [];
@@ -128,7 +124,7 @@ const Assessment = () => {
     if (!currentEvent) return [];
     const m = [];
     visibleDeIds.forEach((id) => {
-      if (NOT_REQUIRED.has(id)) return;        
+      if (NOT_REQUIRED.has(id)) return;        // NEW: skip optional DEs
       const val = getEventDEValue(currentEvent, id);
       if (isEmpty(val)) m.push(id);
     });
@@ -140,7 +136,6 @@ const Assessment = () => {
   const prevDisabled = useRef(undefined);
   const missingRef = useRef(missing);
   missingRef.current = missing;
-
 
   useEffect(() => {
     if (!actions) return;
@@ -179,6 +174,7 @@ const Assessment = () => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+      {/* Assessment date */}
       <Box>
         <Box sx={{ fontWeight: 600, mb: 0.5 }}>{trAssessmentDate}</Box>
         <EventDateFieldNoBlur
@@ -213,7 +209,7 @@ const Assessment = () => {
             if (deId === "ZXzj7W5848O" && !show_ZXzj7W5848O) return null;
             if (props?.hiddenFields?.[deId]) return null;
 
-            const optional = NOT_REQUIRED.has(deId);
+            const optional = NOT_REQUIRED.has(deId); // NEW
 
             return (
               <Box
@@ -227,12 +223,12 @@ const Assessment = () => {
               >
                 <Box sx={{ padding: "10px", display: "flex", alignItems: "center" }}>
                   <DataValueLabel dataElement={deId} />
-                  {!optional && <RedStar />}
+                  {!optional && <RedStar />}{/* NEW: star only if required */}
                 </Box>
                 <Box sx={{ borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
                   <DataValueFieldNoBlur
                     dataElement={deId}
-                    required={!optional}        
+                    required={!optional}         // NEW: not required for audIElWyoJP
                   />
                 </Box>
               </Box>

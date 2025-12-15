@@ -10,8 +10,10 @@ const TEA = {
   facilityId: "sO0ItF0Dr0p",
   nearbyType: "SxKvvxpzop9",        // Type of nearby health facility
 
+  // Existing HF requirement set
   province: "pvY01Pt3GTk",          // selector province
 
+  // Custom facility + address block
   customFacilityName: "f9d4P9maZEq",
   addressProvince: "kFHo6CSy7B0",
   addressDistrict: "MFb4L2Ju4iu",
@@ -24,14 +26,18 @@ const NEARBY_EXISTING_HF_CODES = new Set([
   "EXIST_PUBLIC_HF", 
 ]);
 
+const NEARBY_FOREIGN_HF_CODES = new Set([
+  "HF_OTHER_COUNTRY", 
+]);
+
 const toObj = (list) =>
   Array.isArray(list)
     ? list.reduce((a, x) => ((a[x.attribute] = x.value), a), {})
     : {};
 
 const EXISTING_HF_REQUIRED = [
-  TEA.facilityId, // sO0ItF0Dr0p (auto-filled from orgUnit code)
-  TEA.province,   // pvY01Pt3GTk
+  TEA.facilityId, 
+  TEA.province,   
 ];
 
 const CUSTOM_HF_REQUIRED = [
@@ -39,6 +45,10 @@ const CUSTOM_HF_REQUIRED = [
   TEA.addressProvince,    // kFHo6CSy7B0
   TEA.addressDistrict,    // MFb4L2Ju4iu
   TEA.addressVillage,     // U4k2WoPO2dN
+];
+
+const FOREIGN_HF_REQUIRED = [
+  TEA.customFacilityName, // f9d4P9maZEq
 ];
 
 const useProfileRules = () => {
@@ -64,9 +74,14 @@ const useProfileRules = () => {
     const assignations = {}; 
 
     const nearbyTypeVal = A[TEA.nearbyType];
+
     const isExistingPublicHF =
       NEARBY_EXISTING_HF_CODES.has(nearbyTypeVal) ||
       normalize(nearbyTypeVal) === normalize("Existing public health facility");
+
+    const isForeignHF =
+      NEARBY_FOREIGN_HF_CODES.has(nearbyTypeVal) ||
+      normalize(nearbyTypeVal) === normalize("Health facility in other country");
 
     const prevMandatory = mandatoryAttributes || [];
     const nextMandatory = new Set(prevMandatory);
@@ -78,14 +93,15 @@ const useProfileRules = () => {
 
     EXISTING_HF_REQUIRED.forEach((id) => nextMandatory.delete(id));
     CUSTOM_HF_REQUIRED.forEach((id) => nextMandatory.delete(id));
+    FOREIGN_HF_REQUIRED.forEach((id) => nextMandatory.delete(id));
 
     if (isExistingPublicHF) {
-
-      EXISTING_HF_REQUIRED.forEach((id) => nextMandatory.add(id));
+       EXISTING_HF_REQUIRED.forEach((id) => nextMandatory.add(id));
+    } else if (isForeignHF) {
+      FOREIGN_HF_REQUIRED.forEach((id) => nextMandatory.add(id));
     } else if (hasSelection) {
       CUSTOM_HF_REQUIRED.forEach((id) => nextMandatory.add(id));
     }
-
 
     const nextMandatoryArr = Array.from(nextMandatory);
 

@@ -24,6 +24,7 @@ const useProfileRules = () => {
   useEffect(() => {
     const hidden = {};
 
+
     setProps((p) => ({ ...p, hiddenFields: hidden }));
   }, [JSON.stringify(A)]);
 

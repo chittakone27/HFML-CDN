@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/common/HealthFacilitySelectorNoState.jsx
 import { useMemo, useState, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import {
@@ -15,22 +14,21 @@ import ClearIcon from "@mui/icons-material/Clear";
 import useMetadataStore from "@/state/metadata";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
 
-// minimal styles
 const LABEL_SX = {};
 const SELECT_SX = { "& .MuiSelect-select": { textAlign: "left", py: 1 } };
 const ROW_GAP = 1;
 
-// OU group IDs (no DO / DC)
 const G = {
-  PHO: "jblbYwuvO33",   // Province
-  DHO: "Zh1inFu0Z2O",   // District
-  PH:  "GiRpQWVJ24q",   // Provincial Hospital
-  DH:  "S8nZUO4pUE8",   // District Hospital (A+B combined)
-  HC:  "U53tdte60Ku",   // Health Center
-  CH:  "Wg7j9DPk2n5",   // Central Hospital
+  PHO: "jblbYwuvO33",
+  DHO: "Zh1inFu0Z2O",
+  PH: "GiRpQWVJ24q",
+  DH: "S8nZUO4pUE8",
+  HC: "U53tdte60Ku",
+  CH: "Wg7j9DPk2n5",
+  DC: "XGdsUB1qrEE",
 
-  ARMY:   "VePuVPFoyJ2", // Army Hospital group
-  POLICE: "D3WBiIjOENI", // Police Hospital group
+  ARMY: "VePuVPFoyJ2",
+  POLICE: "D3WBiIjOENI",
 };
 
 const getName = (ou, language) => {
@@ -45,7 +43,7 @@ const getName = (ou, language) => {
 };
 
 const inGroup = (ou, gid) =>
-  gid && (ou?.organisationUnitGroups || []).some((g) => g.id === gid);
+  (ou?.organisationUnitGroups || []).some((g) => g.id === gid);
 
 const mapByParent = (list) => {
   const m = new Map();
@@ -57,16 +55,6 @@ const mapByParent = (list) => {
   return m;
 };
 
-/**
- * Props:
- *  - ids, init, onChange
- *  - onValidityChange?: (boolean)
- *  - disabled?: boolean
- *  - labelsOverride?: { level1?, level2?, level3? }
- *
- * onChange payload:
- *  { province, district, ph, ch, hc, dh, army, police }
- */
 const HealthFacilitySelectorNoState = ({
   ids,
   init,
@@ -80,7 +68,6 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
-  // ---------------- classify OUs ----------------
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [];
     const districts = [];
@@ -91,7 +78,6 @@ const HealthFacilitySelectorNoState = ({
 
     const all = orgUnits || [];
 
-    // 1) Provinces & districts
     all.forEach((ou) => {
       if (inGroup(ou, G.PHO)) provinces.push(ou);
       if (inGroup(ou, G.DHO)) districts.push(ou);
@@ -100,56 +86,44 @@ const HealthFacilitySelectorNoState = ({
     const provinceIds = new Set(provinces.map((o) => o.id));
     const districtIds = new Set(districts.map((o) => o.id));
 
-    // 2) Facilities (PH, CH, HC, DH) + Army/Police hospitals
     all.forEach((ou) => {
       if (inGroup(ou, G.PH)) phs.push(ou);
       if (inGroup(ou, G.CH)) chs.push(ou);
       if (inGroup(ou, G.HC)) hcs.push(ou);
-      if (inGroup(ou, G.DH)) dhs.push(ou);
+      if (inGroup(ou, G.DH) || inGroup(ou, G.DC)) dhs.push(ou);
 
       const isArmy = inGroup(ou, G.ARMY);
       const isPolice = inGroup(ou, G.POLICE);
       if (!isArmy && !isPolice) return;
 
-      // Some Army/Police hospitals are under province, some under district
       const pid = ou?.parent?.id;
       if (pid && districtIds.has(pid)) {
-        // treat as district-level hospital
-        if (!dhs.some((x) => x.id === ou.id)) dhs.push(ou);
+        if (!dhs.includes(ou)) dhs.push(ou);
       } else if (pid && provinceIds.has(pid)) {
-        // treat as provincial-level hospital
-        if (!phs.some((x) => x.id === ou.id)) phs.push(ou);
+        if (!phs.includes(ou)) phs.push(ou);
       } else {
-        // fallback: treat as provincial-level hospital
-        if (!phs.some((x) => x.id === ou.id)) phs.push(ou);
+        if (!phs.includes(ou)) phs.push(ou);
       }
     });
 
     return { provinces, districts, phs, chs, hcs, dhs };
   }, [orgUnits]);
 
-  // -------------- parent maps -------------------
   const dhoByProv = useMemo(() => mapByParent(districts), [districts]);
-  const phByProv  = useMemo(() => mapByParent(phs),       [phs]);
-  const chByProv  = useMemo(() => mapByParent(chs),       [chs]);
-  const hcByDist  = useMemo(() => mapByParent(hcs),       [hcs]);
-  const dhByDist  = useMemo(() => mapByParent(dhs),       [dhs]);
+  const phByProv = useMemo(() => mapByParent(phs), [phs]);
+  const chByProv = useMemo(() => mapByParent(chs), [chs]);
+  const hcByDist = useMemo(() => mapByParent(hcs), [hcs]);
+  const dhByDist = useMemo(() => mapByParent(dhs), [dhs]);
 
-  // ---------------- state -----------------------
   const [provId, setProvId] = useState(init?.province || "");
   const [l2, setL2] = useState(() => {
-    if (init?.ph)       return { type: "PH",  id: init.ph };
-    if (init?.ch)       return { type: "CH",  id: init.ch };
+    if (init?.ph) return { type: "PH", id: init.ph };
+    if (init?.ch) return { type: "CH", id: init.ch };
     if (init?.district) return { type: "DHO", id: init.district };
     return { type: "", id: "" };
   });
-  const [l3, setL3] = useState(() => {
-    if (init?.hc) return { type: "HC", id: init.hc };
-    if (init?.dh) return { type: "DH", id: init.dh };
-    return { type: "", id: "" };
-  });
+  const [l3, setL3] = useState({ type: "", id: "" });
 
-  // sync with init (when TEI / metadata changes)
   useEffect(() => {
     setProvId(init?.province || "");
 
@@ -166,7 +140,12 @@ const HealthFacilitySelectorNoState = ({
     if (init?.hc) {
       setL3({ type: "HC", id: init.hc });
     } else if (init?.dh) {
-      setL3({ type: "DH", id: init.dh });
+      const isDC = (orgUnits || []).some(
+        (ou) => ou.id === init.dh && inGroup(ou, G.DC)
+      );
+      setL3({ type: isDC ? "DC" : "DH", id: init.dh });
+    } else if (init?.DO) {
+      setL3({ type: "DC", id: init.DO });
     } else {
       setL3({ type: "", id: "" });
     }
@@ -177,9 +156,10 @@ const HealthFacilitySelectorNoState = ({
     init?.ch,
     init?.hc,
     init?.dh,
+    init?.DO,
+    orgUnits,
   ]);
 
-  // -------------- options -----------------------
   const provOptions = useMemo(
     () =>
       (provinces || [])
@@ -191,7 +171,6 @@ const HealthFacilitySelectorNoState = ({
   const l2Options = useMemo(() => {
     if (!provId) return [];
     const opts = [];
-
     (chByProv.get(provId) || []).forEach((ou) =>
       opts.push({ id: ou.id, type: "CH", label: getName(ou, language) })
     );
@@ -201,7 +180,6 @@ const HealthFacilitySelectorNoState = ({
     (dhoByProv.get(provId) || []).forEach((ou) =>
       opts.push({ id: ou.id, type: "DHO", label: getName(ou, language) })
     );
-
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [provId, chByProv, phByProv, dhoByProv, language]);
 
@@ -212,14 +190,18 @@ const HealthFacilitySelectorNoState = ({
     (hcByDist.get(l2.id) || []).forEach((ou) =>
       opts.push({ id: ou.id, type: "HC", label: getName(ou, language) })
     );
-    (dhByDist.get(l2.id) || []).forEach((ou) =>
-      opts.push({ id: ou.id, type: "DH", label: getName(ou, language) })
-    );
+    (dhByDist.get(l2.id) || []).forEach((ou) => {
+      const isDC = inGroup(ou, G.DC);
+      opts.push({
+        id: ou.id,
+        type: isDC ? "DC" : "DH",
+        label: getName(ou, language),
+      });
+    });
 
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [l2, hcByDist, dhByDist, language]);
 
-  // -------- propagate selection to parent -------
   const emit = (nextProv, nextL2, nextL3) => {
     const province = nextProv || "";
     let district = "";
@@ -227,6 +209,7 @@ const HealthFacilitySelectorNoState = ({
     let ch = "";
     let hc = "";
     let dh = "";
+    let DO = "";
     let army = "";
     let police = "";
 
@@ -238,33 +221,42 @@ const HealthFacilitySelectorNoState = ({
       district = nextL2.id;
       if (nextL3.type === "HC") {
         hc = nextL3.id;
-      } else if (nextL3.type === "DH") {
+      } else if (nextL3.type === "DH" || nextL3.type === "DC") {
         dh = nextL3.id;
+        if (nextL3.type === "DC") {
+          DO = nextL3.id;
+        }
       }
     }
 
-    // actual facility OU to test for army/police
+    const all = orgUnits || [];
     const facilityId = ph || ch || hc || dh || "";
     if (facilityId) {
-      const facilityOu = (orgUnits || []).find((ou) => ou.id === facilityId);
+      const facilityOu = all.find((ou) => ou.id === facilityId);
       if (facilityOu) {
-        if (inGroup(facilityOu, G.ARMY)) {
-          army = facilityOu.id;
-        }
-        if (inGroup(facilityOu, G.POLICE)) {
-          police = facilityOu.id;
+        const isArmy = inGroup(facilityOu, G.ARMY);
+        const isPolice = inGroup(facilityOu, G.POLICE);
+
+        if (isArmy) army = facilityOu.id;
+        if (isPolice) police = facilityOu.id;
+
+        if (
+          (isArmy || isPolice) &&
+          nextL2.type === "DHO" &&
+          nextL3.type === "DH"
+        ) {
+          dh = "";
         }
       }
     }
 
-    onChange?.({ province, district, ph, ch, hc, dh, army, police });
+    onChange?.({ province, district, ph, ch, hc, dh, DO, army, police });
   };
 
-  // --------- validity / errors ---------------
-  const requireL2 = !!provId;          // province picked → L2 required
-  const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
-  const l2Error   = requireL2 && !l2.id;
-  const l3Error   = requireL3 && !l3.id;
+  const requireL2 = !!provId;
+  const requireL3 = l2.type === "DHO";
+  const l2Error = requireL2 && !l2.id;
+  const l3Error = requireL3 && !l3.id;
 
   const isValid =
     (!provId && !l2.id && !l3.id) ||
@@ -274,7 +266,6 @@ const HealthFacilitySelectorNoState = ({
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  // ------------- small clear button ----------
   const ClearBtn = ({ onClick, disabled }) => (
     <InputAdornment position="end" sx={{ mr: 2 }}>
       <IconButton
@@ -289,7 +280,6 @@ const HealthFacilitySelectorNoState = ({
     </InputAdornment>
   );
 
-  // ------------- handlers --------------------
   const onProvChange = (e) => {
     const id = e.target.value || "";
     const nextL2 = { type: "", id: "" };
@@ -302,8 +292,7 @@ const HealthFacilitySelectorNoState = ({
 
   const onL2Change = (e) => {
     const id = e.target.value || "";
-    const picked =
-      l2Options.find((o) => o.id === id) || { type: "", id: "" };
+    const picked = l2Options.find((o) => o.id === id) || { type: "", id: "" };
     const nextL3 =
       picked.type === "DHO" &&
       l2.type === "DHO" &&
@@ -325,17 +314,15 @@ const HealthFacilitySelectorNoState = ({
     emit(provId, l2, nextL3);
   };
 
-  // ------------- labels ----------------------
   const l1Label =
     labelsOverride?.level1 ?? (
       <AttributeLabelNoState attribute={ids.province} />
     );
   const l2Label = labelsOverride?.level2 ?? "CH / PH / DHO";
-  const l3Label = labelsOverride?.level3 ?? "DH / HC";
+  const l3Label = labelsOverride?.level3 ?? "DH / HC / DC";
 
   return (
     <Box sx={{ display: "grid", rowGap: ROW_GAP }}>
-      {/* Province */}
       <FormControl fullWidth size="small" disabled={!!disabled}>
         <FormLabel sx={LABEL_SX}>{l1Label}</FormLabel>
         <Select
@@ -367,7 +354,6 @@ const HealthFacilitySelectorNoState = ({
         </Select>
       </FormControl>
 
-      {/* CH / PH / DHO */}
       <FormControl
         fullWidth
         size="small"
@@ -405,7 +391,6 @@ const HealthFacilitySelectorNoState = ({
         </Select>
       </FormControl>
 
-      {/* DH / HC — only when DHO picked */}
       {l2.type === "DHO" && (
         <FormControl
           fullWidth

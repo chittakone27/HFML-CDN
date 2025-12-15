@@ -8,6 +8,7 @@ import Wash from "./program-forms/infrastructure-mapping-tracker/Program -stages
 import Equipments from "./program-forms/infrastructure-mapping-tracker/Program -stages/Equipments/Equipments";
 import FocalPoints from "./program-forms/infrastructure-mapping-tracker/Program -stages/Focal-point/FocalPoints";
 import IctAdminEquipments from "./program-forms/infrastructure-mapping-tracker/Program -stages/admin-ict/IctAdminEquipments";
+import MedicineEquipments from "./program-forms/infrastructure-mapping-tracker/Program -stages/Medicine-Equipments/MedicineEquipments";
 
 // Villages in catchment area (tracker: sBkMdki30ua, stage: JrbpF3DG3FL)
 import VillagesProfile from "./program-forms/villages-catchment/Profile";
@@ -37,7 +38,8 @@ const customForms = {
     FQGIR6wmBWZ: Equipments,
     ZOMnNIWsrX7: IctAdminEquipments,
     L6OUrGJCq69: FocalPoints,
-    YLDq73HwBtm: ScannedLogBook
+    YLDq73HwBtm: ScannedLogBook,
+    iMBvvWzdbHs: MedicineEquipments,
   },
 
   // Villages in catchment area (tracker)

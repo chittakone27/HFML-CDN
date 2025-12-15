@@ -25,11 +25,11 @@ const useDisableRegisterButtonForSurvey = () => {
     if (me && program) {
       const foundGroup = me.userGroups.find((ug) => ug.id === "elrZ3jvh1SL");
       if (foundGroup) {
-        setLayout("disableRegisterButton", true);
-        setLayout("disableSearchButton", true);
-      } else {
         setLayout("disableRegisterButton", false);
         setLayout("disableSearchButton", false);
+      } else {
+        setLayout("disableRegisterButton", true);
+        setLayout("disableSearchButton", true);
       }
     }
   }, [me ? me.username : "", program ? program.id : "", orgUnit ? orgUnit.id : "", layout]);

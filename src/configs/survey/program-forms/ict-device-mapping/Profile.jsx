@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { useMemo, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { useTranslation } from "react-i18next";
 
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
@@ -9,18 +10,16 @@ import AttributeField from "@/ui/TrackerCapture/Profile/AttributeField";
 
 import useProfileRules from "./useProfileRules";
 
-// --- Attribute IDs -----------------------------------------------------------
 const ID = {
-  deviceType: "xQrdgnlPcC3", // ICT - Type of ICT device
-  code: "y6RfdAq2zmQ",       // ICT - Device ID - Code (D/L/…)
-  hf: "odDm8AxiL1j",         // ICT - Device ID - District ID
-  hftype: "STdn1v1AxLa",     // ICT - Device ID - HF type
-  hfSequence: "xgb9vCptedt", // ICT - Device ID - HF Sequence
-  num: "KZ5D0DFEqdf",        // ICT - Device ID - Number (user input)
-  deviceId: "RyN09GsWd64",   // ICT - Device ID (full: 0201PH01-L001)
+  deviceType: "xQrdgnlPcC3",
+  code: "y6RfdAq2zmQ",
+  hf: "odDm8AxiL1j",
+  hftype: "STdn1v1AxLa",
+  hfSequence: "xgb9vCptedt",
+  num: "KZ5D0DFEqdf",        // <-- this one
+  deviceId: "RyN09GsWd64",
 };
 
-// Fields we never render as normal rows
 const SPECIAL = [ID.code, ID.hf, ID.hftype, ID.hfSequence, ID.num, ID.deviceId];
 
 const toAttrMap = (tei) =>
@@ -45,7 +44,6 @@ const getHelpers = (target, { errors = {}, helpers = {}, warnings = {} } = {}) =
   return result;
 };
 
-// Map "Laptop" / "Desktop" → L / D etc.
 const mapDeviceTypeToCode = (deviceType) => {
   if (!deviceType) return "";
   const label = String(deviceType).toLowerCase();
@@ -55,21 +53,28 @@ const mapDeviceTypeToCode = (deviceType) => {
   if (label.includes("tablet")) return "T";
   if (label.includes("phone") || label.includes("mobile")) return "P";
 
-  // Fallback: first letter upper-case
   return String(deviceType).trim().charAt(0).toUpperCase();
 };
 
-// Light hint for the input; real enforcement is in useEffect.
 const NUM_INPUT_PROPS = {
   inputProps: {
     inputMode: "numeric",
     pattern: "[0-9]*",
-    maxLength: 3,         // up to 3 digits
-    placeholder: "###",   // show 3-digit pattern
+    maxLength: 3,
+    placeholder: "###",
   },
 };
 
+const leadingZeroMessage = (lang) => {
+  const isLao = String(lang || "").toLowerCase().startsWith("lo");
+  return isLao
+    ? "ໃຫ້ໃສ່ຕົວເລກ ໂດຍບໍ່ມີເລກສູນທາງໜ້າ (ຕົວຢ່າງ ເລກ 1 ບໍ່ແມ່ນ 01)."
+    : "Invalid format: don’t use leading zeros (use 1, not 01).";
+};
+
 const Profile = () => {
+  const { i18n } = useTranslation();
+
   const { program, orgUnit } = useSelectionStore(
     useShallow((s) => ({ program: s.program, orgUnit: s.orgUnit }))
   );
@@ -78,27 +83,45 @@ const Profile = () => {
     useShallow((s) => ({ actions: s.actions, data: s.data }))
   );
 
-  const props = useProfileRules();
+  const rules = useProfileRules();
 
-  // --- Org unit code: "0201PH01" from code or "(0201PH01) PH …" label ---
+  const currentTei = data?.currentTei;
+  const currentAttrMap = useMemo(() => toAttrMap(currentTei), [currentTei]);
+
+  const numValue = String(currentAttrMap[ID.num] ?? "");
+  const deviceTypeValue = String(currentAttrMap[ID.deviceType] ?? "");
+  const leadingZeroError = useMemo(() => {
+    const v = String(numValue ?? "");
+    if (!v) return {};
+    if (/^0\d+$/.test(v)) {
+      return {
+        [ID.num]: leadingZeroMessage(i18n?.language),
+      };
+    }
+    return {};
+  }, [numValue, i18n?.language]);
+
+  const props = useMemo(
+    () => ({
+      ...rules,
+      errors: { ...(rules?.errors || {}), ...leadingZeroError },
+    }),
+    [rules, leadingZeroError]
+  );
+
   const orgUnitCode = useMemo(() => {
     if (!orgUnit) return "";
     if (orgUnit.code) return String(orgUnit.code);
     const label = orgUnit.displayName || orgUnit.name || "";
-    const m = label.match(/\(([^)]+)\)/); // takes 0201PH01 from "(0201PH01) PH ..."
+    const m = label.match(/\(([^)]+)\)/);
     return m ? m[1] : "";
   }, [orgUnit]);
 
   const orgUnitParts = useMemo(() => {
     if (!orgUnitCode) return {};
-    // 0201PH01 -> ["0201","PH","01"]
     const m = orgUnitCode.match(/^(\d{4})([A-Za-z]{2})(\d{2})$/);
     if (!m) return {};
-    return {
-      did: m[1],    // "0201"
-      hfType: m[2], // "PH"
-      hfSeq: m[3],  // "01"
-    };
+    return { did: m[1], hfType: m[2], hfSeq: m[3] };
   }, [orgUnitCode]);
 
   const allAttributes = useMemo(
@@ -135,33 +158,23 @@ const Profile = () => {
     );
   };
 
-  // ---- Current TEI + values -------------------------------------------------
-  const currentTei = data?.currentTei;
-  const currentAttrMap = useMemo(() => toAttrMap(currentTei), [currentTei]);
-
-  const numValue = String(currentAttrMap[ID.num] ?? "");
-  const deviceTypeValue = String(currentAttrMap[ID.deviceType] ?? "");
-
-  // --- Enforce: Number is max 3 digits --------------------------------------
   useEffect(() => {
     if (!data?.currentTei) return;
     const raw = String(numValue ?? "");
     if (!raw) return;
 
-    const cleaned = raw.replace(/\D/g, "").slice(0, 3); // allow 3 digits
+    const cleaned = raw.replace(/\D/g, "").slice(0, 3);
     if (cleaned !== raw) {
       actions.changeAttributeValue(ID.num, cleaned);
     }
   }, [numValue, data?.currentTei, actions]);
 
-  // --- Clean hidden fields from useProfileRules (but NEVER our ID parts) -----
   useEffect(() => {
     if (!props?.hiddenFields) return;
     const cur = toAttrMap(data?.currentTei);
 
     Object.entries(props.hiddenFields).forEach(([attr, isHidden]) => {
       if (!isHidden) return;
-      // Don't fight with our ID logic:
       if (
         attr === ID.hf ||
         attr === ID.hftype ||
@@ -178,7 +191,6 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.hiddenFields]);
 
-  // --- Assignations from useProfileRules, but skip our ID fields -------------
   useEffect(() => {
     if (!props?.assignations) return;
     const cur = toAttrMap(data?.currentTei);
@@ -192,7 +204,6 @@ const Profile = () => {
         attr === ID.num ||
         attr === ID.deviceId
       ) {
-        // let our ICT logic control these
         return;
       }
       const current = cur[attr] ?? "";
@@ -202,7 +213,6 @@ const Profile = () => {
     });
   }, [actions, data?.currentTei, props?.assignations]);
 
-  // --- Keep HF info in hidden fields based on org unit -----------------------
   useEffect(() => {
     if (!data?.currentTei) return;
     const { did, hfType, hfSeq } = orgUnitParts;
@@ -211,7 +221,6 @@ const Profile = () => {
     const cur = toAttrMap(data.currentTei);
     const updates = [];
 
-    // HF sequence in attributes should be unpadded number ("1"), to match your old data
     const hfSeqNum =
       !Number.isNaN(parseInt(hfSeq, 10)) && hfSeq !== ""
         ? String(parseInt(hfSeq, 10))
@@ -225,13 +234,11 @@ const Profile = () => {
     updates.forEach(([attr, value]) => actions.changeAttributeValue(attr, value));
   }, [data?.currentTei, orgUnitParts, actions]);
 
-  // --- Build / keep Device ID in sync (from Type + Number + OU) --------------
   useEffect(() => {
     if (!data?.currentTei) return;
 
     const cur = toAttrMap(data.currentTei);
 
-    // If device type or number is empty → clear Device ID
     if (!deviceTypeValue || !numValue) {
       if (cur[ID.deviceId]) {
         actions.changeAttributeValue(ID.deviceId, "");
@@ -244,32 +251,23 @@ const Profile = () => {
 
     const devCode = mapDeviceTypeToCode(deviceTypeValue);
 
-    // Use the padded seq from org unit code ("01")
     const hfSeq2 = hfSeq;
     const basePrefix = `${did}${hfType}${hfSeq2}`;
 
     const n = parseInt(numValue, 10);
     if (!Number.isFinite(n)) return;
 
-    // 3-digit suffix: 1 / 01 / 001 → "001"
     const suffix = String(n).padStart(3, "0");
     const newDeviceId = `${basePrefix}-${devCode}${suffix}`;
 
     const updates = [];
-
-    // Keep code in hidden field
     if (cur[ID.code] !== devCode) updates.push([ID.code, devCode]);
-
-    // Only update deviceId if different (avoid loops)
-    if (cur[ID.deviceId] !== newDeviceId) {
-      updates.push([ID.deviceId, newDeviceId]);
-    }
+    if (cur[ID.deviceId] !== newDeviceId) updates.push([ID.deviceId, newDeviceId]);
 
     if (!updates.length) return;
     updates.forEach(([attr, value]) => actions.changeAttributeValue(attr, value));
   }, [data?.currentTei, orgUnitParts, deviceTypeValue, numValue, actions]);
 
-  // --- Number row (full-width, editable) -------------------------------------
   const renderNumberRow = () => {
     if (props?.hiddenFields?.[ID.num]) return null;
     const helpers = getHelpers(ID.num, props);
@@ -291,11 +289,7 @@ const Profile = () => {
 
   const renderDeviceId = () =>
     props?.hiddenFields?.[ID.deviceId] ? null : (
-      <Box
-        key={ID.deviceId}
-        className="custom-tracker-profile-field-row"
-        sx={{ mb: 1.5 }}
-      >
+      <Box key={ID.deviceId} className="custom-tracker-profile-field-row" sx={{ mb: 1.5 }}>
         <AttributeLabel attribute={ID.deviceId} />
         <AttributeField
           attribute={ID.deviceId}

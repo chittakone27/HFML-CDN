@@ -99,6 +99,12 @@ const ROWS = [
     name: "mP26BdOPq1s", phone: "OV65eBiEnl9", position: "OocjBJGGu0p",
     altName: "DL0MogB8XeT", altPhone: "uzvv52Z2o06", altPosition: "nMfNkUpvKfH",
   },
+    // 15 Food and Drugs
+  {
+    label: "15. Food and Drugs",
+    name: "ys9gwlNQI6O", phone: "UolkLtgV0ok", position: "eMpdHlqBuwX",
+    altName: "xFoRSTv7U1o", altPhone: "uIRCTJaftAU", altPosition: "x0qUIKz3dz8",
+  },
 ];
 
 const rowKey = (label) =>
@@ -118,6 +124,7 @@ const LO_ROW = {
   focal_point_in_communicable_diseases: "12. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານລະບາດ",
   focal_point_in_ncd: "13. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານພະຍາດບໍ່ຕິດຕໍ່ (ມະເຮັງ, ເບົາຫວານ, ໂລກຫົວໃຈ ແລະ ອື່ນໆ)",
   focal_point_in_wash: "14. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານນໍ້າສະອາດ, ສຸຂາພິບານ ແລະ ອະນາໄມ",
+  food_and_drugs: "15. ພະນັກງານຜູ້ຮັບຜິດຊອບ ວຽກງານອາຫານ ແລະ ຢາ",
 };
 const LO_MISC = {
   title: "ພະນັກງານຜູ້ຮັບຜິດຊອບ / ຜູ້ປະສານງານ ຢູ່ສະຖານທີ່ດັ່ງກາວ",

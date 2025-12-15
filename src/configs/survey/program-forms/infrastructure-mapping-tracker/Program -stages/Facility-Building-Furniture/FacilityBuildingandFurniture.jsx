@@ -19,25 +19,63 @@ const LABEL_COL_W = 300;
 const getDeId = (de) => de?.id || de?.dataElement?.id;
 const normalize = (s) => String(s || "").trim().toLowerCase();
 
-// Integer-only fields for this stage (same three)
-const INTEGER_ONLY_IDS = new Set(["bEWpwn7HfUI","OpKuX0h3iSf","Gt26xzdkt53"]);
+const TOTAL_OUTREACH_ID = "bEWpwn7HfUI";     // total beds
+const OUTREACH_FACILITY_ID = "OpKuX0h3iSf";  // ICU beds part 1
+const OUTREACH_COMMUNITY_ID = "msFzvgwQQzm"; // ICU beds part 2
+const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 
-// Normalize localized numerals to ASCII
+const INTEGER_ONLY_IDS = new Set([
+  "bEWpwn7HfUI",
+  "OpKuX0h3iSf",
+  "Gt26xzdkt53",
+]);
+
+const MONTH_ORDER = [
+  "NIji1vKjEsn",
+  "ycwkJ30qjwb",
+  "bxEtg4oxf4m",
+  "F9lxwEAGnHE",
+  "X67WGTx2djm",
+  "t1Z7lsQ2Qte",
+  "SO1P5eMGMSc",
+  "L1lvlYVBaVN",
+  "K3q2Vgo6p6P",
+  "N3dIyivSvSo",
+  "kMHppy04I0O",
+  "BkK10QaD8FE",
+  "l4g6U5MNdxQ",
+];
+
 const toAsciiDigits = (str = "") =>
   String(str).replace(
     /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
     (ch) => {
       const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
+      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
+      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
+      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
+      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
   );
 
-// Read a DE value from current event (handles both shapes)
+const truthy = (v) =>
+  v === true ||
+  v === "true" ||
+  v === 1 ||
+  v === "1" ||
+  v === "Yes" ||
+  v === "YES" ||
+  v === "yes";
+
+const parseIntSafe = (raw) => {
+  const s = toAsciiDigits(String(raw ?? "").trim());
+  if (!s) return null;
+  if (!/^\d+$/.test(s)) return null;
+  return parseInt(s, 10);
+};
+
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
   if (currentEvent.values && typeof currentEvent.values === "object") {
@@ -50,7 +88,6 @@ const getEventDEValue = (currentEvent, deId) => {
   return currentEvent[deId];
 };
 
-// --- small reusable red asterisk (matches your Equipments pattern) ---
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", mr: 0.75 }} aria-hidden="true">
     *
@@ -61,24 +98,31 @@ const FacilityBuildingandFurniture = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  const { program } = useSelectionStore(useShallow((s) => ({ program: s.program })));
-  const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
+  const { program } = useSelectionStore(
+    useShallow((s) => ({ program: s.program }))
+  );
+  const { actions } = useTrackerCaptureStore(
+    useShallow((s) => ({ actions: s.actions }))
+  );
   const { currentEvent } = useCurrentEvent();
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
   const sections = useMemo(() => {
     if (!program?.programStages || !currentEvent?.programStage) return [];
-    const stage = program.programStages.find((ps) => ps.id === currentEvent.programStage);
+    const stage = program.programStages.find(
+      (ps) => ps.id === currentEvent.programStage
+    );
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
 
-  // i18n strings
   const trAssessmentDate = t("facility.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
   const trOperatorsLabel = t("facility.internet.operators", {
-    defaultValue: isLao ? "6.1. ເຄື່ອຄ່າຍໂທລະສັບ" : "6.1. Mobile Operator",
+    defaultValue: isLao
+      ? "6.1. ເຄື່ອຄ່າຍໂທລະສັບ"
+      : "6.1. Mobile Operator",
   });
   const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
     defaultValue: isLao
@@ -96,7 +140,18 @@ const FacilityBuildingandFurniture = () => {
       : "Only whole numbers are allowed (no decimals).",
   });
 
-  // section titles mapping
+  const trSessionsSum = t("facility.outreach.sessionsSumCheck", {
+    defaultValue: isLao
+      ? "ຈໍານວນຕຽງທັງໝົດ ຕ້ອງຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ ຈໍານວນຕຽງ ICU"
+      : "Total number of beds must be ≥ total ICU beds",
+  });
+
+  const trMonthsCount = t("facility.outreach.monthCountCheck", {
+    defaultValue: isLao
+      ? "ຈໍານວນຄັ້ງທີ່ລົງເຄື່ອນທີ່ ຕ້ອງຫຼາຍກວ່າ ຫຼື ເທົ່າກັບ ຈໍານວນເດືອນລົງເຄື່ອນທີ່"
+      : "Number of outreach activities must be ≥ number of months selected",
+  });
+
   const trSectionTitle = (displayName) => {
     const n = normalize(displayName);
     switch (n) {
@@ -105,9 +160,13 @@ const FacilityBuildingandFurniture = () => {
           defaultValue: isLao ? "ຕຽງ ແລະ ຕູ້ເຢັນ" : "Beds and Refrigerator",
         });
       case "electricity":
-        return t("facility.sections.electricity", { defaultValue: isLao ? "ໄຟຟ້າ" : "Electricity" });
+        return t("facility.sections.electricity", {
+          defaultValue: isLao ? "ໄຟຟ້າ" : "Electricity",
+        });
       case "internet":
-        return t("facility.sections.internet", { defaultValue: isLao ? "ອິນເຕີເນັດ" : "Internet" });
+        return t("facility.sections.internet", {
+          defaultValue: isLao ? "ອິນເຕີເນັດ" : "Internet",
+        });
       case "outreach activity":
         return t("facility.sections.outreach_activity", {
           defaultValue: isLao ? "ການລົງເຄື່ອນທີ່" : "Outreach activity",
@@ -117,15 +176,64 @@ const FacilityBuildingandFurniture = () => {
     }
   };
 
-  // Integer-only warnings (inline), same pattern as Wash
   const warnings = useMemo(() => {
     const w = {};
     INTEGER_ONLY_IDS.forEach((id) => {
-      const raw = toAsciiDigits(String(getEventDEValue(currentEvent, id) ?? "").trim());
+      const raw = toAsciiDigits(
+        String(getEventDEValue(currentEvent, id) ?? "").trim()
+      );
       if (raw !== "" && !/^\d+$/.test(raw)) w[id] = "integerOnly";
     });
     return w;
   }, [currentEvent?.dataValues]);
+
+  const fieldRuleErrors = useMemo(() => {
+    const errors = {};
+
+    const total = parseIntSafe(getEventDEValue(currentEvent, TOTAL_OUTREACH_ID));
+    const atFacility = parseIntSafe(
+      getEventDEValue(currentEvent, OUTREACH_FACILITY_ID)
+    );
+    const inCommunity = parseIntSafe(
+      getEventDEValue(currentEvent, OUTREACH_COMMUNITY_ID)
+    );
+
+    const sessionsConflict =
+      total != null &&
+      atFacility != null &&
+      inCommunity != null &&
+      total < atFacility + inCommunity;
+
+    if (sessionsConflict) {
+
+      errors[TOTAL_OUTREACH_ID] = trSessionsSum;
+    }
+
+    let monthsSelected = 0;
+    MONTH_ORDER.forEach((mId) => {
+
+      if (mId === "l4g6U5MNdxQ") return;
+
+      const v = getEventDEValue(currentEvent, mId);
+      if (truthy(v)) monthsSelected++;
+    });
+
+    const monthsAnchorVal = parseIntSafe(
+      getEventDEValue(currentEvent, MONTH_ANCHOR_ID)
+    );
+    const monthsConflict =
+      monthsAnchorVal != null &&
+      monthsSelected > 0 &&
+      monthsAnchorVal < monthsSelected;
+
+    if (monthsConflict) {
+
+      errors[MONTH_ANCHOR_ID] = trMonthsCount;
+    }
+
+    return errors;
+  }, [currentEvent, currentEvent?.dataValues, trSessionsSum, trMonthsCount]);
+
 
   const integerOnlyGuards = {
     type: "number",
@@ -136,7 +244,8 @@ const FacilityBuildingandFurniture = () => {
       if (blocked.includes(e.key)) e.preventDefault();
     },
     onPaste: (e) => {
-      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const txt =
+        (e.clipboardData || window.clipboardData).getData("text") || "";
       if (!/^\d+$/.test(toAsciiDigits(txt).trim())) e.preventDefault();
     },
     onInput: (e) => {
@@ -156,12 +265,13 @@ const FacilityBuildingandFurniture = () => {
           focus={() => {
             if (!currentEvent?.event) return;
             const dueDate =
-              currentEvent.dueDate && format(new Date(currentEvent.dueDate), "yyyy-MM-dd");
+              currentEvent.dueDate &&
+              format(new Date(currentEvent.dueDate), "yyyy-MM-dd");
             if (currentEvent.status === "SCHEDULE" && !currentEvent.eventDate) {
               actions.changeEventProperty(
                 currentEvent.event,
                 "eventDate",
-                dueDate && dueDate > maxDate ? maxDate : (dueDate || maxDate)
+                dueDate && dueDate > maxDate ? maxDate : dueDate || maxDate
               );
             }
           }}
@@ -195,17 +305,15 @@ const FacilityBuildingandFurniture = () => {
           .map((de) => getDeId(de))
           .filter((id) => id && NEW_OP_HSTACK.has(id) && !hiddenFields[id]);
 
-        const MONTH_ORDER = [
-          "NIji1vKjEsn","ycwkJ30qjwb","bxEtg4oxf4m","F9lxwEAGnHE",
-          "X67WGTx2djm","t1Z7lsQ2Qte","SO1P5eMGMSc","L1lvlYVBaVN",
-          "K3q2Vgo6p6P","N3dIyivSvSo","kMHppy04I0O","BkK10QaD8FE","l4g6U5MNdxQ"
-        ];
         const visibleMonths = MONTH_ORDER.filter(
           (id) => months.ids.has(id) && !hiddenFields[id]
         );
 
         return (
-          <Accordion key={section.id || section.displayName} title={trSectionTitle(section.displayName)}>
+          <Accordion
+            key={section.id || section.displayName}
+            title={trSectionTitle(section.displayName)}
+          >
             {allDEs.map((de) => {
               const deId = getDeId(de);
               if (!deId) return null;
@@ -226,25 +334,69 @@ const FacilityBuildingandFurniture = () => {
               if (isMonthField && !isMonthAnchor) return null;
 
               const hasWarn = warnings[deId] === "integerOnly";
-              const helpId = hasWarn ? `help-${deId}` : undefined;
-              const intGuards = INTEGER_ONLY_IDS.has(deId) ? integerOnlyGuards : {};
+              const ruleErrorMsg = fieldRuleErrors[deId];
+              const hasRuleError = !!ruleErrorMsg;
+              const helpId =
+                hasWarn || hasRuleError ? `help-${deId}` : undefined;
+              const intGuards = INTEGER_ONLY_IDS.has(deId)
+                ? integerOnlyGuards
+                : {};
 
               const Row = (
-                <Box key={deId} sx={{ display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" }}>
+                <Box
+                  key={deId}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    borderBottom: "1px solid #e0e0e0",
+                  }}
+                >
                   <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
                     <DataValueLabel dataElement={deId} />
-                  </Box><RedStar />
-                  <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
+                  </Box>
+                  <RedStar />
+                  <Box
+                    sx={{
+                      flex: 1,
+                      borderLeft: "1px solid #e0e0e0",
+                      padding: "10px",
+                      ...(hasRuleError
+                        ? { backgroundColor: "#ffebee" } // light red highlight
+                        : {}),
+                    }}
+                  >
                     <DataValueFieldNoBlur
                       dataElement={deId}
                       required={!!requiredFields[deId]}
-                      aria-invalid={hasWarn ? "true" : undefined}
+                      aria-invalid={
+                        hasWarn || hasRuleError ? "true" : undefined
+                      }
                       aria-describedby={helpId}
                       {...intGuards}
                     />
                     {hasWarn && (
-                      <Box id={helpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                      <Box
+                        id={helpId}
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
+                      >
                         {trIntOnly}
+                      </Box>
+                    )}
+                    {hasRuleError && (
+                      <Box
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
+                      >
+                        {ruleErrorMsg}
                       </Box>
                     )}
                   </Box>
@@ -257,47 +409,123 @@ const FacilityBuildingandFurniture = () => {
                     {Row}
 
                     {showOperators && visibleOps.length > 0 && (
-                      <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
-                        <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
-                          {/* red * before Operators label */}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "stretch",
+                          borderBottom: "1px solid #e0e0e0",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: `${LABEL_COL_W}px`,
+                            px: "10px",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           <Box
                             component="span"
-                            sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4, display: "inline-flex", alignItems: "center" }}
+                            sx={{
+                              fontWeight: 400,
+                              fontSize: 16,
+                              lineHeight: 1.4,
+                              display: "inline-flex",
+                              alignItems: "center",
+                            }}
                           >
                             {trOperatorsLabel}
                             <RedStar />
                           </Box>
                         </Box>
 
-                        <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
+                        <Box
+                          sx={{
+                            flex: 1,
+                            borderLeft: "1px solid #e0e0e0",
+                            padding: "10px",
+                          }}
+                        >
                           <Box sx={{ flex: 1, padding: "10px" }}>
-                            <Box sx={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 3, alignItems: "stretch", py: 0.5 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexWrap: "nowrap",
+                                overflowX: "auto",
+                                gap: 3,
+                                alignItems: "stretch",
+                                py: 0.5,
+                              }}
+                            >
                               {allDEs.map((hde) => {
                                 const hId = getDeId(hde);
                                 if (!hId || !OP_HSTACK.has(hId)) return null;
                                 if (hiddenFields[hId]) return null;
 
-                                const hWarn = warnings[hId] === "integerOnly";
-                                const hHelpId = hWarn ? `help-${hId}` : undefined;
-                                const hGuards = INTEGER_ONLY_IDS.has(hId) ? integerOnlyGuards : {};
+                                const hWarn =
+                                  warnings[hId] === "integerOnly";
+                                const hRuleMsg = fieldRuleErrors[hId];
+                                const hHasRule = !!hRuleMsg;
+                                const hHelpId =
+                                  hWarn || hHasRule ? `help-${hId}` : undefined;
+                                const hGuards = INTEGER_ONLY_IDS.has(hId)
+                                  ? integerOnlyGuards
+                                  : {};
 
                                 return (
                                   <Box
                                     key={hId}
-                                    sx={{ flex: "0 0 auto", minWidth: 100, display: "inline-flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", whiteSpace: "nowrap" }}
+                                    sx={{
+                                      flex: "0 0 auto",
+                                      minWidth: 100,
+                                      display: "inline-flex",
+                                      flexDirection: "column",
+                                      alignItems: "flex-start",
+                                      justifyContent: "center",
+                                      whiteSpace: "nowrap",
+                                    }}
                                   >
-                                    <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary" }}>
-                                      <DataValueLabel dataElement={hId} /> 
+                                    <Box
+                                      sx={{
+                                        mb: 0.5,
+                                        fontWeight: 600,
+                                        fontSize: 12,
+                                        color: "text.secondary",
+                                      }}
+                                    >
+                                      <DataValueLabel dataElement={hId} />
                                     </Box>
                                     <DataValueFieldNoBlur
                                       dataElement={hId}
-                                      aria-invalid={hWarn ? "true" : undefined}
+                                      aria-invalid={
+                                        hWarn || hHasRule ? "true" : undefined
+                                      }
                                       aria-describedby={hHelpId}
                                       {...hGuards}
                                     />
                                     {hWarn && (
-                                      <Box id={hHelpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                                      <Box
+                                        id={hHelpId}
+                                        sx={{
+                                          mt: 0.5,
+                                          fontSize: 12,
+                                          lineHeight: "16px",
+                                          color: "#d32f2f",
+                                        }}
+                                      >
                                         {trIntOnly}
+                                      </Box>
+                                    )}
+                                    {hHasRule && (
+                                      <Box
+                                        sx={{
+                                          mt: 0.5,
+                                          fontSize: 12,
+                                          lineHeight: "16px",
+                                          color: "#d32f2f",
+                                        }}
+                                      >
+                                        {hRuleMsg}
                                       </Box>
                                     )}
                                   </Box>
@@ -310,12 +538,30 @@ const FacilityBuildingandFurniture = () => {
                     )}
 
                     {showServiceProvider && (
-                      <Box sx={{ display: "flex", alignItems: "center", borderBottom: "1px solid #e0e0e0" }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          borderBottom: "1px solid #e0e0e0",
+                        }}
+                      >
                         <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
-                          <DataValueLabel dataElement={keys.SERVICE_PROVIDER_ID} />
-                        </Box><RedStar />
-                        <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
-                          <DataValueFieldNoBlur dataElement={keys.SERVICE_PROVIDER_ID} required />
+                          <DataValueLabel
+                            dataElement={keys.SERVICE_PROVIDER_ID}
+                          />
+                        </Box>
+                        <RedStar />
+                        <Box
+                          sx={{
+                            flex: 1,
+                            borderLeft: "1px solid #e0e0e0",
+                            padding: "10px",
+                          }}
+                        >
+                          <DataValueFieldNoBlur
+                            dataElement={keys.SERVICE_PROVIDER_ID}
+                            required
+                          />
                         </Box>
                       </Box>
                     )}
@@ -329,44 +575,124 @@ const FacilityBuildingandFurniture = () => {
                     {Row}
 
                     {showNewOperators && visibleNewOps.length > 0 && (
-                      <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
-                        <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", display: "flex", alignItems: "center" }}>
-                          {/* red * before On-site internet operator label */}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "stretch",
+                          borderBottom: "1px solid #e0e0e0",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: `${LABEL_COL_W}px`,
+                            px: "10px",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
                           <Box
                             component="span"
-                            sx={{ fontWeight: 400, fontSize: 16, lineHeight: 1.4, display: "inline-flex", alignItems: "center" }}
+                            sx={{
+                              fontWeight: 400,
+                              fontSize: 16,
+                              lineHeight: 1.4,
+                              display: "inline-flex",
+                              alignItems: "center",
+                            }}
                           >
-                           {trNewOperatorsLabel} 
-                           <RedStar />
+                            {trNewOperatorsLabel}
+                            <RedStar />
                           </Box>
                         </Box>
 
-                        <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
+                        <Box
+                          sx={{
+                            flex: 1,
+                            borderLeft: "1px solid #e0e0e0",
+                            padding: "10px",
+                          }}
+                        >
                           <Box sx={{ flex: 1, padding: "10px" }}>
-                            <Box sx={{ display: "flex", flexWrap: "nowrap", overflowX: "auto", gap: 3, alignItems: "stretch", py: 0.5 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexWrap: "nowrap",
+                                overflowX: "auto",
+                                gap: 3,
+                                alignItems: "stretch",
+                                py: 0.5,
+                              }}
+                            >
                               {allDEs.map((hde) => {
                                 const hId = getDeId(hde);
-                                if (!hId || !NEW_OP_HSTACK.has(hId)) return null;
+                                if (!hId || !NEW_OP_HSTACK.has(hId))
+                                  return null;
                                 if (hiddenFields[hId]) return null;
 
-                                const hWarn = warnings[hId] === "integerOnly";
-                                const hHelpId = hWarn ? `help-${hId}` : undefined;
-                                const hGuards = INTEGER_ONLY_IDS.has(hId) ? integerOnlyGuards : {};
+                                const hWarn =
+                                  warnings[hId] === "integerOnly";
+                                const hRuleMsg = fieldRuleErrors[hId];
+                                const hHasRule = !!hRuleMsg;
+                                const hHelpId =
+                                  hWarn || hHasRule ? `help-${hId}` : undefined;
+                                const hGuards = INTEGER_ONLY_IDS.has(hId)
+                                  ? integerOnlyGuards
+                                  : {};
 
                                 return (
-                                  <Box key={hId} sx={{ flex: "0 0 auto", minWidth: 100, display: "inline-flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", whiteSpace: "nowrap" }}>
-                                    <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary" }}>
+                                  <Box
+                                    key={hId}
+                                    sx={{
+                                      flex: "0 0 auto",
+                                      minWidth: 100,
+                                      display: "inline-flex",
+                                      flexDirection: "column",
+                                      alignItems: "flex-start",
+                                      justifyContent: "center",
+                                      whiteSpace: "nowrap",
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        mb: 0.5,
+                                        fontWeight: 600,
+                                        fontSize: 12,
+                                        color: "text.secondary",
+                                      }}
+                                    >
                                       <DataValueLabel dataElement={hId} />
                                     </Box>
                                     <DataValueFieldNoBlur
                                       dataElement={hId}
-                                      aria-invalid={hWarn ? "true" : undefined}
+                                      aria-invalid={
+                                        hWarn || hHasRule ? "true" : undefined
+                                      }
                                       aria-describedby={hHelpId}
                                       {...hGuards}
                                     />
                                     {hWarn && (
-                                      <Box id={hHelpId} sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                                      <Box
+                                        id={hHelpId}
+                                        sx={{
+                                          mt: 0.5,
+                                          fontSize: 12,
+                                          lineHeight: "16px",
+                                          color: "#d32f2f",
+                                        }}
+                                      >
                                         {trIntOnly}
+                                      </Box>
+                                    )}
+                                    {hHasRule && (
+                                      <Box
+                                        sx={{
+                                          mt: 0.5,
+                                          fontSize: 12,
+                                          lineHeight: "16px",
+                                          color: "#d32f2f",
+                                        }}
+                                      >
+                                        {hRuleMsg}
                                       </Box>
                                     )}
                                   </Box>
@@ -385,19 +711,70 @@ const FacilityBuildingandFurniture = () => {
                 return (
                   <Box key={deId}>
                     {Row}
-                    <Box sx={{ display: "flex", alignItems: "stretch", borderBottom: "1px solid #e0e0e0" }}>
-                      <Box sx={{ width: `${LABEL_COL_W}px`, px: "10px", py: "10px", display: "flex", alignItems: "center" }}>
-                        {/* red * before Months label */}
-                        <Box component="span" sx={{ fontWeight: 400, fontSize: 16, display: "inline-flex", alignItems: "center" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "stretch",
+                        borderBottom: "1px solid #e0e0e0",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: `${LABEL_COL_W}px`,
+                          px: "10px",
+                          py: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box
+                          component="span"
+                          sx={{
+                            fontWeight: 400,
+                            fontSize: 16,
+                            display: "inline-flex",
+                            alignItems: "center",
+                          }}
+                        >
                           {trMonthsLabel}
                           <RedStar />
                         </Box>
                       </Box>
-                      <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", padding: "10px" }}>
-                        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(7, minmax(120px, 1fr))", gap: 2, alignItems: "start" }}>
+                      <Box
+                        sx={{
+                          flex: 1,
+                          borderLeft: "1px solid #e0e0e0",
+                          padding: "10px",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns:
+                              "repeat(7, minmax(120px, 1fr))",
+                            gap: 2,
+                            alignItems: "start",
+                          }}
+                        >
                           {visibleMonths.map((mId) => (
-                            <Box key={mId} sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start", minWidth: 0 }}>
-                              <Box sx={{ mb: 0.5, fontWeight: 600, fontSize: 12, color: "text.secondary", lineHeight: 1.2 }}>
+                            <Box
+                              key={mId}
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "flex-start",
+                                minWidth: 0,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  mb: 0.5,
+                                  fontWeight: 600,
+                                  fontSize: 12,
+                                  color: "text.secondary",
+                                  lineHeight: 1.2,
+                                }}
+                              >
                                 <DataValueLabel dataElement={mId} />
                               </Box>
                               <DataValueFieldNoBlur dataElement={mId} />

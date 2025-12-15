@@ -27,11 +27,11 @@ const HIDE_IF_NO_WATER = "uVEvR09vS76";
 const HIDE_IF_TRUE_CONTROLLER_ID = "vnJhT1wzjJa";
 const HIDE_IF_TRUE_TARGET_ID = "sevW1KA9uZv";
 
-const HIDE_TOILET_CTRL_ID = "omwad4O2kAf";    // 4.1. Type of toilet
-const HIDE_TOILET_TARGET_ID = "x59W91PRh3t";  // 4.2. Patient toilet image
+const HIDE_TOILET_CTRL_ID = "omwad4O2kAf";    
+const HIDE_TOILET_TARGET_ID = "x59W91PRh3t";  
 
-const HIDE_OPD_CTRL_ID = "KpDpzOLL5YI";       // 10.1. Soap and water available in OPD
-const HIDE_OPD_TARGET_ID = "Kcb5YG66lpa";     // 10.2. Image of soap and water in OPD
+const HIDE_OPD_CTRL_ID = "KpDpzOLL5YI";       
+const HIDE_OPD_TARGET_ID = "Kcb5YG66lpa";     
 
 const DEP_SET = new Set(RULES.flatMap((r) => r.dependents));
 const normalize = (s) => String(s ?? "").trim().toLowerCase();
@@ -145,7 +145,7 @@ const Wash = () => {
   }, [currentEvent?.dataValues]);
 
   const hideNoWater = useMemo(() => {
-    const v = valueOf(HIDE_IF_NO_WATER); // already normalized
+    const v = valueOf(HIDE_IF_NO_WATER); 
     return v === "no water source";
   }, [currentEvent?.dataValues]);
 
@@ -357,7 +357,6 @@ const Wash = () => {
               );
 
               if (!rule) {
-
                 return renderControllerRow;
               }
 

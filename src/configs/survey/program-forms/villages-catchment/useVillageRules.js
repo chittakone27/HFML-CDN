@@ -1,10 +1,13 @@
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+const LOCK_COPY_FLAG_AFTER_RAINY_EDIT = false;
 
-const TRAVEL_CONDITION_ID = "tiXQkpoVypv"; // Travel condition (option set)
+
+const DISTANCE_DRY_ID = "uVTQtprDyR2";
+const TRAVEL_CONDITION_ID = "tiXQkpoVypv"; 
 const FOOT_DURATION_ID = "ooCoZbdc3az";
 const BIKE_DURATION_ID = "bHbKBszX1LW";
 const BOAT_TIME_ID = "gepvFAO9AZ7";
@@ -12,11 +15,14 @@ const FERRY_FEE_ID = "OWAR8Vpa8IW";
 const NEED_TO_CROOS_RIVER = "pNpvxWJdma0";
 const CROSS_FEE_DRY_ID = "J6etH8q3xGw";
 const CAN_TAVEL_BY_CAR = "qMcrT19dJzL";
+
 const NEED_HUMAN_CARRY_BIKE_DRY_ID = "NougqvmbbOa";
 const FEES_CARRY_BIKE_DRY_ID = "epuK8h4Tj9F";
 const TRUCK_NEED_DRY_ID = "u2UUQIeQadY";
 const FEE_FOR_TRUCK_DRY_ID = "Xj9BWckBot5";
+const OTHER_DRY_ID = "rWHyrx2C6CT";
 
+const DISTANCE_RAINY_ID = "SZZt8ASRupD";
 const TRAVEL_CONDITION_ID2 = "GWjkmxiRjk0";
 const FOOT_DURATION_ID2 = "H7wG8lNIkrC";
 const BIKE_DURATION_ID2 = "boNkAhvANYo";
@@ -30,16 +36,51 @@ const TRUCK_NEED_RAIN_ID = "WJ9rQPMdnfo";
 const FEE_FOR_TRUCK_ID = "EwZZZTIDA8c";
 const ROAD_BROKEN_ID = "d7eFdiZip4P";
 const CAN_TAVEL_BY_CAR2 = "OchVqUn7V0b";
+const OTHER_RAINY_ID = "coY9D79R7l4";
+
+const COPY_TRAVEL_COND_FLAG_VILLAGE_ID = "CSdPepdR8q6";
+
+const DRY_TO_RAINY_MAP_VILLAGE = {
+  [DISTANCE_DRY_ID]: DISTANCE_RAINY_ID,
+  [TRAVEL_CONDITION_ID]: TRAVEL_CONDITION_ID2,
+  [FOOT_DURATION_ID]: FOOT_DURATION_ID2,
+  [BIKE_DURATION_ID]: BIKE_DURATION_ID2,
+  [BOAT_TIME_ID]: BOAT_DURATION_ID2,
+  [FERRY_FEE_ID]: FERRY_FEE_ID2,
+  [CAN_TAVEL_BY_CAR]: CAN_TAVEL_BY_CAR2,
+  [NEED_HUMAN_CARRY_BIKE_DRY_ID]: NEED_HUMAN_CARRY_BIKE_ID,
+  [FEES_CARRY_BIKE_DRY_ID]: FEES_CARRY_BIKE_ID,
+  [TRUCK_NEED_DRY_ID]: TRUCK_NEED_RAIN_ID,
+  [FEE_FOR_TRUCK_DRY_ID]: FEE_FOR_TRUCK_ID,
+  [OTHER_DRY_ID]: OTHER_RAINY_ID,
+};
+
+const RAINY_SECTION_IDS_FOR_CHANGE_DETECTION = [
+  DISTANCE_RAINY_ID,
+  TRAVEL_CONDITION_ID2,
+  FOOT_DURATION_ID2,
+  BIKE_DURATION_ID2,
+  BOAT_DURATION_ID2,
+  FERRY_FEE_ID2,
+  NEED_TO_CROOS_RIVER2,
+  CROSS_FEE_RAIN_ID,
+  NEED_HUMAN_CARRY_BIKE_ID,
+  FEES_CARRY_BIKE_ID,
+  TRUCK_NEED_RAIN_ID,
+  FEE_FOR_TRUCK_ID,
+  CAN_TAVEL_BY_CAR2,
+  OTHER_RAINY_ID,
+];
 
 const INTEGER_ONLY_IDS = [
-  FERRY_FEE_ID,        // dry: boat fee
-  CROSS_FEE_DRY_ID,    // dry: crossing fee
-  FERRY_FEE_ID2,       // rainy: boat fee
-  CROSS_FEE_RAIN_ID,   // rainy: crossing fee
-  FEES_CARRY_BIKE_ID,  // rainy: fee for human carry bike
-  FEE_FOR_TRUCK_ID,    // rainy: fee for truck
+  FERRY_FEE_ID, // dry: boat fee
+  CROSS_FEE_DRY_ID, // dry: crossing fee
+  FERRY_FEE_ID2, // rainy: boat fee
+  CROSS_FEE_RAIN_ID, // rainy: crossing fee
+  FEES_CARRY_BIKE_ID, // rainy: fee for human carry bike
+  FEE_FOR_TRUCK_ID, // rainy: fee for truck
   FEES_CARRY_BIKE_DRY_ID, // dry: fee for human carry bike
-  FEE_FOR_TRUCK_DRY_ID,   // dry: fee for truck
+  FEE_FOR_TRUCK_DRY_ID, // dry: fee for truck
 ];
 
 const HIDE_IF_YES_ID = CROSS_FEE_DRY_ID;
@@ -53,7 +94,7 @@ const toAsciiDigits = (str = "") =>
       if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
       if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
       if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0);
+      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
       if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
       return ch;
     }
@@ -61,6 +102,55 @@ const toAsciiDigits = (str = "") =>
 
 const norm = (s) => String(s ?? "").trim().toLowerCase();
 
+const setEventDEValue = (actions, eventId, deId, value) => {
+  if (!actions || !eventId || !deId) return;
+
+  try {
+    if (typeof actions.handleEventDataValueChange === "function") {
+      actions.handleEventDataValueChange({
+        event: eventId,
+        dataElement: deId,
+        value,
+      });
+      return;
+    }
+    if (typeof actions.setDataValue === "function") {
+      actions.setDataValue({ event: eventId, dataElement: deId, value });
+      return;
+    }
+  } catch {
+
+  }
+
+  const stateNow = useTrackerCaptureStore.getState();
+  const dataNow = stateNow?.data;
+  const freshEvent = dataNow?.currentEvents?.find((ev) => ev.event === eventId);
+
+  const current = Array.isArray(freshEvent?.dataValues)
+    ? [...freshEvent.dataValues]
+    : [];
+
+  const idx = current.findIndex((dv) => dv.dataElement === deId);
+
+  if (value === "" || value == null) {
+    if (idx >= 0) {
+      current.splice(idx, 1);
+    }
+  } else if (idx >= 0) {
+    if (current[idx].value === value) return;
+    current[idx] = { ...current[idx], value };
+  } else {
+    current.push({ dataElement: deId, value });
+  }
+
+  try {
+    if (typeof actions.changeEventProperty === "function") {
+      actions.changeEventProperty(eventId, "dataValues", current);
+    }
+  } catch {
+
+  }
+};
 
 const applyTravelConditionRules = (
   travelCondRaw,
@@ -112,11 +202,18 @@ const useVillageRules = () => {
     hiddenOptions: {},
   });
 
-  const { data } = useTrackerCaptureStore(
-    useShallow((state) => ({ data: state.data }))
+  const { data, actions } = useTrackerCaptureStore(
+    useShallow((state) => ({ data: state.data, actions: state.actions }))
   );
   const { currentTei, currentEvents, selectedEvent } = data || {};
   const currentEvent = currentEvents?.find((ev) => ev.event === selectedEvent);
+  const eventId = currentEvent?.event || currentEvent?.id;
+
+  const lastFlagYesRef = useRef(false);
+  const lastSnapshotRef = useRef(null);
+  const copyFlagLockedRef = useRef(false);
+
+  const prevHiddenRef = useRef({});
 
   useEffect(() => {
     const assignations = {};
@@ -124,9 +221,96 @@ const useVillageRules = () => {
     const warningTexts = {};
     const hiddenOptions = {};
     const hiddenFields = {};
+    const disabledFields = {};
 
-    const dv = (id) =>
-      currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
+    const dv = (id) => {
+      if (!currentEvent || !id) return undefined;
+
+      if (
+        currentEvent.values &&
+        typeof currentEvent.values === "object" &&
+        Object.prototype.hasOwnProperty.call(currentEvent.values, id)
+      ) {
+        return currentEvent.values[id];
+      }
+
+      if (Array.isArray(currentEvent.dataValues)) {
+        const hit = currentEvent.dataValues.find((x) => x.dataElement === id);
+        if (hit) return hit.value;
+      }
+
+      return currentEvent[id];
+    };
+
+    const dvSnapshot = (id) => {
+      if (!id) return undefined;
+      const stateNow = useTrackerCaptureStore.getState();
+      const dataNow = stateNow?.data;
+      const ev =
+        dataNow?.currentEvents?.find((e) => e.event === selectedEvent) ||
+        currentEvent;
+      if (!ev) return undefined;
+
+      if (
+        ev.values &&
+        typeof ev.values === "object" &&
+        Object.prototype.hasOwnProperty.call(ev.values, id)
+      ) {
+        return ev.values[id];
+      }
+
+      if (Array.isArray(ev.dataValues)) {
+        const hit = ev.dataValues.find((x) => x.dataElement === id);
+        if (hit) return hit.value;
+      }
+
+      return ev[id];
+    };
+
+    const buildRainySnapshot = () => {
+      const obj = {};
+      for (const rainyId of RAINY_SECTION_IDS_FOR_CHANGE_DETECTION) {
+        obj[rainyId] = dvSnapshot(rainyId) ?? "";
+      }
+      return JSON.stringify(obj);
+    };
+
+    const flagRaw = dv(COPY_TRAVEL_COND_FLAG_VILLAGE_ID);
+    const flagNorm = norm(flagRaw);
+    const isFlagYes =
+      flagNorm === "true" || flagNorm === "yes" || flagNorm === "1";
+
+    const lastFlagYes = lastFlagYesRef.current;
+
+    if (isFlagYes && !lastFlagYes && actions && currentEvent && eventId) {
+      Object.entries(DRY_TO_RAINY_MAP_VILLAGE).forEach(
+        ([dryId, rainyId]) => {
+          const srcVal = dv(dryId) ?? "";
+          setEventDEValue(actions, eventId, rainyId, srcVal);
+        }
+      );
+
+      lastSnapshotRef.current = buildRainySnapshot(); // baseline
+      copyFlagLockedRef.current = false; // fresh copy, not locked yet
+    }
+
+    if (lastSnapshotRef.current && actions && currentEvent && eventId) {
+      const currentSnapshot = buildRainySnapshot();
+      if (currentSnapshot !== lastSnapshotRef.current) {
+        setEventDEValue(
+          actions,
+          eventId,
+          COPY_TRAVEL_COND_FLAG_VILLAGE_ID,
+          ""
+        );
+        if (LOCK_COPY_FLAG_AFTER_RAINY_EDIT) {
+          copyFlagLockedRef.current = true;
+        }
+        lastSnapshotRef.current = null;
+      }
+    }
+
+    lastFlagYesRef.current = isFlagYes;
 
     const { hasBoat: hasBoat1 } = applyTravelConditionRules(
       dv(TRAVEL_CONDITION_ID),
@@ -163,9 +347,10 @@ const useVillageRules = () => {
       const needHumanDryVal = dv(NEED_HUMAN_CARRY_BIKE_DRY_ID);
       const needHumanDryNorm = norm(needHumanDryVal);
       if (needHumanDryNorm !== "yes" && needHumanDryNorm !== "true") {
-        hiddenFields[FEES_CARRY_BIKE_DRY_ID] = true; // show fee only if YES
+        hiddenFields[FEES_CARRY_BIKE_DRY_ID] = true;
       }
     }
+
     if (treatAsBoatOnly1) {
       hiddenFields[TRUCK_NEED_DRY_ID] = true;
       hiddenFields[FEE_FOR_TRUCK_DRY_ID] = true;
@@ -185,7 +370,7 @@ const useVillageRules = () => {
         boatId: BOAT_DURATION_ID2,
         ferryFeeId: FERRY_FEE_ID2,
         needCrossRiverId: NEED_TO_CROOS_RIVER2,
-        canTravelByCarId: CAN_TAVEL_BY_CAR2, // rainy car field
+        canTravelByCarId: CAN_TAVEL_BY_CAR2,
       },
       hiddenFields
     );
@@ -251,16 +436,39 @@ const useVillageRules = () => {
 
     hiddenOptions[BOAT_TIME_ID] = ["cannot_foot", "cannot_bike"];
 
-    setProps((prev) => ({
-      ...prev,
+    if (actions && eventId) {
+      const prevHidden = prevHiddenRef.current || {};
+      for (const deId of Object.keys(hiddenFields)) {
+        const wasHidden = !!prevHidden[deId];
+        const isHidden = !!hiddenFields[deId];
+        if (isHidden && !wasHidden) {
+          setEventDEValue(actions, eventId, deId, "");
+        }
+      }
+      prevHiddenRef.current = { ...hiddenFields };
+    } else {
+      prevHiddenRef.current = { ...hiddenFields };
+    }
+
+    if (copyFlagLockedRef.current && LOCK_COPY_FLAG_AFTER_RAINY_EDIT) {
+      disabledFields[COPY_TRAVEL_COND_FLAG_VILLAGE_ID] = true;
+    }
+
+    setProps({
       assignations,
       warnings,
       warningTexts,
       hiddenFields,
       hiddenOptions,
-      disabledFields: prev.disabledFields || {},
-    }));
-  }, [JSON.stringify(currentEvent), JSON.stringify(currentTei?.lastSaved), t]);
+      disabledFields,
+    });
+  }, [
+    JSON.stringify(currentEvent),
+    JSON.stringify(currentTei?.lastSaved),
+    t,
+    selectedEvent,
+    eventId,
+  ]);
 
   return props;
 };

@@ -23,12 +23,23 @@ const ONLY_DE_WHEN_CH = "K4RyAstSuIe";
 
 const NON_MANDATORY_ID = "HFXe55C0WT0";
 
+const COPY_TRAVEL_COND_FLAG_ID = "YMTERwrxrix";
+
 const NEARBY_ATTR = {
   hc: "Jy7ou2LCeju",
   ph: "rsXdExpMW65",
   dh: "WH4Az6TJ5ZA",
-  ch: CH_ATTR_ID, // central hospital
+  ch: CH_ATTR_ID, 
 };
+
+const TEA = {
+  nearbyType: "SxKvvxpzop9", 
+  customFacilityName: "f9d4P9maZEq", 
+};
+
+const NEARBY_EXISTING_HF_CODES = new Set([
+  "EXIST_PUBLIC_HF", 
+]);
 
 const getEventDEValue = (currentEvent, deId) => {
   if (!currentEvent) return undefined;
@@ -51,6 +62,26 @@ const isEmpty = (v) => {
 const getAttr = (tei, id) =>
   (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
 
+const clearTeiAttributes = (actions, attrIds = []) => {
+  if (!actions) return;
+
+  attrIds.forEach((attrId) => {
+    if (!attrId) return;
+    try {
+      if (typeof actions.handleAttributeChange === "function") {
+        actions.handleAttributeChange({ attribute: attrId, value: "" });
+      } else if (typeof actions.setAttributeValue === "function") {
+        actions.setAttributeValue(attrId, "");
+      } else if (typeof actions.changeAttribute === "function") {
+        actions.changeAttribute(attrId, "");
+      } else if (typeof actions.updateTeiAttribute === "function") {
+        actions.updateTeiAttribute({ attribute: attrId, value: "" });
+      }
+    } catch {
+    }
+  });
+};
+
 const stripCodePrefix = (s = "") => {
   const str = String(s || "").trim();
   const match = str.match(/^\([^)]*\)\s*(.+)$/);
@@ -64,14 +95,12 @@ const DHIS_UID_RE = /^[A-Za-z][A-Za-z0-9]{10}$/;
 
 const getApiBaseUrl = () => {
   if (typeof window !== "undefined" && window.DHIS_CONFIG?.baseUrl) {
-
     return window.DHIS_CONFIG.baseUrl.replace(/\/$/, "");
   }
   const envBase = import.meta.env.VITE_BASE_URL;
   if (envBase) {
     return String(envBase).replace(/\/$/, "");
   }
-
   return "";
 };
 
@@ -81,10 +110,11 @@ const buildApiUrl = (path) => {
   return base ? `${base}/${cleanedPath}` : `/${cleanedPath}`;
 };
 
+
 const NearbyStage = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
-  const langKey = isLao ? "lo" : "en"; // just two buckets is enough here
+  const langKey = isLao ? "lo" : "en"; 
 
   const { program, orgUnit } = useSelectionStore(
     useShallow((state) => ({
@@ -113,7 +143,7 @@ const NearbyStage = () => {
   const DRY_SECTION_EN =
     "Dry-season travel conditions from this health facility to the nearby health facility";
   const DRY_SECTION_LO =
-    "ການເດີນທາງໃນລະດູແຫ້ງ ຈາກສະຖານທີ່ບໍລິການຂອງເຮົາ ຫາ ສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
+    "ການເດີນທາງໃນລະດູແລ້ງ ຈາກ ຈາກສະຖານທີ່ບໍລິການຂອງເຮົາ ຫາ ສະຖານທີ່ບໍລິການໃກ້ຄຽງ";
 
   const RAINY_SECTION_EN =
     "Rainy-season travel conditions from this health facility to the nearby health facility";
@@ -123,6 +153,7 @@ const NearbyStage = () => {
   const trNearbySectionTitle = t("nearby.section.details", {
     defaultValue: isLao ? SECTION_LO : SECTION_EN,
   });
+
 
   const sourceFacilityName = useMemo(() => {
     if (!orgUnit) return "";
@@ -142,11 +173,10 @@ const NearbyStage = () => {
       getAttr(currentTei, NEARBY_ATTR.ch),
     ]
       .map((v) => String(v || "").trim())
-      .filter((v) => DHIS_UID_RE.test(v)); // we only expect UIDs here
+      .filter((v) => DHIS_UID_RE.test(v)); 
     return Array.from(new Set(vals));
   }, [currentTei]);
 
-  // e.g. ouNames["SbVBLDCqmks|en"] or ouNames["SbVBLDCqmks|lo"]
   const [ouNames, setOuNames] = useState({});
 
   useEffect(() => {
@@ -218,6 +248,7 @@ const NearbyStage = () => {
     };
   }, [nearbyOrgUnitIds, langKey, i18n.language, isLao, ouNames]);
 
+
   const targetFacilityName = useMemo(() => {
     if (!currentTei) return "";
 
@@ -239,31 +270,82 @@ const NearbyStage = () => {
     return "";
   }, [currentTei, ouNames, langKey]);
 
+  const nearbyTypeRaw = getAttr(currentTei, TEA.nearbyType);
+  const nearbyTypeNorm = normalize(nearbyTypeRaw);
+
+  const isExistingHFSelection =
+    NEARBY_EXISTING_HF_CODES.has(nearbyTypeRaw) ||
+    nearbyTypeNorm === normalize("Existing public health facility");
+
+  const customFacilityName =
+    getAttr(currentTei, TEA.customFacilityName) || "";
+
+  useEffect(() => {
+    if (!actions) return;
+    if (!nearbyTypeRaw) return;
+
+    if (isExistingHFSelection) {
+      clearTeiAttributes(actions, [
+        TEA.customFacilityName,
+
+      ]);
+    } else {
+      clearTeiAttributes(actions, [
+        NEARBY_ATTR.dh,
+        NEARBY_ATTR.hc,
+        NEARBY_ATTR.ph,
+        NEARBY_ATTR.ch,
+      ]);
+    }
+  }, [nearbyTypeRaw, isExistingHFSelection, actions]);
+
   const dynamicDryTitle = useMemo(() => {
     const from =
       sourceFacilityName ||
       (isLao ? "ສະຖານທີ່ບໍລິການຂອງເຮົາ" : "this health facility");
+
+    const toBase = isExistingHFSelection
+      ? targetFacilityName
+      : customFacilityName || targetFacilityName;
+
     const to =
-      targetFacilityName ||
+      toBase ||
       (isLao ? "ສະຖານທີ່ບໍລິການໃກ້ຄຽງ" : "the nearby health facility");
 
     return isLao
       ? `ການເດີນທາງໃນລະດູແລ້ງ ຈາກ ${from} ຫາ ${to}`
       : `Dry-season travel conditions from ${from} to ${to}`;
-  }, [isLao, sourceFacilityName, targetFacilityName]);
+  }, [
+    isLao,
+    sourceFacilityName,
+    targetFacilityName,
+    customFacilityName,
+    isExistingHFSelection,
+  ]);
 
   const dynamicRainyTitle = useMemo(() => {
     const from =
       sourceFacilityName ||
       (isLao ? "ສະຖານທີ່ບໍລິການຂອງເຮົາ" : "this health facility");
+
+    const toBase = isExistingHFSelection
+      ? targetFacilityName
+      : customFacilityName || targetFacilityName;
+
     const to =
-      targetFacilityName ||
+      toBase ||
       (isLao ? "ສະຖານທີ່ບໍລິການໃກ້ຄຽງ" : "the nearby health facility");
 
     return isLao
-      ? `ການເດີນທາງໃນລະດູແລ້ງ ຈາກ ${from} ຫາ ${to}`
+      ? `ການເດີນທາງໃນລະດູຝົນ ຈາກ ${from} ຫາ ${to}`
       : `Rainy-season travel conditions from ${from} to ${to}`;
-  }, [isLao, sourceFacilityName, targetFacilityName]);
+  }, [
+    isLao,
+    sourceFacilityName,
+    targetFacilityName,
+    customFacilityName,
+    isExistingHFSelection,
+  ]);
 
   const trSectionTitle = (name) => {
     const s = String(name || "").trim();
@@ -333,6 +415,7 @@ const NearbyStage = () => {
   const requiredSet = useMemo(() => {
     const s = new Set(presentIds);
     s.delete(NON_MANDATORY_ID);
+    s.delete(COPY_TRAVEL_COND_FLAG_ID);
     return s;
   }, [presentIds]);
 
@@ -482,7 +565,25 @@ const NearbyStage = () => {
                 }}
               >
                 <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
-                  <DataValueLabel dataElement={deId} />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.5,
+                      fontWeight: 600,
+                      lineHeight: "20px",
+                    }}
+                  >
+                    <DataValueLabel dataElement={deId} />
+                    {isRequired && (
+                      <Box
+                        component="span"
+                        sx={{ color: "#d32f2f", fontWeight: 700 }}
+                      >
+                        *
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
 
                 <Box

@@ -88,7 +88,6 @@ const ScannedLogBook = () => {
           {(section.dataElements || []).map((de, dIdx) => {
             const deId = de?.id ?? de?.dataElement?.id;
             if (!deId) return null;
-   
             return (
               <Box key={deId || `de-${dIdx}`} sx={GRID_ROW}>
                 <Box sx={LABEL_CELL}>

@@ -17,7 +17,6 @@ import useMetadataStore from "@/state/metadata";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
 
-// OU group IDs for address
 const G = {
   PROVINCE: "jblbYwuvO33", // Province (PHO)
   DISTRICT: "Zh1inFu0Z2O", // District (DHO)
@@ -85,8 +84,6 @@ const VillageSelectorOrgUnit = ({ VillageSelectorIds, saveGeo, disabled }) => {
     return m;
   }, [districts]);
 
-  // Villages by district:
-  // village -> parent (HC/DH) -> parent (District)
   const villageByDistrict = useMemo(() => {
     const m = new Map();
     (villages || []).forEach((v) => {
@@ -101,7 +98,6 @@ const VillageSelectorOrgUnit = ({ VillageSelectorIds, saveGeo, disabled }) => {
     return m;
   }, [villages, ouById]);
 
-  // local state from TEI
   const [provId, setProvId] = useState("");
   const [distId, setDistId] = useState("");
   const [villId, setVillId] = useState("");
@@ -142,7 +138,6 @@ const VillageSelectorOrgUnit = ({ VillageSelectorIds, saveGeo, disabled }) => {
       .sort((a, b) => a.label.localeCompare(b.label));
   }, [distId, villageByDistrict, language]);
 
-  // helper: update TEI attributes + enrollment geometry
   const updateAttrsAndGeo = (nextProv, nextDist, nextVill) => {
     if (changeAttributeValue) {
       if (provAttr) changeAttributeValue(provAttr, nextProv || "");
@@ -210,7 +205,6 @@ const VillageSelectorOrgUnit = ({ VillageSelectorIds, saveGeo, disabled }) => {
     </InputAdornment>
   );
 
-  // handlers
   const handleProvChange = (e) => {
     const nextProv = e.target.value || "";
     const nextDist = "";
@@ -235,7 +229,6 @@ const VillageSelectorOrgUnit = ({ VillageSelectorIds, saveGeo, disabled }) => {
     updateAttrsAndGeo(provId, distId, nextVill);
   };
 
-  // (optional) required flags / errors
   const provError = false;
   const distError = false;
   const villError = false;
@@ -321,8 +314,6 @@ const VillageSelectorOrgUnit = ({ VillageSelectorIds, saveGeo, disabled }) => {
         </Select>
         {distError && <FormHelperText>Required</FormHelperText>}
       </FormControl>
-
-      {/* Village */}
       <FormControl
         fullWidth
         size="small"

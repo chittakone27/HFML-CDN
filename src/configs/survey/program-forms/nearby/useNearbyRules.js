@@ -1,35 +1,76 @@
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import { useShallow } from "zustand/react/shallow";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-// Travel-time / condition DEs – Section 1 (dry season)
-const TRAVEL_CONDITION_ID = "dfMxJtpEVY0"; // Travel condition (option set)
-const FOOT_DURATION_ID = "Bokim7QLnF8"; // Travel duration – foot
-const BIKE_DURATION_ID = "bcnCvxfxNeF"; // Travel duration – bike
-const FERRY_FEE_ID = "dBK06ybZUbT"; // Ferry fee
-const NEED_TO_CROOS_RIVER = "jWinhL2rxeK"; // Need to cross river (Yes/No)
-const CAN_TAVEL_BY_CAR = "NI37vfjXk6J"; // The parts that bike can go, car can go as well (dry)
-const NEED_HUMAN_CARRY_BIKE_DRY_ID = "wrXGoTI4uQH"; // Need human to carry bike (dry)
-const FEES_CARRY_BIKE_DRY_ID = "f40RBOQlDi1"; // Fee for human to carry bike (dry)
-const TRUCK_NEED_DRY_ID = "jaHGxAr3E9p"; // Need a truck to cross muddy road (dry)
-const FEE_FOR_TRUCK_DRY_ID = "P554rYBYhyN"; // Fee for truck (dry)
+const LOCK_COPY_FLAG_AFTER_RAINY_EDIT = false;
+
+
+const DISTANCE_DRY_ID = "K4RyAstSuIe";
+const TRAVEL_CONDITION_ID = "dfMxJtpEVY0"; 
+const FOOT_DURATION_ID = "Bokim7QLnF8";
+const BIKE_DURATION_ID = "bcnCvxfxNeF";
+const BOAT_TIME_ID = "yZfjh0SBRzz";
+const FERRY_FEE_ID = "dBK06ybZUbT";
+const CAN_TAVEL_BY_CAR = "NI37vfjXk6J";
+const NEED_HUMAN_CARRY_BIKE_DRY_ID = "wrXGoTI4uQH";
+const FEES_CARRY_BIKE_DRY_ID = "f40RBOQlDi1";
+const NEED_TO_CROOS_RIVER = "jWinhL2rxeK";
+const TRUCK_NEED_DRY_ID = "jaHGxAr3E9p";
+const FEE_FOR_TRUCK_DRY_ID = "P554rYBYhyN";
+const DANGEROUS_DRY_ID = "vBpU3LPtQHw";
 
 // Travel-time / condition DEs – Section 2 (rainy season)
-const TRAVEL_CONDITION_ID2 = "BiSiYIv9EFW"; // Travel condition (option set)
-const BIKE_DURATION_ID2 = "VSbTF1Y4CMD"; // Travel duration – bike
-const FOOT_DURATION_ID2 = "cC9tXe9nM1O"; // Travel duration – foot
-const BOAT_DURATION_ID2 = "thA1ltseEo4"; // Travel time – boat (sec 2)
-const NEED_TO_CROOS_RIVER2 = "rvYPto0hxVE"; // Need to cross river (Yes/No)
-const FERRY_FEE_ID2 = "Lh7BukXsQES"; // Ferry fee
-const NEED_HUMAN_CARRY_BIKE_ID = "xcFzGlfAZNW"; // Need human assistance (Yes/No, rainy)
-const FEES_CARRY_BIKE_ID = "ttoaHSY8sTB"; // Fees for human assistance (rainy)
-const FEE_FOR_TRUCK_ID = "T08IOF1bwi3"; // Fee for truck (rainy)
-const ROAD_BROKEN_ID = "ex7pwRhyyAM"; // Road damaged in rainy season (Yes/No)
-const TRUCK_NEED_RAIN_ID = "j7JHlTSVlPy"; // Need truck to cross muddy road (rainy)
-const CAN_TAVEL_BY_CAR2 = "XaW1WBFbzid"; // The parts that bike can go, car can go as well (rainy)
 
-const BOAT_TIME_ID = "yZfjh0SBRzz"; // Travel time by boat
+const DISTANCE_RAINY_ID = "WOFwxctknr3";
+const TRAVEL_CONDITION_ID2 = "BiSiYIv9EFW"; 
+const FOOT_DURATION_ID2 = "cC9tXe9nM1O";
+const BIKE_DURATION_ID2 = "VSbTF1Y4CMD";
+const BOAT_DURATION_ID2 = "thA1ltseEo4";
+const FERRY_FEE_ID2 = "Lh7BukXsQES";
+const CAN_TAVEL_BY_CAR2 = "XaW1WBFbzid";
+const NEED_HUMAN_CARRY_BIKE_ID = "xcFzGlfAZNW";
+const FEES_CARRY_BIKE_ID = "ttoaHSY8sTB";
+const NEED_TO_CROOS_RIVER2 = "rvYPto0hxVE"; 
+const TRUCK_NEED_RAIN_ID = "j7JHlTSVlPy";
+const FEE_FOR_TRUCK_ID = "T08IOF1bwi3";
+const DANGEROUS_RAINY_ID = "R6lD44QJfa4";
+const ROAD_BROKEN_ID = "ex7pwRhyyAM";
+
+const COPY_TRAVEL_COND_FLAG_ID = "YMTERwrxrix";
+
+const DRY_TO_RAINY_MAP = {
+  [DISTANCE_DRY_ID]: DISTANCE_RAINY_ID,
+  [TRAVEL_CONDITION_ID]: TRAVEL_CONDITION_ID2,
+  [FOOT_DURATION_ID]: FOOT_DURATION_ID2,
+  [BIKE_DURATION_ID]: BIKE_DURATION_ID2,
+  [BOAT_TIME_ID]: BOAT_DURATION_ID2,
+  [FERRY_FEE_ID]: FERRY_FEE_ID2,
+  [CAN_TAVEL_BY_CAR]: CAN_TAVEL_BY_CAR2,
+  [NEED_HUMAN_CARRY_BIKE_DRY_ID]: NEED_HUMAN_CARRY_BIKE_ID,
+  [FEES_CARRY_BIKE_DRY_ID]: FEES_CARRY_BIKE_ID,
+  [TRUCK_NEED_DRY_ID]: TRUCK_NEED_RAIN_ID,
+  [FEE_FOR_TRUCK_DRY_ID]: FEE_FOR_TRUCK_ID,
+  [DANGEROUS_DRY_ID]: DANGEROUS_RAINY_ID,
+};
+
+const RAINY_SECTION_IDS_FOR_CHANGE_DETECTION = [
+  DISTANCE_RAINY_ID,
+  TRAVEL_CONDITION_ID2,
+  FOOT_DURATION_ID2,
+  BIKE_DURATION_ID2,
+  BOAT_DURATION_ID2,
+  FERRY_FEE_ID2,
+  CAN_TAVEL_BY_CAR2,
+  NEED_HUMAN_CARRY_BIKE_ID,
+  FEES_CARRY_BIKE_ID,
+  NEED_TO_CROOS_RIVER2,
+  TRUCK_NEED_RAIN_ID,
+  FEE_FOR_TRUCK_ID,
+  DANGEROUS_RAINY_ID,
+ 
+];
+
 
 const INTEGER_ONLY_IDS = [
   "dBK06ybZUbT",
@@ -38,15 +79,15 @@ const INTEGER_ONLY_IDS = [
   "UiDx8c6lno5",
   "ttoaHSY8sTB",
   "T08IOF1bwi3",
-  "f40RBOQlDi1", // fee for human (dry)
-  "P554rYBYhyN", // fee for truck (dry)
+  "f40RBOQlDi1", 
+  "P554rYBYhyN", 
 ];
 
 const HIDE_IF_YES_ID = "F3U851g1biu";
 const YES_TRIGGER_ID = "jWinhL2rxeK";
 
-const SHOW_TRIGGER_ID = "rvYPto0hxVE"; // legacy
-const SHOW_IF_TRUE_ID = "UiDx8c6lno5"; // legacy
+const SHOW_TRIGGER_ID = "rvYPto0hxVE"; 
+const SHOW_IF_TRUE_ID = "UiDx8c6lno5"; 
 
 const toAsciiDigits = (str = "") =>
   String(str).replace(
@@ -63,6 +104,54 @@ const toAsciiDigits = (str = "") =>
   );
 
 const norm = (s) => String(s ?? "").trim().toLowerCase();
+
+const setEventDEValue = (actions, eventId, deId, value) => {
+  if (!actions || !eventId || !deId) return;
+
+  try {
+    if (typeof actions.handleEventDataValueChange === "function") {
+      actions.handleEventDataValueChange({
+        event: eventId,
+        dataElement: deId,
+        value,
+      });
+      return;
+    }
+    if (typeof actions.setDataValue === "function") {
+      actions.setDataValue({ event: eventId, dataElement: deId, value });
+      return;
+    }
+  } catch {
+  }
+
+  const stateNow = useTrackerCaptureStore.getState();
+  const dataNow = stateNow?.data;
+  const freshEvent = dataNow?.currentEvents?.find((ev) => ev.event === eventId);
+
+  const current = Array.isArray(freshEvent?.dataValues)
+    ? [...freshEvent.dataValues]
+    : [];
+
+  const idx = current.findIndex((dv) => dv.dataElement === deId);
+
+  if (value === "" || value == null) {
+    if (idx >= 0) {
+      current.splice(idx, 1);
+    }
+  } else if (idx >= 0) {
+    if (current[idx].value === value) return;
+    current[idx] = { ...current[idx], value };
+  } else {
+    current.push({ dataElement: deId, value });
+  }
+
+  try {
+    if (typeof actions.changeEventProperty === "function") {
+      actions.changeEventProperty(eventId, "dataValues", current);
+    }
+  } catch {
+  }
+};
 
 const applyTravelConditionRules = (
   travelCondRaw,
@@ -103,6 +192,7 @@ const applyTravelConditionRules = (
   return { hasBoat };
 };
 
+
 const useNearbyRules = () => {
   const { t } = useTranslation();
   const [props, setProps] = useState({
@@ -114,11 +204,18 @@ const useNearbyRules = () => {
     hiddenOptions: {},
   });
 
-  const { data } = useTrackerCaptureStore(
-    useShallow((state) => ({ data: state.data }))
+  const { data, actions } = useTrackerCaptureStore(
+    useShallow((state) => ({ data: state.data, actions: state.actions }))
   );
   const { currentTei, currentEvents, selectedEvent } = data || {};
   const currentEvent = currentEvents?.find((ev) => ev.event === selectedEvent);
+  const eventId = currentEvent?.event || currentEvent?.id;
+
+  const lastFlagYesRef = useRef(false);
+  const lastSnapshotRef = useRef(null);
+  const copyFlagLockedRef = useRef(false);
+
+  const prevHiddenRef = useRef({});
 
   useEffect(() => {
     const assignations = {};
@@ -126,9 +223,92 @@ const useNearbyRules = () => {
     const warningTexts = {};
     const hiddenOptions = {};
     const hiddenFields = {};
+    const disabledFields = {};
 
-    const dv = (id) =>
-      currentEvent?.dataValues?.find((x) => x.dataElement === id)?.value;
+    const dv = (id) => {
+      if (!currentEvent || !id) return undefined;
+
+      if (
+        currentEvent.values &&
+        typeof currentEvent.values === "object" &&
+        Object.prototype.hasOwnProperty.call(currentEvent.values, id)
+      ) {
+        return currentEvent.values[id];
+      }
+
+      if (Array.isArray(currentEvent.dataValues)) {
+        const hit = currentEvent.dataValues.find((x) => x.dataElement === id);
+        if (hit) return hit.value;
+      }
+
+      return currentEvent[id];
+    };
+
+    const dvSnapshot = (id) => {
+      if (!id) return undefined;
+      const stateNow = useTrackerCaptureStore.getState();
+      const dataNow = stateNow?.data;
+      const ev =
+        dataNow?.currentEvents?.find((e) => e.event === selectedEvent) ||
+        currentEvent;
+      if (!ev) return undefined;
+
+      if (
+        ev.values &&
+        typeof ev.values === "object" &&
+        Object.prototype.hasOwnProperty.call(ev.values, id)
+      ) {
+        return ev.values[id];
+      }
+
+      if (Array.isArray(ev.dataValues)) {
+        const hit = ev.dataValues.find((x) => x.dataElement === id);
+        if (hit) return hit.value;
+      }
+
+      return ev[id];
+    };
+
+    const buildRainySnapshot = () => {
+      const obj = {};
+      for (const rainyId of RAINY_SECTION_IDS_FOR_CHANGE_DETECTION) {
+        obj[rainyId] = dvSnapshot(rainyId) ?? "";
+      }
+      return JSON.stringify(obj);
+    };
+
+    const flagRaw = dv(COPY_TRAVEL_COND_FLAG_ID);
+    const flagNorm = norm(flagRaw);
+    const isFlagYes =
+      flagNorm === "true" || flagNorm === "yes" || flagNorm === "1";
+
+    const lastFlagYes = lastFlagYesRef.current;
+
+    if (isFlagYes && !lastFlagYes && actions && currentEvent && eventId) {
+      Object.entries(DRY_TO_RAINY_MAP).forEach(([dryId, rainyId]) => {
+        const srcVal = dv(dryId) ?? "";
+        setEventDEValue(actions, eventId, rainyId, srcVal);
+      });
+
+      lastSnapshotRef.current = buildRainySnapshot();
+      copyFlagLockedRef.current = false; 
+    }
+
+    if (lastSnapshotRef.current && actions && currentEvent && eventId) {
+      const currentSnapshot = buildRainySnapshot();
+      if (currentSnapshot !== lastSnapshotRef.current) {
+
+        setEventDEValue(actions, eventId, COPY_TRAVEL_COND_FLAG_ID, "");
+
+        if (LOCK_COPY_FLAG_AFTER_RAINY_EDIT) {
+          copyFlagLockedRef.current = true;
+        }
+
+        lastSnapshotRef.current = null;
+      }
+    }
+
+    lastFlagYesRef.current = isFlagYes;
 
     const { hasBoat: hasBoat1 } = applyTravelConditionRules(
       dv(TRAVEL_CONDITION_ID),
@@ -198,7 +378,7 @@ const useNearbyRules = () => {
 
     if (!hasBike2) {
       hiddenFields[NEED_HUMAN_CARRY_BIKE_ID] = true;
-      hiddenFields[FEES_CARRY_BIKE_ID] = true; 
+      hiddenFields[FEES_CARRY_BIKE_ID] = true;
     } else {
       const needHumanVal = dv(NEED_HUMAN_CARRY_BIKE_ID);
       const needHumanNorm = norm(needHumanVal);
@@ -243,7 +423,6 @@ const useNearbyRules = () => {
       }
 
       const num = Number(raw);
-
       if (!Number.isFinite(num) || num < 0 || (num > 0 && num < 1000)) {
         warnings[id] = "min1000OrZero";
         warningTexts[id] = t("nearby.warnings.min1000OrZero", {
@@ -253,17 +432,41 @@ const useNearbyRules = () => {
     }
 
     hiddenOptions[BOAT_TIME_ID] = ["cannot_foot", "cannot_bike"];
+    if (actions && eventId) {
+      const prevHidden = prevHiddenRef.current || {};
+      for (const deId of Object.keys(hiddenFields)) {
+        const wasHidden = !!prevHidden[deId];
+        const isHidden = !!hiddenFields[deId];
+        if (isHidden && !wasHidden) {
 
-    setProps((prev) => ({
-      ...prev,
+          setEventDEValue(actions, eventId, deId, "");
+        }
+      }
+      prevHiddenRef.current = { ...hiddenFields };
+    } else {
+
+      prevHiddenRef.current = { ...hiddenFields };
+    }
+
+    if (copyFlagLockedRef.current && LOCK_COPY_FLAG_AFTER_RAINY_EDIT) {
+      disabledFields[COPY_TRAVEL_COND_FLAG_ID] = true;
+    }
+
+    setProps({
       assignations,
       warnings,
       warningTexts,
       hiddenFields,
       hiddenOptions,
-      disabledFields: prev.disabledFields || {},
-    }));
-  }, [JSON.stringify(currentEvent), JSON.stringify(currentTei?.lastSaved), t]);
+      disabledFields,
+    });
+  }, [
+    JSON.stringify(currentEvent),
+    JSON.stringify(currentTei?.lastSaved),
+    t,
+    selectedEvent,
+    eventId,
+  ]);
 
   return props;
 };

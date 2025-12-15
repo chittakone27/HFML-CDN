@@ -3,7 +3,6 @@ import { useShallow } from "zustand/react/shallow";
 import { useTranslation } from "react-i18next";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
-// --- Helpers -----------------------------------------------------------------
 const norm = (s) =>
   String(s ?? "")
     .toLowerCase()
@@ -43,7 +42,6 @@ const toAsciiDigits = (str = "") =>
     }
   );
 
-// --- Attribute IDs -----------------------------------------------------------
 const ID = {
   sourceOfFunding: "VDtUCd4xomY",
   specifyPayer: "tDri5optbSF",
@@ -82,7 +80,6 @@ const useProfileRules = () => {
   const sourceOfFunding = norm(attributes[ID.sourceOfFunding]);
   const deviceType = norm(attributes[ID.deviceType]);
 
-  // For validation we only care about empty vs not, so trim is enough
   const RAM = String(attributes[ID.RAM] ?? "").trim();
   const CPU = String(attributes[ID.CPU] ?? "").trim();
 
@@ -121,19 +118,14 @@ const useProfileRules = () => {
     const warnings = {};
     const helpers = {};
 
-    // ------------------------------------------------------------------
-    // 1. Mandatory rules – EXPLICITLY remove RAM & CPU from mandatory
-    // ------------------------------------------------------------------
     const prevMandatory = mandatoryAttributes || [];
     const nextMandatory = new Set(prevMandatory);
 
-    // Make sure RAM and CPU are NOT mandatory
     nextMandatory.delete(ID.RAM);
     nextMandatory.delete(ID.CPU);
 
     const nextMandatoryArr = Array.from(nextMandatory);
 
-    // Only update store if changed
     if (
       nextMandatoryArr.length !== prevMandatory.length ||
       nextMandatoryArr.some((id, idx) => id !== prevMandatory[idx])
@@ -141,14 +133,8 @@ const useProfileRules = () => {
       setData("mandatoryAttributes", nextMandatoryArr);
     }
 
-    // ------------------------------------------------------------------
-    // 2. Show/hide Specify Payer
-    // ------------------------------------------------------------------
     hidden[ID.specifyPayer] = sourceOfFunding !== "other";
 
-    // ------------------------------------------------------------------
-    // 3. Hide some hardware fields per device type
-    // ------------------------------------------------------------------
     const hideFor = {
       laptop: ["XRdw8EK5FJg"],
       tablet: ["leCxCv4ZFaX", "rIHJFrYHA27"],
@@ -161,9 +147,6 @@ const useProfileRules = () => {
       hidden[attrId] = true;
     });
 
-    // ------------------------------------------------------------------
-    // 4. Auto-code & Device ID (Profile.jsx still does final logic)
-    // ------------------------------------------------------------------
     assignations[ID.code] = codeAuto || "";
     disabled[ID.code] = true;
 

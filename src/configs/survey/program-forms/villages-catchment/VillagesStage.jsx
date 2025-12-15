@@ -8,10 +8,8 @@ import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNo
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-
 import Accordion from "../common/Accordion";
 import useVillageRules from "./useVillageRules";
 
@@ -34,6 +32,8 @@ const isEmpty = (v) => {
 };
 
 const FACILITY_ATTR_ID = "RLamCNXOwQ5";
+
+const COPY_TRAVEL_COND_FLAG_VILLAGE_ID = "CSdPepdR8q6";
 
 const getAttr = (tei, id) =>
   (tei?.attributes || []).find((a) => a.attribute === id)?.value || "";
@@ -65,6 +65,8 @@ const VHV_SECTION_LO = "ອາສາສະໝັກສາທາລະນະສ�
 const SECTION_EN = "Details of catchment area";
 const SECTION_LO = "ລາຍລະອຽດເຂດບໍລິການ";
 
+const NON_MANDATORY_IDS = new Set([COPY_TRAVEL_COND_FLAG_VILLAGE_ID]);
+
 const VillagesStage = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
@@ -79,7 +81,12 @@ const VillagesStage = () => {
   const { currentEvent } = useCurrentEvent();
   const currentTei = data?.currentTei;
 
-  const { warnings, hiddenFields = {}, hiddenOptions = {} } = useVillageRules();
+  const {
+    warnings,
+    hiddenFields = {},
+    hiddenOptions = {},
+    disabledFields = {},
+  } = useVillageRules();
 
   const trStageDate = t("village.stageDate", {
     defaultValue: isLao ? "ວັນທີ່ບັນທຶກ" : "Stage date",
@@ -155,17 +162,17 @@ const VillagesStage = () => {
     const s = String(name || "").trim();
     if (!s) return s;
 
-    const norm = normalize(s);
+    const normed = normalize(s);
 
-    if (norm === normalize(DRY_SECTION_EN) || s === DRY_SECTION_LO) {
+    if (normed === normalize(DRY_SECTION_EN) || s === DRY_SECTION_LO) {
       return dynamicDryTitle;
     }
 
-    if (norm === normalize(RAINY_SECTION_EN) || s === RAINY_SECTION_LO) {
+    if (normed === normalize(RAINY_SECTION_EN) || s === RAINY_SECTION_LO) {
       return dynamicRainyTitle;
     }
 
-    if (norm === normalize(VHV_SECTION_EN) || s === VHV_SECTION_LO) {
+    if (normed === normalize(VHV_SECTION_EN) || s === VHV_SECTION_LO) {
       return isLao ? VHV_SECTION_LO : VHV_SECTION_EN;
     }
 
@@ -207,7 +214,8 @@ const VillagesStage = () => {
     const ids = [];
     sections.forEach((section) => {
       (section?.dataElements ?? []).forEach((de) => {
-        const id = de?.id || de?.dataElement?.id;
+        const deMeta = de?.dataElement ?? de;
+        const id = deMeta?.id;
         if (id) ids.push(id);
       });
     });
@@ -215,7 +223,13 @@ const VillagesStage = () => {
     return uniq.filter((id) => !hiddenFields[id]);
   }, [sections, hiddenFields]);
 
-  const requiredSet = useMemo(() => new Set(presentIds), [presentIds]);
+  const requiredSet = useMemo(
+    () =>
+      new Set(
+        presentIds.filter((id) => !NON_MANDATORY_IDS.has(id))
+      ),
+    [presentIds]
+  );
 
   const missing = useMemo(() => {
     const m = [];
@@ -307,7 +321,8 @@ const VillagesStage = () => {
       if (blocked.includes(e.key)) e.preventDefault();
     },
     onPaste: (e) => {
-      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const txt =
+        (e.clipboardData || window.clipboardData).getData("text") || "";
       if (!/^\d+$/.test(txt.trim())) e.preventDefault();
     },
     onInput: (e) => {
@@ -346,7 +361,8 @@ const VillagesStage = () => {
           title={trSectionTitle(section.displayName)}
         >
           {(section.dataElements ?? []).map((de) => {
-            const deId = de?.id || de?.dataElement?.id;
+            const deMeta = de?.dataElement ?? de;
+            const deId = deMeta?.id;
             if (!deId) return null;
 
             if (hiddenFields[deId]) return null;
@@ -355,7 +371,6 @@ const VillagesStage = () => {
             const helpId = `help-${deId}`;
             const extra = deId === INTEGER_ONLY_ID ? integerOnlyGuards : {};
             const warnMsg = hasWarn ? trWarn(warnings[deId]) : "";
-
             const isRequired = requiredSet.has(deId);
 
             return (
@@ -369,16 +384,41 @@ const VillagesStage = () => {
                 }}
               >
                 <Box sx={{ width: 300, p: "10px" }}>
-                  <DataValueLabel dataElement={deId} required={isRequired} />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 0.5,
+                      fontWeight: 600,
+                      lineHeight: "20px",
+                    }}
+                  >
+                    <DataValueLabel dataElement={deId} />
+                    {isRequired && (
+                      <Box
+                        component="span"
+                        sx={{ color: "#d32f2f", fontWeight: 700 }}
+                      >
+                        *
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
 
-                <Box sx={{ flex: 1, borderLeft: "1px solid #e0e0e0", p: "10px" }}>
+                <Box
+                  sx={{
+                    flex: 1,
+                    borderLeft: "1px solid #e0e0e0",
+                    p: "10px",
+                  }}
+                >
                   <DataValueFieldNoBlur
                     dataElement={deId}
                     required={isRequired}
                     aria-invalid={hasWarn ? "true" : undefined}
                     aria-describedby={hasWarn ? helpId : undefined}
                     hiddenOptions={hiddenOptions?.[deId] || undefined}
+                    disabled={!!disabledFields[deId]}
                     {...extra}
                   />
 
