@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/common/HealthFacilitySelectorNoState.jsx
 import { useMemo, useState, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 import {
@@ -15,12 +14,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import useMetadataStore from "@/state/metadata";
 import AttributeLabelNoState from "@/ui/TrackerCapture/Profile/AttributeLabelNoState";
 
-// minimal styles
 const LABEL_SX = {};
 const SELECT_SX = { "& .MuiSelect-select": { textAlign: "left", py: 1 } };
 const ROW_GAP = 1;
 
-// OU group IDs (no DO / DC)
 const G = {
   PHO: "jblbYwuvO33",   // Province
   DHO: "Zh1inFu0Z2O",   // District
@@ -57,16 +54,6 @@ const mapByParent = (list) => {
   return m;
 };
 
-/**
- * Props:
- *  - ids, init, onChange
- *  - onValidityChange?: (boolean)
- *  - disabled?: boolean
- *  - labelsOverride?: { level1?, level2?, level3? }
- *
- * onChange payload:
- *  { province, district, ph, ch, hc, dh, army, police }
- */
 const HealthFacilitySelectorNoState = ({
   ids,
   init,
@@ -80,7 +67,6 @@ const HealthFacilitySelectorNoState = ({
   );
   const language = me?.settings?.keyUiLocale || "en";
 
-  // ---------------- classify OUs ----------------
   const { provinces, districts, phs, chs, hcs, dhs } = useMemo(() => {
     const provinces = [];
     const districts = [];
@@ -91,7 +77,6 @@ const HealthFacilitySelectorNoState = ({
 
     const all = orgUnits || [];
 
-    // 1) Provinces & districts
     all.forEach((ou) => {
       if (inGroup(ou, G.PHO)) provinces.push(ou);
       if (inGroup(ou, G.DHO)) districts.push(ou);
@@ -100,7 +85,6 @@ const HealthFacilitySelectorNoState = ({
     const provinceIds = new Set(provinces.map((o) => o.id));
     const districtIds = new Set(districts.map((o) => o.id));
 
-    // 2) Facilities (PH, CH, HC, DH) + Army/Police hospitals
     all.forEach((ou) => {
       if (inGroup(ou, G.PH)) phs.push(ou);
       if (inGroup(ou, G.CH)) chs.push(ou);
@@ -111,16 +95,12 @@ const HealthFacilitySelectorNoState = ({
       const isPolice = inGroup(ou, G.POLICE);
       if (!isArmy && !isPolice) return;
 
-      // Some Army/Police hospitals are under province, some under district
       const pid = ou?.parent?.id;
       if (pid && districtIds.has(pid)) {
-        // treat as district-level hospital
         if (!dhs.some((x) => x.id === ou.id)) dhs.push(ou);
       } else if (pid && provinceIds.has(pid)) {
-        // treat as provincial-level hospital
         if (!phs.some((x) => x.id === ou.id)) phs.push(ou);
       } else {
-        // fallback: treat as provincial-level hospital
         if (!phs.some((x) => x.id === ou.id)) phs.push(ou);
       }
     });
@@ -128,14 +108,12 @@ const HealthFacilitySelectorNoState = ({
     return { provinces, districts, phs, chs, hcs, dhs };
   }, [orgUnits]);
 
-  // -------------- parent maps -------------------
   const dhoByProv = useMemo(() => mapByParent(districts), [districts]);
   const phByProv  = useMemo(() => mapByParent(phs),       [phs]);
   const chByProv  = useMemo(() => mapByParent(chs),       [chs]);
   const hcByDist  = useMemo(() => mapByParent(hcs),       [hcs]);
   const dhByDist  = useMemo(() => mapByParent(dhs),       [dhs]);
 
-  // ---------------- state -----------------------
   const [provId, setProvId] = useState(init?.province || "");
   const [l2, setL2] = useState(() => {
     if (init?.ph)       return { type: "PH",  id: init.ph };
@@ -149,7 +127,6 @@ const HealthFacilitySelectorNoState = ({
     return { type: "", id: "" };
   });
 
-  // sync with init (when TEI / metadata changes)
   useEffect(() => {
     setProvId(init?.province || "");
 
@@ -179,7 +156,6 @@ const HealthFacilitySelectorNoState = ({
     init?.dh,
   ]);
 
-  // -------------- options -----------------------
   const provOptions = useMemo(
     () =>
       (provinces || [])
@@ -219,7 +195,6 @@ const HealthFacilitySelectorNoState = ({
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   }, [l2, hcByDist, dhByDist, language]);
 
-  // -------- propagate selection to parent -------
   const emit = (nextProv, nextL2, nextL3) => {
     const province = nextProv || "";
     let district = "";
@@ -243,7 +218,6 @@ const HealthFacilitySelectorNoState = ({
       }
     }
 
-    // actual facility OU to test for army/police
     const facilityId = ph || ch || hc || dh || "";
     if (facilityId) {
       const facilityOu = (orgUnits || []).find((ou) => ou.id === facilityId);
@@ -260,9 +234,8 @@ const HealthFacilitySelectorNoState = ({
     onChange?.({ province, district, ph, ch, hc, dh, army, police });
   };
 
-  // --------- validity / errors ---------------
-  const requireL2 = !!provId;          // province picked → L2 required
-  const requireL3 = l2.type === "DHO"; // DHO picked     → L3 required
+  const requireL2 = !!provId;          
+  const requireL3 = l2.type === "DHO"; 
   const l2Error   = requireL2 && !l2.id;
   const l3Error   = requireL3 && !l3.id;
 
@@ -274,7 +247,6 @@ const HealthFacilitySelectorNoState = ({
     onValidityChange?.(isValid);
   }, [isValid, onValidityChange]);
 
-  // ------------- small clear button ----------
   const ClearBtn = ({ onClick, disabled }) => (
     <InputAdornment position="end" sx={{ mr: 2 }}>
       <IconButton
@@ -289,7 +261,6 @@ const HealthFacilitySelectorNoState = ({
     </InputAdornment>
   );
 
-  // ------------- handlers --------------------
   const onProvChange = (e) => {
     const id = e.target.value || "";
     const nextL2 = { type: "", id: "" };
@@ -325,7 +296,6 @@ const HealthFacilitySelectorNoState = ({
     emit(provId, l2, nextL3);
   };
 
-  // ------------- labels ----------------------
   const l1Label =
     labelsOverride?.level1 ?? (
       <AttributeLabelNoState attribute={ids.province} />
@@ -335,7 +305,6 @@ const HealthFacilitySelectorNoState = ({
 
   return (
     <Box sx={{ display: "grid", rowGap: ROW_GAP }}>
-      {/* Province */}
       <FormControl fullWidth size="small" disabled={!!disabled}>
         <FormLabel sx={LABEL_SX}>{l1Label}</FormLabel>
         <Select
@@ -367,7 +336,6 @@ const HealthFacilitySelectorNoState = ({
         </Select>
       </FormControl>
 
-      {/* CH / PH / DHO */}
       <FormControl
         fullWidth
         size="small"
@@ -404,8 +372,6 @@ const HealthFacilitySelectorNoState = ({
           ))}
         </Select>
       </FormControl>
-
-      {/* DH / HC — only when DHO picked */}
       {l2.type === "DHO" && (
         <FormControl
           fullWidth
