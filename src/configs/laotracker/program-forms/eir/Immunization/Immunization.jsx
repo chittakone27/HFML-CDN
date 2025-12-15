@@ -217,12 +217,12 @@ const Immunization = () => {
         const hasMR1 = event.dataValues.find(
           (dv) => dv.dataElement === MR_1 && dv.value === "true"
         );
-        // 👉 Apply rules based on place of vaccination
+        // Apply rules based on place of vaccination
         if (placeOfVaccination !== "private") {
           // 💉 Rule set for NON-private places
           if ((hasHepB0_24h && hasBCG) || (hasHepB0_7d && hasBCG)) {
             scheduledDate = addWeeks(dob, 6);
-          } else if (hasHepB0_7d || hasBCG) {
+          } else if (hasHepB0_24h || hasHepB0_7d || hasBCG) {
             scheduledDate = addWeeks(dob, 6);
           } else if (hasPCV1 && hasOPV1 && hasPenta1) {
             scheduledDate = addWeeks(dob, 10);
@@ -242,7 +242,7 @@ const Immunization = () => {
           // 💉 Rule set for PRIVATE places
           if ((hasHepB0_24h && hasBCG) || (hasHepB0_7d && hasBCG)) {
             scheduledDate = addWeeks(dob, 6);
-          } else if (hasHepB0_7d || hasBCG) {
+          } else if (hasHepB0_24h || hasHepB0_7d || hasBCG) {
             scheduledDate = addWeeks(dob, 6);
           } else if (
             (hasPenta1 && hasIPV1) ||
@@ -448,6 +448,7 @@ const Immunization = () => {
 
 const dataElementConfigs = [
   [{ id: "jzT9g1EzJLd" }],
+  // [{ id: "PGGExbII0aD" }],
   [{ id: "u9lncRQaojO" }],
   [{ id: "DxOqZZgVQhF" }],
   [{ id: "MV1yoC7BfnG" }],

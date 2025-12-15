@@ -11,7 +11,9 @@ const { saveTei } = tracker;
 import { pull } from "@/utils/fetch";
 import { format } from "date-fns";
 const useProfileRules = () => {
-  const { data, actions } = useTrackerCaptureStore(useShallow((state) => ({ data: state.data, actions: state.actions })));
+  const { data, actions } = useTrackerCaptureStore(
+    useShallow((state) => ({ data: state.data, actions: state.actions }))
+  );
   const { currentTei, currentEvents, currentEnrollment } = data;
   const { changeAttributeValue, setLayout } = actions;
   const { enrollmentDate } = currentEnrollment;
@@ -28,7 +30,7 @@ const useProfileRules = () => {
     "IdwH3mwSy2o",
     "WiuXRd1B6Wu",
     "zf7F68AsXEH",
-    "qFFDE1Aud9N"
+    "qFFDE1Aud9N",
   ]);
 
   const isGiven = (dataElement) => {
@@ -45,7 +47,7 @@ const useProfileRules = () => {
   };
 
   useEffect(() => {
-    if (dob) {
+    if (dob && enrollmentDate) {
       const dateOfBirth = moment(dob.slice(0, 10));
       const enrDateConverted = moment(enrollmentDate.slice(0, 10));
       changeAttributeValue("vJdG29KW1Et", enrDateConverted.diff(dateOfBirth, "months") + "");
@@ -67,7 +69,7 @@ const useProfileRules = () => {
         } else {
           clonedTei.attributes.push({
             attribute: "zf7F68AsXEH",
-            value: format(new Date(latestVaccinationDate), "yyyy-MM-dd")
+            value: format(new Date(latestVaccinationDate), "yyyy-MM-dd"),
           });
         }
         await saveTei(clonedTei);
@@ -105,7 +107,9 @@ const useProfileRules = () => {
       changeAttributeValue("oVwa5LfjnvA", "");
       changeAttributeValue("UNiaP6Oz7Mv", "");
     } else {
-      currentHiddenAttributes = currentHiddenAttributes.filter((attr) => attr !== "villageSelector" && attr !== "GT2H7899zzl");
+      currentHiddenAttributes = currentHiddenAttributes.filter(
+        (attr) => attr !== "villageSelector" && attr !== "GT2H7899zzl"
+      );
       // currentHiddenAttributes.push("uR9XK6AbPvE");
       // changeAttributeValue("uR9XK6AbPvE", "LA");
       if (!attributes.UNiaP6Oz7Mv) {
