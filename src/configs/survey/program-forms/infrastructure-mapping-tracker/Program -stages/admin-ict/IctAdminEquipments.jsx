@@ -3,12 +3,10 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../../../common/Accordion";
@@ -49,8 +47,9 @@ const ADMIN_ROWS = [
   { label: "2.2. Wireless Microphone", usable: "O7cJLIKPknD", damaged: "YlyG4OiR8h8" },
   { label: "3.3.  Mobile speaker", usable: "gTWZK4S28jH", damaged: "IPVXRMKjXGK" },
   { label: "4.4.  White / Black board", usable: "b8eicE9ogrb", damaged: "yXeBNJ4lS3A" },
-  { label: "5.5. Storage for IEC materials",
-    usable: "DUI7h9EBTWN", // single-field (exception, decimals allowed)
+  {
+    label: "5.5. Storage for IEC materials",
+    usable: "DUI7h9EBTWN", 
   },
 ];
 
@@ -70,20 +69,6 @@ const isEmpty = (v) => {
   if (typeof v === "string") return v.trim() === "";
   return false;
 };
-
-const toAsciiDigits = (str = "") =>
-  String(str).replace(
-    /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
-    (ch) => {
-      const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); // Thai
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); // Lao
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); // Arabic-Indic
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); // Ext Arabic-Indic
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); // Devanagari
-      return ch;
-    }
-  );
 
 const RedStar = () => (
   <Box component="span" sx={{ color: "#d32f2f", ml: 0.5 }} aria-hidden="true">
@@ -152,10 +137,10 @@ const IctAdminEquipments = () => {
     if (!currentEvent) return {};
     const w = {};
     presentIds.forEach((id) => {
-      if (id === ALLOW_DECIMAL_ID) return; 
+      if (id === ALLOW_DECIMAL_ID) return;
       const raw = getEventDEValue(currentEvent, id);
       if (raw == null) return;
-      const s = toAsciiDigits(String(raw)).trim();
+      const s = String(raw).trim();
       if (s !== "" && !/^\d+$/.test(s)) {
         w[id] = trIntOnly;
       }
@@ -231,18 +216,12 @@ const IctAdminEquipments = () => {
     },
     onPaste: (e) => {
       const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
-      const ascii = toAsciiDigits(txt).trim();
-      if (!/^\d+$/.test(ascii)) {
-        e.preventDefault();
-      }
+      if (!/^\d+$/.test(String(txt).trim())) e.preventDefault();
     },
     onInput: (e) => {
       const s = String(e.target.value ?? "");
-      const ascii = toAsciiDigits(s);
-      const digits = ascii.replace(/[^\d]/g, "");
-      if (s !== digits) {
-        e.target.value = digits;
-      }
+      const digits = s.replace(/[^\d]/g, "");
+      if (s !== digits) e.target.value = digits;
     },
   };
 
@@ -260,13 +239,11 @@ const IctAdminEquipments = () => {
     },
     onPaste: (e) => {
       const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
-      const ascii = toAsciiDigits(txt).trim();
-      if (!/^\d+(\.\d+)?$/.test(ascii)) e.preventDefault();
+      if (!/^\d+(\.\d+)?$/.test(String(txt).trim())) e.preventDefault();
     },
     onInput: (e) => {
       const s = String(e.target.value ?? "");
-      const ascii = toAsciiDigits(s);
-      const cleaned = ascii.replace(/[^\d.]/g, "").replace(/\.(?=.*\.)/g, "");
+      const cleaned = s.replace(/[^\d.]/g, "").replace(/\.(?=.*\.)/g, "");
       if (s !== cleaned) e.target.value = cleaned;
     },
   };
@@ -357,7 +334,6 @@ const IctAdminEquipments = () => {
           })}
         >
           <Box sx={{ border: "1px solid #d9d9d9", borderRadius: "8px", overflow: "hidden" }}>
-            {/* header */}
             <Box
               sx={{
                 display: "grid",
@@ -450,7 +426,6 @@ const IctAdminEquipments = () => {
                       )}
                     </Box>
                   </Box>
-
                   {r.damaged && (
                     <Box
                       sx={{

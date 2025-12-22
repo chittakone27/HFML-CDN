@@ -1,8 +1,10 @@
+// src/configs/laotracker/program-forms/infrastructure-mapping-tracker/Program -stages/Facility-Building-Furniture/FacilityBuildingandFurniture.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
@@ -18,9 +20,9 @@ const LABEL_COL_W = 300;
 const getDeId = (de) => de?.id || de?.dataElement?.id;
 const normalize = (s) => String(s || "").trim().toLowerCase();
 
-const TOTAL_OUTREACH_ID = "bEWpwn7HfUI";     // total beds
-const OUTREACH_FACILITY_ID = "OpKuX0h3iSf";  // ICU beds part 1
-const OUTREACH_COMMUNITY_ID = "msFzvgwQQzm"; // ICU beds part 2
+const TOTAL_OUTREACH_ID = "bEWpwn7HfUI";    
+const OUTREACH_FACILITY_ID = "OpKuX0h3iSf";  
+const OUTREACH_COMMUNITY_ID = "msFzvgwQQzm"; 
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 
 const INTEGER_ONLY_IDS = new Set([
@@ -45,20 +47,6 @@ const MONTH_ORDER = [
   "l4g6U5MNdxQ",
 ];
 
-const toAsciiDigits = (str = "") =>
-  String(str).replace(
-    /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
-    (ch) => {
-      const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50); 
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0); 
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660); 
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0); 
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966); 
-      return ch;
-    }
-  );
-
 const truthy = (v) =>
   v === true ||
   v === "true" ||
@@ -69,7 +57,7 @@ const truthy = (v) =>
   v === "yes";
 
 const parseIntSafe = (raw) => {
-  const s = toAsciiDigits(String(raw ?? "").trim());
+  const s = String(raw ?? "").trim();
   if (!s) return null;
   if (!/^\d+$/.test(s)) return null;
   return parseInt(s, 10);
@@ -178,9 +166,7 @@ const FacilityBuildingandFurniture = () => {
   const warnings = useMemo(() => {
     const w = {};
     INTEGER_ONLY_IDS.forEach((id) => {
-      const raw = toAsciiDigits(
-        String(getEventDEValue(currentEvent, id) ?? "").trim()
-      );
+      const raw = String(getEventDEValue(currentEvent, id) ?? "").trim();
       if (raw !== "" && !/^\d+$/.test(raw)) w[id] = "integerOnly";
     });
     return w;
@@ -204,13 +190,11 @@ const FacilityBuildingandFurniture = () => {
       total < atFacility + inCommunity;
 
     if (sessionsConflict) {
-
       errors[TOTAL_OUTREACH_ID] = trSessionsSum;
     }
 
     let monthsSelected = 0;
     MONTH_ORDER.forEach((mId) => {
-
       if (mId === "l4g6U5MNdxQ") return;
 
       const v = getEventDEValue(currentEvent, mId);
@@ -226,7 +210,6 @@ const FacilityBuildingandFurniture = () => {
       monthsAnchorVal < monthsSelected;
 
     if (monthsConflict) {
-
       errors[MONTH_ANCHOR_ID] = trMonthsCount;
     }
 
@@ -245,11 +228,11 @@ const FacilityBuildingandFurniture = () => {
     onPaste: (e) => {
       const txt =
         (e.clipboardData || window.clipboardData).getData("text") || "";
-      if (!/^\d+$/.test(toAsciiDigits(txt).trim())) e.preventDefault();
+      if (!/^\d+$/.test(String(txt).trim())) e.preventDefault();
     },
     onInput: (e) => {
       const s = String(e.target.value ?? "");
-      const digits = toAsciiDigits(s).replace(/[^\d]/g, "");
+      const digits = s.replace(/[^\d]/g, "");
       if (s !== digits) e.target.value = digits;
     },
   };
@@ -360,7 +343,7 @@ const FacilityBuildingandFurniture = () => {
                       borderLeft: "1px solid #e0e0e0",
                       padding: "10px",
                       ...(hasRuleError
-                        ? { backgroundColor: "#ffebee" } // light red highlight
+                        ? { backgroundColor: "#ffebee" }
                         : {}),
                     }}
                   >
