@@ -84,7 +84,6 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
-// Rows we render (no damaged column anymore)
 const SECTION_ROWS = {
   [SECTION.BASIC]: [
     { label: "1. Oxygen concentrator", usable: "k6STi37BjK9", image: "VPvZAg55M28", more: "ZiA3YkJHb5V" },
