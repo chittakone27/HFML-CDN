@@ -3,14 +3,10 @@ import { useTranslation } from "react-i18next";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
-
 const AVAIL_SEL = "fszEmzFYXHU";
-
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";
-
 const OTHERS_ID = "BRHYwOIZ01O";
 const SERVICE_PROVIDER_ID = "O5TwLn4hWFr";
-
 const TYPE_CONN_ID = "eWrvOj7ZUL2"; // Wifi/Cable/Both
 const WIFI_FIELD_ID = "nhilsZioxC9"; // Wifi detail
 const CABLE_FIELD_ID = "xQS1owULSbL"; // Cable detail
@@ -107,13 +103,7 @@ const FUND_SOURCE_ID = "eq1FTj6Z2vT";
 const HIDE_WHEN_PERSONAL_ID = "SbpLKeVJBZd";
 
 const truthy = (v) =>
-  v === true ||
-  v === "true" ||
-  v === 1 ||
-  v === "1" ||
-  v === "Yes" ||
-  v === "YES" ||
-  v === "yes";
+  v === "true";
 
 const normalize = (v) => String(v ?? "").trim().toLowerCase();
 

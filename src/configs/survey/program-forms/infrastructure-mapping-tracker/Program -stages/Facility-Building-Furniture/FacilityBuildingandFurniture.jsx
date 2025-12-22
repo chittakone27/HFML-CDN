@@ -48,13 +48,7 @@ const MONTH_ORDER = [
 ];
 
 const truthy = (v) =>
-  v === true ||
-  v === "true" ||
-  v === 1 ||
-  v === "1" ||
-  v === "Yes" ||
-  v === "YES" ||
-  v === "yes";
+  v === "true";
 
 const parseIntSafe = (raw) => {
   const s = String(raw ?? "").trim();
