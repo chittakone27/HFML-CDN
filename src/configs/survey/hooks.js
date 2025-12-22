@@ -4,35 +4,47 @@ import useTrackerCaptureStore from "@/state/trackerCapture";
 import useSelectionStore from "@/state/selection";
 import { useShallow } from "zustand/react/shallow";
 
+const RESTRICTED_PROGRAMS = new Set([
+  "wkUHtogPKUL", 
+  "sBkMdki30ua"  
+]);
+
+const PRIVILEGED_GROUP_ID = "elrZ3jvh1SL";
+
 const useDisableRegisterButtonForSurvey = () => {
   const me = useMetadataStore((state) => state.me);
-  const { program, orgUnit } = useSelectionStore(
+
+  const { program } = useSelectionStore(
     useShallow((state) => ({
-      program: state.program,
-      orgUnit: state.orgUnit
+      program: state.program
     }))
   );
-  const { actions, layout } = useTrackerCaptureStore(
+
+  const { actions } = useTrackerCaptureStore(
     useShallow((state) => ({
-      actions: state.actions,
-      layout: state.layout
+      actions: state.actions
     }))
   );
 
   const { setLayout } = actions;
 
   useEffect(() => {
-    if (me && program) {
-      const foundGroup = me.userGroups.find((ug) => ug.id === "elrZ3jvh1SL");
-      if (foundGroup) {
-        setLayout("disableRegisterButton", false);
-        setLayout("disableSearchButton", false);
-      } else {
-        setLayout("disableRegisterButton", true);
-        setLayout("disableSearchButton", true);
-      }
+    if (!me || !program) return;
+
+    const isInPrivilegedGroup = (me.userGroups || []).some(
+      (ug) => ug.id === PRIVILEGED_GROUP_ID
+    );
+
+    const isRestrictedProgram = RESTRICTED_PROGRAMS.has(program.id);
+
+    if (isInPrivilegedGroup || !isRestrictedProgram) {
+      setLayout("disableRegisterButton", false);
+      setLayout("disableSearchButton", false);
+    } else {
+      setLayout("disableRegisterButton", true);
+      setLayout("disableSearchButton", true);
     }
-  }, [me ? me.username : "", program ? program.id : "", orgUnit ? orgUnit.id : "", layout]);
+  }, [me?.username, program?.id, setLayout]);
 };
 
 const hooks = [useDisableRegisterButtonForSurvey];
