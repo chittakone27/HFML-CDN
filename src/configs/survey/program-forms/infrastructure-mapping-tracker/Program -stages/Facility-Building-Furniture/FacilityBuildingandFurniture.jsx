@@ -1,4 +1,3 @@
-// src/configs/laotracker/program-forms/infrastructure-mapping-tracker/Program -stages/Facility-Building-Furniture/FacilityBuildingandFurniture.jsx
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
