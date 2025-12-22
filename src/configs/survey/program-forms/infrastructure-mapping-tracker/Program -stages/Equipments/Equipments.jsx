@@ -3,17 +3,15 @@ import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
 import { useMemo, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 import Accordion from "../../../common/Accordion";
 
-const GRID_COLS = "300px repeat(2, 1fr)"; // label + usable + image
+const GRID_COLS = "300px repeat(2, 1fr)"; 
 const SCALE = 0.8;
 
 const SECTION = {
@@ -25,7 +23,6 @@ const SECTION = {
   MOVED_COMBINED: "XUbOnfMrc0H",
 };
 
-// Lao quick-fallbacks
 const LO = {
   usable: "ໃຊ້ໄດ້ປົກກະຕິ",
   image: "ຮູບພາບ",
@@ -87,6 +84,7 @@ const keyFor = (label) =>
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_|_$/g, "");
 
+// Rows we render (no damaged column anymore)
 const SECTION_ROWS = {
   [SECTION.BASIC]: [
     { label: "1. Oxygen concentrator", usable: "k6STi37BjK9", image: "VPvZAg55M28", more: "ZiA3YkJHb5V" },
@@ -143,22 +141,8 @@ const isEmpty = (v) => {
   return false;
 };
 
-const toAsciiDigits = (str = "") =>
-  String(str).replace(
-    /[\u0E50-\u0E59\u0ED0-\u0ED9\u0660-\u0669\u06F0-\u06F9\u0966-\u096F]/g,
-    (ch) => {
-      const c = ch.charCodeAt(0);
-      if (c >= 0x0e50 && c <= 0x0e59) return String(c - 0x0e50);
-      if (c >= 0x0ed0 && c <= 0x0ed9) return String(c - 0x0ed0);
-      if (c >= 0x0660 && c <= 0x0669) return String(c - 0x0660);
-      if (c >= 0x06f0 && c <= 0x06f9) return String(c - 0x06f0);
-      if (c >= 0x0966 && c <= 0x096f) return String(c - 0x0966);
-      return ch;
-    }
-  );
-
 const parseIntValue = (val) => {
-  const s = toAsciiDigits(String(val ?? "")).trim();
+  const s = String(val ?? "").trim();
   if (!s) return 0;
   const n = parseInt(s, 10);
   return Number.isNaN(n) ? 0 : n;
@@ -327,7 +311,6 @@ const Equipments = () => {
           }}
         />
       </Box>
-
       {knownSections.map((section, sIdx) => {
         const rows = SECTION_ROWS[section.id] ?? [];
         return (
@@ -352,7 +335,6 @@ const Equipments = () => {
                 </Box>
                 <Box sx={{ p: "10px 12px" }}>{trHeader("image", "Image")}</Box>
               </Box>
-
               {rows.map((r, i) => {
                 const imageRequired = r.image && conditionalRequiredImageIds.has(r.image);
 
@@ -381,7 +363,6 @@ const Equipments = () => {
                       {trLabel(r.label)}
                       <RedStar />
                     </Box>
-
                     <Box
                       sx={{
                         p: "6px 10px",
