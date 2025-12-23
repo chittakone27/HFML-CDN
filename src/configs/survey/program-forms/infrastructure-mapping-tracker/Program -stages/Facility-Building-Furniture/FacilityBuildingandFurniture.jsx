@@ -1,17 +1,14 @@
 import { Box } from "@mui/material";
 import { useShallow } from "zustand/react/shallow";
 import { format } from "date-fns";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
 import DataValueFieldNoBlur from "@/ui/TrackerCapture/EventForm/DataValueFieldNoBlur";
 import DataValueLabel from "@/ui/TrackerCapture/EventForm/DataValueLabel";
 import EventDateFieldNoBlur from "@/ui/TrackerCapture/EventForm/EventDateFieldNoBlur";
 import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
-
 import useSelectionStore from "@/state/selection";
 import useTrackerCaptureStore from "@/state/trackerCapture";
-
 import Accordion from "../../../common/Accordion";
 import useFacilityBuildingRules from "./useFacilityBuildingRules";
 
@@ -19,12 +16,16 @@ const LABEL_COL_W = 300;
 const getDeId = (de) => de?.id || de?.dataElement?.id;
 const normalize = (s) => String(s || "").trim().toLowerCase();
 
-const TOTAL_OUTREACH_ID = "bEWpwn7HfUI"; 
+const TOTAL_OUTREACH_ID = "bEWpwn7HfUI";    
 const OUTREACH_FACILITY_ID = "OpKuX0h3iSf"; 
 const OUTREACH_COMMUNITY_ID = "msFzvgwQQzm"; 
 const MONTH_ANCHOR_ID = "SVSfEQFVBUj";
 
-const INTEGER_ONLY_IDS = new Set(["bEWpwn7HfUI", "OpKuX0h3iSf", "Gt26xzdkt53"]);
+const INTEGER_ONLY_IDS = new Set([
+  "bEWpwn7HfUI",
+  "OpKuX0h3iSf",
+  "Gt26xzdkt53",
+]);
 
 const MONTH_ORDER = [
   "NIji1vKjEsn",
@@ -42,7 +43,8 @@ const MONTH_ORDER = [
   "l4g6U5MNdxQ",
 ];
 
-const truthy = (v) => v === "true";
+const truthy = (v) =>
+  v === "true";
 
 const parseIntSafe = (raw) => {
   const s = String(raw ?? "").trim();
@@ -73,39 +75,31 @@ const FacilityBuildingandFurniture = () => {
   const { t, i18n } = useTranslation();
   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
 
-  const { program } = useSelectionStore(useShallow((s) => ({ program: s.program })));
-  const { actions } = useTrackerCaptureStore(useShallow((s) => ({ actions: s.actions })));
+  const { program } = useSelectionStore(
+    useShallow((s) => ({ program: s.program }))
+  );
+  const { actions } = useTrackerCaptureStore(
+    useShallow((s) => ({ actions: s.actions }))
+  );
   const { currentEvent } = useCurrentEvent();
 
   const maxDate = format(new Date(), "yyyy-MM-dd");
 
   const sections = useMemo(() => {
     if (!program?.programStages || !currentEvent?.programStage) return [];
-    const stage = program.programStages.find((ps) => ps.id === currentEvent.programStage);
+    const stage = program.programStages.find(
+      (ps) => ps.id === currentEvent.programStage
+    );
     return stage?.programStageSections ?? [];
   }, [program?.programStages, currentEvent?.programStage]);
-
-  const stageDEs = useMemo(() => {
-    return sections.flatMap((s) => s?.dataElements ?? []);
-  }, [sections]);
-
-  const rules = useFacilityBuildingRules(stageDEs);
-
-  const {
-    hiddenFields,
-    requiredFields,
-    operators,
-    newOperators,
-    months,
-    keys,
-    state: { showServiceProvider, showOperators, showNewOperators },
-  } = rules;
 
   const trAssessmentDate = t("facility.assessmentDate", {
     defaultValue: isLao ? "ວັນທີປະເມີນ" : "Assessment date",
   });
   const trOperatorsLabel = t("facility.internet.operators", {
-    defaultValue: isLao ? "6.1. ເຄື່ອຄ່າຍໂທລະສັບ" : "6.1. Mobile Operator",
+    defaultValue: isLao
+      ? "6.1. ເຄື່ອຄ່າຍໂທລະສັບ"
+      : "6.1. Mobile Operator",
   });
   const trNewOperatorsLabel = t("facility.internet.regularNetworkQuestion", {
     defaultValue: isLao
@@ -170,10 +164,13 @@ const FacilityBuildingandFurniture = () => {
 
   const fieldRuleErrors = useMemo(() => {
     const errors = {};
-
     const total = parseIntSafe(getEventDEValue(currentEvent, TOTAL_OUTREACH_ID));
-    const atFacility = parseIntSafe(getEventDEValue(currentEvent, OUTREACH_FACILITY_ID));
-    const inCommunity = parseIntSafe(getEventDEValue(currentEvent, OUTREACH_COMMUNITY_ID));
+    const atFacility = parseIntSafe(
+      getEventDEValue(currentEvent, OUTREACH_FACILITY_ID)
+    );
+    const inCommunity = parseIntSafe(
+      getEventDEValue(currentEvent, OUTREACH_COMMUNITY_ID)
+    );
 
     const sessionsConflict =
       total != null &&
@@ -188,13 +185,18 @@ const FacilityBuildingandFurniture = () => {
     let monthsSelected = 0;
     MONTH_ORDER.forEach((mId) => {
       if (mId === "l4g6U5MNdxQ") return;
+
       const v = getEventDEValue(currentEvent, mId);
       if (truthy(v)) monthsSelected++;
     });
 
-    const monthsAnchorVal = parseIntSafe(getEventDEValue(currentEvent, MONTH_ANCHOR_ID));
+    const monthsAnchorVal = parseIntSafe(
+      getEventDEValue(currentEvent, MONTH_ANCHOR_ID)
+    );
     const monthsConflict =
-      monthsAnchorVal != null && monthsSelected > 0 && monthsAnchorVal < monthsSelected;
+      monthsAnchorVal != null &&
+      monthsSelected > 0 &&
+      monthsAnchorVal < monthsSelected;
 
     if (monthsConflict) {
       errors[MONTH_ANCHOR_ID] = trMonthsCount;
@@ -202,6 +204,7 @@ const FacilityBuildingandFurniture = () => {
 
     return errors;
   }, [currentEvent, currentEvent?.dataValues, trSessionsSum, trMonthsCount]);
+
 
   const integerOnlyGuards = {
     type: "number",
@@ -212,7 +215,8 @@ const FacilityBuildingandFurniture = () => {
       if (blocked.includes(e.key)) e.preventDefault();
     },
     onPaste: (e) => {
-      const txt = (e.clipboardData || window.clipboardData).getData("text") || "";
+      const txt =
+        (e.clipboardData || window.clipboardData).getData("text") || "";
       if (!/^\d+$/.test(String(txt).trim())) e.preventDefault();
     },
     onInput: (e) => {
@@ -247,6 +251,17 @@ const FacilityBuildingandFurniture = () => {
 
       {sections.map((section) => {
         const allDEs = section.dataElements ?? [];
+        const rules = useFacilityBuildingRules(allDEs);
+
+        const {
+          hiddenFields,
+          requiredFields,
+          operators,
+          newOperators,
+          months,
+          keys,
+          state: { showServiceProvider, showOperators, showNewOperators },
+        } = rules;
 
         const OP_HSTACK = new Set(
           [...operators.ids].filter((id) => id !== keys.SERVICE_PROVIDER_ID)
@@ -292,8 +307,11 @@ const FacilityBuildingandFurniture = () => {
               const hasWarn = warnings[deId] === "integerOnly";
               const ruleErrorMsg = fieldRuleErrors[deId];
               const hasRuleError = !!ruleErrorMsg;
-              const helpId = hasWarn || hasRuleError ? `help-${deId}` : undefined;
-              const intGuards = INTEGER_ONLY_IDS.has(deId) ? integerOnlyGuards : {};
+              const helpId =
+                hasWarn || hasRuleError ? `help-${deId}` : undefined;
+              const intGuards = INTEGER_ONLY_IDS.has(deId)
+                ? integerOnlyGuards
+                : {};
 
               const Row = (
                 <Box
@@ -313,26 +331,42 @@ const FacilityBuildingandFurniture = () => {
                       flex: 1,
                       borderLeft: "1px solid #e0e0e0",
                       padding: "10px",
-                      ...(hasRuleError ? { backgroundColor: "#ffebee" } : {}),
+                      ...(hasRuleError
+                        ? { backgroundColor: "#ffebee" } // light red highlight
+                        : {}),
                     }}
                   >
                     <DataValueFieldNoBlur
                       dataElement={deId}
                       required={!!requiredFields[deId]}
-                      aria-invalid={hasWarn || hasRuleError ? "true" : undefined}
+                      aria-invalid={
+                        hasWarn || hasRuleError ? "true" : undefined
+                      }
                       aria-describedby={helpId}
                       {...intGuards}
                     />
                     {hasWarn && (
                       <Box
                         id={helpId}
-                        sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
                       >
                         {trIntOnly}
                       </Box>
                     )}
                     {hasRuleError && (
-                      <Box sx={{ mt: 0.5, fontSize: 12, lineHeight: "16px", color: "#d32f2f" }}>
+                      <Box
+                        sx={{
+                          mt: 0.5,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          color: "#d32f2f",
+                        }}
+                      >
                         {ruleErrorMsg}
                       </Box>
                     )}
@@ -399,12 +433,15 @@ const FacilityBuildingandFurniture = () => {
                                 if (!hId || !OP_HSTACK.has(hId)) return null;
                                 if (hiddenFields[hId]) return null;
 
-                                const hWarn = warnings[hId] === "integerOnly";
+                                const hWarn =
+                                  warnings[hId] === "integerOnly";
                                 const hRuleMsg = fieldRuleErrors[hId];
                                 const hHasRule = !!hRuleMsg;
                                 const hHelpId =
                                   hWarn || hHasRule ? `help-${hId}` : undefined;
-                                const hGuards = INTEGER_ONLY_IDS.has(hId) ? integerOnlyGuards : {};
+                                const hGuards = INTEGER_ONLY_IDS.has(hId)
+                                  ? integerOnlyGuards
+                                  : {};
 
                                 return (
                                   <Box
@@ -431,7 +468,9 @@ const FacilityBuildingandFurniture = () => {
                                     </Box>
                                     <DataValueFieldNoBlur
                                       dataElement={hId}
-                                      aria-invalid={hWarn || hHasRule ? "true" : undefined}
+                                      aria-invalid={
+                                        hWarn || hHasRule ? "true" : undefined
+                                      }
                                       aria-describedby={hHelpId}
                                       {...hGuards}
                                     />
@@ -478,7 +517,9 @@ const FacilityBuildingandFurniture = () => {
                         }}
                       >
                         <Box sx={{ width: `${LABEL_COL_W}px`, padding: "10px" }}>
-                          <DataValueLabel dataElement={keys.SERVICE_PROVIDER_ID} />
+                          <DataValueLabel
+                            dataElement={keys.SERVICE_PROVIDER_ID}
+                          />
                         </Box>
                         <RedStar />
                         <Box
@@ -488,7 +529,10 @@ const FacilityBuildingandFurniture = () => {
                             padding: "10px",
                           }}
                         >
-                          <DataValueFieldNoBlur dataElement={keys.SERVICE_PROVIDER_ID} required />
+                          <DataValueFieldNoBlur
+                            dataElement={keys.SERVICE_PROVIDER_ID}
+                            required
+                          />
                         </Box>
                       </Box>
                     )}
@@ -552,15 +596,19 @@ const FacilityBuildingandFurniture = () => {
                             >
                               {allDEs.map((hde) => {
                                 const hId = getDeId(hde);
-                                if (!hId || !NEW_OP_HSTACK.has(hId)) return null;
+                                if (!hId || !NEW_OP_HSTACK.has(hId))
+                                  return null;
                                 if (hiddenFields[hId]) return null;
 
-                                const hWarn = warnings[hId] === "integerOnly";
+                                const hWarn =
+                                  warnings[hId] === "integerOnly";
                                 const hRuleMsg = fieldRuleErrors[hId];
                                 const hHasRule = !!hRuleMsg;
                                 const hHelpId =
                                   hWarn || hHasRule ? `help-${hId}` : undefined;
-                                const hGuards = INTEGER_ONLY_IDS.has(hId) ? integerOnlyGuards : {};
+                                const hGuards = INTEGER_ONLY_IDS.has(hId)
+                                  ? integerOnlyGuards
+                                  : {};
 
                                 return (
                                   <Box
@@ -587,7 +635,9 @@ const FacilityBuildingandFurniture = () => {
                                     </Box>
                                     <DataValueFieldNoBlur
                                       dataElement={hId}
-                                      aria-invalid={hWarn || hHasRule ? "true" : undefined}
+                                      aria-invalid={
+                                        hWarn || hHasRule ? "true" : undefined
+                                      }
                                       aria-describedby={hHelpId}
                                       {...hGuards}
                                     />
@@ -671,7 +721,8 @@ const FacilityBuildingandFurniture = () => {
                         <Box
                           sx={{
                             display: "grid",
-                            gridTemplateColumns: "repeat(7, minmax(120px, 1fr))",
+                            gridTemplateColumns:
+                              "repeat(7, minmax(120px, 1fr))",
                             gap: 2,
                             alignItems: "start",
                           }}

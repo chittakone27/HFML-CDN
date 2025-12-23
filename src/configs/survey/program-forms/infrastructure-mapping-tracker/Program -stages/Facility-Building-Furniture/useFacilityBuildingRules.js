@@ -4,13 +4,10 @@ import useCurrentEvent from "@/ui/TrackerCapture/EventForm/useCurrentEvent";
 import useTrackerCaptureStore from "@/state/trackerCapture";
 
 const AVAIL_SEL = "fszEmzFYXHU";
-
 const OP_ANCHOR_ID = "JYVWqdlRq4Y";
-
 const OTHERS_ID = "BRHYwOIZ01O";
 const SERVICE_PROVIDER_ID = "O5TwLn4hWFr";
-
-const TYPE_CONN_ID = "eWrvOj7ZUL2"; 
+const TYPE_CONN_ID = "eWrvOj7ZUL2";
 const WIFI_FIELD_ID = "nhilsZioxC9"; 
 const CABLE_FIELD_ID = "xQS1owULSbL"; 
 
@@ -70,16 +67,16 @@ const INTEGER_ONLY_IDS = new Set([
   OUTREACH_FACILITY_ID,
   "Gt26xzdkt53",
   OUTREACH_COMMUNITY_ID,
-  "SVSfEQFVBUj",
+  "SVSfEQFVBUj", 
 ]);
 
 const ALWAYS_REQ_IDS = new Set([
-  TYPE_CONN_ID,
+  TYPE_CONN_ID, 
   WIFI_FIELD_ID, 
   CABLE_FIELD_ID, 
   "eq1FTj6Z2vT",
   "SbpLKeVJBZd",
-  "tknBpZWiu89",
+  "tknBpZWiu89", 
   ...GLOBAL_MANDATORY_IDS,
 ]);
 
@@ -99,13 +96,14 @@ const MONTH_IDS = new Set([
   "N3dIyivSvSo",
   "kMHppy04I0O",
   "BkK10QaD8FE",
-  NO_OUTREACH_ID,
+  NO_OUTREACH_ID, 
 ]);
 
 const FUND_SOURCE_ID = "eq1FTj6Z2vT";
 const HIDE_WHEN_PERSONAL_ID = "SbpLKeVJBZd";
 
 const truthy = (v) => v === "true";
+
 const normalize = (v) => String(v ?? "").trim().toLowerCase();
 
 const isEmpty = (v) => {
@@ -146,9 +144,36 @@ const getValue = (event, deId) => {
   return event?.[deId];
 };
 
+const REG_KEY = "__FACILITY_RULES_REGISTRY__";
+const getRegistry = () => {
+  const g = typeof globalThis !== "undefined" ? globalThis : window;
+  if (!g[REG_KEY]) g[REG_KEY] = new Map();
+  return g[REG_KEY];
+};
+
+const setCombinedDisabled = (actions) => {
+  if (!actions) return;
+
+  const reg = getRegistry();
+  const anyDisabled = Array.from(reg.values()).some((v) => v.disabled === true);
+
+  if (typeof actions.setLayout === "function") {
+    actions.setLayout("disableEventCompleteButton", anyDisabled);
+    return;
+  }
+
+  if (typeof actions.setCompleteDisabled === "function") {
+    actions.setCompleteDisabled(anyDisabled);
+    return;
+  }
+
+  if (typeof actions.setCanComplete === "function") {
+    actions.setCanComplete(!anyDisabled);
+  }
+};
+
 export default function useFacilityBuildingRules(sectionDEs = []) {
   const { currentEvent } = useCurrentEvent();
-
   const { actions } = useTrackerCaptureStore.getState();
 
   const { i18n, t } = useTranslation();
@@ -165,6 +190,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       ? "ຈໍານວນການອອກຄ່າຍລວມຕ້ອງໃຫຍ່ກວ່າ ຫຼື ເທົ່າກັບ ຈໍານວນຄັ້ງທີ່ຈັດຢູ່ສະຖານພະຍາບານ ບວກ ຈໍານວນຄັ້ງທີ່ອອກຄ່າຍໃນຊຸມຊົນ."
       : "Total outreach sessions (bEWpwn7HfUI) must be greater than or equal to sessions at facility plus sessions in outreach (OpKuX0h3iSf + msFzvgwQQzm).",
   });
+
   const trMonthsCount = t("facility.outreach.monthCountCheck", {
     defaultValue: isLao
       ? "ຈໍານວນເດືອນທີ່ລາຍງານ (SVSfEQFVBUj) ຕ້ອງໃຫຍ່ກວ່າ ຫຼື ເທົ່າກັບ ຈໍານວນເດືອນທີ່ມີການຕິກໃນຂໍ້ 14."
@@ -176,14 +202,17 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
   const othersVal = getValue(currentEvent, OTHERS_ID);
   const typeVal = getValue(currentEvent, TYPE_CONN_ID);
   const newTriggerVal = getValue(currentEvent, NEW_OP_TRIGGER_ID);
+
   const sel = normalize(availVal);
   const hasSel = sel !== "";
   const notAvail = sel === "not available";
+
   const showConn = hasSel && !notAvail;
 
-  const type = normalize(typeVal); // "wifi" | "cable" | "both" | ""
+  const type = normalize(typeVal);
   const showWifi = showConn && (type === "wifi" || type === "both");
   const showCable = showConn && (type === "cable" || type === "both");
+
   const anchorCanReceive = canReceivePhoneFromOption(anchorVal);
   const showOperators = anchorCanReceive === true;
   const showServiceProvider = showOperators && truthy(othersVal);
@@ -200,8 +229,9 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
     return key === "personalfund";
   }, [currentEvent?.dataValues]);
 
-  const monthsAnchorValForHide = parseIntSafe(getValue(currentEvent, MONTH_ANCHOR_ID));
-
+  const monthsAnchorValForHide = parseIntSafe(
+    getValue(currentEvent, MONTH_ANCHOR_ID)
+  );
   const hiddenFields = useMemo(() => {
     const h = {};
 
@@ -261,7 +291,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
         req[id] = showNewSpecify && !hiddenFields[id];
         continue;
       }
-
       if (id === HIDE_WHEN_PERSONAL_ID) {
         req[id] = !hiddenFields[id] && !isPersonalFund;
         continue;
@@ -290,7 +319,6 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
 
   useEffect(() => {
     if (!actions) return;
-
     const ev = currentEvent;
 
     const anySelected = (ids) => {
@@ -301,16 +329,43 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       }
       return false;
     };
+
+    const selStage = normalize(getValue(ev, AVAIL_SEL));
+    const showConnStage = selStage !== "" && selStage !== "not available";
+    const typeStage = normalize(getValue(ev, TYPE_CONN_ID));
+    const showWifiStage =
+      showConnStage && (typeStage === "wifi" || typeStage === "both");
+    const showCableStage =
+      showConnStage && (typeStage === "cable" || typeStage === "both");
+
+    const anchorStageRaw = getValue(ev, OP_ANCHOR_ID);
+    const anchorStageCanReceive = canReceivePhoneFromOption(anchorStageRaw);
+    const showOp6Stage = anchorStageCanReceive === true;
+
+    const showNewSpecifyStage = truthy(getValue(ev, NEW_OP_TRIGGER_ID));
+    const showServiceProviderStage =
+      anchorStageCanReceive === true && truthy(getValue(ev, OTHERS_ID));
     const singleCandidates = sectionIds.filter(
       (id) => !OPERATOR_IDS.has(id) && !NEW_OPERATOR_IDS.has(id) && !MONTH_IDS.has(id)
     );
+
     const visibleSingles = singleCandidates.filter((id) => !hiddenFields[id]);
+
+    if (!showWifiStage) {
+      const idx = visibleSingles.indexOf(WIFI_FIELD_ID);
+      if (idx >= 0) visibleSingles.splice(idx, 1);
+    }
+    if (!showCableStage) {
+      const idx = visibleSingles.indexOf(CABLE_FIELD_ID);
+      if (idx >= 0) visibleSingles.splice(idx, 1);
+    }
 
     const missingSingles = [];
     for (const id of visibleSingles) {
       const val = getValue(ev, id);
       if (isEmpty(val)) missingSingles.push(id);
     }
+
     const monthsAnchorValForGroup = parseIntSafe(getValue(ev, MONTH_ANCHOR_ID));
     const noOutreachFlagForGroup = truthy(getValue(ev, NO_OUTREACH_ID));
 
@@ -328,18 +383,8 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       needOneMonth = !anySelected(Array.from(MONTH_IDS));
     }
 
-    const selStage = normalize(getValue(ev, AVAIL_SEL));
-    const showConnStage = selStage !== "" && selStage !== "not available";
-
-    const anchorStageRaw = getValue(ev, OP_ANCHOR_ID);
-    const anchorStageCanReceive = canReceivePhoneFromOption(anchorStageRaw);
-    const showOp6Stage = anchorStageCanReceive === true;
-
     const needOneOp6 = showOp6Stage && !anySelected(Array.from(OPERATOR_IDS));
     const needOneOp8 = showConnStage && !anySelected(Array.from(NEW_OPERATOR_IDS));
-
-    const showServiceProviderStage = showOp6Stage && truthy(getValue(ev, OTHERS_ID));
-    const showNewSpecifyStage = truthy(getValue(ev, NEW_OP_TRIGGER_ID));
 
     const missingSvcProvider =
       showServiceProviderStage && isEmpty(getValue(ev, SERVICE_PROVIDER_ID));
@@ -387,7 +432,7 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       monthsCountConflict = false;
     }
 
-    const disabled =
+    const sectionDisabled =
       missingSingles.length > 0 ||
       needOneOp6 ||
       needOneOp8 ||
@@ -398,51 +443,58 @@ export default function useFacilityBuildingRules(sectionDEs = []) {
       sessionsSumConflict ||
       monthsCountConflict;
 
-    try {
-      if (actions.setLayout) actions.setLayout("disableEventCompleteButton", disabled);
-      else if (actions.setCompleteDisabled) actions.setCompleteDisabled(disabled);
-      else if (actions.setCanComplete) actions.setCanComplete(!disabled);
-    } catch {}
+    const reg = getRegistry();
+    const sectionKey = sectionIds[0] || `sec_${Math.random().toString(36).slice(2, 7)}`;
+
+    const checkSection = () => {
+      const msgs = [];
+      if (missingSingles.length) msgs.push("Please complete all required fields.");
+      if (needOneOp6) msgs.push('Please select at least one option in "6.1 Operator".');
+      if (needOneOp8)
+        msgs.push('Please select at least one option in "8.1 Regular internet network".');
+      if (needOneMonth) msgs.push('Please select at least one month in "Outreach activity months".');
+      if (missingSvcProvider) msgs.push('Please fill "Service provider" below "Others".');
+      if (missingNewSpecify) msgs.push("Please specify the network name.");
+      if (invalidIntegerIds.length) msgs.push(trIntOnly);
+      if (sessionsSumConflict) msgs.push(trSessionsSum);
+      if (monthsCountConflict) msgs.push(trMonthsCount);
+      return {
+        ok: msgs.length === 0,
+        message: msgs.join(" "),
+      };
+    };
+
+    reg.set(sectionKey, { disabled: sectionDisabled, check: checkSection });
+    setCombinedDisabled(actions);
 
     if (actions.setHandlers) {
-      const KEY = "eventSave_facility_required_guard";
-      actions.setHandlers(KEY, async () => {
-        if (!disabled) return { ok: true };
-
-        const msgs = [];
-        if (missingSingles.length) msgs.push("Please complete all required fields.");
-        if (needOneOp6) msgs.push('Please select at least one option in "6.1 Operator".');
-        if (needOneOp8)
-          msgs.push('Please select at least one option in "8.1 Regular internet network".');
-        if (needOneMonth)
-          msgs.push('Please select at least one month in "Outreach activity months".');
-        if (missingSvcProvider) msgs.push('Please fill "Service provider" below "Others".');
-        if (missingNewSpecify) msgs.push("Please specify the network name.");
-        if (invalidIntegerIds.length) msgs.push(trIntOnly);
-        if (sessionsSumConflict) msgs.push(trSessionsSum);
-        if (monthsCountConflict) {
-          if (!(monthsAnchorVal === 0 && noOutreachFlag)) msgs.push(trMonthsCount);
+      const MASTER_KEY = "eventSave_facilityStageMaster";
+      actions.setHandlers(MASTER_KEY, async () => {
+        const regs = Array.from(getRegistry().values());
+        for (const r of regs) {
+          const res = r.check();
+          if (!res.ok) return { ok: false, message: res.message };
         }
-
-        return { ok: false, message: msgs.join(" ") };
+        return { ok: true };
       });
-
-      return () => {
-        try {
-          actions.setHandlers(KEY, null);
-        } catch {}
-      };
     }
+
+    return () => {
+      const r = getRegistry();
+      r.delete(sectionKey);
+      setCombinedDisabled(actions);
+    };
   }, [
     actions,
     currentEvent,
+    currentEvent?.event,
     currentEvent?.dataValues,
-    sectionIds.join("|"),
     trIntOnly,
     trSessionsSum,
     trMonthsCount,
-    i18n.language,
     JSON.stringify(hiddenFields),
+    i18n.language,
+    sectionIds.join("|"),
   ]);
 
   return {
