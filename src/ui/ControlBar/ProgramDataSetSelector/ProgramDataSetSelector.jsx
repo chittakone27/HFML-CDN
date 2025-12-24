@@ -194,7 +194,7 @@ const ProgramDataSetSelector = ({ disabled }) => {
           // }
 
           if (customProgramDataSetHandler) {
-            customProgramDataSetHandler(foundProgramDataSet);
+            customProgramDataSetHandler(foundProgramDataSet, me);
           }
           if (!type) {
             resetPeriod();
