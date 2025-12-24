@@ -1043,8 +1043,24 @@ const useRedirectToCodApp = () => {
 
   useEffect(() => {
     setCustomProgramDataSetHandler((value) => {
-      if (value && value.id === "ogrOUKoSaWA") {
-        window.open("../ICD-10-Cause-of-Death/index.html", "_self");
+      switch (value.id) {
+        case "ogrOUKoSaWA":
+          window.open("../ICD-10-Cause-of-Death/index.html", "_self");
+          break;
+        case "fflLsS1lm3g":
+          window.open("../iCapture-v3/index.html#/?program=fflLsS1lm3g", "_self");
+          break;
+        case "u1Na9wCGY6d":
+          window.open("../iCapture-v3/index.html#/?program=u1Na9wCGY6d", "_self");
+          break;
+        case "AyPkCOMmgdd":
+          window.open("../iCapture-v3/index.html#/?program=AyPkCOMmgdd", "_self");
+          break;
+        case "PBLmYwloRHu":
+          window.open("../iCapture-v3/index.html#/?program=PBLmYwloRHu", "_self");
+          break;
+        default:
+          break;
       }
     });
   }, []);
