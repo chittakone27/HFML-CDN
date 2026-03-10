@@ -415,13 +415,13 @@ const Input = ({
         if (fieldType === "attribute") {
           return <AttributeFilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
         } else {
-          return <FilePicker accept={accept} value={value} disabled={disabled} />;
+          return <FilePicker type={valueType} onChange={change} accept={accept} value={value} disabled={disabled} />;
         }
       case "FILE_RESOURCE":
         if (fieldType === "attribute") {
           return <AttributeFilePicker type={valueType} onChange={change} disabled={disabled} value={value} />;
         } else {
-          return <FilePicker accept={accept} value={value} disabled={disabled} />;
+          return <FilePicker type={valueType} onChange={change} accept={accept} value={value} disabled={disabled} />;
         }
       case "TIME":
         return <TimePicker change={change} disabled={disabled} value={value} disableClearable={disableClearable} />;
