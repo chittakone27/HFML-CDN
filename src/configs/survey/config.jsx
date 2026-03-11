@@ -9,6 +9,7 @@ import Equipments from "./program-forms/infrastructure-mapping-tracker/Program -
 import FocalPoints from "./program-forms/infrastructure-mapping-tracker/Program -stages/Focal-point/FocalPoints";
 import IctAdminEquipments from "./program-forms/infrastructure-mapping-tracker/Program -stages/admin-ict/IctAdminEquipments";
 import MedicineEquipments from "./program-forms/infrastructure-mapping-tracker/Program -stages/Medicine-Equipments/MedicineEquipments";
+import CDN from "./program-forms/CDN/index"
 
 // Villages in catchment area (tracker: sBkMdki30ua, stage: JrbpF3DG3FL)
 import VillagesProfile from "./program-forms/villages-catchment/Profile";
@@ -29,6 +30,8 @@ const customForms = {
     profile: IctDeviceMapping,
     unHrhF91UiU: Assessment
   },
+  boVqBGuZM22:CDN,
+
 
   // Infrastructure Mapping Tracker (tracker)
   wkUHtogPKUL: {
