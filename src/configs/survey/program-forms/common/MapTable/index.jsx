@@ -1,16 +1,16 @@
 import _ from "lodash";
 import React, { memo } from "react";
-// Hooks
 import { useShallow } from "zustand/react/shallow";
 import { useTranslation } from "react-i18next";
 import useSelectionStore from "@/state/selection";
 import useEventCaptureStore from "@/state/eventCapture";
-// Components
 import { TableRow, TableCell, Box } from "@mui/material";
 import DataValueField from "@/ui/EventCapture/Form/DataValueField";
 import DataValueLabel from "@/ui/EventCapture/Form/DataValueLabel";
 
-const isHiddenRow = (hiddenFields, dataElements) => {
+const isHiddenRow = (hiddenFields = [], dataElements = []) => {
+  if (!Array.isArray(dataElements)) return false;
+
   const listCheckHide = dataElements.map(
     ({ id, customCell, isCustomCellHide }) => {
       if (hiddenFields.includes(id)) return true;
@@ -19,52 +19,62 @@ const isHiddenRow = (hiddenFields, dataElements) => {
     }
   );
 
-  //if any element display => isHide = false
-  if (listCheckHide.includes(false)) {
-    return false;
-  }
-
-  return true;
+  return !listCheckHide.includes(false);
 };
 
 const isHiddenField = (hiddenFields, dataElement) => {
-  const found = hiddenFields.find((id) => id === dataElement);
-  if (!found) {
-    return false;
-  }
-  return true;
+  return hiddenFields.includes(dataElement);
 };
 
 const MapTable = ({ dataElementConfigs, tableName, disableHideCell }) => {
   const { t } = useTranslation();
+
   const hiddenFields = useEventCaptureStore(
     useShallow((state) => state.status.hiddenFields)
   );
-  const program = useSelectionStore(useShallow((state) => state.program));
 
-  return dataElementConfigs.map(
+  const program = useSelectionStore(
+    useShallow((state) => state.program)
+  );
+
+  // ✅ safe guard
+  const safeConfigs = Array.isArray(dataElementConfigs)
+    ? dataElementConfigs
+    : [];
+
+  return safeConfigs.map(
     (dataElements, idx) =>
       !isHiddenRow(hiddenFields, dataElements) && (
         <TableRow key={`${tableName}-${idx}`}>
           {dataElements.map((de) => {
-            if (isHiddenField(hiddenFields, de.id) && !disableHideCell) return;
+            if (!de) return null;
+
+            if (isHiddenField(hiddenFields, de.id) && !disableHideCell)
+              return null;
+
             if (de.customCell) {
-              if (de.isCustomCellHide) return;
-              return de.dataElement || de.customCell;
+              if (de.isCustomCellHide) return null;
+              return de.customCell;
             }
-            /* If a data element don't exist in this program stage, the return nothing */
+
+            // Check program stage
             const foundPde =
-              program.programStages[0].programStageDataElements.find(
+              program?.programStages?.[0]?.programStageDataElements?.find(
                 (pde) => pde.dataElement.id === de.id
               );
-            if (!foundPde) return;
-                if (de.disabled) {
+
+            if (!foundPde) return null;
+
+            // Prepare props
+            let fieldProps = { ...de.fieldProps };
+
+            if (de.disabled) {
               fieldProps.disabled = true;
             }
-            /* End data element don't exist */
-            let fieldProps = { ...de.fieldProps };
+
             if (de.id) fieldProps.dataElement = de.id;
             if (!de.display) de.display = "default";
+
             switch (de.display) {
               case "noLabel":
                 return (
@@ -83,7 +93,7 @@ const MapTable = ({ dataElementConfigs, tableName, disableHideCell }) => {
               case "text":
                 return (
                   <TableCell key={de.text} {...de.cellProps}>
-                    <span {...fieldProps}>{t(de.text)}</span>
+                    <span>{t(de.text)}</span>
                   </TableCell>
                 );
 
@@ -116,22 +126,32 @@ const MapTable = ({ dataElementConfigs, tableName, disableHideCell }) => {
                   </TableCell>
                 );
 
-           default:
-  return (
-    <React.Fragment key={de.id}>
-      <TableCell {...de.labelCellProps}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <DataValueLabel {...fieldProps} />
-          {fieldProps?.required && (
-            <span style={{ color: "red", marginLeft: 4 }}>*</span>
-          )}
-        </Box>
-      </TableCell>
-      <TableCell {...de.fieldCellProps}>
-        <DataValueField {...fieldProps} />
-      </TableCell>
-    </React.Fragment>
-  );
+              default:
+                return (
+                  <React.Fragment key={de.id}>
+                    <TableCell {...de.labelCellProps}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <DataValueLabel {...fieldProps} />
+                        {fieldProps?.required && (
+                          <span style={{ color: "red", marginLeft: 4 }}>
+                            *
+                          </span>
+                        )}
+                      </Box>
+                    </TableCell>
+
+                    <TableCell {...de.fieldCellProps}>
+                      <DataValueField {...fieldProps} />
+
+                      {/* 🔴 TEST / VALIDATION MESSAGE */}
+                      {de.message && (
+                        <Box sx={{ color: "red", fontSize: 14, mt: 0.5,ml:3,fontWeight:"bold" }}>
+                          {de.message}
+                        </Box>
+                      )}
+                    </TableCell>
+                  </React.Fragment>
+                );
             }
           })}
         </TableRow>

@@ -18,7 +18,7 @@ import VillagesStage from "./program-forms/villages-catchment/VillagesStage";
 // Nearby health facilities (tracker: gr24luudE0t, stage: MLBhJz9GKds)
 import NearbyProfile from "./program-forms/nearby/Profile";
 import NearbyStage from "./program-forms/nearby/NearbyStage";
-
+import DeathCofirmation from"./program-forms/DeathConfrimation/index";
 //logbook
 import ScannedLogBook from "./program-forms/infrastructure-mapping-tracker/Program -stages/Scanned-Logbook/ScannedLogBook";
 //Custom hooks
@@ -31,7 +31,7 @@ const customForms = {
     unHrhF91UiU: Assessment
   },
   boVqBGuZM22:CDN,
-
+  rcdeBTSHHpW:DeathCofirmation,
 
   // Infrastructure Mapping Tracker (tracker)
   wkUHtogPKUL: {

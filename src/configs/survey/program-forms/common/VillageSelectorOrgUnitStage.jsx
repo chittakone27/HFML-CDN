@@ -11,7 +11,6 @@ import { pickTranslation } from "@/utils/utils";
 
 const VillageSelectorOrgUnitStage = ({ variant, VillageSelectorIds, saveGeo, disabled }) => {
 
-  console.log("test ",VillageSelectorIds)
   const { i18n } = useTranslation();
 
   const { orgUnits, dataElements } = useMetadataStore(

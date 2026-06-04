@@ -234,6 +234,7 @@ const useEventCaptureStore = create((set, get) => ({
       const { setLayout, initNewEvent } = actions;
       const me = useMetadataStore.getState().me;
       i18n.changeLanguage(me.settings.keyUiLocale);
+      
       if (currentEvent && currentEvent.isDirty) {
         IsDirtyAlert.fire({
           title: i18n.t("unsavedChanges"),

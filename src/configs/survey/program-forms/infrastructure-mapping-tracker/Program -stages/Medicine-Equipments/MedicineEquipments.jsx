@@ -136,7 +136,6 @@ const MedicineEquipments = () => {
       },
     ];
   }, [stage]);
-
   const { hiddenFields, presentIds, requiredSet, missing } = useMemo(() => {
     const hidden = {};
     const required = new Set();
@@ -265,6 +264,8 @@ const MedicineEquipments = () => {
     try {
       if (actions.setLayout) {
         actions.setLayout("disableEventCompleteButton", disabled);
+
+        
       } else if (actions.setCompleteDisabled) {
         actions.setCompleteDisabled(disabled);
       } else if (actions.setCanComplete) {
