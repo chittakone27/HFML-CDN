@@ -1,37 +1,25 @@
-// import { useMemo, useEffect, useState,useCallback } from "react";
+// import React from "react";
+// import { useMemo, useEffect, useState} from "react";
 // import {
 //   Box,
 //   Table,
 //   TableBody,
 //   TableCell,
 //   IconButton,
+//   TableRow 
 // } from "@mui/material";
 // import { ExpandMore, ExpandLess } from "@mui/icons-material";
 // import { shallow } from "zustand/shallow";
-// import { DataProvider } from "@dhis2/app-runtime";
-
-// import { DataProvider } from "@dhis2/app-runtime";
-
-// import VillageSelectorOrgUnitStage from "../common/VillageSelectorOrgUnitStage";
-
+// import VillageSelectorOrgUnitStage from"../common/VillageSelectorOrgUnitStage";
 // import { useAgeInYearRule, useForeignerRule } from "../common/hook";
 // import MapTable from "../common/MapTable";
-// import "../common/index.css";
 // import useEventCaptureStore from "@/state/eventCapture";
-// import translations from "./translations";
-// import "./index.css"
+// import "./index.css";
+// import { useTranslation } from "react-i18next";
+
 // const AUTO_ID = "EnTm3aFU6X0";
 // const villageSectorIds = ["iI2JhpE62WI", "OVI7tacFkR2", "TLXlYLP2V7t"];
-//     const handleChange = (selection) => {
 
-//         console.log("Province:", selection.province);
-//         console.log("District:", selection.district);
-//         console.log("Village:", selection.village);
-
-//     };
-//     const runtimeConfig = {
-//   baseUrl: import.meta.env.VITE_BASE_URL,
-// };
 // // Generate CDN + day + month + random 4 digit
 // const generateAutoValue = () => {
 //   const now = new Date();
@@ -42,24 +30,17 @@
 // };
 
 // const CDN = () => {
-// const [language, setLanguage] = useState("lo");
-//   // Fetch user locale from DHIS2
-// useEffect(() => {
-//   fetch(".../api/33/me.json", {
-//     method: "GET",
-  
-//   })
-//     .then((res) => res.json())
-//     .then((data) => {
-//       const locale = data?.settings?.keyUiLocale;
-//       setLanguage(locale || "lo");
-//     })
-//     .catch(() => {
-//       setLanguage("lo");
-//     });
-// }, []);
 
-//   const t = (key) => translations[language]?.[key] || key;
+
+
+//   const [language, setLanguage] = useState("lo");
+//  const { t, i18n } = useTranslation();
+//   const isLao = (i18n.language || "").toLowerCase().startsWith("lo");
+//   const langKey = isLao ? "lo" : "en"; 
+//   // Fetch user locale from DHIS2
+
+
+//   // const t = (key) => translations[language]?.[key] || key;
 
 //   const { currentEvent, actions, status } = useEventCaptureStore(
 //     (state) => ({
@@ -83,10 +64,13 @@
 //   useAgeInYearRule("Z1x2iwf6IIY", "VpdbpoTRlvK", "yIL1eC0xbc2");
 //   useForeignerRule("YOU5UrERj6L", villageSectorIds);
 //   // useEthnicityRule("zWd0wumpAvd", "ytpz8RquNDX");
-
+// useEffect(() => {
+//   console.log("Updated currentEvent.dataValues:", currentEvent?.dataValues);
+// }, [currentEvent?.dataValues]);
 //   // Auto-generate CDN number
 // useEffect(() => {
 //   if (!currentEvent?.event) return;
+// console.log("province2 :",currentEvent?.dataValues?.["iI2JhpE62WI"])
 
 //   const currentValue = currentEvent?.dataValues?.[AUTO_ID];
 
@@ -99,6 +83,8 @@
 //     actions.setCurrentEventProperty("eventDate", today);
 
 //   }
+
+
 // }, [currentEvent?.event, actions]);
 
 // useEffect(() => {
@@ -120,9 +106,9 @@
 //   "uQ9r3BuELco",
 //   "ImbZ26FXqCY",
 //   "QvX65zeRteX",
-//   "J8ptEYl6IuC",
-//   "Dp3e82RfKhz",
-//   "QE48InnEP6T",
+//   // "J8ptEYl6IuC",
+//   // "Dp3e82RfKhz",
+//   // "QE48InnEP6T",
 //   "HqgTB3yqJby",
 //   "zr7r1dtULBg",
 // ];
@@ -141,9 +127,10 @@
 // // Foreigner logic
 // if (isForeigner) {
 //   requiredFields.push("v5Jp11tHjll");
-// } else {
-//   requiredFields.push("iI2JhpE62WI", "OVI7tacFkR2", "TLXlYLP2V7t");
-// }
+// } 
+// // else {
+// //   requiredFields.push("iI2JhpE62WI", "OVI7tacFkR2", "TLXlYLP2V7t");
+// // }
 // if (isknownForeigner) {
 //   requiredFields.push("kXRyqHLsX8b");
 // } else {
@@ -174,7 +161,7 @@
 // const isAgeinyear = currentEvent?.dataValues?.["VpdbpoTRlvK"] >= 1
 //   // Get today's date in YYYY-MM-DD format
 
-
+// console.log("province :",currentEvent?.dataValues?.["J8ptEYl6IuC"])
 //   if (ismonthinyear) {
 //     actions.setCurrentEventDataValue("VpdbpoTRlvK", "0");
 //   }
@@ -214,6 +201,7 @@
 //   // SECTIONS
 //   // ==============================
 
+
 // const profileSection = useMemo(() => {
 //   const isVillageHidden = currentEvent?.dataValues?.["YOU5UrERj6L"]=="true";
 //   const isCountryHidden = currentEvent?.dataValues?.["v5Jp11tHjll"]==="true";
@@ -247,6 +235,7 @@
 //     [{ id: "zWd0wumpAvd" }], //*
 //     ...(isEthnicityOther ? [[{ id: "ytpz8RquNDX" }]] : []),
 //     [{ id: "AlD7MFvoYQs" }],
+   
 //     [{ id: "NenTvDjChyo" }],
 //     [{ id: "xbAV5SzeGbB" }],
 //     ...(isotherocc ? [[{ id: "r0egoQrrpTi" }]] : []),
@@ -258,15 +247,13 @@
     
 //         ...(isCountryHidden && isVillageHidden ? [[{ id: "kXRyqHLsX8b",fieldProps: { required: true }  }]] : []),
 
-//   //  [
-//   //     {
-//   //     language,
-
-//   //        customCell: <VillageCell language={language} />,
-//   //       isCustomCellHide: isVillageHidden,
-//   //       fieldProps: { required: false },
-//   //     },
-//   //   ],
+// [
+//   {
+//     customCell: <VillageCell />,
+//     isCustomCellHide: isVillageHidden,
+//     fieldProps: { required: false },
+//   },
+// ],
 //         ...(!isVillageHidden ? [[{ id: "xVXPkWtC9OQ" }]] : []),
 //     ...(!isVillageHidden ? [[{ id: "Q9I8uYEdL4O" }]] : []),
 
@@ -283,8 +270,7 @@
 //   currentEvent?.dataValues?.["VpdbpoTRlvK"],
 // ]);
 // const deathInfoSection = useMemo(() => {
-//   const causeOfDeath =
-//     currentEvent?.dataValues?.["QvX65zeRteX"];
+//   const causeOfDeath =currentEvent?.dataValues?.["QvX65zeRteX"];
 // const isSpecifyCOD = causeOfDeath === "Disease" || causeOfDeath === "Accident";
 // const isDetailMD = causeOfDeath == "Other (specify)"
 // const isotherplaceOfdeath = currentEvent?.dataValues?.["ImbZ26FXqCY"]==="Other (specify)";
@@ -317,19 +303,22 @@
 //       ]
 //     ]
 //   : []),
-//     [
-//       {
-//         customCell: <DeathVillageCell language={language} />,
-//       },
-//     ],
-
+// [
+//   {
+//     customCell: (
+//       <DeathVillageCell
+    
+//       />
+//     ),
+//   },
+// ],
 //     [{ id: "HRwRhEljEtJ" }],
+ 
 //     [{ id: "lxr5gKfFrwC" }],
 //   ];
 // }, [
 //   currentEvent?.dataValues?.["QvX65zeRteX"],
 //   currentEvent?.dataValues?.["ImbZ26FXqCY"],
-//   language,
 // ]);
 // const informantSection = useMemo(() => {
 //   const isanotherRelationship = currentEvent?.dataValues?.["zr7r1dtULBg"] === "Other (specify)";
@@ -397,68 +386,106 @@
 //   );
 
 //   return (
+
 //     <Box id="cdn-event-form-container" className="custom-form">
-//       {renderSection(t("profileSection"), openProfile, () => setOpenProfile(!openProfile), profileSection)}
-//       {renderSection(t("deathSection"), openDeathInfo, () => setOpenDeathInfo(!openDeathInfo), deathInfoSection)}
-//       {renderSection(t("informantSection"), openInformantDetail, () => setOpenInformantDetail(!openInformantDetail), informantSection)}
-//       {renderSection(t("responsibleSection"), openResponsible, () => setOpenResponsible(!openResponsible), responsibleSection)}
-//       {renderSection(t("verbalSection"), openVerbal, () => setOpenVerbal(!openVerbal), verbalSection)}
+//      {renderSection(
+//   t("cdn.profileSection", { defaultValue: isLao ? "1. ຂໍ້ມູນຜູ້ເສຍຊີວິດ" : "1. Profile" }),
+//   openProfile,
+//   () => setOpenProfile(!openProfile),
+//   profileSection
+// )}
+
+// {renderSection(
+//   t("cdn.deathSection", { defaultValue: isLao ? "2. ການເສຍຊີວິດ" : "2. Death Information" }),
+//   openDeathInfo,
+//   () => setOpenDeathInfo(!openDeathInfo),
+//   deathInfoSection
+// )}
+
+// {renderSection(
+//   t("cdn.informantSection", { defaultValue: isLao ? "3. ຜູ້ໃຫ້ຂໍ້ມູນ" : "3. Informant Details" }),
+//   openInformantDetail,
+//   () => setOpenInformantDetail(!openInformantDetail),
+//   informantSection
+// )}
+
+// {renderSection(
+//   t("cdn.responsibleSection", { defaultValue: isLao ? "4. ອສບ ຜູ້ລາຍງານ" : "4. Responsible VHV" }),
+//   openResponsible,
+//   () => setOpenResponsible(!openResponsible),
+//   responsibleSection
+// )}
+
+// {renderSection(
+//   t("cdn.verbalSection", { defaultValue: isLao ? "5. ການລົງສໍາພາດຄົວເຮືອນ ເພື່ອຊອກຫາສາເຫດການເສຍຊີວິດ" : "5. Verbal Autopsy" }),
+//   openVerbal,
+//   () => setOpenVerbal(!openVerbal),
+//   verbalSection
+// )}
 //     </Box>
+
 //   );
 // };
 // // ==============================
 // // CUSTOM CELLS
 // // ==============================
-// const VillageCell = ({ language }) => {
-//   const t = (key) => translations[language]?.[key] || key;
-// console.log("oo:", VillageSelectorOrgUnitStage);
+
+
+// // IDs for profile vs death village
+// const profileVillageIds = ["iI2JhpE62WI", "OVI7tacFkR2", "TLXlYLP2V7t"];
+// const deathVillageIds = ["J8ptEYl6IuC", "Dp3e82RfKhz", "QE48InnEP6T"];
+
+// // ======================
+// // Profile Village Cell
+// // ======================
+// export const VillageCell = () => {
+//   const { t, i18n } = useTranslation();
+//   const isLao = (i18n.language || "").startsWith("lo");
+
 //   return (
 //     <>
 //       <TableCell>
-//         {t("currentAddress")}
-//         <span style={{ color: "red", marginLeft: 4 }}>*</span>
+//         <Box sx={{ display: "flex", alignItems: "center" }}>
+//           {t("currentAddress", { defaultValue: isLao ? "ທີ່ຢູ່ປະຈຸບັນ" : "Current Address" })}
+//           <span style={{ color: "red", marginLeft: 4 }}>*</span>
+//         </Box>
 //       </TableCell>
 //       <TableCell>
-//         <Box className="bordered-left">
-//              <VillageSelectorOrgUnitStage
-//                             variant="outlined"
-//                             saveGeo={true}
-//                             disabled={false}
-//                             VillageSelectorIds={[
-//                              "iI2JhpE62WI", "OVI7tacFkR2", "TLXlYLP2V7t"
-//                             ]}
-//                           />
-//         </Box>
+//         <VillageSelectorOrgUnitStage
+//           VillageSelectorIds={profileVillageIds}
+//           variant="outlined"
+//           saveGeo={true}
+//           disabled={false}
+//         />
 //       </TableCell>
 //     </>
 //   );
 // };
-// const DeathVillageCell = ({ language }) => {
-//   const t = (key) => translations[language]?.[key] || key;
+
+// // ======================
+// // Death Village Cell
+// // ======================
+// export const DeathVillageCell = () => {
+//   const { t, i18n } = useTranslation();
+//   const isLao = (i18n.language || "").startsWith("lo");
 
 //   return (
-//    <DataProvider config={runtimeConfig}>
-//       <TableRow>
-//         <TableCell>
-//           {t("PlaceOfDeath")}
+//     <>
+//       <TableCell>
+//         <Box sx={{ display: "flex", alignItems: "center" }}>
+//           {t("PlaceOfDeath", { defaultValue: isLao ? "ສະຖານທີເສຍຊີວິດ" : "Place Of Death" })}
 //           <span style={{ color: "red", marginLeft: 4 }}>*</span>
-//         </TableCell>
-
-//         <TableCell>
-//           <Box className="bordered-left">
-//             <OrgUnitSelector
-//               provinceGroupId="jblbYwuvO33"
-//               districtGroupId="Zh1inFu0Z2O"
-//               villageGroupId="ZVH1xlLGfxn"
-//             />
-//           </Box>
-//         </TableCell>
-//       </TableRow>
-//     </DataProvider>
+//         </Box>
+//       </TableCell>
+//       <TableCell>
+//         <VillageSelectorOrgUnitStage
+//           VillageSelectorIds={deathVillageIds}
+//           variant="outlined"
+//           saveGeo={true}
+//           disabled={false}
+//         />
+//       </TableCell>
+//     </>
 //   );
 // };
-// <style>
-  
-// </style>
-
 // export default CDN;
